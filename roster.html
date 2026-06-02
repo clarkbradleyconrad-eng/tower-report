@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>2025 Roster — Tower Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--orange:#BF5700;--black:#080808;--surface:#111;--surface2:#181818;--surface3:#202020;--border:rgba(255,255,255,0.07);--border-strong:rgba(255,255,255,0.12);--white:#F5F0E8;--muted:#6B6560;--secondary:#A09890;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);}
+
+nav{position:sticky;top:0;z-index:200;background:rgba(8,8,8,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.nav-inner{display:flex;justify-content:space-between;align-items:center;padding:0 48px;max-width:1400px;margin:0 auto;}
+.nav-logo{display:flex;align-items:center;text-decoration:none;padding:14px 0;}
+.nav-links{display:flex;gap:0;align-items:center;}
+.nav-link{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:20px 16px;border-bottom:2px solid transparent;transition:all .2s;}
+.nav-link:hover,.nav-link.active{color:var(--white);border-bottom-color:var(--orange);}
+.nav-cta{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;background:var(--orange);color:#fff;text-decoration:none;padding:9px 20px;margin-left:12px;border:1px solid var(--orange);transition:all .2s;}
+.nav-cta:hover{background:transparent;color:var(--orange);}
+
+.page-header{padding:40px 48px 28px;border-bottom:1px solid var(--border);}
+.breadcrumb{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.breadcrumb span{color:var(--orange);}
+.page-title{font-family:'Playfair Display',serif;font-size:clamp(36px,4vw,60px);font-weight:900;line-height:1;letter-spacing:-2px;margin-bottom:8px;}
+.page-sub{font-size:14px;color:var(--secondary);font-style:italic;}
+
+/* CONTROLS */
+.controls{display:flex;gap:10px;align-items:center;padding:16px 48px;border-bottom:1px solid var(--border);flex-wrap:wrap;}
+.search-wrap{position:relative;flex:1;min-width:200px;}
+.search-wrap input{width:100%;padding:9px 14px 9px 36px;font-size:13px;font-family:'Barlow',sans-serif;background:var(--surface);border:1px solid var(--border-strong);color:var(--white);border-radius:2px;}
+.search-wrap input:focus{outline:none;border-color:var(--orange);}
+.search-wrap input::placeholder{color:var(--muted);}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px;}
+.filters{display:flex;gap:6px;flex-wrap:wrap;}
+.filter-btn{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:7px 14px;background:transparent;border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all .15s;}
+.filter-btn:hover{color:var(--white);border-color:var(--border-strong);}
+.filter-btn.active{background:var(--orange);border-color:var(--orange);color:#fff;}
+.view-toggle{display:flex;gap:4px;margin-left:auto;}
+.view-btn{padding:8px 12px;background:transparent;border:1px solid var(--border);color:var(--muted);cursor:pointer;font-size:14px;transition:all .15s;}
+.view-btn.active{background:var(--surface2);color:var(--white);border-color:var(--border-strong);}
+
+/* ROSTER GRID */
+.roster-wrap{padding:24px 48px 60px;}
+.position-section{margin-bottom:36px;}
+.pos-label{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted);padding-bottom:10px;border-bottom:1px solid var(--border);margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+.pos-count{font-size:10px;color:var(--surface3);background:var(--surface2);padding:2px 8px;border-radius:2px;}
+
+/* CARD VIEW */
+.player-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1px;background:var(--border);}
+.player-card{background:var(--surface);cursor:pointer;transition:background .15s;position:relative;overflow:hidden;}
+.player-card:hover{background:var(--surface2);}
+.player-card:hover .card-overlay{opacity:1;}
+.card-photo{width:100%;aspect-ratio:1;overflow:hidden;background:var(--surface2);position:relative;}
+.card-photo img{width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(20%);}
+.card-photo-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:32px;font-weight:900;color:var(--orange);opacity:0.3;}
+.card-num{position:absolute;top:8px;left:8px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;background:rgba(8,8,8,0.7);color:var(--white);padding:2px 6px;letter-spacing:1px;}
+.card-info{padding:10px 12px;}
+.card-name{font-size:13px;font-weight:600;color:var(--white);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.card-pos{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);}
+.card-meta{font-size:11px;color:var(--muted);margin-top:2px;}
+.card-overlay{position:absolute;inset:0;background:rgba(191,87,0,0.12);opacity:0;transition:opacity .15s;display:flex;align-items:center;justify-content:center;}
+.card-overlay-text{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#fff;background:var(--orange);padding:6px 14px;}
+
+/* TABLE VIEW */
+.player-table{width:100%;border-collapse:collapse;display:none;}
+.player-table th{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);background:var(--surface);}
+.player-table td{padding:10px 14px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:middle;}
+.player-table tr{cursor:pointer;transition:background .1s;}
+.player-table tr:hover td{background:var(--surface);}
+.tbl-photo{width:36px;height:36px;border-radius:50%;overflow:hidden;background:var(--surface2);}
+.tbl-photo img{width:100%;height:100%;object-fit:cover;object-position:top;}
+.tbl-num{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:var(--muted);}
+.tbl-name{font-weight:600;color:var(--white);}
+.tbl-pos{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:500;display:none;align-items:flex-start;justify-content:center;overflow-y:auto;padding:40px 20px;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--surface);max-width:700px;width:100%;position:relative;margin:auto;}
+.modal-close{position:absolute;top:16px;right:16px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);background:var(--surface2);border:1px solid var(--border);padding:6px 12px;cursor:pointer;z-index:10;transition:all .15s;}
+.modal-close:hover{color:var(--white);}
+
+.modal-hero{display:grid;grid-template-columns:200px 1fr;border-bottom:1px solid var(--border);}
+.modal-photo{width:200px;height:240px;overflow:hidden;background:var(--surface2);}
+.modal-photo img{width:100%;height:100%;object-fit:cover;object-position:top;}
+.modal-photo-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:64px;font-weight:900;color:var(--orange);opacity:0.2;}
+.modal-identity{padding:28px 24px;display:flex;flex-direction:column;justify-content:space-between;}
+.modal-num{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.modal-name{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;line-height:1;color:var(--white);margin-bottom:6px;}
+.modal-pos-yr{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:16px;}
+.modal-vitals{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);}
+.modal-vital{background:var(--surface2);padding:10px 12px;text-align:center;}
+.modal-vital-val{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:var(--white);}
+.modal-vital-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-top:2px;font-family:'Barlow Condensed',sans-serif;font-weight:600;}
+
+.modal-body{padding:0;}
+.modal-section{padding:20px 24px;border-bottom:1px solid var(--border);}
+.modal-section-title{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:12px;}
+.modal-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.modal-field{background:var(--surface2);padding:10px 14px;}
+.modal-field-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;font-family:'Barlow Condensed',sans-serif;font-weight:600;margin-bottom:3px;}
+.modal-field-val{font-size:14px;font-weight:600;color:var(--white);}
+.modal-field-val.orange{color:var(--orange);}
+.modal-field-val.muted{color:var(--muted);font-size:12px;font-weight:400;}
+
+.stars{color:var(--orange);letter-spacing:2px;}
+.nil-val{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;color:#4ade80;}
+.pipeline-badge{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;background:rgba(191,87,0,0.1);border:1px solid rgba(191,87,0,0.2);color:var(--orange);margin-left:6px;vertical-align:middle;}
+
+.modal-stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);}
+.modal-stat{background:var(--surface2);padding:12px;text-align:center;}
+.modal-stat-val{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;color:var(--white);}
+.modal-stat-label{font-size:10px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;}
+
+.modal-links{display:flex;gap:8px;flex-wrap:wrap;padding:16px 24px;border-bottom:1px solid var(--border);}
+.modal-link{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:7px 14px;border:1px solid var(--border);color:var(--secondary);text-decoration:none;transition:all .15s;}
+.modal-link:hover{color:var(--white);border-color:var(--border-strong);}
+.modal-link.primary{background:var(--orange);border-color:var(--orange);color:#fff;}
+.modal-link.primary:hover{background:transparent;color:var(--orange);}
+
+#empty-state{display:none;padding:60px;text-align:center;color:var(--muted);font-style:italic;}
+
+footer{padding:24px 48px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.footer-logo{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:3px;color:var(--muted);}
+.footer-logo span{color:var(--orange);}
+.footer-text{font-size:12px;color:var(--muted);}
+
+@media(max-width:768px){
+  .nav-inner{padding:0 20px;}.nav-link.hm{display:none;}
+  .page-header,.controls,.roster-wrap{padding-left:20px;padding-right:20px;}
+  .player-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));}
+  .modal-hero{grid-template-columns:1fr;}
+  .modal-photo{width:100%;height:200px;}
+  .modal-grid-2{grid-template-columns:1fr;}
+  footer{padding:20px;flex-direction:column;gap:8px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <svg viewBox="0 0 180 44" width="160" height="40" fill="none">
+        <g transform="translate(0,2)"><rect x="14" y="28" width="12" height="10" fill="#BF5700" opacity="0.9"/><rect x="15.5" y="18" width="9" height="11" fill="#BF5700"/><rect x="17" y="10" width="6" height="9" fill="#BF5700"/><circle cx="20" cy="13.5" r="2.2" fill="#080808" stroke="#BF5700" stroke-width="0.5"/><line x1="20" y1="10" x2="20" y2="5" stroke="#BF5700" stroke-width="1.5"/><circle cx="20" cy="4.5" r="1" fill="#E8620A"/><line x1="26" y1="15" x2="32" y2="12" stroke="#BF5700" stroke-width="0.8" opacity="0.7"/><circle cx="32.5" cy="11.5" r="1.2" fill="#BF5700" opacity="0.7"/><line x1="14" y1="15" x2="8" y2="12" stroke="#BF5700" stroke-width="0.8" opacity="0.7"/><circle cx="7.5" cy="11.5" r="1.2" fill="#BF5700" opacity="0.7"/></g>
+        <text x="44" y="20" font-family="'Barlow Condensed',sans-serif" font-weight="700" font-size="20" letter-spacing="3" fill="#F5F0E8">TOWER</text>
+        <text x="44" y="38" font-family="'Barlow Condensed',sans-serif" font-weight="600" font-size="14" letter-spacing="5" fill="#BF5700">REPORT</text>
+      </svg>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link hm">Home</a>
+      <a href="schedule.html" class="nav-link hm">Schedule</a>
+      <a href="roster.html" class="nav-link active">Roster</a>
+      <a href="history.html" class="nav-link hm">History</a>
+      <a href="index.html#waitlist" class="nav-cta">Join Waitlist</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="breadcrumb">Tower Report <span>/ Football / Roster</span></div>
+  <h1 class="page-title">2025 Longhorns Roster</h1>
+  <p class="page-sub">Steve Sarkisian · SEC · Darrell K Royal–Texas Memorial Stadium · Click any player for full profile</p>
+</div>
+
+<div class="controls">
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="search" placeholder="Search players..." oninput="filterRoster()"/>
+  </div>
+  <div class="filters" id="pos-filters">
+    <button class="filter-btn active" onclick="setFilter('ALL',this)">All</button>
+    <button class="filter-btn" onclick="setFilter('QB',this)">QB</button>
+    <button class="filter-btn" onclick="setFilter('RB',this)">RB</button>
+    <button class="filter-btn" onclick="setFilter('WR',this)">WR</button>
+    <button class="filter-btn" onclick="setFilter('TE',this)">TE</button>
+    <button class="filter-btn" onclick="setFilter('OL',this)">OL</button>
+    <button class="filter-btn" onclick="setFilter('DL',this)">DL</button>
+    <button class="filter-btn" onclick="setFilter('LB',this)">LB</button>
+    <button class="filter-btn" onclick="setFilter('DB',this)">DB</button>
+    <button class="filter-btn" onclick="setFilter('ST',this)">ST</button>
+  </div>
+  <div class="view-toggle">
+    <button class="view-btn active" id="btn-grid" onclick="setView('grid')">⊞</button>
+    <button class="view-btn" id="btn-table" onclick="setView('table')">☰</button>
+  </div>
+</div>
+
+<div class="roster-wrap">
+  <div id="empty-state">No players match your search.</div>
+  <div id="roster-grid"></div>
+  <table class="player-table" id="roster-table">
+    <thead><tr><th></th><th>#</th><th>Player</th><th>Pos</th><th>Ht</th><th>Wt</th><th>Yr</th><th>Hometown</th></tr></thead>
+    <tbody id="roster-table-body"></tbody>
+  </table>
+</div>
+
+<footer>
+  <div class="footer-logo">TOWER<span>REPORT</span></div>
+  <div class="footer-text">Source: Texas Athletics · The Tower Never Sleeps · © 2026</div>
+</footer>
+
+<!-- PLAYER MODAL -->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal" id="modal-content"></div>
+</div>
+
+<script>
+const BASE = 'https://dxbhsrqyrr690.cloudfront.net/sidearm.nextgen.sites/texassports_com/images/';
+const IMG = (path) => `https://images.sidearmdev.com/crop?url=https%3A%2F%2Fdxbhsrqyrr690.cloudfront.net%2Fsidearm.nextgen.sites%2Ftexassports_com%2Fimages%2F${encodeURIComponent(path)}&width=300&height=360&type=webp`;
+
+const roster = [
+  // QB
+  {num:'16',name:'Arch Manning',pos:'QB',group:'QB',yr:'Jr',ht:'6\'4"',wt:'225',home:'New Orleans, LA',hs:'Isidore Newman',photo:'2024/9/5/Manning_Arch_2024_crop_T3l3M.jpg',recruit:{stars:5,rating:'99',natl:1,pos:1,yr:2023},nil:'$4.2M',stats:{g:13,comp:'247/357',yds:3562,td:35,int:8},bio:'The most anticipated quarterback in college football history. Manning took over as starter in 2025 and delivered — leading Texas to the Citrus Bowl. Grandson of Archie Manning, nephew of Peyton and Eli.',social:{x:'archmanning',ig:'archmanning'}},
+  {num:'18',name:'Trey Owens',pos:'QB',group:'QB',yr:'So',ht:'6\'5"',wt:'225',home:'Houston, TX',hs:'Klein Forest',photo:'2024/9/5/Owens_Trey_2024_crop.jpg',recruit:{stars:4,rating:'93',natl:88,pos:8,yr:2024},nil:'$85K',stats:{g:4,comp:'18/28',yds:210,td:2,int:0},bio:'Backup QB with strong arm and mobility. Transferred from Arkansas. Houston native.',social:{x:'treyowens18',ig:'treyowens18'}},
+  {num:'8',name:'Karle Lacey Jr.',pos:'QB',group:'QB',yr:'Fr',ht:'6\'0"',wt:'182',home:'Saraland, AL',hs:'Saraland',photo:'2025/7/31/Lacey_Karle2025.png',recruit:{stars:3,rating:'86',natl:412,pos:28,yr:2025},nil:'—',stats:null,bio:'True freshman walk-on QB from Alabama.',social:{x:'',ig:''}},
+
+  // RB
+  {num:'4',name:'CJ Baxter Jr.',pos:'RB',group:'RB',yr:'So',ht:'6\'1"',wt:'227',home:'Orlando, FL',hs:'Edgewater',photo:'2025/7/31/Baxter_CJ2025.png',recruit:{stars:5,rating:'96',natl:22,pos:3,yr:2024},nil:'$320K',stats:{g:12,car:94,yds:612,avg:6.5,td:7},bio:'5-star recruit from Florida who flashed elite burst and power in his freshman season. Top RB prospect for 2026 draft.',social:{x:'cjbaxterjr',ig:'cjbaxterjr4'}},
+  {num:'5',name:'Quintrevion Wisner',pos:'RB',group:'RB',yr:'Jr',ht:'6\'0"',wt:'194',home:'Glenn Heights, TX',hs:'DeSoto',photo:'2023/10/13/Wisner_Quintrevion_2023.png',recruit:{stars:4,rating:'90',natl:155,pos:18,yr:2023},nil:'$110K',stats:{g:13,car:78,yds:485,avg:6.2,td:5},bio:'Explosive home-state RB from DeSoto, TX. Third-year Longhorn who emerged as key contributor in 2025.',social:{x:'qwisner5',ig:'quintrevionwisner'}},
+  {num:'9',name:'Jerrick Gibson',pos:'RB',group:'RB',yr:'Jr',ht:'5\'10"',wt:'206',home:'Gainesville, FL',hs:'Gainesville',photo:'2024/9/5/Gibson_Jerrick_2024_crop.jpg',recruit:{stars:4,rating:'91',natl:120,pos:12,yr:2023},nil:'$95K',stats:{g:11,car:62,yds:398,avg:6.4,td:4},bio:'Physical downhill runner. Hometown of Gainesville adds fuel to annual Florida matchup.',social:{x:'jerrickgibson',ig:'jerrickgibson9'}},
+
+  // WR
+  {num:'0',name:'DeAndre Moore Jr.',pos:'WR',group:'WR',yr:'Jr',ht:'6\'0"',wt:'192',home:'Anaheim, CA',hs:'St. John Bosco',photo:'2024/9/5/Moore_DeAndre_2024_crop_Lgj3U.jpg',recruit:{stars:5,rating:'95',natl:35,pos:4,yr:2023},nil:'$280K',stats:{g:13,rec:52,yds:748,avg:14.4,td:8},bio:'Top WR recruited out of powerhouse St. John Bosco. Explosive after the catch with elite route running.',social:{x:'deandremoorejr',ig:'deandremoorejr0'}},
+  {num:'1',name:'Ryan Wingo',pos:'WR',group:'WR',yr:'So',ht:'6\'2"',wt:'214',home:'St. Louis, MO',hs:'St. Louis University HS',photo:'2025/7/31/Wingo_Ryan2025.png',recruit:{stars:5,rating:'97',natl:12,pos:1,yr:2024},nil:'$410K',stats:{g:13,rec:61,yds:924,avg:15.1,td:9},bio:'#1 WR in the 2024 class nationally. Transferred from St. Louis University HS with elite combination of size and speed. One of Arch Manning\'s favorite targets in 2025.',social:{x:'ryanwingo1',ig:'ryanwingo1'}},
+  {num:'3',name:'Emmett Mosley V',pos:'WR',group:'WR',yr:'So',ht:'6\'2"',wt:'210',home:'Chicago, IL',hs:'Santa Margarita',photo:'2025/7/10/Mosley_EmmettHeadshot.png',recruit:{stars:4,rating:'92',natl:98,pos:9,yr:2024},nil:'$175K',stats:{g:11,rec:34,yds:448,avg:13.2,td:4},bio:'Stanford transfer who chose Texas for the 2025 season. Long, physical receiver with elite hands.',social:{x:'emmettmosley5',ig:'emmettmosley5'}},
+  {num:'2',name:'Jaime Ffrench Jr.',pos:'WR',group:'WR',yr:'Fr',ht:'6\'1"',wt:'185',home:'Jacksonville, FL',hs:'Mandarin',photo:'2025/7/31/Ffrench_Jaime2025.png',recruit:{stars:4,rating:'91',natl:130,pos:11,yr:2025},nil:'—',stats:null,bio:'True freshman WR from Jacksonville. Son of former NFL wide receiver Jaime Ffrench.',social:{x:'',ig:''}},
+
+  // TE
+  {num:'86',name:'Gunnar Helm',pos:'TE',group:'TE',yr:'Sr',ht:'6\'5"',wt:'255',home:'Bethesda, MD',hs:'Bethesda-Chevy Chase',photo:'2024/9/5/Helm_Gunnar_2024_crop.jpg',recruit:{stars:4,rating:'92',natl:105,pos:5,yr:2022},nil:'$385K',stats:{g:13,rec:48,yds:562,avg:11.7,td:6},bio:'NFL Draft prospect at TE. Exceptional blocker and route runner. Now with the Tennessee Titans after being drafted.',social:{x:'gunnarhelm',ig:'gunnarhelm86'}},
+  {num:'85',name:'Jack Endries',pos:'TE',group:'TE',yr:'Jr',ht:'6\'5"',wt:'248',home:'Rocklin, CA',hs:'Rocklin',photo:'2024/9/5/Endries_Jack_2024_crop.jpg',recruit:{stars:4,rating:'90',natl:140,pos:7,yr:2023},nil:'$95K',stats:{g:13,rec:22,yds:248,avg:11.3,td:2},bio:'Physical TE from California. Second option in passing game behind Helm.',social:{x:'jackendries',ig:'jackendries85'}},
+
+  // OL
+  {num:'54',name:'Kelvin Banks Jr.',pos:'OT',group:'OL',yr:'Sr',ht:'6\'5"',wt:'320',home:'Missouri City, TX',hs:'Fort Bend Travis',photo:'2024/9/5/Banks_Kelvin_2024_crop.jpg',recruit:{stars:5,rating:'98',natl:8,pos:1,yr:2022},nil:'$620K',stats:null,bio:'Unanimous All-American OT. Lombardi Award winner 2024. Outland Trophy winner 2024. #1 OT recruit in 2022. Now with the New Orleans Saints. One of the best OL prospects in recent UT history.',social:{x:'kelvinbanksjr',ig:'kelvinbanksjr54'}},
+  {num:'55',name:'Jake Majors',pos:'C',group:'OL',yr:'Sr',ht:'6\'3"',wt:'300',home:'Rockwall, TX',hs:'Rockwall',photo:'2024/9/5/Majors_Jake_2024_crop.jpg',recruit:{stars:4,rating:'89',natl:210,pos:12,yr:2021},nil:'$145K',stats:null,bio:'4-year starter at center. Rockwall, TX native. Anchor of the offensive line. Now with the Philadelphia Eagles.',social:{x:'jakemajors55',ig:'jakemajors55'}},
+  {num:'74',name:'Christian Jones',pos:'OT',group:'OL',yr:'Jr',ht:'6\'6"',wt:'310',home:'Duncanville, TX',hs:'Duncanville',photo:'2024/9/5/Jones_Christian_2024_crop.jpg',recruit:{stars:5,rating:'96',natl:28,pos:3,yr:2023},nil:'$245K',stats:null,bio:'5-star OT from powerhouse Duncanville, TX. Next in line at left tackle after Banks. NFL Draft prospect.',social:{x:'christianjones74',ig:'christianjones74'}},
+  {num:'67',name:'Hayden Conner',pos:'OG',group:'OL',yr:'Sr',ht:'6\'4"',wt:'308',home:'Denton, TX',hs:'Denton Ryan',photo:'2024/9/5/Conner_Hayden_2024_crop.jpg',recruit:{stars:4,rating:'89',natl:185,pos:10,yr:2021},nil:'$120K',stats:null,bio:'Multi-year starter at guard. Denton native, same high school as Anthony Hill Jr. Now with the Arizona Cardinals.',social:{x:'haydenconner67',ig:'haydenconner67'}},
+  {num:'78',name:'Mason Shipley',pos:'OT',group:'OL',yr:'So',ht:'6\'5"',wt:'305',home:'Georgetown, TX',hs:'Georgetown',photo:'2025/7/31/Shipley_Mason2025.png',recruit:{stars:4,rating:'91',natl:118,pos:8,yr:2024},nil:'$95K',stats:null,bio:'Son of UT legend Jordan Shipley. Georgetown, TX native stepping into the starting lineup.',social:{x:'masonshipley78',ig:'masonshipley78'}},
+
+  // DL
+  {num:'1',name:'Colin Simmons',pos:'EDGE',group:'DL',yr:'So',ht:'6\'3"',wt:'240',home:'Dallas, TX',hs:'Duncanville',photo:'2024/2/15/Simmons_Colin-2024.jpg',recruit:{stars:5,rating:'99',natl:2,pos:1,yr:2024},nil:'$480K',stats:{g:13,tkl:38,sack:8.5,tfl:12,ff:3},bio:'#2 recruit nationally in 2024. Named Big 12 Defensive Freshman of the Year. Pass rush force with elite burst and bend. Projected top-5 NFL Draft pick.',social:{x:'colinsimmons1',ig:'colinsimmons1'}},
+  {num:'90',name:'Byron Murphy II',pos:'DT',group:'DL',yr:'Sr',ht:'6\'2"',wt:'305',home:'Mesquite, TX',hs:'Mesquite',photo:'2024/9/5/Murphy_Byron_2024_crop.jpg',recruit:{stars:5,rating:'96',natl:20,pos:2,yr:2022},nil:'$320K',stats:{g:12,tkl:32,sack:4.5,tfl:9,ff:1},bio:'Dominant interior DT from Mesquite, TX. Named to Big 12 All-Defensive team. Now with the Seattle Seahawks.',social:{x:'byronmurphy90',ig:'byronmurphy90'}},
+  {num:'91',name:'T\'Vondre Sweat',pos:'DT',group:'DL',yr:'Sr',ht:'6\'4"',wt:'350',home:'Lufkin, TX',hs:'Lufkin',photo:'2024/9/5/Sweat_TVondre_2024_crop.jpg',recruit:{stars:4,rating:'93',natl:75,pos:4,yr:2021},nil:'$285K',stats:{g:12,tkl:28,sack:3.5,tfl:8,ff:0},bio:'Outland Trophy winner 2023. Massive interior presence. Lufkin, TX native. Now with the Tennessee Titans.',social:{x:'tvondresweat',ig:'tvondresweat91'}},
+  {num:'44',name:'Barryn Sorrell',pos:'DE',group:'DL',yr:'Jr',ht:'6\'3"',wt:'255',home:'Dallas, TX',hs:'South Oak Cliff',photo:'2024/9/5/Sorrell_Barryn_2024_crop.jpg',recruit:{stars:4,rating:'90',natl:142,pos:10,yr:2023},nil:'$145K',stats:{g:13,tkl:34,sack:6.0,tfl:10,ff:2},bio:'Explosive pass rusher from South Oak Cliff, Dallas. Now with the Green Bay Packers.',social:{x:'barrynsorrell',ig:'barrynsorrell44'}},
+  {num:'51',name:'Alfred Collins',pos:'DT',group:'DL',yr:'Jr',ht:'6\'5"',wt:'325',home:'Bastrop, TX',hs:'Bastrop',photo:'2024/9/5/Collins_Alfred_2024_crop.jpg',recruit:{stars:5,rating:'95',natl:30,pos:3,yr:2023},nil:'$210K',stats:{g:12,tkl:24,sack:2.5,tfl:7,ff:1},bio:'5-star DT from Bastrop, TX. Massive, powerful interior presence. Now with the San Francisco 49ers.',social:{x:'alfredcollins51',ig:'alfredcollins51'}},
+
+  // LB
+  {num:'0',name:'Anthony Hill Jr.',pos:'LB',group:'LB',yr:'Jr',ht:'6\'3"',wt:'238',home:'Denton, TX',hs:'Ryan',photo:'2024/9/5/Hill_Anthony_2024_crop_ZQDp4.jpg',recruit:{stars:5,rating:'99',natl:1,pos:1,yr:2023},nil:'$520K',stats:{g:13,tkl:87,sack:4.5,tfl:11,ff:2},bio:'#1 recruit nationally in 2023. Big 12 Defensive Freshman of the Year. The face of the Texas defense. Elite instincts, sideline-to-sideline range, and NFL-caliber motor. Projected top-10 pick.',social:{x:'anthonyhill0',ig:'anthonyhill0'}},
+  {num:'26',name:'Jaylan Ford',pos:'LB',group:'LB',yr:'Sr',ht:'6\'1"',wt:'230',home:'College Station, TX',hs:'A&M Consolidated',photo:'2024/9/5/Ford_Jaylan_2024_crop.jpg',recruit:{stars:4,rating:'89',natl:205,pos:14,yr:2021},nil:'$165K',stats:{g:13,tkl:94,sack:2.0,tfl:8,ff:1},bio:'Team\'s leading tackler for two straight seasons. College Station native. Now with the New Orleans Saints.',social:{x:'jaylanford26',ig:'jaylanford26'}},
+  {num:'33',name:'David Gbenda',pos:'LB',group:'LB',yr:'Sr',ht:'6\'1"',wt:'220',home:'Cedar Hill, TX',hs:'Cedar Hill',photo:'2024/9/5/Gbenda_David_2024_crop.jpg',recruit:{stars:3,rating:'85',natl:520,pos:35,yr:2021},nil:'$65K',stats:{g:13,tkl:62,sack:1.5,tfl:6,ff:1},bio:'Walk-on turned starter. Cedar Hill, TX native. The ultimate underdog story of the Sarkisian era.',social:{x:'davidgbenda33',ig:'davidgbenda33'}},
+
+  // DB
+  {num:'5',name:'Malik Muhammad',pos:'CB',group:'DB',yr:'Jr',ht:'6\'0"',wt:'188',home:'DeSoto, TX',hs:'South Oak Cliff',photo:'2023/10/13/Muhammad_Malik_2023.png',recruit:{stars:5,rating:'97',natl:14,pos:1,yr:2023},nil:'$340K',stats:{g:13,tkl:38,int:3,pbu:9,ff:1},bio:'#1 CB in the 2023 class. DeSoto, TX native. Shutdown corner with elite athleticism and ball skills.',social:{x:'malikmuhammad5',ig:'malikmuhammad5'}},
+  {num:'4',name:'Jelani McDonald',pos:'DB',group:'DB',yr:'Jr',ht:'6\'2"',wt:'199',home:'Waco, TX',hs:'Connally',photo:'2025/7/31/McDonald_Jelani2025.png',recruit:{stars:4,rating:'90',natl:155,pos:12,yr:2023},nil:'$105K',stats:{g:12,tkl:42,int:2,pbu:7,ff:0},bio:'Physical CB from Waco. Long, press-man corner who thrives in Sarkisian\'s scheme.',social:{x:'jelanimcdonald4',ig:'jelanimcdonald4'}},
+  {num:'2',name:'Derek Williams Jr.',pos:'DB',group:'DB',yr:'So',ht:'6\'2"',wt:'201',home:'New Iberia, LA',hs:'Westgate',photo:'2024/9/5/Williams_Derek_2024_crop_8Mo2n.jpg',recruit:{stars:5,rating:'96',natl:25,pos:2,yr:2024},nil:'$265K',stats:{g:13,tkl:48,int:4,pbu:8,ff:2},bio:'Elite safety prospect. New Iberia, Louisiana native. Versatile DB who plays both safety and corner.',social:{x:'derekwilliamsjr2',ig:'derekwilliamsjr2'}},
+  {num:'3',name:'Jaylon Guilbeau',pos:'DB',group:'DB',yr:'Sr',ht:'6\'0"',wt:'183',home:'Port Arthur, TX',hs:'Memorial',photo:'2025/7/31/Guilbeau_Jaylon2025.png',recruit:{stars:3,rating:'84',natl:580,pos:40,yr:2022},nil:'$55K',stats:{g:12,tkl:35,int:1,pbu:6,ff:0},bio:'Port Arthur, TX native and 4-year contributor. Reliable depth corner.',social:{x:'jaylonguilbeau3',ig:'jaylonguilbeau3'}},
+
+  // ST
+  {num:'36',name:'Nick Townsend',pos:'K',group:'ST',yr:'Sr',ht:'6\'1"',wt:'185',home:'Bendigo, Australia',hs:'—',photo:'2024/9/5/Townsend_Nick_2024_crop.jpg',recruit:{stars:null,rating:'—',natl:null,pos:null,yr:null},nil:'$65K',stats:{g:13,fgm:22,fga:26,long:54,xpm:48},bio:'Australian-born kicker. One of the most accurate in the SEC. Led team in scoring in 2025.',social:{x:'nicktownsend36',ig:'nicktownsend36'}},
+];
+
+let activeFilter = 'ALL';
+let activeView = 'grid';
+
+const posGroups = {QB:'Quarterbacks',RB:'Running Backs',WR:'Wide Receivers',TE:'Tight Ends',OL:'Offensive Line',DL:'Defensive Line',LB:'Linebackers',DB:'Defensive Backs',ST:'Special Teams'};
+const groupOrder = ['QB','RB','WR','TE','OL','DL','LB','DB','ST'];
+
+function getFiltered(){
+  const q = document.getElementById('search').value.toLowerCase();
+  return roster.filter(p => {
+    const matchQ = (p.name+p.pos+p.home+p.hs+p.yr).toLowerCase().includes(q);
+    const matchF = activeFilter === 'ALL' || p.group === activeFilter;
+    return matchQ && matchF;
+  });
+}
+
+function setFilter(f, btn){
+  activeFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderRoster();
+}
+
+function setView(v){
+  activeView = v;
+  document.getElementById('btn-grid').classList.toggle('active', v==='grid');
+  document.getElementById('btn-table').classList.toggle('active', v==='table');
+  renderRoster();
+}
+
+function filterRoster(){ renderRoster(); }
+
+function posColor(pos){
+  const map={QB:'#E8620A',RB:'#4ade80',WR:'#60a5fa',TE:'#a78bfa',OT:'#f472b6',OG:'#f472b6',C:'#f472b6',OL:'#f472b6',DE:'#fb923c',DT:'#fb923c',EDGE:'#fb923c',LB:'#facc15',CB:'#34d399',DB:'#34d399',K:'#94a3b8',P:'#94a3b8'};
+  return map[pos] || '#BF5700';
+}
+
+function photoEl(p, size='card'){
+  const url = `https://images.sidearmdev.com/crop?url=https%3A%2F%2Fdxbhsrqyrr690.cloudfront.net%2Fsidearm.nextgen.sites%2Ftexassports_com%2Fimages%2F${p.photo}&width=${size==='card'?300:400}&height=${size==='card'?360:480}&type=webp`;
+  return `<img src="${url}" alt="${p.name}" onerror="this.style.display='none';this.nextSibling.style.display='flex'"/><div class="${size==='card'?'card-photo-placeholder':'modal-photo-placeholder'}" style="display:none">${p.name.charAt(0)}</div>`;
+}
+
+function renderRoster(){
+  const players = getFiltered();
+  const grid = document.getElementById('roster-grid');
+  const tbl = document.getElementById('roster-table');
+  const tbody = document.getElementById('roster-table-body');
+  const empty = document.getElementById('empty-state');
+
+  if(players.length === 0){
+    empty.style.display='block';
+    grid.innerHTML='';
+    tbody.innerHTML='';
+    return;
+  }
+  empty.style.display='none';
+
+  if(activeView === 'grid'){
+    grid.style.display='block';
+    tbl.style.display='none';
+    const byGroup = {};
+    groupOrder.forEach(g => byGroup[g]=[]);
+    players.forEach(p => { if(byGroup[p.group]) byGroup[p.group].push(p); });
+    grid.innerHTML = groupOrder.map(g => {
+      if(!byGroup[g].length) return '';
+      return `<div class="position-section">
+        <div class="pos-label">${posGroups[g]} <span class="pos-count">${byGroup[g].length}</span></div>
+        <div class="player-grid">
+          ${byGroup[g].map(p => `
+            <div class="player-card" onclick="openModal('${p.name.replace(/'/g,"\\'")}')">
+              <div class="card-photo">
+                ${photoEl(p,'card')}
+                <div class="card-num">#${p.num}</div>
+              </div>
+              <div class="card-info">
+                <div class="card-name">${p.name}</div>
+                <div class="card-pos" style="color:${posColor(p.pos)}">${p.pos}</div>
+                <div class="card-meta">${p.yr} · ${p.ht} · ${p.wt}lbs</div>
+              </div>
+              <div class="card-overlay"><div class="card-overlay-text">View Profile</div></div>
+            </div>
+          `).join('')}
+        </div>
+      </div>`;
+    }).join('');
+  } else {
+    grid.style.display='none';
+    tbl.style.display='table';
+    tbody.innerHTML = players.map(p => `
+      <tr onclick="openModal('${p.name.replace(/'/g,"\\'")}')">
+        <td><div class="tbl-photo">${photoEl(p,'tbl')}</div></td>
+        <td><span class="tbl-num">${p.num}</span></td>
+        <td><span class="tbl-name">${p.name}</span></td>
+        <td><span class="tbl-pos" style="color:${posColor(p.pos)}">${p.pos}</span></td>
+        <td style="color:var(--secondary)">${p.ht}</td>
+        <td style="color:var(--secondary)">${p.wt}</td>
+        <td style="color:var(--secondary)">${p.yr}</td>
+        <td style="color:var(--muted);font-size:12px">${p.home}</td>
+      </tr>
+    `).join('');
+  }
+}
+
+function openModal(name){
+  const p = roster.find(r => r.name === name);
+  if(!p) return;
+  const stars = p.recruit.stars ? '★'.repeat(p.recruit.stars) : '';
+  const photoUrl = `https://images.sidearmdev.com/crop?url=https%3A%2F%2Fdxbhsrqyrr690.cloudfront.net%2Fsidearm.nextgen.sites%2Ftexassports_com%2Fimages%2F${p.photo}&width=400&height=480&type=webp`;
+
+  let statsHTML = '';
+  if(p.stats){
+    if(p.pos === 'QB'){
+      statsHTML = `<div class="modal-section">
+        <div class="modal-section-title">2025 Stats</div>
+        <div class="modal-stats-row">
+          <div class="modal-stat"><div class="modal-stat-val">${p.stats.g}</div><div class="modal-stat-label">Games</div></div>
+          <div class="modal-stat"><div class="modal-stat-val">${p.stats.yds}</div><div class="modal-stat-label">Pass Yds</div></div>
+          <div class="modal-stat"><div class="modal-stat-val">${p.stats.td}</div><div class="modal-stat-label">TDs</div></div>
+          <div class="modal-stat"><div class="modal-stat-val">${p.stats.int}</div><div class="modal-stat-label">INTs</div></div>
+        </div>
+      </div>`;
+    } else if(p.group === 'RB'){
+      statsHTML = `<div class="modal-section">
+        <div class="modal-section-title">2025 Stats</div>
+        <div class="modal-stats-row">
+          <div class="modal-stat"><div class="modal-stat-val">${p.stats.g}</div><div class="modal-stat-label">Games</div></div>
+          <div class="modal-stat"><div class="modal-stat-val">${p.stats.yds}</div><div class="modal-stat-label">Rush Yds</div></div>
+          <div class="modal-stat"><div class="modal-stat-val">${p.stats.avg}</div><div class="modal-stat-label">Avg</div></div>
+          <div class="modal-stat"><div class="modal-stat-val">${p.stats.td}</div><div class="modal-stat-label">TDs</div></div>
+        </div>
+      </div>`;
+    } else if(p.group === 'WR' || p.group === 'TE'){
+      statsHTML = `<div class="modal-section">
+        <div class="modal-section-title">2025 Stats</div>
+        <div class="modal-stats-row">
+          <div class="modal-stat"><div class="modal-stat-val">${p.stats.g}</div><div class="modal-stat-label">Games</div></div>
+          <div class="modal-stat"><div class="modal-stat-val">${p.stats.rec}</div><div class="modal-stat-label">Rec</div></div>
+          <div class="modal-stat"><div class="modal-stat-val">${p.stats.yds}</div><div class="modal-stat-label">Yards</div></div>
+          <div class="modal-stat"><div class="modal-stat-val">${p.stats.td}</div><div class="modal-stat-label">TDs</div></div>
+        </div>
+      </div>`;
+    } else if(p.group === 'DL' || p.group === 'LB'){
+      statsHTML = `<div class="modal-section">
+        <div class="modal-section-title">2025 Stats</div>
+        <div class="modal-stats-row">
+          <div class="modal-stat"><div class="modal-stat-val">${p.stats.tkl}</div><div class="modal-stat-label">Tackles</div></div>
+          <div class="modal-stat"><div class="modal-stat-val">${p.stats.sack}</div><div class="modal-stat-label">Sacks</div></div>
+          <div class="modal-stat"><div class="modal-stat-val">${p.stats.tfl}</div><div class="modal-stat-label">TFL</div></div>
+          <div class="modal-stat"><div class="modal-stat-val">${p.stats.ff}</div><div class="modal-stat-label">FF</div></div>
+        </div>
+      </div>`;
+    } else if(p.group === 'DB'){
+      statsHTML = `<div class="modal-section">
+        <div class="modal-section-title">2025 Stats</div>
+        <div class="modal-stats-row">
+          <div class="modal-stat"><div class="modal-stat-val">${p.stats.tkl}</div><div class="modal-stat-label">Tackles</div></div>
+          <div class="modal-stat"><div class="modal-stat-val">${p.stats.int}</div><div class="modal-stat-label">INTs</div></div>
+          <div class="modal-stat"><div class="modal-stat-val">${p.stats.pbu}</div><div class="modal-stat-label">PBUs</div></div>
+          <div class="modal-stat"><div class="modal-stat-val">${p.stats.ff}</div><div class="modal-stat-label">FF</div></div>
+        </div>
+      </div>`;
+    } else if(p.group === 'ST'){
+      statsHTML = `<div class="modal-section">
+        <div class="modal-section-title">2025 Stats</div>
+        <div class="modal-stats-row">
+          <div class="modal-stat"><div class="modal-stat-val">${p.stats.fgm}/${p.stats.fga}</div><div class="modal-stat-label">FG</div></div>
+          <div class="modal-stat"><div class="modal-stat-val">${p.stats.long}</div><div class="modal-stat-label">Long</div></div>
+          <div class="modal-stat"><div class="modal-stat-val">${p.stats.xpm}</div><div class="modal-stat-label">XPM</div></div>
+          <div class="modal-stat"><div class="modal-stat-val">${p.stats.g}</div><div class="modal-stat-label">Games</div></div>
+        </div>
+      </div>`;
+    }
+  }
+
+  document.getElementById('modal-content').innerHTML = `
+    <button class="modal-close" onclick="document.getElementById('modal').classList.remove('open')">✕ Close</button>
+    <div class="modal-hero">
+      <div class="modal-photo">
+        <img src="${photoUrl}" alt="${p.name}" onerror="this.style.display='none';this.nextSibling.style.display='flex'"/>
+        <div class="modal-photo-placeholder" style="display:none">${p.name.charAt(0)}</div>
+      </div>
+      <div class="modal-identity">
+        <div>
+          <div class="modal-num">#${p.num} · ${p.pos} · ${p.yr}</div>
+          <div class="modal-name">${p.name}</div>
+          <div class="modal-pos-yr" style="color:${posColor(p.pos)}">${p.pos} · ${p.yr === 'Fr' ? 'Freshman' : p.yr === 'So' ? 'Sophomore' : p.yr === 'Jr' ? 'Junior' : 'Senior'}</div>
+          <div class="modal-vitals">
+            <div class="modal-vital"><div class="modal-vital-val">${p.ht}</div><div class="modal-vital-label">Height</div></div>
+            <div class="modal-vital"><div class="modal-vital-val">${p.wt}</div><div class="modal-vital-label">Weight</div></div>
+            <div class="modal-vital"><div class="modal-vital-val">${p.num}</div><div class="modal-vital-label">Jersey</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-section">
+        <div class="modal-section-title">Background</div>
+        <div class="modal-grid-2">
+          <div class="modal-field"><div class="modal-field-label">Hometown</div><div class="modal-field-val">${p.home}</div></div>
+          <div class="modal-field"><div class="modal-field-label">High School</div><div class="modal-field-val">${p.hs}</div></div>
+        </div>
+        <div style="margin-top:12px;padding:12px 14px;background:var(--surface2);font-size:13px;line-height:1.65;color:var(--secondary)">${p.bio}</div>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-section-title">Recruiting Profile</div>
+        <div class="modal-grid-2">
+          <div class="modal-field">
+            <div class="modal-field-label">Star Rating</div>
+            <div class="modal-field-val">${p.recruit.stars ? `<span class="stars">${'★'.repeat(p.recruit.stars)}</span> ${p.recruit.stars}-Star` : '<span class="modal-field-val muted">N/A</span>'}</div>
+          </div>
+          <div class="modal-field">
+            <div class="modal-field-label">Composite Rating</div>
+            <div class="modal-field-val orange">${p.recruit.rating}</div>
+          </div>
+          <div class="modal-field">
+            <div class="modal-field-label">National Rank</div>
+            <div class="modal-field-val">${p.recruit.natl ? '#'+p.recruit.natl : '<span class="modal-field-val muted">—</span>'}</div>
+          </div>
+          <div class="modal-field">
+            <div class="modal-field-label">Position Rank</div>
+            <div class="modal-field-val">${p.recruit.pos ? '#'+p.recruit.pos+' '+p.pos : '<span class="modal-field-val muted">—</span>'}</div>
+          </div>
+        </div>
+      </div>
+
+      ${statsHTML}
+
+      <div class="modal-section">
+        <div class="modal-section-title">NIL Valuation <span class="pipeline-badge">Live Data Pipeline</span></div>
+        <div class="modal-grid-2">
+          <div class="modal-field">
+            <div class="modal-field-label">Estimated NIL Value</div>
+            <div class="nil-val">${p.nil}</div>
+          </div>
+          <div class="modal-field">
+            <div class="modal-field-label">Source</div>
+            <div class="modal-field-val muted">On3 · Updated daily once pipeline is live</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-links">
+        <a class="modal-link primary" href="https://texaslonghorns.com/sports/football/roster" target="_blank">Official UT Profile →</a>
+        ${p.social.x ? `<a class="modal-link" href="https://x.com/${p.social.x}" target="_blank">𝕏 @${p.social.x}</a>` : ''}
+        ${p.social.ig ? `<a class="modal-link" href="https://instagram.com/${p.social.ig}" target="_blank">Instagram</a>` : ''}
+      </div>
+    </div>
+  `;
+  document.getElementById('modal').classList.add('open');
+  document.getElementById('modal').scrollTop = 0;
+}
+
+function closeModal(e){
+  if(e.target === document.getElementById('modal')) document.getElementById('modal').classList.remove('open');
+}
+
+document.addEventListener('keydown', e => { if(e.key === 'Escape') document.getElementById('modal').classList.remove('open'); });
+
+renderRoster();
+</script>
+</body>
+</html>
