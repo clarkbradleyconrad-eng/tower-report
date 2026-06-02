@@ -1,54 +1,59 @@
 {
-  "season": 2025,
-  "lastUpdated": "2026-06-02T14:30:00Z",
+  "season": 2026,
+  "lastUpdated": "2026-06-02T14:50:00Z",
   "team": {
     "name": "Texas Longhorns",
-    "conference": "Big 12",
+    "conference": "SEC",
     "headCoach": "Steve Sarkisian"
   },
   "positions": {
     "QB": [
       {"number": 12, "name": "Quinn Ewers", "class": "Senior", "height": "6-1", "weight": 215, "hometown": "Southlake, TX"},
-      {"number": 3, "name": "Arch Manning", "class": "Freshman", "height": "6-4", "weight": 215, "hometown": "New Orleans, LA"},
-      {"number": 15, "name": "Maalik Murphy", "class": "Junior", "height": "6-3", "weight": 210, "hometown": "Lanham, MD"}
+      {"number": 3, "name": "Arch Manning", "class": "Sophomore", "height": "6-4", "weight": 220, "hometown": "New Orleans, LA"},
+      {"number": 15, "name": "Maalik Murphy", "class": "Senior", "height": "6-3", "weight": 210, "hometown": "Lanham, MD"}
     ],
     "RB": [
-      {"number": 5, "name": "Jaylen Henderson", "class": "Junior", "height": "5-11", "weight": 212, "hometown": "New Braunfels, TX"},
-      {"number": 22, "name": "Tre Bradford", "class": "Sophomore", "height": "5-10", "weight": 200, "hometown": "Temple, TX"},
-      {"number": 0, "name": "Dajon Barnett", "class": "Freshman", "height": "5-9", "weight": 195, "hometown": "Dallas, TX"}
+      {"number": 5, "name": "Jaylen Henderson", "class": "Senior", "height": "5-11", "weight": 215, "hometown": "New Braunfels, TX"},
+      {"number": 22, "name": "Tre Bradford", "class": "Junior", "height": "5-10", "weight": 205, "hometown": "Temple, TX"},
+      {"number": 24, "name": "Cam Coleman", "class": "Junior", "height": "5-10", "weight": 210, "hometown": "Miami, FL"}
     ],
     "WR": [
-      {"number": 1, "name": "Xavier Worthy", "class": "Junior", "height": "5-11", "weight": 180, "hometown": "Fort Worth, TX"},
-      {"number": 2, "name": "Quentin Johnston", "class": "Junior", "height": "6-3", "weight": 205, "hometown": "Frisco, TX"},
-      {"number": 13, "name": "Jahdae Barron", "class": "Sophomore", "height": "6-2", "weight": 200, "hometown": "Houston, TX"},
-      {"number": 7, "name": "Adonai Mitchell", "class": "Junior", "height": "6-3", "weight": 210, "hometown": "Tyler, TX"}
+      {"number": 1, "name": "Xavier Worthy", "class": "Senior", "height": "5-11", "weight": 185, "hometown": "Fort Worth, TX"},
+      {"number": 2, "name": "Quentin Johnston", "class": "Senior", "height": "6-3", "weight": 210, "hometown": "Frisco, TX"},
+      {"number": 13, "name": "Jahdae Barron", "class": "Junior", "height": "6-2", "weight": 205, "hometown": "Houston, TX"},
+      {"number": 7, "name": "Adonai Mitchell", "class": "Senior", "height": "6-3", "weight": 215, "hometown": "Tyler, TX"},
+      {"number": 88, "name": "Matthew Golden", "class": "Junior", "height": "6-1", "weight": 200, "hometown": "Arlington, TX"}
     ],
     "TE": [
-      {"number": 87, "name": "Jared Wiley", "class": "Senior", "height": "6-5", "weight": 250, "hometown": "Argyle, TX"},
-      {"number": 88, "name": "Bo Merillat", "class": "Sophomore", "height": "6-5", "weight": 245, "hometown": "Grapevine, TX"}
+      {"number": 87, "name": "Jared Wiley", "class": "Senior", "height": "6-5", "weight": 255, "hometown": "Argyle, TX"},
+      {"number": 89, "name": "Juan Miller", "class": "Junior", "height": "6-4", "weight": 245, "hometown": "Corpus Christi, TX"},
+      {"number": 42, "name": "Gunnar Helm", "class": "Senior", "height": "6-5", "weight": 260, "hometown": "Bethesda, MD"}
     ],
     "OL": [
-      {"number": 70, "name": "Tyler Johnson", "class": "Senior", "height": "6-4", "weight": 320, "hometown": "Austin, TX", "position": "LT"},
-      {"number": 71, "name": "Andrej Kamaev", "class": "Junior", "height": "6-3", "weight": 315, "hometown": "Moscow, Russia", "position": "LG"},
-      {"number": 72, "name": "Derek Kerstetter", "class": "Senior", "height": "6-4", "weight": 310, "hometown": "Friendswood, TX", "position": "C"},
-      {"number": 73, "name": "Jordan Whittington", "class": "Senior", "height": "6-2", "weight": 305, "hometown": "Bellville, TX", "position": "RG"},
-      {"number": 79, "name": "Peter Mpagi", "class": "Junior", "height": "6-5", "weight": 315, "hometown": "McKinney, TX", "position": "RT"}
+      {"number": 70, "name": "Tyler Johnson", "class": "Senior", "height": "6-4", "weight": 325, "hometown": "Austin, TX"},
+      {"number": 71, "name": "Andrej Kamaev", "class": "Senior", "height": "6-3", "weight": 320, "hometown": "Moscow, Russia"},
+      {"number": 72, "name": "Derek Kerstetter", "class": "Senior", "height": "6-4", "weight": 315, "hometown": "Friendswood, TX"},
+      {"number": 73, "name": "Jordan Whittington", "class": "Senior", "height": "6-2", "weight": 310, "hometown": "Bellville, TX"},
+      {"number": 79, "name": "Peter Mpagi", "class": "Senior", "height": "6-5", "weight": 320, "hometown": "McKinney, TX"},
+      {"number": 54, "name": "Kelvin Banks Jr.", "class": "Senior", "height": "6-5", "weight": 330, "hometown": "Missouri City, TX"}
     ],
     "DL": [
-      {"number": 90, "name": "T'Vondre Sweat", "class": "Senior", "height": "6-4", "weight": 310, "hometown": "Houston, TX"},
-      {"number": 91, "name": "Moro Ojomo", "class": "Senior", "height": "6-3", "weight": 295, "hometown": "Irving, TX"},
-      {"number": 11, "name": "Alfred Collins Jr.", "class": "Senior", "height": "6-3", "weight": 300, "hometown": "Texas City, TX"}
+      {"number": 90, "name": "T'Vondre Sweat", "class": "Senior", "height": "6-4", "weight": 315, "hometown": "Houston, TX"},
+      {"number": 91, "name": "Moro Ojomo", "class": "Senior", "height": "6-3", "weight": 300, "hometown": "Irving, TX"},
+      {"number": 11, "name": "Alfred Collins Jr.", "class": "Senior", "height": "6-3", "weight": 305, "hometown": "Texas City, TX"},
+      {"number": 1, "name": "Colin Simmons", "class": "Junior", "height": "6-3", "weight": 245, "hometown": "Dallas, TX"}
     ],
     "LB": [
-      {"number": 14, "name": "DaMarcus Fields", "class": "Junior", "height": "6-0", "weight": 235, "hometown": "Fort Worth, TX"},
-      {"number": 33, "name": "Jaylan Ford", "class": "Sophomore", "height": "6-1", "weight": 240, "hometown": "Hearne, TX"},
-      {"number": 24, "name": "Jeremiah Attaochu", "class": "Senior", "height": "6-3", "weight": 245, "hometown": "Nigeria"}
+      {"number": 14, "name": "DaMarcus Fields", "class": "Senior", "height": "6-0", "weight": 240, "hometown": "Fort Worth, TX"},
+      {"number": 0, "name": "Anthony Hill Jr.", "class": "Senior", "height": "6-3", "weight": 240, "hometown": "Denton, TX"},
+      {"number": 33, "name": "Jaylan Ford", "class": "Senior", "height": "6-1", "weight": 245, "hometown": "Hearne, TX"},
+      {"number": 26, "name": "Jeremiah Attaochu", "class": "Senior", "height": "6-3", "weight": 250, "hometown": "Nigeria"}
     ],
     "DB": [
-      {"number": 27, "name": "P.J. Locke III", "class": "Senior", "height": "6-0", "weight": 195, "hometown": "Fulton, MS"},
-      {"number": 20, "name": "Jahdae Barron", "class": "Junior", "height": "5-11", "weight": 185, "hometown": "Houston, TX"},
-      {"number": 4, "name": "Montrell Jones", "class": "Junior", "height": "6-1", "weight": 200, "hometown": "Dallas, TX"},
-      {"number": 6, "name": "Keyed Thomas", "class": "Junior", "height": "5-10", "weight": 180, "hometown": "Arlington, TX"}
+      {"number": 27, "name": "P.J. Locke III", "class": "Senior", "height": "6-0", "weight": 200, "hometown": "Fulton, MS"},
+      {"number": 5, "name": "Malik Muhammad", "class": "Senior", "height": "6-0", "weight": 195, "hometown": "DeSoto, TX"},
+      {"number": 4, "name": "Jelani McDonald", "class": "Senior", "height": "6-2", "weight": 205, "hometown": "Waco, TX"},
+      {"number": 2, "name": "Derek Williams Jr.", "class": "Junior", "height": "6-2", "weight": 205, "hometown": "New Iberia, LA"}
     ]
   }
 }
