@@ -64,8 +64,7 @@
 
   .opp-wrap{display:flex;align-items:center;gap:10px;}
   .opp-init{width:34px;height:34px;border-radius:50%;background:var(--gray-mid);border:1px solid var(--gray-border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:var(--muted);flex-shrink:0;}
-   .opp-logo{width:34px;height:34px;object-fit:contain;flex-shrink:0;filter:brightness(1.1);}
-   .opp-info{display:flex;flex-direction:column;}  .opp-name{font-size:14px;font-weight:500;color:var(--white);}
+  .opp-name{font-size:14px;font-weight:500;color:var(--white);}
   .opp-rank{font-size:11px;color:var(--orange);margin-right:3px;}
   .opp-meta{font-size:11px;color:var(--muted);margin-top:2px;}
   .tag{display:inline-block;font-size:9px;font-weight:500;padding:2px 5px;border-radius:3px;letter-spacing:.8px;text-transform:uppercase;margin-right:3px;}
@@ -486,84 +485,12 @@
 </footer>
 
 <script>
-const teamLogos = {
-  'TXST': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_texasstate_logo.png',
-  'OSU': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_ohiostate_logo.png',
-  'UTSA': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_utsa_logo.png',
-  'TENN': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_tennessee_logo.png',
-  'OU': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_oklahoma_logo.png',
-  'UF': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_florida_logo.png',
-  'MISS': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_olemiss_logo.png',
-  'MSU': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_mississippistate_logo.png',
-  'MIZZOU': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_missouri_logo.png',
-  'LSU': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_lsu_logo.png',
-  'ARK': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_arkansas_logo.png',
-  'A&M': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_texasam_logo.png',
-  'SJS': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_sanjosestate_logo.png',
-  'UTEP': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_utep_logo.png',
-  'SHU': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_samhouston_logo.png',
-  'UK': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_kentucky_logo.png',
-  'VU': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_vanderbilt_logo.png',
-  'CSU': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_coloradostate_logo.png',
-  'MICH': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_michigan_logo.png',
-  'ULM': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_ulmonroe_logo.png',
-  'MSST': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_mississippistate_logo.png',
-  'UGA': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_georgia_logo.png',
-  'RIC': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_rice_logo.png',
-  'ASU': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_alabama_logo.png',
-  'WYO': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_wyoming_logo.png',
-  'BAYLOR': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_baylor_logo.png',
-  'KSU': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_kansasstate_logo.png',
-  'BYU': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_byu_logo.png',
-  'KU': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_kansas_logo.png',
-  'WVU': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_westvirginia_logo.png',
-  'TCU': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_tcu_logo.png',
-  'IOWA': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_iowastate_logo.png',
-  'IAst': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_iowastate_logo.png',
-  'OKST': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_oklahomastate_logo.png',
-  'TX&M': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_texastech_logo.png',
-  'LA': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_louisiana_logo.png',
-  'RICE': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_rice_logo.png',
-  'WASH': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_washington_logo.png',
-  'MD': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_maryland_logo.png',
-  'USC': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_usc_logo.png',
-  'UTA': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_utah_logo.png',
-  'NDST': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_notredame_logo.png',
-  'MO': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_missouri_logo.png',
-  'KSTATE': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_kansasstate_logo.png',
-  'FLRDA': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_florida_logo.png',
-  'COL': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_colorado_logo.png',
-  'LS': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_rice_logo.png'
-};
-
-function injectTeamLogos() {
-  document.querySelectorAll('.opp-init').forEach(initEl => {
-    const teamAbbr = initEl.textContent.trim();
-    const logoUrl = teamLogos[teamAbbr];
-    
-    if (logoUrl) {
-      const img = document.createElement('img');
-      img.src = logoUrl;
-      img.alt = teamAbbr;
-      img.className = 'opp-logo';
-      img.onerror = function() {
-        this.style.display = 'none';
-      };
-      initEl.parentNode.insertBefore(img, initEl);
-      initEl.style.display = 'none';
-    }
-  });
-}
-
 function showYear(yr, btn) {
   document.querySelectorAll('.season-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.year-tab').forEach(b => b.classList.remove('active'));
   document.getElementById('yr-' + yr).classList.add('active');
   btn.classList.add('active');
-  injectTeamLogos();
 }
-
-document.addEventListener('DOMContentLoaded', injectTeamLogos);
 </script>
 </body>
 </html>

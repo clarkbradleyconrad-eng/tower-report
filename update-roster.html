@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roster  Tower Report</title>Editor 
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { 
+      font-family: 'Barlow', sans-serif;
+      background: #080808; 
+      color: #F5F0E8;
+      padding: 40px 20px;
+    }
+    .container { max-width: 900px; margin: 0 auto; }
+    h1 { margin-bottom: 20px; color: #BF5700; }
+    textarea { 
+      width: 100%; 
+      height: 400px; 
+      padding: 15px;
+      background: #111;
+      color: #F5F0E8;
+      border: 1px solid #333;
+      font-family: monospace;
+      font-size: 12px;
+      margin-bottom: 15px;
+    }
+    button { 
+      background: #BF5700; 
+      color: white; 
+      padding: 12px 24px; 
+      border: none; 
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    button:hover { background: #a04700; }
+    .help { 
+      background: #111; 
+      padding: 15px; 
+      margin-bottom: 20px; 
+      border-left: 3px solid #BF5700;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Tower  Roster Editor</h1>Report 
+  
+  <div class="help">
+    <strong>Instructions:</strong><br>
+    1. Go to <a href="https://texaslonghorns.com/sports/football/roster" target="_blank" style="color: #BF5700;">Texas Athletics Roster Page</a><br>
+    2. Copy the roster table and paste below<br>
+    3. Or paste JSON formatted data<br>
+    4. Click "Generate Roster JSON"
+  </div>
+
+  <textarea id="input" placeholder="Paste roster data here..."></textarea>
+  <button onclick="processRoster()">Generate Roster JSON</button>
+  
+  <h2 style="margin-top: 30px; margin-bottom: 15px;">Generated JSON:</h2>
+  <textarea id="output" readonly placeholder="Generated roster will appear here..."></textarea>
+  
+  <button onclick="copyToClipboard()" style="margin-top: 15px;">Copy JSON</button>
+  <button onclick="downloadJSON()" style="margin-left: 10px;">Download JSON</button>
+
+  <script>
+    function processRoster() {
+      const input = document.getElementById('input').value;
+      
+      // Try to parse as CSV/table
+      const lines = input.trim().split('\n');
+      const roster = {
+        season: 2026,
+        lastUpdated: new Date().toISOString(),
+        team: { name: "Texas Longhorns", conference: "SEC", headCoach: "Steve Sarkisian" },
+        positions: {}
+      };
+      
+      for (const line of lines) {
+        // Parse each line: number, name, position, height, weight, class, hometown
+        const parts = line.split(/[\t,]+/).map(p => p.trim());
+        if (parts.length >= 7) {
+          const [num, name, pos, ht, wt, cls, hometown] = parts;
+          if (!roster.positions[pos]) roster.positions[pos] = [];
+          roster.positions[pos].push({
+            number: parseInt(num) || 0,
+            name,
+            class: cls,
+            height: ht,
+            weight: parseInt(wt) || 0,
+            hometown
+          });
+        }
+      }
+      
+      document.getElementById('output').value = JSON.stringify(roster, null, 2);
+    }
+    
+    function copyToClipboard() {
+      const output = document.getElementById('output');
+      output.select();
+      document.execCommand('copy');
+      alert('Copied to clipboard!');
+    }
+    
+    function downloadJSON() {
+      const output = document.getElementById('output').value;
+      const blob = new Blob([output], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'roster.json';
+      a.click();
+    }
+  </script>
+</div>
+</body>
+</html>
