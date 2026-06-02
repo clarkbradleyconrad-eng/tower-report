@@ -92,6 +92,27 @@
   .footer-logo span{color:var(--orange);}
   .footer-text{font-size:12px;color:var(--muted);}
 
+  /* VY HERO BANNER */
+  .vy-banner{position:relative;height:420px;overflow:hidden;border-bottom:1px solid var(--gray-border);}
+  .vy-banner-img{width:100%;height:100%;object-fit:cover;object-position:center 20%;display:block;}
+  .vy-banner-overlay{position:absolute;inset:0;background:linear-gradient(to right,rgba(10,10,10,0.92) 40%,rgba(10,10,10,0.3) 100%),linear-gradient(to top,rgba(10,10,10,0.7) 0%,transparent 50%);}
+  .vy-banner-content{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:0 40px;max-width:600px;}
+  .vy-banner-eyebrow{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:10px;}
+  .vy-banner-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(42px,6vw,80px);line-height:0.92;letter-spacing:2px;color:var(--white);margin-bottom:12px;}
+  .vy-banner-title .o{color:var(--orange);}
+  .vy-banner-sub{font-size:13px;color:#aaa;line-height:1.6;margin-bottom:20px;max-width:400px;}
+  .vy-banner-stats{display:flex;gap:24px;margin-bottom:24px;}
+  .vy-stat{text-align:left;}
+  .vy-stat-num{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--orange);line-height:1;}
+  .vy-stat-label{font-size:9px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-top:1px;}
+  .vy-banner-btn{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--white);background:var(--orange);padding:10px 20px;border:none;cursor:pointer;text-decoration:none;transition:opacity .2s;align-self:flex-start;}
+  .vy-banner-btn:hover{opacity:.85;}
+  .vy-banner-score{position:absolute;right:40px;bottom:32px;text-align:right;}
+  .vy-score-game{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+  .vy-score-nums{font-family:'Bebas Neue',sans-serif;font-size:52px;line-height:1;color:var(--white);}
+  .vy-score-nums .win{color:var(--win);}
+  .vy-score-dot{color:var(--muted);}
+
   @media(max-width:768px){
     nav{padding:16px 20px;}.nav-links{display:none;}
     .page-header{padding:32px 20px 24px;}
@@ -103,6 +124,9 @@
     .game-row:hover{margin:0;padding:14px 0;}
     .wk-num,.g-venue,.g-tv{display:none;}
     footer{padding:20px;flex-direction:column;gap:8px;}
+    .vy-banner{height:280px;}
+    .vy-banner-content{padding:0 20px;}
+    .vy-banner-score{display:none;}
   }
 </style>
 </head>
@@ -124,6 +148,28 @@
   <div class="page-sub">2016–2026 · Steve Sarkisian (2021–present) · Tom Herman (2017–2020) · Charlie Strong (2014–2016)</div>
 </div>
 
+<!-- VY NATTY BANNER -->
+<div class="vy-banner">
+  <img class="vy-banner-img" src="img/vy-usc-natty.jpg" alt="Vince Young scores winning TD vs USC — 2006 Rose Bowl National Championship"/>
+  <div class="vy-banner-overlay"></div>
+  <div class="vy-banner-content">
+    <div class="vy-banner-eyebrow">January 4, 2006 · Rose Bowl · Pasadena, CA</div>
+    <div class="vy-banner-title">THE <span class="o">RUN.</span></div>
+    <div class="vy-banner-sub">Vince Young scrambles left, dives for the pylon with 19 seconds left. Texas 41, USC 38. The greatest college football game ever played.</div>
+    <div class="vy-banner-stats">
+      <div class="vy-stat"><div class="vy-stat-num">200</div><div class="vy-stat-label">Rush Yds</div></div>
+      <div class="vy-stat"><div class="vy-stat-num">267</div><div class="vy-stat-label">Pass Yds</div></div>
+      <div class="vy-stat"><div class="vy-stat-num">3</div><div class="vy-stat-label">TDs</div></div>
+      <div class="vy-stat"><div class="vy-stat-num">13–0</div><div class="vy-stat-label">Final Record</div></div>
+    </div>
+    <button class="vy-banner-btn" onclick="showYear('2005', null); document.querySelector('.year-tabs').scrollIntoView({behavior:'smooth'})">View 2005 Season →</button>
+  </div>
+  <div class="vy-banner-score">
+    <div class="vy-score-game">2005 National Championship</div>
+    <div class="vy-score-nums"><span class="win">41</span><span class="vy-score-dot"> – </span>38</div>
+  </div>
+</div>
+
 <div class="year-tabs">
   <button class="year-tab upcoming active" onclick="showYear('2026',this)">2026 ↑</button>
   <button class="year-tab" onclick="showYear('2025',this)">2025</button>
@@ -136,6 +182,7 @@
   <button class="year-tab" onclick="showYear('2018',this)">2018</button>
   <button class="year-tab" onclick="showYear('2017',this)">2017</button>
   <button class="year-tab" onclick="showYear('2016',this)">2016</button>
+  <button class="year-tab" data-yr="2005" style="color:var(--orange);border-bottom:2px solid transparent;" onclick="showYear('2005',this)">2005 ★</button>
 </div>
 
 <!-- 2026 UPCOMING -->
@@ -480,78 +527,118 @@
   <div style="padding:12px 0;border-bottom:1px solid var(--gray-border);font-size:12px;color:var(--muted);">+ additional 2016 games — full data in pipeline</div>
 </div>
 
+<!-- 2005 NATIONAL CHAMPIONSHIP SEASON -->
+<div id="yr-2005" class="season-panel">
+  <div class="season-summary">
+    <div class="sum-cell"><div class="sum-num g">13</div><div class="sum-label">Wins</div></div>
+    <div class="sum-cell"><div class="sum-num r">0</div><div class="sum-label">Losses</div></div>
+    <div class="sum-cell"><div class="sum-num o">8-0</div><div class="sum-label">Big 12 Record</div></div>
+    <div class="sum-cell"><div class="sum-num o">#1</div><div class="sum-label">Final AP Rank</div></div>
+    <div class="sum-cell"><div class="sum-num w" style="color:var(--orange);">National Champions ★</div><div class="sum-label">Rose Bowl / BCS Title</div></div>
+  </div>
+  <div class="section-head">2005 Regular Season — Mack Brown · Vince Young</div>
+  <div class="game-row"><div><div class="wk-num">W1</div><div class="wk-date">Sep 3</div></div><div class="opp-wrap"><div class="opp-init">LAL</div><div><div class="opp-name">Louisiana-Lafayette</div><div class="opp-meta"><span class="tag tag-h">Home</span> DKR · Austin, TX</div></div></div><div class="g-time">Sep 3</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">60–3</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W2</div><div class="wk-date">Sep 10</div></div><div class="opp-wrap"><div class="opp-init">OSU</div><div><div class="opp-name"><span class="opp-rank">#4</span> at Ohio State</div><div class="opp-meta"><span class="tag tag-a">Away</span> Ohio Stadium · Columbus, OH</div></div></div><div class="g-time">Sep 10</div><div class="g-venue">Ohio Stadium · Columbus, OH</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">25–22</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W3</div><div class="wk-date">Sep 17</div></div><div class="opp-wrap"><div class="opp-init">RICE</div><div><div class="opp-name">Rice</div><div class="opp-meta"><span class="tag tag-h">Home</span> DKR · Austin, TX</div></div></div><div class="g-time">Sep 17</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">51–10</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W4</div><div class="wk-date">Sep 24</div></div><div class="opp-wrap"><div class="opp-init">MO</div><div><div class="opp-name">Missouri</div><div class="opp-meta"><span class="tag tag-h">Home</span> DKR · Austin, TX</div></div></div><div class="g-time">Sep 24</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">51–20</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W5</div><div class="wk-date">Oct 1</div></div><div class="opp-wrap"><div class="opp-init">OU</div><div><div class="opp-name"><span class="opp-rank">#2</span> Oklahoma <span class="badge">Red River</span></div><div class="opp-meta"><span class="tag tag-n">Neutral</span> Cotton Bowl · Dallas, TX</div></div></div><div class="g-time">Oct 1</div><div class="g-venue">Cotton Bowl · Dallas, TX</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">45–12</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W6</div><div class="wk-date">Oct 15</div></div><div class="opp-wrap"><div class="opp-init">COL</div><div><div class="opp-name">Colorado</div><div class="opp-meta"><span class="tag tag-h">Home</span> DKR · Austin, TX</div></div></div><div class="g-time">Oct 15</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">42–17</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W7</div><div class="wk-date">Oct 22</div></div><div class="opp-wrap"><div class="opp-init">TTU</div><div><div class="opp-name">at Texas Tech</div><div class="opp-meta"><span class="tag tag-a">Away</span> Jones AT&T Stadium · Lubbock, TX</div></div></div><div class="g-time">Oct 22</div><div class="g-venue">Jones AT&T Stadium · Lubbock, TX</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">52–17</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W8</div><div class="wk-date">Oct 29</div></div><div class="opp-wrap"><div class="opp-init">NEB</div><div><div class="opp-name">Nebraska</div><div class="opp-meta"><span class="tag tag-h">Home</span> DKR · Austin, TX</div></div></div><div class="g-time">Oct 29</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">47–23</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W9</div><div class="wk-date">Nov 5</div></div><div class="opp-wrap"><div class="opp-init">OKST</div><div><div class="opp-name">at Oklahoma State</div><div class="opp-meta"><span class="tag tag-a">Away</span> Boone Pickens Stadium · Stillwater, OK</div></div></div><div class="g-time">Nov 5</div><div class="g-venue">Boone Pickens Stadium · Stillwater, OK</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">47–28</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W10</div><div class="wk-date">Nov 12</div></div><div class="opp-wrap"><div class="opp-init">BAYLOR</div><div><div class="opp-name">Baylor</div><div class="opp-meta"><span class="tag tag-h">Home</span> DKR · Austin, TX</div></div></div><div class="g-time">Nov 12</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">62–0</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W11</div><div class="wk-date">Nov 19</div></div><div class="opp-wrap"><div class="opp-init">KU</div><div><div class="opp-name">at Kansas</div><div class="opp-meta"><span class="tag tag-a">Away</span> Memorial Stadium · Lawrence, KS</div></div></div><div class="g-time">Nov 19</div><div class="g-venue">Memorial Stadium · Lawrence, KS</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">66–14</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W12</div><div class="wk-date">Nov 25</div></div><div class="opp-wrap"><div class="opp-init">A&M</div><div><div class="opp-name">Texas A&M <span class="badge">Lone Star</span></div><div class="opp-meta"><span class="tag tag-h">Home</span> DKR · Austin, TX</div></div></div><div class="g-time">Nov 25</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">40–29</span></div></div>
+  <div class="section-head">2005 Big 12 Championship</div>
+  <div class="game-row bowl-row"><div><div class="wk-num">B12</div></div><div class="opp-wrap"><div class="opp-init">COL</div><div><div class="opp-name">Colorado <span class="badge">Big 12 Champs ✓</span></div><div class="opp-meta"><span class="tag tag-n">Neutral</span> Arrowhead Stadium · Kansas City, MO</div></div></div><div class="g-time">Dec 3</div><div class="g-venue">Arrowhead Stadium · Kansas City, MO</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">70–3</span></div></div>
+  <div class="section-head">2005 National Championship · Rose Bowl · Pasadena, CA</div>
+  <div class="game-row bowl-row" style="border:1px solid rgba(191,87,0,0.4);background:rgba(191,87,0,0.06);margin-bottom:8px;"><div><div class="wk-num" style="color:var(--orange);">NATTY</div></div><div class="opp-wrap"><div class="opp-init">USC</div><div><div class="opp-name"><span class="opp-rank">#1</span> USC <span class="badge" style="background:rgba(191,87,0,0.3);">National Champions ★</span></div><div class="opp-meta"><span class="tag tag-n">Neutral</span> Rose Bowl · Pasadena, CA</div></div></div><div class="g-time">Jan 4, 2006<div class="g-sub">7:00 PM CT</div></div><div class="g-venue">Rose Bowl · Pasadena, CA</div><div class="g-tv tv-fox">FOX</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">41–38</span></div></div>
+  <div style="padding:16px 0 0;font-size:12px;color:var(--muted);line-height:1.7;">VY stat line: 267 pass yds · 200 rush yds · 3 TD · The game-winning 8-yard run came with 19 seconds remaining. Heisman Trophy · Big 12 Offensive Player of the Year.</div>
+</div>
+
 <footer>
   <div class="footer-logo">TOWER<span>REPORT</span></div>
   <div class="footer-text">The Tower Never Sleeps. © 2026</div>
 </footer>
 
 <script>
+const espnLogo = id => `https://a.espncdn.com/i/teamlogos/ncaa/500/${id}.png`;
 const teamLogos = {
-  'TXST': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_texasstate_logo.png',
-  'OSU': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_ohiostate_logo.png',
-  'UTSA': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_utsa_logo.png',
-  'TENN': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_tennessee_logo.png',
-  'OU': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_oklahoma_logo.png',
-  'UF': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_florida_logo.png',
-  'MISS': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_olemiss_logo.png',
-  'MSU': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_mississippistate_logo.png',
-  'MIZZOU': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_missouri_logo.png',
-  'LSU': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_lsu_logo.png',
-  'ARK': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_arkansas_logo.png',
-  'A&M': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_texasam_logo.png',
-  'SJS': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_sanjosestate_logo.png',
-  'UTEP': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_utep_logo.png',
-  'SHU': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_samhouston_logo.png',
-  'UK': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_kentucky_logo.png',
-  'VU': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_vanderbilt_logo.png',
-  'CSU': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_coloradostate_logo.png',
-  'MICH': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_michigan_logo.png',
-  'ULM': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_ulmonroe_logo.png',
-  'MSST': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_mississippistate_logo.png',
-  'UGA': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_georgia_logo.png',
-  'RIC': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_rice_logo.png',
-  'ASU': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_alabama_logo.png',
-  'WYO': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_wyoming_logo.png',
-  'BAYLOR': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_baylor_logo.png',
-  'KSU': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_kansasstate_logo.png',
-  'BYU': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_byu_logo.png',
-  'KU': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_kansas_logo.png',
-  'WVU': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_westvirginia_logo.png',
-  'TCU': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_tcu_logo.png',
-  'IOWA': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_iowastate_logo.png',
-  'IAst': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_iowastate_logo.png',
-  'OKST': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_oklahomastate_logo.png',
-  'TX&M': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_texastech_logo.png',
-  'LA': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_louisiana_logo.png',
-  'RICE': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_rice_logo.png',
-  'WASH': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_washington_logo.png',
-  'MD': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_maryland_logo.png',
-  'USC': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_usc_logo.png',
-  'UTA': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_utah_logo.png',
-  'NDST': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_notredame_logo.png',
-  'MO': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_missouri_logo.png',
-  'KSTATE': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_kansasstate_logo.png',
-  'FLRDA': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_florida_logo.png',
-  'COL': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_colorado_logo.png',
-  'LS': 'https://a.espncdn.com/media/motion/2015/0310/dm_150310_ncf_rice_logo.png'
+  'TXST':   espnLogo(326),   // Texas State
+  'OSU':    espnLogo(194),   // Ohio State
+  'UTSA':   espnLogo(2908),  // UTSA
+  'TENN':   espnLogo(2633),  // Tennessee
+  'OU':     espnLogo(201),   // Oklahoma
+  'UF':     espnLogo(57),    // Florida
+  'MISS':   espnLogo(145),   // Ole Miss
+  'MSU':    espnLogo(344),   // Mississippi State
+  'MIZZOU': espnLogo(142),   // Missouri
+  'LSU':    espnLogo(99),    // LSU
+  'ARK':    espnLogo(8),     // Arkansas
+  'A&M':    espnLogo(245),   // Texas A&M
+  'SJS':    espnLogo(23),    // San Jose State
+  'UTEP':   espnLogo(2638),  // UTEP
+  'SHU':    espnLogo(2534),  // Sam Houston
+  'UK':     espnLogo(96),    // Kentucky
+  'VU':     espnLogo(238),   // Vanderbilt
+  'CSU':    espnLogo(36),    // Colorado State
+  'MICH':   espnLogo(130),   // Michigan
+  'ULM':    espnLogo(2433),  // UL Monroe
+  'MSST':   espnLogo(344),   // Mississippi State
+  'UGA':    espnLogo(61),    // Georgia
+  'RIC':    espnLogo(242),   // Rice
+  'ASU':    espnLogo(9),     // Arizona State
+  'WYO':    espnLogo(269),   // Wyoming
+  'BAYLOR': espnLogo(239),   // Baylor
+  'KSU':    espnLogo(2306),  // Kansas State
+  'BYU':    espnLogo(252),   // BYU
+  'KU':     espnLogo(2305),  // Kansas
+  'WVU':    espnLogo(277),   // West Virginia
+  'TCU':    espnLogo(2628),  // TCU
+  'IOWA':   espnLogo(66),    // Iowa State
+  'IAst':   espnLogo(66),    // Iowa State
+  'OKST':   espnLogo(197),   // Oklahoma State
+  'TX&M':   espnLogo(2641),  // Texas Tech
+  'LA':     espnLogo(309),   // Louisiana
+  'RICE':   espnLogo(242),   // Rice
+  'WASH':   espnLogo(264),   // Washington
+  'MD':     espnLogo(120),   // Maryland
+  'USC':    espnLogo(30),    // USC
+  'UTA':    espnLogo(254),   // Utah
+  'NDST':   espnLogo(87),    // Notre Dame
+  'MO':     espnLogo(142),   // Missouri
+  'KSTATE': espnLogo(2306),  // Kansas State
+  'FLRDA':  espnLogo(57),    // Florida
+  'COL':    espnLogo(38),    // Colorado
+  'LS':     espnLogo(99),    // LSU
+  'NEB':    espnLogo(158),   // Nebraska
+  'TTU':    espnLogo(2641),  // Texas Tech
+  'LAL':    espnLogo(309),   // Louisiana-Lafayette
+  'OKLA':   espnLogo(201),   // Oklahoma (alt)
+  'KST':    espnLogo(2306),  // Kansas State (alt)
 };
 
 function injectTeamLogos() {
-  document.querySelectorAll('.opp-init').forEach(initEl => {
+  document.querySelectorAll('.opp-init:not([data-logo-injected])').forEach(initEl => {
     const teamAbbr = initEl.textContent.trim();
     const logoUrl = teamLogos[teamAbbr];
-    
-    if (logoUrl) {
-      const img = document.createElement('img');
-      img.src = logoUrl;
-      img.alt = teamAbbr;
-      img.className = 'opp-logo';
-      img.onerror = function() {
-        this.style.display = 'none';
-      };
-      initEl.parentNode.insertBefore(img, initEl);
+    initEl.setAttribute('data-logo-injected', '1');
+
+    if (!logoUrl) return;
+
+    const img = document.createElement('img');
+    img.src = logoUrl;
+    img.alt = teamAbbr;
+    img.className = 'opp-logo';
+    img.style.display = 'none';
+    img.onload = function() {
       initEl.style.display = 'none';
-    }
+      img.style.display = '';
+    };
+    img.onerror = function() {
+      img.remove();
+    };
+    initEl.parentNode.insertBefore(img, initEl);
   });
 }
 
@@ -559,7 +646,8 @@ function showYear(yr, btn) {
   document.querySelectorAll('.season-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.year-tab').forEach(b => b.classList.remove('active'));
   document.getElementById('yr-' + yr).classList.add('active');
-  btn.classList.add('active');
+  const tab = btn || document.querySelector(`[data-yr="${yr}"]`);
+  if (tab) tab.classList.add('active');
   injectTeamLogos();
 }
 
