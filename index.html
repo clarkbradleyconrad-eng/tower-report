@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Tower Report — Longhorn Intelligence</title>
+<meta name="description" content="AI-powered Texas Longhorn sports intelligence platform. Every recruit. Every portal move. Every NIL deal. One place."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --orange: #BF5700;
+    --orange-light: #E8620A;
+    --black: #0A0A0A;
+    --white: #FAFAF8;
+    --gray: #1A1A1A;
+    --gray-mid: #2A2A2A;
+    --gray-border: #2E2E2E;
+    --text-muted: #888;
+    --text-secondary: #BBB;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--black);
+    color: var(--white);
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 18px 40px;
+    border-bottom: 1px solid var(--gray-border);
+    background: rgba(10,10,10,0.92);
+    backdrop-filter: blur(12px);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px; letter-spacing: 3px; color: var(--white);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--orange); }
+  .nav-links { display: flex; gap: 28px; align-items: center; }
+  .nav-links a {
+    font-size: 13px; color: var(--text-muted); text-decoration: none;
+    letter-spacing: 0.5px; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-cta {
+    background: var(--orange); color: #fff !important;
+    padding: 8px 20px; border-radius: 6px; font-weight: 500 !important;
+    letter-spacing: 0 !important;
+  }
+  .nav-cta:hover { background: var(--orange-light) !important; }
+
+  /* TICKER */
+  .ticker {
+    margin-top: 57px;
+    background: var(--orange);
+    padding: 8px 0; overflow: hidden;
+  }
+  .ticker-track {
+    display: flex; gap: 48px;
+    animation: ticker 30s linear infinite;
+    white-space: nowrap; width: max-content;
+  }
+  .ticker-item {
+    font-size: 11px; font-weight: 500; letter-spacing: 2px;
+    text-transform: uppercase; color: #fff; opacity: 0.9;
+  }
+  .ticker-item::before { content: "● "; opacity: 0.6; margin-right: 4px; }
+  @keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid; grid-template-columns: 1fr 1fr;
+    align-items: center; gap: 60px;
+    padding: 80px 40px 60px;
+    border-bottom: 1px solid var(--gray-border);
+    position: relative;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: 0; right: 0;
+    width: 50%; height: 100%;
+    background: radial-gradient(ellipse at 70% 40%, rgba(191,87,0,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-size: 11px; font-weight: 500; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--orange);
+    margin-bottom: 20px;
+  }
+  .hero-h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(52px, 6vw, 80px);
+    line-height: 0.95; letter-spacing: 2px; color: var(--white);
+    margin-bottom: 24px;
+  }
+  .hero-h1 em { color: var(--orange); font-style: normal; display: block; }
+  .hero-sub {
+    font-size: 16px; line-height: 1.7; color: var(--text-secondary);
+    max-width: 420px; margin-bottom: 36px;
+  }
+  .hero-form { display: flex; gap: 8px; max-width: 420px; margin-bottom: 14px; }
+  .hero-form input {
+    flex: 1; padding: 13px 16px; font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    background: var(--gray); border: 1px solid var(--gray-border);
+    border-radius: 8px; color: var(--white);
+    transition: border-color 0.2s;
+  }
+  .hero-form input:focus { outline: none; border-color: var(--orange); }
+  .hero-form input::placeholder { color: var(--text-muted); }
+  .btn-orange {
+    background: var(--orange); color: #fff; border: none;
+    padding: 13px 24px; border-radius: 8px; font-size: 14px;
+    font-family: 'DM Sans', sans-serif; font-weight: 500;
+    cursor: pointer; white-space: nowrap;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .btn-orange:hover { background: var(--orange-light); }
+  .btn-orange:active { transform: scale(0.98); }
+  .hero-hint { font-size: 12px; color: var(--text-muted); }
+  .hero-hint a { color: var(--orange); text-decoration: none; }
+  .hero-success {
+    display: none; font-size: 13px; color: #4ade80;
+    margin-top: 10px; font-weight: 500;
+  }
+
+  /* DEMO CARD */
+  .demo-card {
+    background: var(--gray);
+    border: 1px solid var(--gray-border);
+    border-radius: 16px; padding: 24px;
+    position: relative; overflow: hidden;
+  }
+  .demo-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--orange), transparent);
+  }
+  .demo-label {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 10px; font-weight: 500; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+  .live-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #4ade80;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .demo-query {
+    background: var(--gray-mid); border: 1px solid var(--gray-border);
+    border-radius: 8px; padding: 12px 14px; margin-bottom: 14px;
+    font-size: 14px; color: var(--text-secondary);
+  }
+  .demo-query strong { color: var(--white); font-weight: 500; }
+  .demo-answer {
+    font-size: 13px; line-height: 1.7; color: var(--text-secondary);
+    margin-bottom: 16px; padding-bottom: 16px;
+    border-bottom: 1px solid var(--gray-border);
+  }
+  .demo-answer strong { color: var(--white); font-weight: 500; }
+  .demo-sources { display: flex; gap: 6px; flex-wrap: wrap; }
+  .demo-tag {
+    font-size: 11px; padding: 3px 10px; border-radius: 20px;
+    background: var(--gray-mid); border: 1px solid var(--gray-border);
+    color: var(--text-muted);
+  }
+  .demo-tabs {
+    display: flex; gap: 4px; margin-bottom: 16px;
+  }
+  .demo-tab {
+    font-size: 11px; padding: 5px 12px; border-radius: 4px;
+    background: transparent; border: 1px solid var(--gray-border);
+    color: var(--text-muted); cursor: pointer; font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+  }
+  .demo-tab.active { background: var(--orange); border-color: var(--orange); color: #fff; }
+
+  /* STATS BAR */
+  .stats-bar {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    border-bottom: 1px solid var(--gray-border);
+  }
+  .stat-cell {
+    padding: 28px 20px; text-align: center;
+    border-right: 1px solid var(--gray-border);
+  }
+  .stat-cell:last-child { border-right: none; }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px; color: var(--orange); line-height: 1;
+  }
+  .stat-label {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px;
+    color: var(--text-muted); margin-top: 4px;
+  }
+
+  /* FEATURES */
+  .features {
+    padding: 80px 40px;
+    border-bottom: 1px solid var(--gray-border);
+  }
+  .section-eyebrow {
+    font-size: 11px; font-weight: 500; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--orange); margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(32px, 4vw, 48px);
+    letter-spacing: 1.5px; color: var(--white); margin-bottom: 48px;
+  }
+  .feature-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: var(--gray-border);
+    border: 1px solid var(--gray-border); border-radius: 12px;
+    overflow: hidden;
+  }
+  .feature-cell {
+    background: var(--black); padding: 28px 24px;
+    transition: background 0.2s;
+  }
+  .feature-cell:hover { background: var(--gray); }
+  .feature-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: rgba(191,87,0,0.15); border: 1px solid rgba(191,87,0,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; margin-bottom: 14px;
+  }
+  .feature-name {
+    font-size: 15px; font-weight: 500; color: var(--white); margin-bottom: 8px;
+  }
+  .feature-desc {
+    font-size: 13px; line-height: 1.6; color: var(--text-muted);
+  }
+
+  /* SIGNAL SECTION */
+  .signal {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 60px; align-items: center;
+    padding: 80px 40px;
+    border-bottom: 1px solid var(--gray-border);
+  }
+  .signal h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(32px, 4vw, 52px);
+    letter-spacing: 1.5px; color: var(--white); margin-bottom: 16px;
+  }
+  .signal p {
+    font-size: 15px; line-height: 1.8; color: var(--text-secondary);
+    margin-bottom: 24px;
+  }
+  .vs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .vs-col {
+    border-radius: 10px; padding: 20px;
+    border: 1px solid var(--gray-border);
+  }
+  .vs-col.before { background: var(--gray); }
+  .vs-col.after { background: var(--gray); border-color: var(--orange); }
+  .vs-col-label {
+    font-size: 10px; font-weight: 500; letter-spacing: 2px;
+    text-transform: uppercase; margin-bottom: 12px;
+  }
+  .vs-col.before .vs-col-label { color: var(--text-muted); }
+  .vs-col.after .vs-col-label { color: var(--orange); }
+  .vs-item {
+    font-size: 13px; color: var(--text-muted); padding: 6px 0;
+    border-bottom: 1px solid var(--gray-border);
+  }
+  .vs-item:last-child { border-bottom: none; }
+  .vs-item.highlight { color: var(--white); font-weight: 500; }
+
+  /* PHASES */
+  .phases {
+    padding: 80px 40px;
+    border-bottom: 1px solid var(--gray-border);
+  }
+  .phase-list { display: flex; flex-direction: column; gap: 0; }
+  .phase-row {
+    display: grid; grid-template-columns: 120px 1fr;
+    gap: 32px; align-items: start;
+    padding: 28px 0; border-bottom: 1px solid var(--gray-border);
+  }
+  .phase-row:last-child { border-bottom: none; }
+  .phase-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px; color: var(--gray-border); line-height: 1;
+  }
+  .phase-row.active .phase-num { color: var(--orange); }
+  .phase-tag {
+    display: inline-block; font-size: 10px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 4px; margin-bottom: 8px;
+  }
+  .phase-tag.now { background: rgba(191,87,0,0.15); color: var(--orange); }
+  .phase-tag.future { background: var(--gray); color: var(--text-muted); }
+  .phase-title {
+    font-size: 18px; font-weight: 500; color: var(--white); margin-bottom: 6px;
+  }
+  .phase-row:not(.active) .phase-title { color: var(--text-muted); }
+  .phase-desc { font-size: 13px; line-height: 1.6; color: var(--text-muted); }
+
+  /* CTA */
+  .cta-section {
+    padding: 100px 40px; text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .cta-section::before {
+    content: 'TOWER';
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(120px, 20vw, 220px);
+    color: rgba(191,87,0,0.04); letter-spacing: 10px;
+    pointer-events: none; white-space: nowrap;
+    user-select: none;
+  }
+  .cta-h {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(40px, 6vw, 72px);
+    letter-spacing: 2px; color: var(--white);
+    margin-bottom: 14px; position: relative; z-index: 1;
+  }
+  .cta-sub {
+    font-size: 16px; color: var(--text-secondary);
+    margin-bottom: 36px; position: relative; z-index: 1;
+  }
+  .cta-form {
+    display: flex; gap: 8px; max-width: 400px;
+    margin: 0 auto 16px; position: relative; z-index: 1;
+    justify-content: center;
+  }
+  .cta-form input {
+    flex: 1; padding: 13px 16px; font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    background: var(--gray); border: 1px solid var(--gray-border);
+    border-radius: 8px; color: var(--white);
+  }
+  .cta-form input:focus { outline: none; border-color: var(--orange); }
+  .cta-form input::placeholder { color: var(--text-muted); }
+  .cta-social {
+    display: flex; justify-content: center; gap: 20px;
+    position: relative; z-index: 1;
+  }
+  .cta-social a {
+    font-size: 13px; color: var(--text-muted); text-decoration: none;
+    display: flex; align-items: center; gap: 6px;
+    transition: color 0.2s;
+  }
+  .cta-social a:hover { color: var(--orange); }
+  .cta-success {
+    display: none; font-size: 13px; color: #4ade80;
+    font-weight: 500; margin-bottom: 16px;
+    position: relative; z-index: 1;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 20px 40px;
+    border-top: 1px solid var(--gray-border);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px; letter-spacing: 3px; color: var(--text-muted);
+  }
+  .footer-logo span { color: var(--orange); }
+  .footer-text { font-size: 12px; color: var(--text-muted); }
+
+  @media (max-width: 768px) {
+    nav { padding: 16px 20px; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; padding: 40px 20px; min-height: auto; gap: 36px; }
+    .stats-bar { grid-template-columns: repeat(2,1fr); }
+    .stat-cell:nth-child(2) { border-right: none; }
+    .features { padding: 48px 20px; }
+    .feature-grid { grid-template-columns: 1fr; }
+    .signal { grid-template-columns: 1fr; padding: 48px 20px; gap: 36px; }
+    .phases { padding: 48px 20px; }
+    .cta-section { padding: 60px 20px; }
+    footer { padding: 20px; flex-direction: column; gap: 8px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#">TOWER<span>REPORT</span></a>
+  <div class="nav-links">
+    <a href="#features">Intelligence</a>
+    <a href="#features">Recruiting</a>
+    <a href="#features">NIL</a>
+    <a href="#waitlist" class="nav-cta">Join Waitlist</a>
+  </div>
+</nav>
+
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="ticker-item">Recruiting Tracker</span>
+    <span class="ticker-item">Portal Watch</span>
+    <span class="ticker-item">NIL Intelligence</span>
+    <span class="ticker-item">Daily Briefing</span>
+    <span class="ticker-item">AI Search</span>
+    <span class="ticker-item">Podcast Summaries</span>
+    <span class="ticker-item">Longhorn Intelligence</span>
+    <span class="ticker-item">The Tower Never Sleeps</span>
+    <span class="ticker-item">Recruiting Tracker</span>
+    <span class="ticker-item">Portal Watch</span>
+    <span class="ticker-item">NIL Intelligence</span>
+    <span class="ticker-item">Daily Briefing</span>
+    <span class="ticker-item">AI Search</span>
+    <span class="ticker-item">Podcast Summaries</span>
+    <span class="ticker-item">Longhorn Intelligence</span>
+    <span class="ticker-item">The Tower Never Sleeps</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div>
+    <div class="hero-eyebrow">The Tower Never Sleeps</div>
+    <h1 class="hero-h1">Longhorn<br><em>Intelligence.</em>One Place.</h1>
+    <p class="hero-sub">Every recruit. Every portal move. Every NIL deal. Every podcast. Tower Report monitors the entire Texas sports ecosystem and turns thousands of daily signals into one answer.</p>
+    <div class="hero-form">
+      <input type="email" id="hero-email" placeholder="your@email.com"/>
+      <button class="btn-orange" onclick="joinWaitlist('hero')">Join Waitlist</button>
+    </div>
+    <div class="hero-hint">Free to join · <a href="https://x.com/towerreportai" target="_blank">@towerreportai</a> on X</div>
+    <div class="hero-success" id="hero-success">✓ You're on the list. Hook 'em. 🤘</div>
+  </div>
+
+  <div class="demo-card">
+    <div class="demo-label">
+      <span class="live-dot"></span>
+      Longhorn Intelligence Preview
+    </div>
+    <div class="demo-tabs">
+      <button class="demo-tab active" onclick="showDemo(0,this)">Recruiting</button>
+      <button class="demo-tab" onclick="showDemo(1,this)">Portal</button>
+      <button class="demo-tab" onclick="showDemo(2,this)">NIL</button>
+    </div>
+    <div id="demo-content">
+      <div class="demo-query"><strong>Q:</strong> Which recruit is most likely to commit next?</div>
+      <div class="demo-answer">Based on 47 signals across X, insider reports, and official visit activity — <strong>DE Malik Bryant (5★, Houston)</strong> is trending toward Texas. Unofficial visit confirmed last Friday. Insider confidence: 78%. Announcement window: 2–3 weeks.</div>
+      <div class="demo-sources">
+        <span class="demo-tag">On3</span>
+        <span class="demo-tag">247Sports</span>
+        <span class="demo-tag">X trends</span>
+        <span class="demo-tag">Inside Texas</span>
+        <span class="demo-tag">+3 more</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="stats-bar">
+  <div class="stat-cell">
+    <div class="stat-num">10+</div>
+    <div class="stat-label">Sources Monitored</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-num">24/7</div>
+    <div class="stat-label">Live Intelligence</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-num">1</div>
+    <div class="stat-label">Place For It All</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-num">∞</div>
+    <div class="stat-label">Longhorn IQ</div>
+  </div>
+</div>
+
+<section class="features" id="features">
+  <div class="section-eyebrow">Phase 1 — 2026</div>
+  <div class="section-title">Everything in one engine.</div>
+  <div class="feature-grid">
+    <div class="feature-cell">
+      <div class="feature-icon">🧠</div>
+      <div class="feature-name">AI Search</div>
+      <div class="feature-desc">Ask anything about Texas football. Get an answer backed by real, current sources — not stale training data.</div>
+    </div>
+    <div class="feature-cell">
+      <div class="feature-icon">🏆</div>
+      <div class="feature-name">Recruiting Tracker</div>
+      <div class="feature-desc">Live board with commit probability scores, visit tracking, and trend alerts on every target in the class.</div>
+    </div>
+    <div class="feature-cell">
+      <div class="feature-icon">🔄</div>
+      <div class="feature-name">Portal Watch</div>
+      <div class="feature-desc">Every entry and exit tracked in real time with fit analysis and depth chart impact.</div>
+    </div>
+    <div class="feature-cell">
+      <div class="feature-icon">💰</div>
+      <div class="feature-name">NIL Tracker</div>
+      <div class="feature-desc">Deals, valuations, and market trends across the entire Longhorn roster.</div>
+    </div>
+    <div class="feature-cell">
+      <div class="feature-icon">📰</div>
+      <div class="feature-name">Daily Briefing</div>
+      <div class="feature-desc">Every morning: what happened overnight, what matters today, and what's coming next week.</div>
+    </div>
+    <div class="feature-cell">
+      <div class="feature-icon">🎙️</div>
+      <div class="feature-name">Podcast Intelligence</div>
+      <div class="feature-desc">Orangebloods, Inside Texas, and more — summarized, searchable, and cross-referenced automatically.</div>
+    </div>
+  </div>
+</section>
+
+<section class="signal">
+  <div>
+    <div class="section-eyebrow">Why It Exists</div>
+    <h2>Signal,<br>not noise.</h2>
+    <p>The average hardcore Longhorn fan checks 8+ sources just to know what's actually happening. Tower Report monitors all of them simultaneously and surfaces what matters.</p>
+    <p style="font-size:13px; color: #666;">Not AI that summarizes articles. AI that understands the entire Texas sports ecosystem — context, history, trends, source reliability, and community sentiment.</p>
+  </div>
+  <div class="vs-grid">
+    <div class="vs-col before">
+      <div class="vs-col-label">Before</div>
+      <div class="vs-item">Orangebloods</div>
+      <div class="vs-item">247Sports</div>
+      <div class="vs-item">Inside Texas</div>
+      <div class="vs-item">Reddit / X</div>
+      <div class="vs-item">YouTube / Pods</div>
+      <div class="vs-item">ESPN</div>
+    </div>
+    <div class="vs-col after">
+      <div class="vs-col-label">After</div>
+      <div class="vs-item highlight">Tower Report</div>
+      <div class="vs-item">All sources. One answer.</div>
+      <div class="vs-item">AI knows the context.</div>
+      <div class="vs-item">Trends and history.</div>
+      <div class="vs-item">Source reliability scores.</div>
+      <div class="vs-item">Updated constantly.</div>
+    </div>
+  </div>
+</section>
+
+<section class="phases">
+  <div class="section-eyebrow">The Roadmap</div>
+  <div class="section-title">Built to last.</div>
+  <div class="phase-list">
+    <div class="phase-row active">
+      <div class="phase-num">01</div>
+      <div>
+        <span class="phase-tag now">Building Now</span>
+        <div class="phase-title">Longhorn Intelligence Platform</div>
+        <div class="phase-desc">AI Search · Recruiting Tracker · Portal Watch · NIL Tracker · Daily Briefings · Podcast Summaries</div>
+      </div>
+    </div>
+    <div class="phase-row">
+      <div class="phase-num">02</div>
+      <div>
+        <span class="phase-tag future">Coming Soon</span>
+        <div class="phase-title">Community Layer</div>
+        <div class="phase-desc">Predictions · Confidence votes · Depth chart debates · Fan sentiment engine</div>
+      </div>
+    </div>
+    <div class="phase-row">
+      <div class="phase-num">03</div>
+      <div>
+        <span class="phase-tag future">Future</span>
+        <div class="phase-title">Data Company</div>
+        <div class="phase-desc">The Bloomberg Terminal of Texas sports. Recruiting momentum scores, source accuracy tracking, NIL trend data.</div>
+      </div>
+    </div>
+    <div class="phase-row">
+      <div class="phase-num">04</div>
+      <div>
+        <span class="phase-tag future">Future</span>
+        <div class="phase-title">Expand Beyond Texas</div>
+        <div class="phase-desc">Texas A&M · Oklahoma · LSU · Alabama · SEC Intelligence · College Football Intelligence</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section" id="waitlist">
+  <h2 class="cta-h">Be first in.</h2>
+  <p class="cta-sub">Tower Report is in development. Join the waitlist and get early access.</p>
+  <div class="cta-success" id="cta-success">✓ You're on the list. Hook 'em. 🤘</div>
+  <div class="cta-form">
+    <input type="email" id="cta-email" placeholder="your@email.com"/>
+    <button class="btn-orange" onclick="joinWaitlist('cta')">Join Waitlist</button>
+  </div>
+  <div class="cta-social">
+    <a href="https://x.com/towerreportai" target="_blank">𝕏 @towerreportai</a>
+    <a href="https://instagram.com/towerreport" target="_blank">IG @towerreport</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">TOWER<span>REPORT</span></div>
+  <div class="footer-text">The Tower Never Sleeps. © 2026</div>
+</footer>
+
+<script>
+const demos = [
+  {
+    q: "Which recruit is most likely to commit next?",
+    a: "Based on 47 signals across X, insider reports, and official visit activity — <strong>DE Malik Bryant (5★, Houston)</strong> is trending toward Texas. Unofficial visit confirmed last Friday. Insider confidence: 78%. Announcement window: 2–3 weeks.",
+    tags: ["On3","247Sports","X trends","Inside Texas","+3 more"]
+  },
+  {
+    q: "Who entered the portal that fits Texas's needs?",
+    a: "<strong>OT Marcus Webb (6'6\", Alabama)</strong> entered the portal Monday. Immediate need fit — Texas loses two starters after spring. Sarkisian staff has already made contact per two sources. Grade: High priority.",
+    tags: ["Portal tracker","On3","X","Inside Texas"]
+  },
+  {
+    q: "What's the biggest NIL deal on the roster?",
+    a: "<strong>Arch Manning</strong> leads the roster at an estimated <strong>$4.2M NIL valuation</strong>. Three new deals confirmed this week with Texas-based brands. Overall roster NIL spend up 18% from last season.",
+    tags: ["On3 NIL","Opendorse","X","Reports"]
+  }
+];
+
+function showDemo(i, btn) {
+  document.querySelectorAll('.demo-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const d = demos[i];
+  document.getElementById('demo-content').innerHTML = `
+    <div class="demo-query"><strong>Q:</strong> ${d.q}</div>
+    <div class="demo-answer">${d.a}</div>
+    <div class="demo-sources">${d.tags.map(t=>`<span class="demo-tag">${t}</span>`).join('')}</div>
+  `;
+}
+
+function joinWaitlist(source) {
+  const input = document.getElementById(source === 'hero' ? 'hero-email' : 'cta-email');
+  if (!input.value || !input.value.includes('@')) {
+    input.style.borderColor = '#ef4444';
+    setTimeout(()=>input.style.borderColor='', 1500);
+    return;
+  }
+  input.value = '';
+  document.getElementById(source === 'hero' ? 'hero-success' : 'cta-success').style.display = 'block';
+}
+</script>
+</body>
+</html>
