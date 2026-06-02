@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Recruiting — Tower Report</title>
+<meta name="description" content="Texas Longhorns recruiting tracker. 2026 signing class, 2027 targets, commit predictions, and class rankings."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet"/>
+<script src="nav.js" defer></script>
+<style>
+:root{--orange:#BF5700;--black:#080808;--surface:#111;--surface2:#181818;--surface3:#202020;--border:rgba(255,255,255,0.07);--border-strong:rgba(255,255,255,0.12);--white:#F5F0E8;--muted:#6B6560;--secondary:#A09890;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);}
+
+.page-header{padding:40px 48px 28px;border-bottom:1px solid var(--border);max-width:1400px;margin:0 auto;}
+.breadcrumb{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.breadcrumb span{color:var(--orange);}
+.page-title{font-family:'Playfair Display',serif;font-size:clamp(32px,4vw,56px);font-weight:900;line-height:1;letter-spacing:-2px;margin-bottom:8px;}
+.page-sub{font-size:14px;color:var(--secondary);font-style:italic;}
+
+.content-wrap{max-width:1400px;margin:0 auto;padding:0 48px 80px;}
+
+/* CLASS BANNER */
+.class-banner{display:grid;grid-template-columns:1fr auto;align-items:center;padding:28px 32px;background:var(--surface);border:1px solid var(--border);margin:32px 0 0;gap:24px;}
+.class-banner-left h2{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--white);margin-bottom:4px;}
+.class-banner-left p{font-size:13px;color:var(--secondary);}
+.class-grade{text-align:center;}
+.class-grade-val{font-family:'Barlow Condensed',sans-serif;font-size:52px;font-weight:700;color:var(--orange);line-height:1;}
+.class-grade-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:2px;}
+
+/* CLASS STATS */
+.class-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border);margin-bottom:32px;}
+.cs-cell{background:var(--surface);padding:20px 16px;text-align:center;}
+.cs-num{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:700;color:var(--white);line-height:1;margin-bottom:4px;}
+.cs-num.orange{color:var(--orange);}
+.cs-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+
+/* SECTION HEADER */
+.sec-head{display:flex;align-items:center;justify-content:space-between;padding:28px 0 16px;border-bottom:1px solid var(--border);margin-bottom:20px;}
+.sec-title{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);}
+.sec-meta{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
+
+/* COMMIT GRID */
+.commit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1px;background:var(--border);margin-bottom:40px;}
+.commit-card{background:var(--surface);padding:20px 18px;transition:background .15s;}
+.commit-card:hover{background:var(--surface2);}
+.commit-pos{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:6px;}
+.commit-name{font-size:15px;font-weight:600;color:var(--white);margin-bottom:4px;}
+.commit-stars{color:#f59e0b;font-size:12px;letter-spacing:1px;margin-bottom:4px;}
+.commit-home{font-size:12px;color:var(--muted);}
+.commit-badge{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;background:rgba(191,87,0,0.15);border:1px solid rgba(191,87,0,0.3);color:var(--orange);margin-top:8px;}
+
+/* TARGETS TABLE */
+.targets-table{width:100%;border-collapse:collapse;margin-bottom:40px;}
+.targets-table th{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);background:var(--surface);}
+.targets-table td{padding:14px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:middle;}
+.targets-table tr{transition:background .1s;}
+.targets-table tr:hover td{background:var(--surface);}
+.t-name{font-weight:600;color:var(--white);}
+.t-pos{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);}
+.t-stars{color:#f59e0b;font-size:11px;}
+.t-rank{font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--secondary);}
+.t-home{color:var(--muted);font-size:12px;}
+.prob-bar-wrap{display:flex;align-items:center;gap:10px;}
+.prob-bar{height:4px;background:var(--surface3);border-radius:2px;flex:1;min-width:80px;}
+.prob-fill{height:100%;border-radius:2px;background:var(--orange);}
+.prob-fill.hot{background:#4ade80;}
+.prob-fill.cold{background:#ef4444;}
+.prob-pct{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;color:var(--white);min-width:32px;}
+.status-badge{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:1px;}
+.status-committed{background:rgba(74,222,128,0.12);border:1px solid rgba(74,222,128,0.3);color:#4ade80;}
+.status-hot{background:rgba(191,87,0,0.12);border:1px solid rgba(191,87,0,0.3);color:var(--orange);}
+.status-warm{background:rgba(160,152,144,0.12);border:1px solid rgba(160,152,144,0.2);color:var(--secondary);}
+.status-lean{background:rgba(107,101,96,0.12);border:1px solid rgba(107,101,96,0.2);color:var(--muted);}
+
+/* NEEDS GRID */
+.needs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:1px;background:var(--border);margin-bottom:40px;}
+.need-cell{background:var(--surface);padding:16px 14px;text-align:center;}
+.need-pos{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:var(--white);margin-bottom:4px;}
+.need-slots{font-size:11px;color:var(--muted);margin-bottom:6px;}
+.need-bar{height:3px;background:var(--surface3);border-radius:2px;overflow:hidden;}
+.need-fill{height:100%;border-radius:2px;}
+.need-fill.high{background:#ef4444;}
+.need-fill.med{background:var(--orange);}
+.need-fill.low{background:#4ade80;}
+.need-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:6px;}
+
+/* CALENDAR */
+.cal-list{display:flex;flex-direction:column;gap:1px;margin-bottom:40px;}
+.cal-item{display:grid;grid-template-columns:100px 1fr auto;gap:16px;align-items:center;background:var(--surface);padding:16px 20px;}
+.cal-date{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;color:var(--orange);}
+.cal-event{font-size:13px;font-weight:500;color:var(--white);}
+.cal-type{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:3px 8px;border:1px solid var(--border);}
+
+footer{padding:28px 48px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);}
+.footer-logo{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;letter-spacing:3px;color:var(--muted);}
+.footer-logo span{color:var(--orange);}
+.footer-text{font-size:12px;color:var(--muted);}
+
+@media(max-width:900px){
+  .page-header,.content-wrap{padding-left:20px;padding-right:20px;}
+  .class-banner{grid-template-columns:1fr;}
+  .class-stats{grid-template-columns:repeat(3,1fr);}
+  .targets-table{display:block;overflow-x:auto;}
+  footer{flex-direction:column;gap:8px;padding:20px;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="breadcrumb">Tower Report <span>/ Recruiting</span></div>
+  <h1 class="page-title">Recruiting</h1>
+  <p class="page-sub">2026 Signing Class · 2027 Targets · Commit Predictions · Class Rankings</p>
+</div>
+
+<div class="content-wrap">
+
+  <!-- 2026 CLASS BANNER -->
+  <div class="class-banner">
+    <div class="class-banner-left">
+      <h2>2026 Signing Class</h2>
+      <p>Signed February 2026 · 21 players · Texas Longhorns</p>
+    </div>
+    <div class="class-grade">
+      <div class="class-grade-val">A</div>
+      <div class="class-grade-label">Class Grade</div>
+    </div>
+  </div>
+
+  <div class="class-stats">
+    <div class="cs-cell"><div class="cs-num">21</div><div class="cs-label">Commits</div></div>
+    <div class="cs-cell"><div class="cs-num orange">#8</div><div class="cs-label">National Rank</div></div>
+    <div class="cs-cell"><div class="cs-num">#2</div><div class="cs-label">SEC Rank</div></div>
+    <div class="cs-cell"><div class="cs-num">6</div><div class="cs-label">4-Star Players</div></div>
+    <div class="cs-cell"><div class="cs-num">92.1</div><div class="cs-label">On3 Team Score</div></div>
+  </div>
+
+  <!-- 2026 SIGNED CLASS -->
+  <div class="sec-head">
+    <div class="sec-title">2026 Signed Class</div>
+    <div class="sec-meta">All Signed · ESD + NSD 2026</div>
+  </div>
+
+  <div class="commit-grid">
+    <div class="commit-card">
+      <div class="commit-pos">QB</div>
+      <div class="commit-name">Dia Bell</div>
+      <div class="commit-stars">★★★★</div>
+      <div class="commit-home">Fort Lauderdale, Fla.</div>
+      <div class="commit-badge">Signed</div>
+    </div>
+    <div class="commit-card">
+      <div class="commit-pos">RB</div>
+      <div class="commit-name">Derrek Cooper</div>
+      <div class="commit-stars">★★★★</div>
+      <div class="commit-home">Lauderhill, Fla.</div>
+      <div class="commit-badge">Signed</div>
+    </div>
+    <div class="commit-card">
+      <div class="commit-pos">RB</div>
+      <div class="commit-name">Jett Walker</div>
+      <div class="commit-stars">★★★</div>
+      <div class="commit-home">Georgetown, Texas</div>
+      <div class="commit-badge">Signed</div>
+    </div>
+    <div class="commit-card">
+      <div class="commit-pos">WR</div>
+      <div class="commit-name">Jermaine Bishop Jr.</div>
+      <div class="commit-stars">★★★★</div>
+      <div class="commit-home">Willis, Texas</div>
+      <div class="commit-badge">Signed</div>
+    </div>
+    <div class="commit-card">
+      <div class="commit-pos">WR</div>
+      <div class="commit-name">Kohen Brown</div>
+      <div class="commit-stars">★★★★</div>
+      <div class="commit-home">Dallas, Texas</div>
+      <div class="commit-badge">Signed</div>
+    </div>
+    <div class="commit-card">
+      <div class="commit-pos">WR</div>
+      <div class="commit-name">Chris Stewart</div>
+      <div class="commit-stars">★★★</div>
+      <div class="commit-home">Missouri City, Texas</div>
+      <div class="commit-badge">Signed</div>
+    </div>
+    <div class="commit-card">
+      <div class="commit-pos">TE</div>
+      <div class="commit-name">Charlie Jilek</div>
+      <div class="commit-stars">★★★</div>
+      <div class="commit-home">Portage, Mich.</div>
+      <div class="commit-badge">Signed</div>
+    </div>
+    <div class="commit-card">
+      <div class="commit-pos">OL</div>
+      <div class="commit-name">John Turntine III</div>
+      <div class="commit-stars">★★★★</div>
+      <div class="commit-home">Fort Worth, Texas</div>
+      <div class="commit-badge">Signed</div>
+    </div>
+    <div class="commit-card">
+      <div class="commit-pos">OL</div>
+      <div class="commit-name">Kaden Scherer</div>
+      <div class="commit-stars">★★★</div>
+      <div class="commit-home">Georgetown, Texas</div>
+      <div class="commit-badge">Signed</div>
+    </div>
+    <div class="commit-card">
+      <div class="commit-pos">DL</div>
+      <div class="commit-name">James Johnson</div>
+      <div class="commit-stars">★★★★</div>
+      <div class="commit-home">Fort Myers, Fla.</div>
+      <div class="commit-badge">Signed</div>
+    </div>
+    <div class="commit-card">
+      <div class="commit-pos">DL</div>
+      <div class="commit-name">Jamarion Carlton</div>
+      <div class="commit-stars">★★★</div>
+      <div class="commit-home">Temple, Texas</div>
+      <div class="commit-badge">Signed</div>
+    </div>
+    <div class="commit-card">
+      <div class="commit-pos">DL</div>
+      <div class="commit-name">Richard Wesley</div>
+      <div class="commit-stars">★★★★</div>
+      <div class="commit-home">Sylmar, Calif.</div>
+      <div class="commit-badge">Signed</div>
+    </div>
+    <div class="commit-card">
+      <div class="commit-pos">LB</div>
+      <div class="commit-name">Tyler Atkinson</div>
+      <div class="commit-stars">★★★</div>
+      <div class="commit-home">Lawrenceville, Ga.</div>
+      <div class="commit-badge">Signed</div>
+    </div>
+    <div class="commit-card">
+      <div class="commit-pos">LB</div>
+      <div class="commit-name">Kosi Okpala</div>
+      <div class="commit-stars">★★★</div>
+      <div class="commit-home">Houston, Texas</div>
+      <div class="commit-badge">Signed</div>
+    </div>
+    <div class="commit-card">
+      <div class="commit-pos">LB</div>
+      <div class="commit-name">Rocky Cummings</div>
+      <div class="commit-stars">★★★★</div>
+      <div class="commit-home">Carlsbad, Calif.</div>
+      <div class="commit-badge">Signed</div>
+    </div>
+    <div class="commit-card">
+      <div class="commit-pos">DB</div>
+      <div class="commit-name">Samari Matthews</div>
+      <div class="commit-stars">★★★★</div>
+      <div class="commit-home">Charlotte, N.C.</div>
+      <div class="commit-badge">Signed</div>
+    </div>
+    <div class="commit-card">
+      <div class="commit-pos">DB</div>
+      <div class="commit-name">Hayward Howard Jr.</div>
+      <div class="commit-stars">★★★</div>
+      <div class="commit-home">New Orleans, La.</div>
+      <div class="commit-badge">Signed</div>
+    </div>
+    <div class="commit-card">
+      <div class="commit-pos">DB</div>
+      <div class="commit-name">Toray Davis</div>
+      <div class="commit-stars">★★★</div>
+      <div class="commit-home">Thornton, Colo.</div>
+      <div class="commit-badge">Signed</div>
+    </div>
+    <div class="commit-card">
+      <div class="commit-pos">DB</div>
+      <div class="commit-name">Yaheim Riley</div>
+      <div class="commit-stars">★★★</div>
+      <div class="commit-home">Miami, Fla.</div>
+      <div class="commit-badge">Signed</div>
+    </div>
+    <div class="commit-card">
+      <div class="commit-pos">K</div>
+      <div class="commit-name">Jake Collett</div>
+      <div class="commit-stars">★★★</div>
+      <div class="commit-home">Ringgold, Ga.</div>
+      <div class="commit-badge">Signed</div>
+    </div>
+    <div class="commit-card">
+      <div class="commit-pos">P</div>
+      <div class="commit-name">Mikey Bukauskas</div>
+      <div class="commit-stars">★★★</div>
+      <div class="commit-home">Prosper, Texas</div>
+      <div class="commit-badge">Signed</div>
+    </div>
+  </div>
+
+  <!-- 2027 CLASS -->
+  <div class="sec-head">
+    <div class="sec-title">2027 Recruiting Class — In Progress</div>
+    <div class="sec-meta">Early Signing Period: Dec 17–19, 2026</div>
+  </div>
+
+  <table class="targets-table">
+    <thead>
+      <tr>
+        <th>Player</th>
+        <th>Pos</th>
+        <th>Stars</th>
+        <th>Hometown</th>
+        <th>National Rank</th>
+        <th>Texas Probability</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="t-name">Malachi Nelson Jr.</span></td>
+        <td><span class="t-pos">QB</span></td>
+        <td><span class="t-stars">★★★★★</span></td>
+        <td><span class="t-home">Denton, Texas</span></td>
+        <td><span class="t-rank">#3 Overall</span></td>
+        <td>
+          <div class="prob-bar-wrap">
+            <div class="prob-bar"><div class="prob-fill hot" style="width:82%"></div></div>
+            <div class="prob-pct">82%</div>
+          </div>
+        </td>
+        <td><span class="status-badge status-hot">Hot</span></td>
+      </tr>
+      <tr>
+        <td><span class="t-name">Jaylen Mbakwe</span></td>
+        <td><span class="t-pos">WR</span></td>
+        <td><span class="t-stars">★★★★★</span></td>
+        <td><span class="t-home">Houston, Texas</span></td>
+        <td><span class="t-rank">#7 Overall</span></td>
+        <td>
+          <div class="prob-bar-wrap">
+            <div class="prob-bar"><div class="prob-fill hot" style="width:71%"></div></div>
+            <div class="prob-pct">71%</div>
+          </div>
+        </td>
+        <td><span class="status-badge status-hot">Hot</span></td>
+      </tr>
+      <tr>
+        <td><span class="t-name">Devin Sanchez</span></td>
+        <td><span class="t-pos">CB</span></td>
+        <td><span class="t-stars">★★★★★</span></td>
+        <td><span class="t-home">Houston, Texas</span></td>
+        <td><span class="t-rank">#11 Overall</span></td>
+        <td>
+          <div class="prob-bar-wrap">
+            <div class="prob-bar"><div class="prob-fill" style="width:55%"></div></div>
+            <div class="prob-pct">55%</div>
+          </div>
+        </td>
+        <td><span class="status-badge status-warm">Warm</span></td>
+      </tr>
+      <tr>
+        <td><span class="t-name">Elijah Griffin</span></td>
+        <td><span class="t-pos">EDGE</span></td>
+        <td><span class="t-stars">★★★★★</span></td>
+        <td><span class="t-home">Georgia</span></td>
+        <td><span class="t-rank">#14 Overall</span></td>
+        <td>
+          <div class="prob-bar-wrap">
+            <div class="prob-bar"><div class="prob-fill" style="width:38%"></div></div>
+            <div class="prob-pct">38%</div>
+          </div>
+        </td>
+        <td><span class="status-badge status-warm">In Play</span></td>
+      </tr>
+      <tr>
+        <td><span class="t-name">Brashard Smith</span></td>
+        <td><span class="t-pos">RB</span></td>
+        <td><span class="t-stars">★★★★</span></td>
+        <td><span class="t-home">Katy, Texas</span></td>
+        <td><span class="t-rank">#28 Overall</span></td>
+        <td>
+          <div class="prob-bar-wrap">
+            <div class="prob-bar"><div class="prob-fill hot" style="width:88%"></div></div>
+            <div class="prob-pct">88%</div>
+          </div>
+        </td>
+        <td><span class="status-badge status-hot">Leader</span></td>
+      </tr>
+      <tr>
+        <td><span class="t-name">Anthony Jones Jr.</span></td>
+        <td><span class="t-pos">OT</span></td>
+        <td><span class="t-stars">★★★★</span></td>
+        <td><span class="t-home">Cedar Hill, Texas</span></td>
+        <td><span class="t-rank">#32 Overall</span></td>
+        <td>
+          <div class="prob-bar-wrap">
+            <div class="prob-bar"><div class="prob-fill hot" style="width:79%"></div></div>
+            <div class="prob-pct">79%</div>
+          </div>
+        </td>
+        <td><span class="status-badge status-hot">Hot</span></td>
+      </tr>
+      <tr>
+        <td><span class="t-name">Caleb Carmouche</span></td>
+        <td><span class="t-pos">S</span></td>
+        <td><span class="t-stars">★★★★</span></td>
+        <td><span class="t-home">New Orleans, La.</span></td>
+        <td><span class="t-rank">#41 Overall</span></td>
+        <td>
+          <div class="prob-bar-wrap">
+            <div class="prob-bar"><div class="prob-fill" style="width:44%"></div></div>
+            <div class="prob-pct">44%</div>
+          </div>
+        </td>
+        <td><span class="status-badge status-warm">In Play</span></td>
+      </tr>
+      <tr>
+        <td><span class="t-name">Marcus Wimbush</span></td>
+        <td><span class="t-pos">DT</span></td>
+        <td><span class="t-stars">★★★★</span></td>
+        <td><span class="t-home">Austin, Texas</span></td>
+        <td><span class="t-rank">#55 Overall</span></td>
+        <td>
+          <div class="prob-bar-wrap">
+            <div class="prob-bar"><div class="prob-fill hot" style="width:91%"></div></div>
+            <div class="prob-pct">91%</div>
+          </div>
+        </td>
+        <td><span class="status-badge status-committed">Committed</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 2027 POSITION NEEDS -->
+  <div class="sec-head">
+    <div class="sec-title">2027 Position Needs</div>
+    <div class="sec-meta">Based on Departures + Depth</div>
+  </div>
+  <div class="needs-grid">
+    <div class="need-cell"><div class="need-pos">QB</div><div class="need-slots">1 target</div><div class="need-bar"><div class="need-fill med" style="width:60%"></div></div><div class="need-label">Medium</div></div>
+    <div class="need-cell"><div class="need-pos">RB</div><div class="need-slots">1–2 targets</div><div class="need-bar"><div class="need-fill med" style="width:65%"></div></div><div class="need-label">Medium</div></div>
+    <div class="need-cell"><div class="need-pos">WR</div><div class="need-slots">2–3 targets</div><div class="need-bar"><div class="need-fill high" style="width:90%"></div></div><div class="need-label">High</div></div>
+    <div class="need-cell"><div class="need-pos">TE</div><div class="need-slots">1 target</div><div class="need-bar"><div class="need-fill low" style="width:30%"></div></div><div class="need-label">Low</div></div>
+    <div class="need-cell"><div class="need-pos">OT</div><div class="need-slots">2 targets</div><div class="need-bar"><div class="need-fill high" style="width:85%"></div></div><div class="need-label">High</div></div>
+    <div class="need-cell"><div class="need-pos">IOL</div><div class="need-slots">1–2 targets</div><div class="need-bar"><div class="need-fill med" style="width:70%"></div></div><div class="need-label">Medium</div></div>
+    <div class="need-cell"><div class="need-pos">EDGE</div><div class="need-slots">2 targets</div><div class="need-bar"><div class="need-fill high" style="width:88%"></div></div><div class="need-label">High</div></div>
+    <div class="need-cell"><div class="need-pos">DT</div><div class="need-slots">1–2 targets</div><div class="need-bar"><div class="need-fill med" style="width:60%"></div></div><div class="need-label">Medium</div></div>
+    <div class="need-cell"><div class="need-pos">LB</div><div class="need-slots">2 targets</div><div class="need-bar"><div class="need-fill high" style="width:80%"></div></div><div class="need-label">High</div></div>
+    <div class="need-cell"><div class="need-pos">CB</div><div class="need-slots">2–3 targets</div><div class="need-bar"><div class="need-fill high" style="width:90%"></div></div><div class="need-label">High</div></div>
+    <div class="need-cell"><div class="need-pos">S</div><div class="need-slots">1–2 targets</div><div class="need-bar"><div class="need-fill med" style="width:65%"></div></div><div class="need-label">Medium</div></div>
+    <div class="need-cell"><div class="need-pos">K/P</div><div class="need-slots">Monitor</div><div class="need-bar"><div class="need-fill low" style="width:20%"></div></div><div class="need-label">Low</div></div>
+  </div>
+
+  <!-- CALENDAR -->
+  <div class="sec-head">
+    <div class="sec-title">Recruiting Calendar</div>
+    <div class="sec-meta">Key Dates — 2026–2027</div>
+  </div>
+  <div class="cal-list">
+    <div class="cal-item"><div class="cal-date">Jun 1–30</div><div class="cal-event">Unofficial visit period — multiple 2027 targets on campus</div><div class="cal-type">Visits</div></div>
+    <div class="cal-item"><div class="cal-date">Jul 4</div><div class="cal-event">Dead period begins — no in-person recruiting contact</div><div class="cal-type">Dead Period</div></div>
+    <div class="cal-item"><div class="cal-date">Jul 25</div><div class="cal-event">Contact period resumes — coaches on the road</div><div class="cal-type">Contact</div></div>
+    <div class="cal-item"><div class="cal-date">Sep 1</div><div class="cal-event">Official visit season opens for 2027 class</div><div class="cal-type">Official Visits</div></div>
+    <div class="cal-item"><div class="cal-date">Oct 2–4</div><div class="cal-event">Big recruiting weekend — multiple official visits expected</div><div class="cal-type">Official Visits</div></div>
+    <div class="cal-item"><div class="cal-date">Dec 17–19</div><div class="cal-event">Early Signing Period — 2027 class signs</div><div class="cal-type">Signing Day</div></div>
+    <div class="cal-item"><div class="cal-date">Feb 4, 2027</div><div class="cal-event">National Signing Day — remaining unsigned commits sign</div><div class="cal-type">Signing Day</div></div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-logo">TOWER<span>REPORT</span></div>
+  <div class="footer-text">The Tower Never Sleeps. © 2026</div>
+</footer>
+
+</body>
+</html>

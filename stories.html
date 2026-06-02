@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Stories — Tower Report</title>
+<meta name="description" content="Texas Longhorns football analysis, breaking news, film breakdowns, recruiting reports, and daily intelligence."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet"/>
+<script src="nav.js" defer></script>
+<style>
+:root{--orange:#BF5700;--black:#080808;--surface:#111;--surface2:#181818;--surface3:#202020;--border:rgba(255,255,255,0.07);--border-strong:rgba(255,255,255,0.12);--white:#F5F0E8;--muted:#6B6560;--secondary:#A09890;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);}
+
+.page-header{padding:40px 48px 0;max-width:1400px;margin:0 auto;}
+.breadcrumb{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.breadcrumb span{color:var(--orange);}
+.page-title{font-family:'Playfair Display',serif;font-size:clamp(32px,4vw,56px);font-weight:900;line-height:1;letter-spacing:-2px;margin-bottom:8px;}
+.page-sub{font-size:14px;color:var(--secondary);font-style:italic;padding-bottom:24px;border-bottom:1px solid var(--border);}
+
+.content-wrap{max-width:1400px;margin:0 auto;padding:0 48px 80px;}
+
+/* CATEGORY FILTERS */
+.cat-filters{display:flex;gap:8px;flex-wrap:wrap;padding:20px 0 28px;}
+.cat-btn{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:7px 14px;background:transparent;border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all .15s;}
+.cat-btn:hover{color:var(--white);border-color:var(--border-strong);}
+.cat-btn.active{background:var(--orange);border-color:var(--orange);color:#fff;}
+
+/* FEATURED STORY */
+.featured{display:grid;grid-template-columns:1fr 420px;gap:1px;background:var(--border);margin-bottom:1px;}
+.featured-main{background:var(--surface);padding:40px 36px;display:flex;flex-direction:column;justify-content:space-between;}
+.story-kicker{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:14px;}
+.featured-headline{font-family:'Playfair Display',serif;font-size:clamp(28px,3vw,46px);font-weight:900;line-height:1.05;letter-spacing:-1.5px;color:var(--white);margin-bottom:16px;}
+.featured-deck{font-size:15px;line-height:1.7;color:var(--secondary);font-style:italic;margin-bottom:24px;}
+.story-meta{display:flex;align-items:center;gap:16px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
+.story-meta-dot{width:3px;height:3px;border-radius:50%;background:var(--muted);}
+.read-btn{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:10px 20px;border:1px solid var(--border-strong);color:var(--white);text-decoration:none;transition:all .2s;margin-top:20px;cursor:pointer;}
+.read-btn:hover{background:var(--orange);border-color:var(--orange);}
+
+.featured-sidebar{background:var(--surface);display:flex;flex-direction:column;}
+.featured-sidebar-story{padding:24px 22px;border-bottom:1px solid var(--border);flex:1;display:flex;flex-direction:column;justify-content:space-between;transition:background .15s;cursor:pointer;}
+.featured-sidebar-story:hover{background:var(--surface2);}
+.featured-sidebar-story:last-child{border-bottom:none;}
+.fs-kicker{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:8px;}
+.fs-headline{font-size:14px;font-weight:600;color:var(--white);line-height:1.3;margin-bottom:8px;}
+.fs-meta{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
+
+/* STORY GRID */
+.stories-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-bottom:1px;}
+.story-card{background:var(--surface);padding:28px 24px;transition:background .15s;cursor:pointer;display:flex;flex-direction:column;}
+.story-card:hover{background:var(--surface2);}
+.sc-kicker{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--orange);margin-bottom:10px;}
+.sc-headline{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;line-height:1.2;color:var(--white);margin-bottom:10px;}
+.sc-deck{font-size:13px;line-height:1.6;color:var(--muted);flex:1;}
+.sc-meta{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-top:16px;display:flex;align-items:center;gap:8px;border-top:1px solid var(--border);padding-top:14px;}
+.sc-tag{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 6px;background:var(--surface3);border:1px solid var(--border);color:var(--muted);}
+
+/* SECTION HEADER */
+.sec-head{display:flex;align-items:center;justify-content:space-between;padding:32px 0 16px;border-bottom:1px solid var(--border);margin-bottom:20px;}
+.sec-title{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);}
+.sec-meta{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
+
+/* ANALYSIS COLUMN */
+.analysis-col{display:grid;grid-template-columns:1fr 320px;gap:1px;background:var(--border);margin-bottom:40px;}
+.analysis-list{background:var(--surface);}
+.analysis-item{padding:22px 24px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;}
+.analysis-item:hover{background:var(--surface2);}
+.analysis-item:last-child{border-bottom:none;}
+.ai-kicker{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:6px;}
+.ai-headline{font-size:15px;font-weight:600;color:var(--white);margin-bottom:6px;line-height:1.3;}
+.ai-deck{font-size:13px;color:var(--muted);line-height:1.55;}
+.ai-meta{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-top:10px;}
+
+.briefing-col{background:var(--surface);}
+.briefing-header{padding:18px 20px;border-bottom:1px solid var(--border);}
+.briefing-title{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.briefing-date{font-size:12px;color:var(--secondary);margin-top:3px;}
+.briefing-item{padding:16px 20px;border-bottom:1px solid var(--border);}
+.briefing-item:last-child{border-bottom:none;}
+.bi-category{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);margin-bottom:5px;}
+.bi-text{font-size:13px;color:var(--white);line-height:1.5;}
+.bi-source{font-family:'Barlow Condensed',sans-serif;font-size:10px;color:var(--muted);margin-top:4px;}
+
+/* FILM ROOM */
+.film-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);margin-bottom:40px;}
+.film-card{background:var(--surface);padding:28px 24px;transition:background .15s;cursor:pointer;}
+.film-card:hover{background:var(--surface2);}
+.film-tag{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:3px 8px;background:rgba(191,87,0,0.12);border:1px solid rgba(191,87,0,0.25);color:var(--orange);margin-bottom:12px;display:inline-block;}
+.film-headline{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;line-height:1.2;color:var(--white);margin-bottom:10px;}
+.film-deck{font-size:13px;line-height:1.6;color:var(--muted);}
+.film-meta{font-family:'Barlow Condensed',sans-serif;font-size:10px;color:var(--muted);margin-top:14px;letter-spacing:1px;text-transform:uppercase;}
+
+footer{padding:28px 48px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);}
+.footer-logo{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;letter-spacing:3px;color:var(--muted);}
+.footer-logo span{color:var(--orange);}
+.footer-text{font-size:12px;color:var(--muted);}
+
+@media(max-width:900px){
+  .page-header,.content-wrap{padding-left:20px;padding-right:20px;}
+  .featured,.analysis-col{grid-template-columns:1fr;}
+  .featured-sidebar{display:none;}
+  .stories-grid,.film-grid{grid-template-columns:1fr;}
+  footer{flex-direction:column;gap:8px;padding:20px;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="breadcrumb">Tower Report <span>/ Stories</span></div>
+  <h1 class="page-title">Stories</h1>
+  <p class="page-sub">Breaking News · Analysis · Film Room · Recruiting Reports · Daily Intelligence</p>
+</div>
+
+<div class="content-wrap">
+
+  <div class="cat-filters">
+    <button class="cat-btn active">All Stories</button>
+    <button class="cat-btn">Breaking</button>
+    <button class="cat-btn">Analysis</button>
+    <button class="cat-btn">Film Room</button>
+    <button class="cat-btn">Recruiting</button>
+    <button class="cat-btn">Portal</button>
+    <button class="cat-btn">Morning Briefing</button>
+  </div>
+
+  <!-- FEATURED -->
+  <div class="featured">
+    <div class="featured-main">
+      <div>
+        <div class="story-kicker">Feature · June 2026</div>
+        <h2 class="featured-headline">Arch Manning's Moment Has Finally Arrived</h2>
+        <p class="featured-deck">After two years of patience, preparation, and impossible expectations, the most scrutinized quarterback in college football history is about to step into the full spotlight. And everything suggests he's ready.</p>
+        <div class="story-meta">
+          <span>Tower Report Staff</span>
+          <span class="story-meta-dot"></span>
+          <span>June 2, 2026</span>
+          <span class="story-meta-dot"></span>
+          <span>8 min read</span>
+        </div>
+      </div>
+      <div>
+        <button class="read-btn">Read Full Story →</button>
+      </div>
+    </div>
+    <div class="featured-sidebar">
+      <div class="featured-sidebar-story">
+        <div>
+          <div class="fs-kicker">Breaking · Portal</div>
+          <div class="fs-headline">Colin Simmons Named Preseason Bednarik Award Favorite</div>
+        </div>
+        <div class="fs-meta">June 1, 2026 · 3 min</div>
+      </div>
+      <div class="featured-sidebar-story">
+        <div>
+          <div class="fs-kicker">Recruiting</div>
+          <div class="fs-headline">Texas Hosts Five 2027 Targets This Weekend</div>
+        </div>
+        <div class="fs-meta">May 31, 2026 · 2 min</div>
+      </div>
+      <div class="featured-sidebar-story">
+        <div>
+          <div class="fs-kicker">Analysis</div>
+          <div class="fs-headline">Three Games That Will Define Texas's 2026 Season</div>
+        </div>
+        <div class="fs-meta">May 30, 2026 · 6 min</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LATEST STORIES -->
+  <div class="sec-head" style="margin-top:32px;">
+    <div class="sec-title">Latest Stories</div>
+    <div class="sec-meta">Updated Daily</div>
+  </div>
+
+  <div class="stories-grid">
+    <div class="story-card">
+      <div class="sc-kicker">Analysis · Offense</div>
+      <div class="sc-headline">The Cam Coleman Effect: What His Arrival Changes About Everything</div>
+      <div class="sc-deck">He was the most electrifying recruit Auburn landed in a generation. Now he's in Austin. We break down exactly how Sarkisian's offense transforms with a true WR1 on the field.</div>
+      <div class="sc-meta">
+        <span>June 1, 2026</span>
+        <span>·</span>
+        <span class="sc-tag">Offense</span>
+        <span class="sc-tag">WR</span>
+      </div>
+    </div>
+    <div class="story-card">
+      <div class="sc-kicker">Film Room · Defense</div>
+      <div class="sc-headline">Colin Simmons's Pass Rush: A Technical Breakdown</div>
+      <div class="sc-deck">We pulled every pass rush snap from 2025. What we found: Simmons isn't just athletic — his hand fighting, bend, and counters are already NFL-ready. The Bednarik race starts here.</div>
+      <div class="sc-meta">
+        <span>May 30, 2026</span>
+        <span>·</span>
+        <span class="sc-tag">Film Room</span>
+        <span class="sc-tag">Defense</span>
+      </div>
+    </div>
+    <div class="story-card">
+      <div class="sc-kicker">Analysis · Schedule</div>
+      <div class="sc-headline">Three Games That Define Texas's 2026 Season</div>
+      <div class="sc-deck">Ohio State Week 2. Tennessee Week 4. Texas A&M on Thanksgiving. We model the scenarios: what happens to Texas's playoff odds if they win all three? Lose any one?</div>
+      <div class="sc-meta">
+        <span>May 29, 2026</span>
+        <span>·</span>
+        <span class="sc-tag">Schedule</span>
+        <span class="sc-tag">Analysis</span>
+      </div>
+    </div>
+    <div class="story-card">
+      <div class="sc-kicker">Recruiting Intel</div>
+      <div class="sc-headline">2027 Priority Board: The 10 Targets Texas Must Land</div>
+      <div class="sc-deck">Sarkisian's staff has been methodical in 2027 targeting. We rank the ten most critical commitments — who's close, who's a stretch, and which one changes everything if Texas wins.</div>
+      <div class="sc-meta">
+        <span>May 28, 2026</span>
+        <span>·</span>
+        <span class="sc-tag">Recruiting</span>
+        <span class="sc-tag">2027</span>
+      </div>
+    </div>
+    <div class="story-card">
+      <div class="sc-kicker">Analysis · Portal</div>
+      <div class="sc-headline">How the Transfer Portal Rebuilt Texas's Roster — And What It Cost</div>
+      <div class="sc-deck">Eleven incoming transfers. Eight departures. The math adds up to more than bodies — it reflects Sarkisian's philosophy shift. A deep look at who won and who the Horns let walk.</div>
+      <div class="sc-meta">
+        <span>May 27, 2026</span>
+        <span>·</span>
+        <span class="sc-tag">Portal</span>
+        <span class="sc-tag">Roster</span>
+      </div>
+    </div>
+    <div class="story-card">
+      <div class="sc-kicker">Player Profile</div>
+      <div class="sc-headline">The Raleek Brown No One Is Talking About</div>
+      <div class="sc-deck">Everyone knows he's fast. But Oklahoma State's all-time great rusher brings something more valuable to Austin: leadership, pass protection, and an edge that makes the whole backfield better.</div>
+      <div class="sc-meta">
+        <span>May 26, 2026</span>
+        <span>·</span>
+        <span class="sc-tag">Profile</span>
+        <span class="sc-tag">RB</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANALYSIS + MORNING BRIEFING -->
+  <div class="sec-head" style="margin-top:32px;">
+    <div class="sec-title">Deep Analysis + Morning Briefing</div>
+    <div class="sec-meta">Signal Over Noise</div>
+  </div>
+
+  <div class="analysis-col">
+    <div class="analysis-list">
+      <div class="analysis-item">
+        <div class="ai-kicker">Depth Analysis · OL</div>
+        <div class="ai-headline">Texas's Offensive Line Is the Wild Card Nobody Is Discussing</div>
+        <div class="ai-deck">The skill positions get the headlines. But the Longhorns' 2026 ceiling lives and dies with five guys on the interior — and the depth chart raises legitimate questions.</div>
+        <div class="ai-meta">June 2, 2026 · 7 min read</div>
+      </div>
+      <div class="analysis-item">
+        <div class="ai-kicker">Scheme Preview · Defense</div>
+        <div class="ai-headline">Pete Kwiatkowski's 4-2-5: How Texas Will Stop the Modern SEC Spread</div>
+        <div class="ai-deck">Every opponent on the 2026 schedule runs some form of spread offense. Here's how Texas's defensive coordinator plans to counteract tempo, RPOs, and the quarterback run game.</div>
+        <div class="ai-meta">May 31, 2026 · 9 min read</div>
+      </div>
+      <div class="analysis-item">
+        <div class="ai-kicker">Historical Context</div>
+        <div class="ai-headline">Where Sarkisian's Texas Program Ranks in the Sark Era</div>
+        <div class="ai-deck">48–20 overall. Two CFP appearances. Zero championships. We measure progress honestly — not with narratives, but with the data points that actually matter for competing at the top.</div>
+        <div class="ai-meta">May 29, 2026 · 11 min read</div>
+      </div>
+      <div class="analysis-item">
+        <div class="ai-kicker">Prediction Model</div>
+        <div class="ai-headline">Tower Report 2026 Win Total Model: Texas at 9.8 Expected Wins</div>
+        <div class="ai-deck">Our simulation model ran 10,000 iterations of the 2026 Texas schedule. We share full methodology, game-by-game probabilities, and where the variance lies.</div>
+        <div class="ai-meta">May 27, 2026 · 12 min read</div>
+      </div>
+    </div>
+
+    <div class="briefing-col">
+      <div class="briefing-header">
+        <div class="briefing-title">Morning Briefing</div>
+        <div class="briefing-date">Monday, June 2, 2026</div>
+      </div>
+      <div class="briefing-item">
+        <div class="bi-category">Recruiting</div>
+        <div class="bi-text">5-star WR Jaylen Mbakwe posted unofficial visit photo from DKR on Saturday. Texas now considered the leader per two sources.</div>
+        <div class="bi-source">On3 · Inside Texas</div>
+      </div>
+      <div class="briefing-item">
+        <div class="bi-category">Roster</div>
+        <div class="bi-text">Cam Coleman was seen working out with Arch Manning in Austin over the weekend. Chemistry early, which bodes well for fall camp.</div>
+        <div class="bi-source">X · Reports</div>
+      </div>
+      <div class="briefing-item">
+        <div class="bi-category">Portal Watch</div>
+        <div class="bi-text">OT Deondre Jackson (Ole Miss) listed Texas in his top 3. Official visit expected within two weeks per source.</div>
+        <div class="bi-source">247Sports · On3</div>
+      </div>
+      <div class="briefing-item">
+        <div class="bi-category">Program</div>
+        <div class="bi-text">Texas opens fall camp August 1. Coach Sarkisian confirmed no changes to staff heading into 2026 season.</div>
+        <div class="bi-source">TexasSports.com</div>
+      </div>
+      <div class="briefing-item">
+        <div class="bi-category">NIL</div>
+        <div class="bi-text">Arch Manning reportedly secured two new endorsement deals this week totaling an estimated $800K. NIL value now approaching $4.5M.</div>
+        <div class="bi-source">On3 NIL · Reports</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FILM ROOM -->
+  <div class="sec-head">
+    <div class="sec-title">Film Room</div>
+    <div class="sec-meta">Technique · Scheme · Breakdowns</div>
+  </div>
+  <div class="film-grid">
+    <div class="film-card">
+      <div class="film-tag">Film Room · QB</div>
+      <div class="film-headline">Arch Manning's Pocket Movement: The Good, The Ceiling, The Questions</div>
+      <div class="film-deck">We charted every Manning dropback from the 2025 season — specifically his pocket movement, decision-making under pressure, and anticipatory throws. The results tell a nuanced story about a quarterback on the edge of a breakout.</div>
+      <div class="film-meta">Tower Report · 14 min read</div>
+    </div>
+    <div class="film-card">
+      <div class="film-tag">Film Room · EDGE</div>
+      <div class="film-headline">Colin Simmons Pass Rush Moves: Ranking His Arsenal Heading Into 2026</div>
+      <div class="film-deck">Speed-to-power. Spin. Long arm. Inside counter. We grade every move in Simmons's pass rush toolkit and project which ones become unstoppable at the NFL level — because he's going there soon.</div>
+      <div class="film-meta">Tower Report · 10 min read</div>
+    </div>
+    <div class="film-card">
+      <div class="film-tag">Film Room · WR</div>
+      <div class="film-headline">Cam Coleman Route Running: How He Creates Separation at Every Level</div>
+      <div class="film-deck">Auburn didn't use him correctly. Texas will. We mapped Coleman's 2025 route tree and identified the three routes where he's simply unguardable in press coverage. The deep corner route alone is worth the transfer.</div>
+      <div class="film-meta">Tower Report · 11 min read</div>
+    </div>
+    <div class="film-card">
+      <div class="film-tag">Film Room · Defense</div>
+      <div class="film-headline">Texas 2026 Defensive Scheme: What Pete Kwiatkowski Is Installing</div>
+      <div class="film-deck">Spring practice tape reveals significant adjustments to Texas's base defense. We break down the new looks — including more two-high safety shells, zero coverage packages, and how Simmons will be deployed as a chess piece.</div>
+      <div class="film-meta">Tower Report · 13 min read</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-logo">TOWER<span>REPORT</span></div>
+  <div class="footer-text">The Tower Never Sleeps. © 2026</div>
+</footer>
+
+<script>
+document.querySelectorAll('.cat-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

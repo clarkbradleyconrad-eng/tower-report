@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Transfer Portal — Tower Report</title>
+<meta name="description" content="Texas Longhorns transfer portal tracker. Incoming players, outgoing movement, portal predictions and depth chart impact."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet"/>
+<script src="nav.js" defer></script>
+<style>
+:root{--orange:#BF5700;--black:#080808;--surface:#111;--surface2:#181818;--surface3:#202020;--border:rgba(255,255,255,0.07);--border-strong:rgba(255,255,255,0.12);--white:#F5F0E8;--muted:#6B6560;--secondary:#A09890;--green:#4ade80;--red:#ef4444;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);}
+
+.page-header{padding:40px 48px 28px;border-bottom:1px solid var(--border);max-width:1400px;margin:0 auto;}
+.breadcrumb{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.breadcrumb span{color:var(--orange);}
+.page-title{font-family:'Playfair Display',serif;font-size:clamp(32px,4vw,56px);font-weight:900;line-height:1;letter-spacing:-2px;margin-bottom:8px;}
+.page-sub{font-size:14px;color:var(--secondary);font-style:italic;}
+
+.content-wrap{max-width:1400px;margin:0 auto;padding:0 48px 80px;}
+
+/* PORTAL STATS */
+.portal-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);margin:32px 0 40px;}
+.ps-cell{background:var(--surface);padding:24px 20px;text-align:center;}
+.ps-num{font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:700;line-height:1;margin-bottom:4px;}
+.ps-num.green{color:var(--green);}
+.ps-num.red{color:var(--red);}
+.ps-num.orange{color:var(--orange);}
+.ps-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+
+/* TABS */
+.portal-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:24px;}
+.ptab{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:14px 24px;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;color:var(--muted);background:none;border-top:none;border-left:none;border-right:none;}
+.ptab:hover{color:var(--white);}
+.ptab.active{color:var(--white);border-bottom-color:var(--orange);}
+
+/* PORTAL TABLE */
+.portal-table{width:100%;border-collapse:collapse;margin-bottom:48px;}
+.portal-table th{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);background:var(--surface);}
+.portal-table td{padding:16px 14px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:middle;}
+.portal-table tr:hover td{background:var(--surface);}
+.p-name{font-size:15px;font-weight:600;color:var(--white);}
+.p-pos{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);}
+.p-school{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--secondary);}
+.p-arrow{color:var(--orange);font-size:14px;}
+.p-class{font-family:'Barlow Condensed',sans-serif;font-size:11px;color:var(--muted);}
+.p-stars{color:#f59e0b;font-size:11px;}
+.impact-badge{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;}
+.impact-immediate{background:rgba(191,87,0,0.15);border:1px solid rgba(191,87,0,0.3);color:var(--orange);}
+.impact-depth{background:rgba(160,152,144,0.1);border:1px solid rgba(160,152,144,0.2);color:var(--secondary);}
+.impact-rotational{background:rgba(107,101,96,0.1);border:1px solid rgba(107,101,96,0.15);color:var(--muted);}
+.from-school{font-size:12px;color:var(--muted);}
+
+/* SECTION */
+.sec-head{display:flex;align-items:center;justify-content:space-between;padding:28px 0 16px;border-bottom:1px solid var(--border);margin-bottom:20px;}
+.sec-title{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);}
+.sec-meta{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
+
+/* IMPACT ANALYSIS */
+.impact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-bottom:40px;}
+.impact-card{background:var(--surface);padding:24px 20px;}
+.impact-card-pos{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:8px;}
+.impact-card-name{font-size:16px;font-weight:600;color:var(--white);margin-bottom:8px;}
+.impact-card-from{font-size:12px;color:var(--muted);margin-bottom:12px;}
+.impact-card-body{font-size:13px;line-height:1.65;color:var(--secondary);}
+.impact-card-verdict{margin-top:14px;padding:10px 12px;background:var(--surface2);font-size:12px;color:var(--white);border-left:2px solid var(--orange);}
+
+/* WATCH LIST */
+.watch-list{display:flex;flex-direction:column;gap:1px;margin-bottom:48px;}
+.watch-item{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;background:var(--surface);padding:16px 20px;transition:background .15s;}
+.watch-item:hover{background:var(--surface2);}
+.watch-left{}
+.watch-name{font-size:14px;font-weight:600;color:var(--white);margin-bottom:3px;}
+.watch-detail{font-size:12px;color:var(--muted);}
+.watch-right{text-align:right;}
+.watch-status{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;}
+.ws-monitoring{background:rgba(160,152,144,0.1);border:1px solid rgba(160,152,144,0.2);color:var(--secondary);}
+.ws-target{background:rgba(191,87,0,0.12);border:1px solid rgba(191,87,0,0.3);color:var(--orange);}
+.ws-offer{background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.2);color:var(--green);}
+.watch-conf{font-family:'Barlow Condensed',sans-serif;font-size:11px;color:var(--muted);margin-top:3px;}
+
+footer{padding:28px 48px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);}
+.footer-logo{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;letter-spacing:3px;color:var(--muted);}
+.footer-logo span{color:var(--orange);}
+.footer-text{font-size:12px;color:var(--muted);}
+
+@media(max-width:900px){
+  .page-header,.content-wrap{padding-left:20px;padding-right:20px;}
+  .portal-stats{grid-template-columns:repeat(2,1fr);}
+  .impact-grid{grid-template-columns:1fr;}
+  .portal-table{display:block;overflow-x:auto;}
+  footer{flex-direction:column;gap:8px;padding:20px;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="breadcrumb">Tower Report <span>/ Transfer Portal</span></div>
+  <h1 class="page-title">Transfer Portal</h1>
+  <p class="page-sub">Incoming · Outgoing · Depth Chart Impact · Portal Watch List · 2026 Cycle</p>
+</div>
+
+<div class="content-wrap">
+
+  <div class="portal-stats">
+    <div class="ps-cell"><div class="ps-num green">11</div><div class="ps-label">Incoming Transfers</div></div>
+    <div class="ps-cell"><div class="ps-num red">8</div><div class="ps-label">Outgoing Transfers</div></div>
+    <div class="ps-cell"><div class="ps-num orange">+3</div><div class="ps-label">Net Roster Gain</div></div>
+    <div class="ps-cell"><div class="ps-num">4</div><div class="ps-label">Immediate Impact</div></div>
+  </div>
+
+  <div class="portal-tabs">
+    <button class="ptab active" onclick="showTab('incoming',this)">Incoming (11)</button>
+    <button class="ptab" onclick="showTab('outgoing',this)">Outgoing (8)</button>
+    <button class="ptab" onclick="showTab('watchlist',this)">Watch List</button>
+  </div>
+
+  <!-- INCOMING -->
+  <div id="tab-incoming">
+    <table class="portal-table">
+      <thead>
+        <tr>
+          <th>Player</th>
+          <th>Pos</th>
+          <th>Stars</th>
+          <th>Class</th>
+          <th>From</th>
+          <th>Depth Chart Impact</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="p-name">Cam Coleman</span></td>
+          <td><span class="p-pos">WR</span></td>
+          <td><span class="p-stars">★★★★★</span></td>
+          <td><span class="p-class">Jr.</span></td>
+          <td><span class="from-school">Auburn</span></td>
+          <td><span class="impact-badge impact-immediate">Immediate Starter</span></td>
+        </tr>
+        <tr>
+          <td><span class="p-name">Raleek Brown</span></td>
+          <td><span class="p-pos">RB</span></td>
+          <td><span class="p-stars">★★★★</span></td>
+          <td><span class="p-class">Sr.</span></td>
+          <td><span class="from-school">Oklahoma State</span></td>
+          <td><span class="impact-badge impact-immediate">Immediate Starter</span></td>
+        </tr>
+        <tr>
+          <td><span class="p-name">MJ Morris</span></td>
+          <td><span class="p-pos">QB</span></td>
+          <td><span class="p-stars">★★★★</span></td>
+          <td><span class="p-class">Sr.</span></td>
+          <td><span class="from-school">NC State</span></td>
+          <td><span class="impact-badge impact-depth">QB2 / Depth</span></td>
+        </tr>
+        <tr>
+          <td><span class="p-name">Hollywood Smothers</span></td>
+          <td><span class="p-pos">RB</span></td>
+          <td><span class="p-stars">★★★★</span></td>
+          <td><span class="p-class">Jr.</span></td>
+          <td><span class="from-school">Arizona State</span></td>
+          <td><span class="impact-badge impact-immediate">Starter / Co-starter</span></td>
+        </tr>
+        <tr>
+          <td><span class="p-name">Emmett Mosley V</span></td>
+          <td><span class="p-pos">WR</span></td>
+          <td><span class="p-stars">★★★★</span></td>
+          <td><span class="p-class">Jr.</span></td>
+          <td><span class="from-school">Stanford</span></td>
+          <td><span class="impact-badge impact-depth">Rotational</span></td>
+        </tr>
+        <tr>
+          <td><span class="p-name">Sterling Berkhalter</span></td>
+          <td><span class="p-pos">WR</span></td>
+          <td><span class="p-stars">★★★★</span></td>
+          <td><span class="p-class">Sr.</span></td>
+          <td><span class="from-school">Tennessee</span></td>
+          <td><span class="impact-badge impact-depth">Rotational</span></td>
+        </tr>
+        <tr>
+          <td><span class="p-name">Ty Boatright</span></td>
+          <td><span class="p-pos">WR</span></td>
+          <td><span class="p-stars">★★★</span></td>
+          <td><span class="p-class">Sr.</span></td>
+          <td><span class="from-school">Oklahoma State</span></td>
+          <td><span class="impact-badge impact-rotational">Special Teams</span></td>
+        </tr>
+        <tr>
+          <td><span class="p-name">Rett Andersen</span></td>
+          <td><span class="p-pos">WR</span></td>
+          <td><span class="p-stars">★★★</span></td>
+          <td><span class="p-class">Sr.</span></td>
+          <td><span class="from-school">Stanford</span></td>
+          <td><span class="impact-badge impact-rotational">Depth</span></td>
+        </tr>
+        <tr>
+          <td><span class="p-name">Michael Masunas</span></td>
+          <td><span class="p-pos">TE</span></td>
+          <td><span class="p-stars">★★★</span></td>
+          <td><span class="p-class">Sr.</span></td>
+          <td><span class="from-school">Navy</span></td>
+          <td><span class="impact-badge impact-depth">Starter</span></td>
+        </tr>
+        <tr>
+          <td><span class="p-name">Rasheem Biles</span></td>
+          <td><span class="p-pos">LB</span></td>
+          <td><span class="p-stars">★★★★</span></td>
+          <td><span class="p-class">Sr.</span></td>
+          <td><span class="from-school">Ohio State</span></td>
+          <td><span class="impact-badge impact-immediate">Immediate Starter</span></td>
+        </tr>
+        <tr>
+          <td><span class="p-name">Derek Williams Jr.</span></td>
+          <td><span class="p-pos">CB</span></td>
+          <td><span class="p-stars">★★★★</span></td>
+          <td><span class="p-class">Jr.</span></td>
+          <td><span class="from-school">Penn State</span></td>
+          <td><span class="impact-badge impact-immediate">Immediate Starter</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- OUTGOING -->
+  <div id="tab-outgoing" style="display:none">
+    <table class="portal-table">
+      <thead>
+        <tr>
+          <th>Player</th>
+          <th>Pos</th>
+          <th>Class</th>
+          <th>Destination</th>
+          <th>Why They Left</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="p-name">Quinn Ewers</span></td>
+          <td><span class="p-pos">QB</span></td>
+          <td><span class="p-class">Graduated / NFL Draft</span></td>
+          <td><span class="from-school">NFL — San Francisco 49ers (Round 1)</span></td>
+          <td><span style="font-size:12px;color:var(--muted)">Graduated / drafted</span></td>
+        </tr>
+        <tr>
+          <td><span class="p-name">Johntay Cook II</span></td>
+          <td><span class="p-pos">WR</span></td>
+          <td><span class="p-class">Sr.</span></td>
+          <td><span class="from-school">Entered NFL Draft</span></td>
+          <td><span style="font-size:12px;color:var(--muted)">Graduated</span></td>
+        </tr>
+        <tr>
+          <td><span class="p-name">Isaiah Bond</span></td>
+          <td><span class="p-pos">WR</span></td>
+          <td><span class="p-class">Sr.</span></td>
+          <td><span class="from-school">Entered NFL Draft</span></td>
+          <td><span style="font-size:12px;color:var(--muted)">Graduated</span></td>
+        </tr>
+        <tr>
+          <td><span class="p-name">Adonai Mitchell</span></td>
+          <td><span class="p-pos">WR</span></td>
+          <td><span class="p-class">Sr.</span></td>
+          <td><span class="from-school">NFL — Indianapolis Colts</span></td>
+          <td><span style="font-size:12px;color:var(--muted)">Graduated / drafted</span></td>
+        </tr>
+        <tr>
+          <td><span class="p-name">Anthony Hill Jr.</span></td>
+          <td><span class="p-pos">LB</span></td>
+          <td><span class="p-class">So.</span></td>
+          <td><span class="from-school">NFL Draft — 1st Round</span></td>
+          <td><span style="font-size:12px;color:var(--muted)">Early NFL departure</span></td>
+        </tr>
+        <tr>
+          <td><span class="p-name">T'Vondre Sweat</span></td>
+          <td><span class="p-pos">DT</span></td>
+          <td><span class="p-class">Graduated</span></td>
+          <td><span class="from-school">NFL — Tennessee Titans</span></td>
+          <td><span style="font-size:12px;color:var(--muted)">Graduated / drafted</span></td>
+        </tr>
+        <tr>
+          <td><span class="p-name">Jahleel Billingsley</span></td>
+          <td><span class="p-pos">TE</span></td>
+          <td><span class="p-class">Graduated</span></td>
+          <td><span class="from-school">Departed</span></td>
+          <td><span style="font-size:12px;color:var(--muted)">Graduation</span></td>
+        </tr>
+        <tr>
+          <td><span class="p-name">Kelvin Banks Jr.</span></td>
+          <td><span class="p-pos">OT</span></td>
+          <td><span class="p-class">Sr.</span></td>
+          <td><span class="from-school">NFL Draft — 1st Round</span></td>
+          <td><span style="font-size:12px;color:var(--muted)">Early NFL departure</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- WATCH LIST -->
+  <div id="tab-watchlist" style="display:none">
+    <div class="watch-list">
+      <div class="watch-item">
+        <div class="watch-left">
+          <div class="watch-name">TJ Moore — WR — Michigan</div>
+          <div class="watch-detail">Jr. · 6'1" · ★★★★ · 42 rec, 610 yds, 6 TD in 2025</div>
+        </div>
+        <div class="watch-right">
+          <div class="watch-status ws-target">Texas Target</div>
+          <div class="watch-conf">Offer extended</div>
+        </div>
+      </div>
+      <div class="watch-item">
+        <div class="watch-left">
+          <div class="watch-name">Deondre Jackson — OT — Ole Miss</div>
+          <div class="watch-detail">Sr. · 6'5" 320 · ★★★★ · Multi-year starter</div>
+        </div>
+        <div class="watch-right">
+          <div class="watch-status ws-offer">Offer Extended</div>
+          <div class="watch-conf">Texas in top 3</div>
+        </div>
+      </div>
+      <div class="watch-item">
+        <div class="watch-left">
+          <div class="watch-name">Quinshon Judkins — RB — Ohio State</div>
+          <div class="watch-detail">Jr. · 5'11" 215 · ★★★★★ · 2x 1,000-yd rusher</div>
+        </div>
+        <div class="watch-right">
+          <div class="watch-status ws-monitoring">Monitoring</div>
+          <div class="watch-conf">Long shot — likely NFL</div>
+        </div>
+      </div>
+      <div class="watch-item">
+        <div class="watch-left">
+          <div class="watch-name">Jaxson Dart — QB — Ole Miss</div>
+          <div class="watch-detail">Sr. · 6'3" 225 · ★★★★ · 3,500+ yds passing in 2025</div>
+        </div>
+        <div class="watch-right">
+          <div class="watch-status ws-monitoring">Monitoring</div>
+          <div class="watch-conf">Depth / competition</div>
+        </div>
+      </div>
+      <div class="watch-item">
+        <div class="watch-left">
+          <div class="watch-name">Kaytron Allen — RB — Penn State</div>
+          <div class="watch-detail">Jr. · 6'0" 220 · ★★★★ · Power back, SEC-ready</div>
+        </div>
+        <div class="watch-right">
+          <div class="watch-status ws-target">Texas Target</div>
+          <div class="watch-conf">Visit expected</div>
+        </div>
+      </div>
+      <div class="watch-item">
+        <div class="watch-left">
+          <div class="watch-name">Malaki Starks — S — Georgia</div>
+          <div class="watch-detail">Jr. · 6'1" 200 · ★★★★★ · First-round NFL talent</div>
+        </div>
+        <div class="watch-right">
+          <div class="watch-status ws-monitoring">Monitoring</div>
+          <div class="watch-conf">Likely stays or NFL</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- IMPACT ANALYSIS -->
+  <div class="sec-head">
+    <div class="sec-title">Top Transfer Impact Analysis</div>
+    <div class="sec-meta">Depth Chart + 2026 Role Projection</div>
+  </div>
+  <div class="impact-grid">
+    <div class="impact-card">
+      <div class="impact-card-pos">WR · Jr.</div>
+      <div class="impact-card-name">Cam Coleman</div>
+      <div class="impact-card-from">From: Auburn · On3: 99.1 · #7 WR nationally</div>
+      <div class="impact-card-body">The marquee portal addition of the 2026 cycle. Coleman was a 5-star recruit who never got the ball enough at Auburn. In Texas's air-raid system with Arch Manning, he projects as a true WR1. Elite separation, contested catch ability, and big-play speed. This addition alone upgrades the offense by a tier.</div>
+      <div class="impact-card-verdict">Projection: 70+ catches, 1,100+ yards, 10 TDs · WR1</div>
+    </div>
+    <div class="impact-card">
+      <div class="impact-card-pos">RB · Sr.</div>
+      <div class="impact-card-name">Raleek Brown</div>
+      <div class="impact-card-from">From: Oklahoma State · 1,300 rush yds in 2025</div>
+      <div class="impact-card-body">The most experienced and explosive back in the Big 12, now in burnt orange. Brown brings home run ability that Texas lacked in recent years. Exceptional in the open field, capable receiver out of the backfield. Immediate starter who gives Sarkisian a true featured back option.</div>
+      <div class="impact-card-verdict">Projection: 180+ carries, 1,100+ yards, 8 TD · RB1</div>
+    </div>
+    <div class="impact-card">
+      <div class="impact-card-pos">CB · Jr.</div>
+      <div class="impact-card-name">Derek Williams Jr.</div>
+      <div class="impact-card-from">From: Penn State · 2025 Big Ten All-Conference</div>
+      <div class="impact-card-body">Texas desperately needed a true CB1 after losing coverage to graduation. Williams brings elite man-coverage skills and the physicality the SEC demands. His arrival changes the entire defensive ceiling. With Colin Simmons as pass rush and Williams on the back end, this defense could be elite.</div>
+      <div class="impact-card-verdict">Projection: CB1 starter · 8+ PBUs · 3+ INTs</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-logo">TOWER<span>REPORT</span></div>
+  <div class="footer-text">The Tower Never Sleeps. © 2026</div>
+</footer>
+
+<script>
+function showTab(tab, btn) {
+  document.querySelectorAll('[id^="tab-"]').forEach(el => el.style.display = 'none');
+  document.querySelectorAll('.ptab').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tab).style.display = '';
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
