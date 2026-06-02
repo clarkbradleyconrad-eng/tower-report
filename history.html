@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Program History — Tower Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--orange:#BF5700;--black:#080808;--surface:#111;--surface2:#181818;--surface3:#202020;--border:rgba(255,255,255,0.07);--border-strong:rgba(255,255,255,0.12);--white:#F5F0E8;--muted:#6B6560;--secondary:#A09890;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);}
+
+nav{position:sticky;top:0;z-index:100;background:rgba(8,8,8,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.nav-inner{display:flex;justify-content:space-between;align-items:center;padding:0 48px;max-width:1400px;margin:0 auto;}
+.nav-logo{display:flex;align-items:center;text-decoration:none;padding:14px 0;}
+.nav-links{display:flex;gap:0;align-items:center;}
+.nav-link{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:20px 18px;border-bottom:2px solid transparent;transition:all .2s;}
+.nav-link:hover,.nav-link.active{color:var(--white);border-bottom-color:var(--orange);}
+.nav-cta{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;background:var(--orange);color:#fff;text-decoration:none;padding:9px 20px;margin-left:16px;border:1px solid var(--orange);transition:all .2s;}
+.nav-cta:hover{background:transparent;color:var(--orange);}
+
+.page-header{padding:48px 48px 36px;border-bottom:1px solid var(--border);}
+.breadcrumb{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
+.breadcrumb span{color:var(--orange);}
+.page-title{font-family:'Playfair Display',serif;font-size:clamp(40px,5vw,72px);font-weight:900;line-height:1;letter-spacing:-2px;color:var(--white);margin-bottom:10px;}
+.page-sub{font-size:15px;color:var(--secondary);font-style:italic;}
+
+/* PROGRAM STATS ROW */
+.program-stats{display:grid;grid-template-columns:repeat(6,1fr);border-bottom:1px solid var(--border);}
+.ps-cell{padding:24px 16px;text-align:center;border-right:1px solid var(--border);}
+.ps-cell:last-child{border-right:none;}
+.ps-num{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--orange);line-height:1;}
+.ps-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:4px;}
+
+/* SECTION RULE */
+.sr{display:flex;align-items:center;gap:16px;padding:32px 48px 0;margin-bottom:24px;}
+.sr-label{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);white-space:nowrap;}
+.sr-line{flex:1;height:1px;background:var(--border);}
+
+.content{padding:0 48px;}
+
+/* CHAMPS TABLE */
+.champs-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:48px;}
+.champ-cell{background:var(--surface);padding:20px 24px;}
+.champ-year{font-family:'Playfair Display',serif;font-size:32px;font-weight:900;color:var(--orange);line-height:1;margin-bottom:6px;}
+.champ-title{font-size:14px;font-weight:600;color:var(--white);margin-bottom:4px;}
+.champ-detail{font-size:13px;color:var(--muted);}
+
+/* COACHES TABLE */
+.coaches-table{width:100%;border-collapse:collapse;margin-bottom:48px;}
+.coaches-table th{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:10px 16px;text-align:left;border-bottom:1px solid var(--border);background:var(--surface);}
+.coaches-table td{padding:12px 16px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:middle;}
+.coaches-table tr:hover td{background:var(--surface);}
+.coaches-table tr.current td{background:rgba(191,87,0,0.06);}
+.coach-name{font-weight:600;color:var(--white);font-size:14px;}
+.coach-era{font-size:11px;color:var(--muted);margin-top:2px;}
+.coach-record{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--white);}
+.coach-pct{font-size:12px;color:var(--secondary);}
+.badge-coach{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;border-radius:2px;margin-left:6px;vertical-align:middle;}
+.badge-nat{background:rgba(191,87,0,0.2);color:var(--orange);}
+.badge-cur{background:rgba(74,222,128,0.1);color:#4ade80;border:1px solid rgba(74,222,128,0.2);}
+
+/* HEISMAN */
+.heisman-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:48px;}
+.heisman-cell{background:var(--surface);padding:28px 24px;display:flex;gap:20px;align-items:flex-start;}
+.heisman-num{font-family:'Playfair Display',serif;font-size:56px;font-weight:900;color:rgba(191,87,0,0.2);line-height:1;flex-shrink:0;}
+.heisman-info{}
+.heisman-year{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:6px;}
+.heisman-name{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--white);margin-bottom:6px;}
+.heisman-detail{font-size:13px;color:var(--secondary);line-height:1.5;}
+
+/* RETIRED NUMBERS */
+.retired-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:48px;}
+.retired-cell{background:var(--surface);padding:20px;text-align:center;}
+.retired-num{font-family:'Playfair Display',serif;font-size:40px;font-weight:900;color:var(--orange);line-height:1;margin-bottom:8px;}
+.retired-name{font-size:13px;font-weight:600;color:var(--white);margin-bottom:3px;}
+.retired-pos{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);}
+
+/* NFL PLAYERS */
+.nfl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:48px;}
+.nfl-cell{background:var(--surface);padding:14px 16px;transition:background .15s;}
+.nfl-cell:hover{background:var(--surface2);}
+.nfl-name{font-size:13px;font-weight:600;color:var(--white);}
+.nfl-detail{font-size:11px;color:var(--muted);margin-top:2px;}
+
+/* RIVALRIES */
+.rival-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:48px;}
+.rival-cell{background:var(--surface);padding:20px 24px;}
+.rival-opp{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--white);margin-bottom:6px;}
+.rival-series{font-size:14px;font-weight:600;color:var(--orange);margin-bottom:4px;}
+.rival-detail{font-size:12px;color:var(--muted);line-height:1.5;}
+
+/* STADIUM */
+.stadium-card{background:var(--surface);border:1px solid var(--border);padding:32px;margin-bottom:48px;display:grid;grid-template-columns:1fr 1fr;gap:32px;}
+.stadium-stat{margin-bottom:16px;}
+.stadium-stat-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+.stadium-stat-val{font-size:15px;font-weight:600;color:var(--white);}
+
+footer{padding:32px 48px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;margin-top:32px;}
+.footer-logo{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:3px;color:var(--muted);}
+.footer-logo span{color:var(--orange);}
+.footer-text{font-size:12px;color:var(--muted);}
+
+@media(max-width:768px){
+  .nav-inner{padding:0 20px;}.nav-link.hm{display:none;}
+  .page-header{padding:32px 20px 24px;}
+  .program-stats{grid-template-columns:repeat(3,1fr);}
+  .ps-cell:nth-child(3){border-right:none;}
+  .sr,.content{padding-left:20px;padding-right:20px;}
+  .champs-grid,.heisman-grid,.rival-grid{grid-template-columns:1fr;}
+  .retired-grid{grid-template-columns:repeat(3,1fr);}
+  .nfl-grid{grid-template-columns:1fr;}
+  .coaches-table{font-size:12px;}
+  .stadium-card{grid-template-columns:1fr;}
+  footer{padding:20px;flex-direction:column;gap:8px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <svg viewBox="0 0 180 44" width="180" height="44" fill="none">
+        <g transform="translate(0,2)">
+          <rect x="14" y="28" width="12" height="10" fill="#BF5700" opacity="0.9"/>
+          <rect x="15.5" y="18" width="9" height="11" fill="#BF5700"/>
+          <rect x="17" y="10" width="6" height="9" fill="#BF5700"/>
+          <circle cx="20" cy="13.5" r="2.2" fill="#080808" stroke="#BF5700" stroke-width="0.5"/>
+          <line x1="20" y1="10" x2="20" y2="5" stroke="#BF5700" stroke-width="1.5"/>
+          <circle cx="20" cy="4.5" r="1" fill="#E8620A"/>
+          <line x1="26" y1="15" x2="32" y2="12" stroke="#BF5700" stroke-width="0.8" opacity="0.7"/>
+          <circle cx="32.5" cy="11.5" r="1.2" fill="#BF5700" opacity="0.7"/>
+          <line x1="14" y1="15" x2="8" y2="12" stroke="#BF5700" stroke-width="0.8" opacity="0.7"/>
+          <circle cx="7.5" cy="11.5" r="1.2" fill="#BF5700" opacity="0.7"/>
+        </g>
+        <text x="44" y="20" font-family="'Barlow Condensed',sans-serif" font-weight="700" font-size="20" letter-spacing="3" fill="#F5F0E8">TOWER</text>
+        <text x="44" y="38" font-family="'Barlow Condensed',sans-serif" font-weight="600" font-size="14" letter-spacing="5" fill="#BF5700">REPORT</text>
+      </svg>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link hm">Home</a>
+      <a href="schedule.html" class="nav-link hm">Schedule</a>
+      <a href="roster.html" class="nav-link hm">Roster</a>
+      <a href="history.html" class="nav-link active">History</a>
+      <a href="index.html#waitlist" class="nav-cta">Join Waitlist</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="breadcrumb">Tower Report <span>/ Football / Program History</span></div>
+  <h1 class="page-title">Texas Longhorns<br>Football</h1>
+  <p class="page-sub">Founded 1893 · 133 seasons · One of the most storied programs in college football history</p>
+</div>
+
+<!-- PROGRAM STATS -->
+<div class="program-stats">
+  <div class="ps-cell"><div class="ps-num">972</div><div class="ps-label">All-Time Wins</div></div>
+  <div class="ps-cell"><div class="ps-num">.705</div><div class="ps-label">Win Pct</div></div>
+  <div class="ps-cell"><div class="ps-num">4</div><div class="ps-label">Natl Champs</div></div>
+  <div class="ps-cell"><div class="ps-num">34</div><div class="ps-label">Conf Titles</div></div>
+  <div class="ps-cell"><div class="ps-num">2</div><div class="ps-label">Heismans</div></div>
+  <div class="ps-cell"><div class="ps-num">51</div><div class="ps-label">Active NFL</div></div>
+</div>
+
+<!-- NATIONAL CHAMPIONSHIPS -->
+<div class="sr"><span class="sr-label">National Championships</span><div class="sr-line"></div></div>
+<div class="content">
+  <div class="champs-grid">
+    <div class="champ-cell">
+      <div class="champ-year">1963</div>
+      <div class="champ-title">National Champions</div>
+      <div class="champ-detail">Coach: Darrell Royal · 11–0 · Cotton Bowl win over No. 2 Navy · AP & UPI #1</div>
+    </div>
+    <div class="champ-cell">
+      <div class="champ-year">1969</div>
+      <div class="champ-title">National Champions</div>
+      <div class="champ-detail">Coach: Darrell Royal · 11–0 · "Game of the Century" win vs Arkansas · Cotton Bowl win over Notre Dame</div>
+    </div>
+    <div class="champ-cell">
+      <div class="champ-year">1970</div>
+      <div class="champ-title">National Champions (UPI)</div>
+      <div class="champ-detail">Coach: Darrell Royal · 10–1 · UPI Coaches Poll champions</div>
+    </div>
+    <div class="champ-cell">
+      <div class="champ-year">2005</div>
+      <div class="champ-title">National Champions</div>
+      <div class="champ-detail">Coach: Mack Brown · 13–0 · Rose Bowl BCS Championship win over USC 41–38 · Vince Young</div>
+    </div>
+  </div>
+</div>
+
+<!-- HEISMAN WINNERS -->
+<div class="sr"><span class="sr-label">Heisman Trophy Winners</span><div class="sr-line"></div></div>
+<div class="content">
+  <div class="heisman-grid">
+    <div class="heisman-cell">
+      <div class="heisman-num">77</div>
+      <div class="heisman-info">
+        <div class="heisman-year">1977 Heisman Trophy</div>
+        <div class="heisman-name">Earl Campbell</div>
+        <div class="heisman-detail">Running Back · Tyler, Texas · Led Texas to 11–1 record and SWC title · Inducted into Pro Football Hall of Fame 1991 · Jersey #20 retired</div>
+      </div>
+    </div>
+    <div class="heisman-cell">
+      <div class="heisman-num">98</div>
+      <div class="heisman-info">
+        <div class="heisman-year">1998 Heisman Trophy</div>
+        <div class="heisman-name">Ricky Williams</div>
+        <div class="heisman-detail">Running Back · San Diego, California · NCAA all-time rushing record holder at the time · Jersey #34 retired · College Football Hall of Fame 2015</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RETIRED NUMBERS -->
+<div class="sr"><span class="sr-label">Retired Numbers</span><div class="sr-line"></div></div>
+<div class="content">
+  <div class="retired-grid">
+    <div class="retired-cell">
+      <div class="retired-num">10</div>
+      <div class="retired-name">Vince Young</div>
+      <div class="retired-pos">QB · 2003–2005</div>
+    </div>
+    <div class="retired-cell">
+      <div class="retired-num">12</div>
+      <div class="retired-name">Colt McCoy</div>
+      <div class="retired-pos">QB · 2006–2009</div>
+    </div>
+    <div class="retired-cell">
+      <div class="retired-num">20</div>
+      <div class="retired-name">Earl Campbell</div>
+      <div class="retired-pos">RB · 1974–1977</div>
+    </div>
+    <div class="retired-cell">
+      <div class="retired-num">22</div>
+      <div class="retired-name">Bobby Layne</div>
+      <div class="retired-pos">QB · 1944–1947</div>
+    </div>
+    <div class="retired-cell">
+      <div class="retired-num">34</div>
+      <div class="retired-name">Ricky Williams</div>
+      <div class="retired-pos">RB · 1995–1998</div>
+    </div>
+    <div class="retired-cell">
+      <div class="retired-num">60</div>
+      <div class="retired-name">Tommy Nobis</div>
+      <div class="retired-pos">LB · 1963–1965</div>
+    </div>
+  </div>
+</div>
+
+<!-- HEAD COACHES -->
+<div class="sr"><span class="sr-label">Head Coaches — Modern Era</span><div class="sr-line"></div></div>
+<div class="content">
+  <table class="coaches-table">
+    <thead>
+      <tr>
+        <th>Coach</th>
+        <th>Seasons</th>
+        <th>Record</th>
+        <th>Win %</th>
+        <th>Notable</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="current">
+        <td><div class="coach-name">Steve Sarkisian <span class="badge-coach badge-cur">Current</span></div><div class="coach-era">2021–Present</div></td>
+        <td>6th season</td>
+        <td><span class="coach-record">48–20</span></td>
+        <td><span class="coach-pct">.706</span></td>
+        <td style="font-size:12px;color:var(--secondary);">CFP Semifinal 2024, Sugar Bowl 2023, Citrus Bowl 2025</td>
+      </tr>
+      <tr>
+        <td><div class="coach-name">Tom Herman</div><div class="coach-era">2017–2020</div></td>
+        <td>4 seasons</td>
+        <td><span class="coach-record">32–18</span></td>
+        <td><span class="coach-pct">.640</span></td>
+        <td style="font-size:12px;color:var(--secondary);">Sugar Bowl win over Georgia 2018</td>
+      </tr>
+      <tr>
+        <td><div class="coach-name">Charlie Strong</div><div class="coach-era">2014–2016</div></td>
+        <td>3 seasons</td>
+        <td><span class="coach-record">16–21</span></td>
+        <td><span class="coach-pct">.432</span></td>
+        <td style="font-size:12px;color:var(--secondary);">Rebuilding era</td>
+      </tr>
+      <tr>
+        <td><div class="coach-name">Mack Brown <span class="badge-coach badge-nat">Natl Champ</span></div><div class="coach-era">1998–2013</div></td>
+        <td>16 seasons</td>
+        <td><span class="coach-record">158–48</span></td>
+        <td><span class="coach-pct">.767</span></td>
+        <td style="font-size:12px;color:var(--secondary);">2005 National Champion, 2 Big 12 titles, Vince Young era</td>
+      </tr>
+      <tr>
+        <td><div class="coach-name">Darrell K Royal <span class="badge-coach badge-nat">3× Natl Champ</span></div><div class="coach-era">1957–1976</div></td>
+        <td>20 seasons</td>
+        <td><span class="coach-record">167–47–5</span></td>
+        <td><span class="coach-pct">.774</span></td>
+        <td style="font-size:12px;color:var(--secondary);">1963, 1969, 1970 Natl Champs · Hall of Fame · Stadium bears his name</td>
+      </tr>
+      <tr>
+        <td><div class="coach-name">Dana X. Bible</div><div class="coach-era">1937–1946</div></td>
+        <td>10 seasons</td>
+        <td><span class="coach-record">63–31–3</span></td>
+        <td><span class="coach-pct">.665</span></td>
+        <td style="font-size:12px;color:var(--secondary);">Hall of Fame · Rebuilt the program</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- RIVALRIES -->
+<div class="sr"><span class="sr-label">Rivalries</span><div class="sr-line"></div></div>
+<div class="content">
+  <div class="rival-grid">
+    <div class="rival-cell">
+      <div class="rival-opp">Oklahoma</div>
+      <div class="rival-series">Texas leads 65–51–5</div>
+      <div class="rival-detail">Red River Rivalry · Cotton Bowl, Dallas · Annually since 1900 · Longest neutral-site rivalry in college football</div>
+    </div>
+    <div class="rival-cell">
+      <div class="rival-opp">Texas A&M</div>
+      <div class="rival-series">Texas leads 78–37–5</div>
+      <div class="rival-detail">Lone Star Showdown · Rivalry since 1894 · Paused 2012–2023 · Resumed in SEC 2024</div>
+    </div>
+    <div class="rival-cell">
+      <div class="rival-opp">Arkansas</div>
+      <div class="rival-series">Texas leads 57–23</div>
+      <div class="rival-detail">Former SWC rivals · 1969 "Game of the Century" · First met 1894</div>
+    </div>
+    <div class="rival-cell">
+      <div class="rival-opp">Baylor</div>
+      <div class="rival-series">Texas leads 81–28–4</div>
+      <div class="rival-detail">111 meetings · Both founding Big 12 members · First met 1901</div>
+    </div>
+    <div class="rival-cell">
+      <div class="rival-opp">TCU</div>
+      <div class="rival-series">Texas leads 65–28–1</div>
+      <div class="rival-detail">First met 1897 · Former SWC and Big 12 rivals</div>
+    </div>
+    <div class="rival-cell">
+      <div class="rival-opp">Texas Tech</div>
+      <div class="rival-series">Texas leads 54–18</div>
+      <div class="rival-detail">Chancellor's Spurs trophy · First met 1928 · Former SWC and Big 12 rivals</div>
+    </div>
+  </div>
+</div>
+
+<!-- HOME STADIUM -->
+<div class="sr"><span class="sr-label">Home Stadium</span><div class="sr-line"></div></div>
+<div class="content">
+  <div class="stadium-card">
+    <div>
+      <div class="stadium-stat"><div class="stadium-stat-label">Stadium</div><div class="stadium-stat-val">Darrell K Royal–Texas Memorial Stadium</div></div>
+      <div class="stadium-stat"><div class="stadium-stat-label">Field</div><div class="stadium-stat-val">Campbell–Williams Field</div></div>
+      <div class="stadium-stat"><div class="stadium-stat-label">Current Capacity</div><div class="stadium-stat-val">100,119 seats</div></div>
+      <div class="stadium-stat"><div class="stadium-stat-label">Planned Expansion</div><div class="stadium-stat-val">~112,000 (would surpass Michigan Stadium)</div></div>
+    </div>
+    <div>
+      <div class="stadium-stat"><div class="stadium-stat-label">First Game</div><div class="stadium-stat-val">1924 · Moved from Clark Field</div></div>
+      <div class="stadium-stat"><div class="stadium-stat-label">Attendance Record</div><div class="stadium-stat-val">105,215 — vs Georgia, Oct 19, 2024</div></div>
+      <div class="stadium-stat"><div class="stadium-stat-label">Ranking</div><div class="stadium-stat-val">2nd largest in Texas · 4th in SEC · 7th largest on-campus stadium</div></div>
+      <div class="stadium-stat"><div class="stadium-stat-label">Location</div><div class="stadium-stat-val">UT Campus · Austin, Texas</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ACTIVE NFL PLAYERS -->
+<div class="sr"><span class="sr-label">Active NFL Players (51)</span><div class="sr-line"></div></div>
+<div class="content">
+  <div class="nfl-grid">
+    <div class="nfl-cell"><div class="nfl-name">Arch Manning</div><div class="nfl-detail">QB · Current Longhorn</div></div>
+    <div class="nfl-cell"><div class="nfl-name">Kelvin Banks Jr.</div><div class="nfl-detail">OT · New Orleans Saints · Lombardi Award 2024</div></div>
+    <div class="nfl-cell"><div class="nfl-name">Jahdae Barron</div><div class="nfl-detail">CB · Denver Broncos</div></div>
+    <div class="nfl-cell"><div class="nfl-name">Bijan Robinson</div><div class="nfl-detail">RB · Atlanta Falcons</div></div>
+    <div class="nfl-cell"><div class="nfl-name">Xavier Worthy</div><div class="nfl-detail">WR · Kansas City Chiefs</div></div>
+    <div class="nfl-cell"><div class="nfl-name">Quinn Ewers</div><div class="nfl-detail">QB · Miami Dolphins</div></div>
+    <div class="nfl-cell"><div class="nfl-name">Matthew Golden</div><div class="nfl-detail">WR · Green Bay Packers</div></div>
+    <div class="nfl-cell"><div class="nfl-name">Gunnar Helm</div><div class="nfl-detail">TE · Tennessee Titans</div></div>
+    <div class="nfl-cell"><div class="nfl-name">Ja'Tavion Sanders</div><div class="nfl-detail">TE · Carolina Panthers</div></div>
+    <div class="nfl-cell"><div class="nfl-name">Andrew Mukuba</div><div class="nfl-detail">S · Philadelphia Eagles</div></div>
+    <div class="nfl-cell"><div class="nfl-name">Jaylan Ford</div><div class="nfl-detail">LB · New Orleans Saints</div></div>
+    <div class="nfl-cell"><div class="nfl-name">Byron Murphy II</div><div class="nfl-detail">DT · Seattle Seahawks</div></div>
+    <div class="nfl-cell"><div class="nfl-name">T'Vondre Sweat</div><div class="nfl-detail">DT · Tennessee Titans · Outland Trophy 2023</div></div>
+    <div class="nfl-cell"><div class="nfl-name">Jake Majors</div><div class="nfl-detail">OG/OC · Philadelphia Eagles</div></div>
+    <div class="nfl-cell"><div class="nfl-name">Barryn Sorrell</div><div class="nfl-detail">DE · Green Bay Packers</div></div>
+    <div class="nfl-cell"><div class="nfl-name">Alfred Collins</div><div class="nfl-detail">DT · San Francisco 49ers</div></div>
+    <div class="nfl-cell"><div class="nfl-name">Hayden Conner</div><div class="nfl-detail">OG/OC · Arizona Cardinals</div></div>
+    <div class="nfl-cell"><div class="nfl-name">Adonai Mitchell</div><div class="nfl-detail">WR · New York Jets</div></div>
+    <div class="nfl-cell"><div class="nfl-name">Cameron Dicker</div><div class="nfl-detail">K · Los Angeles Chargers</div></div>
+    <div class="nfl-cell"><div class="nfl-name">Michael Dickson</div><div class="nfl-detail">P · Seattle Seahawks · Ray Guy Award 2017</div></div>
+    <div class="nfl-cell"><div class="nfl-name">Roschon Johnson</div><div class="nfl-detail">RB · Chicago Bears</div></div>
+    <div class="nfl-cell"><div class="nfl-name">Jaydon Blue</div><div class="nfl-detail">RB · Dallas Cowboys</div></div>
+    <div class="nfl-cell"><div class="nfl-name">D'Onta Foreman</div><div class="nfl-detail">RB · Cleveland Browns</div></div>
+    <div class="nfl-cell" style="grid-column:span 1;"><div class="nfl-name" style="color:var(--muted);font-size:12px;">+ 27 more active Longhorns in the NFL</div><div class="nfl-detail">381 total drafted · 44 first-round picks all-time</div></div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">TOWER<span>REPORT</span></div>
+  <div class="footer-text">The Tower Never Sleeps · © 2026</div>
+</footer>
+
+</body>
+</html>
