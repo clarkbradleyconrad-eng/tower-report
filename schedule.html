@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Schedule History — Tower Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --orange:#BF5700;--black:#0A0A0A;--white:#FAFAF8;
+    --gray:#1A1A1A;--gray-mid:#2A2A2A;--gray-border:#2E2E2E;
+    --muted:#888;--secondary:#BBB;--win:#22c55e;--loss:#ef4444;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:var(--black);color:var(--white);}
+
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:18px 40px;border-bottom:1px solid var(--gray-border);background:rgba(10,10,10,0.95);backdrop-filter:blur(12px);}
+  .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:var(--white);text-decoration:none;}
+  .nav-logo span{color:var(--orange);}
+  .nav-links{display:flex;gap:24px;align-items:center;}
+  .nav-links a{font-size:13px;color:var(--muted);text-decoration:none;transition:color .2s;}
+  .nav-links a:hover,.nav-links a.active{color:var(--white);}
+  .nav-cta{background:var(--orange)!important;color:#fff!important;padding:8px 20px;border-radius:6px;font-weight:500!important;}
+
+  .page-header{margin-top:57px;padding:48px 40px 32px;border-bottom:1px solid var(--gray-border);}
+  .breadcrumb{font-size:11px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;}
+  .breadcrumb span{color:var(--orange);}
+  .page-title{font-family:'Bebas Neue',sans-serif;font-size:48px;letter-spacing:2px;color:var(--white);margin-bottom:6px;}
+  .page-sub{font-size:14px;color:var(--muted);}
+
+  /* YEAR TABS */
+  .year-tabs{display:flex;gap:0;border-bottom:1px solid var(--gray-border);overflow-x:auto;padding:0 40px;}
+  .year-tab{padding:14px 20px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s;background:none;border-top:none;border-left:none;border-right:none;font-family:'DM Sans',sans-serif;}
+  .year-tab:hover{color:var(--white);}
+  .year-tab.active{color:var(--orange);border-bottom-color:var(--orange);}
+  .year-tab.upcoming{color:var(--win);}
+  .year-tab.upcoming.active{color:var(--win);border-bottom-color:var(--win);}
+
+  /* SEASON PANELS */
+  .season-panel{display:none;padding:0 40px 60px;}
+  .season-panel.active{display:block;}
+
+  .season-summary{display:grid;grid-template-columns:repeat(5,1fr);border-bottom:1px solid var(--gray-border);margin-bottom:0;}
+  .sum-cell{padding:20px;text-align:center;border-right:1px solid var(--gray-border);}
+  .sum-cell:last-child{border-right:none;}
+  .sum-num{font-family:'Bebas Neue',sans-serif;font-size:28px;line-height:1;}
+  .sum-num.g{color:var(--win);}
+  .sum-num.r{color:var(--loss);}
+  .sum-num.o{color:var(--orange);}
+  .sum-num.w{color:var(--white);}
+  .sum-label{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-top:3px;}
+
+  .section-head{font-size:10px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:14px 0;border-bottom:1px solid var(--gray-border);}
+
+  .game-row{display:grid;grid-template-columns:52px 1fr 110px 130px 90px 72px;gap:10px;align-items:center;padding:14px 0;border-bottom:1px solid var(--gray-border);transition:background .15s;}
+  .game-row:hover{background:var(--gray);margin:0 -40px;padding:14px 40px;}
+  .game-row.bowl-row{background:rgba(191,87,0,0.04);}
+  .game-row.upcoming-row{background:rgba(34,197,94,0.03);}
+
+  .wk-num{font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--gray-border);text-align:center;line-height:1;}
+  .wk-date{font-size:10px;color:var(--muted);text-align:center;margin-top:2px;}
+
+  .opp-wrap{display:flex;align-items:center;gap:10px;}
+  .opp-init{width:34px;height:34px;border-radius:50%;background:var(--gray-mid);border:1px solid var(--gray-border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:var(--muted);flex-shrink:0;}
+  .opp-name{font-size:14px;font-weight:500;color:var(--white);}
+  .opp-rank{font-size:11px;color:var(--orange);margin-right:3px;}
+  .opp-meta{font-size:11px;color:var(--muted);margin-top:2px;}
+  .tag{display:inline-block;font-size:9px;font-weight:500;padding:2px 5px;border-radius:3px;letter-spacing:.8px;text-transform:uppercase;margin-right:3px;}
+  .tag-h{background:rgba(191,87,0,0.15);color:var(--orange);}
+  .tag-a{background:var(--gray-mid);color:var(--muted);}
+  .tag-n{background:rgba(255,255,255,0.05);color:var(--secondary);}
+  .badge{display:inline-block;font-size:9px;font-weight:500;padding:1px 6px;border-radius:3px;background:rgba(191,87,0,0.2);color:var(--orange);letter-spacing:.8px;text-transform:uppercase;margin-left:4px;vertical-align:middle;}
+
+  .g-time{font-size:12px;color:var(--secondary);}
+  .g-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+  .g-venue{font-size:11px;color:var(--muted);line-height:1.4;}
+  .g-tv{font-size:12px;font-weight:500;}
+  .tv-fox{color:#FFD700;}.tv-espn{color:#FF6B35;}.tv-abc{color:#6BAED6;}.tv-sec{color:#3B82F6;}.tv-tbd{color:var(--muted);}
+
+  .g-result{text-align:right;}
+  .res-letter{font-family:'Bebas Neue',sans-serif;font-size:22px;line-height:1;}
+  .res-w{color:var(--win);}.res-l{color:var(--loss);}
+  .res-score{font-size:12px;color:var(--muted);display:block;font-family:'DM Sans',sans-serif;margin-top:1px;}
+  .res-tbd{font-size:12px;color:var(--muted);}
+  .res-upcoming{font-size:11px;color:var(--win);font-weight:500;}
+
+  footer{padding:20px 40px;border-top:1px solid var(--gray-border);display:flex;justify-content:space-between;align-items:center;}
+  .footer-logo{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:3px;color:var(--muted);}
+  .footer-logo span{color:var(--orange);}
+  .footer-text{font-size:12px;color:var(--muted);}
+
+  @media(max-width:768px){
+    nav{padding:16px 20px;}.nav-links{display:none;}
+    .page-header{padding:32px 20px 24px;}
+    .year-tabs{padding:0 20px;}
+    .season-panel{padding:0 20px 40px;}
+    .season-summary{grid-template-columns:repeat(3,1fr);}
+    .sum-cell:nth-child(3){border-right:none;}
+    .game-row{grid-template-columns:1fr;gap:3px;}
+    .game-row:hover{margin:0;padding:14px 0;}
+    .wk-num,.g-venue,.g-tv{display:none;}
+    footer{padding:20px;flex-direction:column;gap:8px;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">TOWER<span>REPORT</span></a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="schedule.html" class="active">Schedule</a>
+    <a href="roster.html">Roster</a>
+    <a href="index.html#waitlist" class="nav-cta">Join Waitlist</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="breadcrumb">Tower Report <span>/ Football / Schedule History</span></div>
+  <div class="page-title">Schedule & History</div>
+  <div class="page-sub">2016–2026 · Steve Sarkisian (2021–present) · Tom Herman (2017–2020) · Charlie Strong (2014–2016)</div>
+</div>
+
+<div class="year-tabs">
+  <button class="year-tab upcoming active" onclick="showYear('2026',this)">2026 ↑</button>
+  <button class="year-tab" onclick="showYear('2025',this)">2025</button>
+  <button class="year-tab" onclick="showYear('2024',this)">2024</button>
+  <button class="year-tab" onclick="showYear('2023',this)">2023</button>
+  <button class="year-tab" onclick="showYear('2022',this)">2022</button>
+  <button class="year-tab" onclick="showYear('2021',this)">2021</button>
+  <button class="year-tab" onclick="showYear('2020',this)">2020</button>
+  <button class="year-tab" onclick="showYear('2019',this)">2019</button>
+  <button class="year-tab" onclick="showYear('2018',this)">2018</button>
+  <button class="year-tab" onclick="showYear('2017',this)">2017</button>
+  <button class="year-tab" onclick="showYear('2016',this)">2016</button>
+</div>
+
+<!-- 2026 UPCOMING -->
+<div id="yr-2026" class="season-panel active">
+  <div class="season-summary">
+    <div class="sum-cell"><div class="sum-num w">0-0</div><div class="sum-label">Record</div></div>
+    <div class="sum-cell"><div class="sum-num o">7</div><div class="sum-label">Home Games</div></div>
+    <div class="sum-cell"><div class="sum-num o">4</div><div class="sum-label">Road Games</div></div>
+    <div class="sum-cell"><div class="sum-num o">1</div><div class="sum-label">Neutral Site</div></div>
+    <div class="sum-cell"><div class="sum-num w">Sark 6</div><div class="sum-label">Coach Year</div></div>
+  </div>
+  <div class="section-head">2026 Regular Season — Upcoming</div>
+
+  <div class="game-row upcoming-row">
+    <div><div class="wk-num">W1</div><div class="wk-date">Sep 5</div></div>
+    <div class="opp-wrap"><div class="opp-init">TXST</div><div><div class="opp-name">Texas State</div><div class="opp-meta"><span class="tag tag-h">Home</span> DKR · Austin, TX</div></div></div>
+    <div class="g-time">Sat, Sep 5<div class="g-sub">2:30 PM CT</div></div>
+    <div class="g-venue">DKR-Texas Memorial Stadium<br/>Austin, Texas</div>
+    <div class="g-tv tv-espn">ESPN</div>
+    <div class="g-result"><div class="res-upcoming">Upcoming</div></div>
+  </div>
+
+  <div class="game-row upcoming-row">
+    <div><div class="wk-num">W2</div><div class="wk-date">Sep 12</div></div>
+    <div class="opp-wrap"><div class="opp-init">OSU</div><div><div class="opp-name">Ohio State</div><div class="opp-meta"><span class="tag tag-h">Home</span> DKR · Austin, TX</div></div></div>
+    <div class="g-time">Sat, Sep 12<div class="g-sub">6:30 PM CT</div></div>
+    <div class="g-venue">DKR-Texas Memorial Stadium<br/>Austin, Texas</div>
+    <div class="g-tv tv-tbd">TBD</div>
+    <div class="g-result"><div class="res-upcoming">Upcoming</div></div>
+  </div>
+
+  <div class="game-row upcoming-row">
+    <div><div class="wk-num">W3</div><div class="wk-date">Sep 19</div></div>
+    <div class="opp-wrap"><div class="opp-init">UTSA</div><div><div class="opp-name">UTSA</div><div class="opp-meta"><span class="tag tag-h">Home</span> DKR · Austin, TX</div></div></div>
+    <div class="g-time">Sat, Sep 19<div class="g-sub">7:00 PM CT</div></div>
+    <div class="g-venue">DKR-Texas Memorial Stadium<br/>Austin, Texas</div>
+    <div class="g-tv tv-tbd">TBD</div>
+    <div class="g-result"><div class="res-upcoming">Upcoming</div></div>
+  </div>
+
+  <div class="game-row upcoming-row">
+    <div><div class="wk-num">W4</div><div class="wk-date">Sep 26</div></div>
+    <div class="opp-wrap"><div class="opp-init">TENN</div><div><div class="opp-name">at Tennessee</div><div class="opp-meta"><span class="tag tag-a">Away</span> Neyland Stadium · Knoxville, TN</div></div></div>
+    <div class="g-time">Sat, Sep 26<div class="g-sub">TBA</div></div>
+    <div class="g-venue">Neyland Stadium<br/>Knoxville, Tennessee</div>
+    <div class="g-tv tv-tbd">TBD</div>
+    <div class="g-result"><div class="res-upcoming">Upcoming</div></div>
+  </div>
+
+  <div class="game-row upcoming-row">
+    <div><div class="wk-num">W5</div><div class="wk-date">Oct 10</div></div>
+    <div class="opp-wrap"><div class="opp-init">OU</div><div><div class="opp-name">Oklahoma <span class="badge">Red River</span></div><div class="opp-meta"><span class="tag tag-n">Neutral</span> Cotton Bowl · Dallas, TX</div></div></div>
+    <div class="g-time">Sat, Oct 10<div class="g-sub">TBA</div></div>
+    <div class="g-venue">Cotton Bowl Stadium<br/>Dallas, Texas</div>
+    <div class="g-tv tv-tbd">TBD</div>
+    <div class="g-result"><div class="res-upcoming">Upcoming</div></div>
+  </div>
+
+  <div class="game-row upcoming-row">
+    <div><div class="wk-num">W6</div><div class="wk-date">Oct 17</div></div>
+    <div class="opp-wrap"><div class="opp-init">UF</div><div><div class="opp-name">Florida</div><div class="opp-meta"><span class="tag tag-h">Home</span> DKR · Austin, TX</div></div></div>
+    <div class="g-time">Sat, Oct 17<div class="g-sub">TBA</div></div>
+    <div class="g-venue">DKR-Texas Memorial Stadium<br/>Austin, Texas</div>
+    <div class="g-tv tv-tbd">TBD</div>
+    <div class="g-result"><div class="res-upcoming">Upcoming</div></div>
+  </div>
+
+  <div class="game-row upcoming-row">
+    <div><div class="wk-num">W7</div><div class="wk-date">Oct 24</div></div>
+    <div class="opp-wrap"><div class="opp-init">MISS</div><div><div class="opp-name">Ole Miss</div><div class="opp-meta"><span class="tag tag-h">Home</span> DKR · Austin, TX</div></div></div>
+    <div class="g-time">Sat, Oct 24<div class="g-sub">TBA</div></div>
+    <div class="g-venue">DKR-Texas Memorial Stadium<br/>Austin, Texas</div>
+    <div class="g-tv tv-tbd">TBD</div>
+    <div class="g-result"><div class="res-upcoming">Upcoming</div></div>
+  </div>
+
+  <div class="game-row upcoming-row">
+    <div><div class="wk-num">W8</div><div class="wk-date">Oct 31</div></div>
+    <div class="opp-wrap"><div class="opp-init">MSU</div><div><div class="opp-name">Mississippi State</div><div class="opp-meta"><span class="tag tag-h">Home</span> DKR · Austin, TX</div></div></div>
+    <div class="g-time">Sat, Oct 31<div class="g-sub">TBA</div></div>
+    <div class="g-venue">DKR-Texas Memorial Stadium<br/>Austin, Texas</div>
+    <div class="g-tv tv-tbd">TBD</div>
+    <div class="g-result"><div class="res-upcoming">Upcoming</div></div>
+  </div>
+
+  <div class="game-row upcoming-row">
+    <div><div class="wk-num">W9</div><div class="wk-date">Nov 7</div></div>
+    <div class="opp-wrap"><div class="opp-init">MIZZOU</div><div><div class="opp-name">at Missouri</div><div class="opp-meta"><span class="tag tag-a">Away</span> Faurot Field · Columbia, MO</div></div></div>
+    <div class="g-time">Sat, Nov 7<div class="g-sub">TBA</div></div>
+    <div class="g-venue">Faurot Field at Memorial Stadium<br/>Columbia, Missouri</div>
+    <div class="g-tv tv-tbd">TBD</div>
+    <div class="g-result"><div class="res-upcoming">Upcoming</div></div>
+  </div>
+
+  <div class="game-row upcoming-row">
+    <div><div class="wk-num">W10</div><div class="wk-date">Nov 14</div></div>
+    <div class="opp-wrap"><div class="opp-init">LSU</div><div><div class="opp-name">at LSU</div><div class="opp-meta"><span class="tag tag-a">Away</span> Tiger Stadium · Baton Rouge, LA</div></div></div>
+    <div class="g-time">Sat, Nov 14<div class="g-sub">TBA</div></div>
+    <div class="g-venue">Tiger Stadium (Death Valley)<br/>Baton Rouge, Louisiana</div>
+    <div class="g-tv tv-tbd">TBD</div>
+    <div class="g-result"><div class="res-upcoming">Upcoming</div></div>
+  </div>
+
+  <div class="game-row upcoming-row">
+    <div><div class="wk-num">W11</div><div class="wk-date">Nov 21</div></div>
+    <div class="opp-wrap"><div class="opp-init">ARK</div><div><div class="opp-name">Arkansas</div><div class="opp-meta"><span class="tag tag-h">Home</span> DKR · Austin, TX</div></div></div>
+    <div class="g-time">Sat, Nov 21<div class="g-sub">TBA</div></div>
+    <div class="g-venue">DKR-Texas Memorial Stadium<br/>Austin, Texas</div>
+    <div class="g-tv tv-tbd">TBD</div>
+    <div class="g-result"><div class="res-upcoming">Upcoming</div></div>
+  </div>
+
+  <div class="game-row upcoming-row">
+    <div><div class="wk-num">W12</div><div class="wk-date">Nov 27</div></div>
+    <div class="opp-wrap"><div class="opp-init">A&M</div><div><div class="opp-name">at Texas A&M <span class="badge">Lone Star</span></div><div class="opp-meta"><span class="tag tag-a">Away</span> Kyle Field · College Station, TX</div></div></div>
+    <div class="g-time">Fri, Nov 27<div class="g-sub">6:30 PM CT</div></div>
+    <div class="g-venue">Kyle Field<br/>College Station, Texas</div>
+    <div class="g-tv tv-espn">ESPN</div>
+    <div class="g-result"><div class="res-upcoming">Upcoming</div></div>
+  </div>
+</div>
+
+<!-- 2025 -->
+<div id="yr-2025" class="season-panel">
+  <div class="season-summary">
+    <div class="sum-cell"><div class="sum-num g">11</div><div class="sum-label">Wins</div></div>
+    <div class="sum-cell"><div class="sum-num r">3</div><div class="sum-label">Losses</div></div>
+    <div class="sum-cell"><div class="sum-num o">6-2</div><div class="sum-label">SEC Record</div></div>
+    <div class="sum-cell"><div class="sum-num o">#12</div><div class="sum-label">Final AP Rank</div></div>
+    <div class="sum-cell"><div class="sum-num w">Citrus Bowl W</div><div class="sum-label">Bowl Result</div></div>
+  </div>
+  <div class="section-head">2025 Regular Season</div>
+  <div class="game-row"><div><div class="wk-num">W1</div><div class="wk-date">Aug 30</div></div><div class="opp-wrap"><div class="opp-init">OSU</div><div><div class="opp-name"><span class="opp-rank">#3</span> at Ohio State</div><div class="opp-meta"><span class="tag tag-a">Away</span> Ohio Stadium · Columbus, OH</div></div></div><div class="g-time">Aug 30<div class="g-sub">11:00 AM CT</div></div><div class="g-venue">Ohio Stadium · Columbus, OH</div><div class="g-tv tv-fox">FOX</div><div class="g-result"><div class="res-letter res-l">L</div><span class="res-score">10–31</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W2</div><div class="wk-date">Sep 6</div></div><div class="opp-wrap"><div class="opp-init">SJS</div><div><div class="opp-name">San Jose State</div><div class="opp-meta"><span class="tag tag-h">Home</span> DKR · Austin, TX</div></div></div><div class="g-time">Sep 6<div class="g-sub">11:00 AM CT</div></div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-abc">ABC/ESPN</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">45–7</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W3</div><div class="wk-date">Sep 13</div></div><div class="opp-wrap"><div class="opp-init">UTEP</div><div><div class="opp-name">UTEP</div><div class="opp-meta"><span class="tag tag-h">Home</span> DKR · Austin, TX</div></div></div><div class="g-time">Sep 13<div class="g-sub">3:15 PM CT</div></div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-sec">SEC Network</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">52–10</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W4</div><div class="wk-date">Sep 20</div></div><div class="opp-wrap"><div class="opp-init">SHU</div><div><div class="opp-name">Sam Houston</div><div class="opp-meta"><span class="tag tag-h">Home</span> DKR · Austin, TX</div></div></div><div class="g-time">Sep 20<div class="g-sub">7:00 PM CT</div></div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-sec">ESPN+/SEC Net+</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">49–3</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W5</div><div class="wk-date">Sep 27</div></div><div class="opp-wrap"><div class="opp-init">UF</div><div><div class="opp-name">at Florida</div><div class="opp-meta"><span class="tag tag-a">Away</span> Ben Hill Griffin · Gainesville, FL</div></div></div><div class="g-time">Sep 27<div class="g-sub">3:30 PM CT</div></div><div class="g-venue">Ben Hill Griffin Stadium · Gainesville, FL</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">35–14</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W6</div><div class="wk-date">Oct 11</div></div><div class="opp-wrap"><div class="opp-init">OU</div><div><div class="opp-name">Oklahoma <span class="badge">Red River</span></div><div class="opp-meta"><span class="tag tag-n">Neutral</span> Cotton Bowl · Dallas, TX</div></div></div><div class="g-time">Oct 11<div class="g-sub">2:30 PM CT</div></div><div class="g-venue">Cotton Bowl · Dallas, TX</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">23–6</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W7</div><div class="wk-date">Oct 16</div></div><div class="opp-wrap"><div class="opp-init">UK</div><div><div class="opp-name">at Kentucky</div><div class="opp-meta"><span class="tag tag-a">Away</span> Kroger Field · Lexington, KY</div></div></div><div class="g-time">Oct 16<div class="g-sub">6:30 PM CT</div></div><div class="g-venue">Kroger Field · Lexington, KY</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">38–21</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W8</div><div class="wk-date">Oct 25</div></div><div class="opp-wrap"><div class="opp-init">VU</div><div><div class="opp-name">Vanderbilt</div><div class="opp-meta"><span class="tag tag-h">Home</span> DKR · Austin, TX</div></div></div><div class="g-time">Oct 25<div class="g-sub">6:30 PM CT</div></div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-sec">SEC Network</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">42–14</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W9</div><div class="wk-date">Nov 1</div></div><div class="opp-wrap"><div class="opp-init">MISS</div><div><div class="opp-name">Ole Miss</div><div class="opp-meta"><span class="tag tag-h">Home</span> DKR · Austin, TX</div></div></div><div class="g-time">Nov 1<div class="g-sub">6:30 PM CT</div></div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">28–17</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W10</div><div class="wk-date">Nov 8</div></div><div class="opp-wrap"><div class="opp-init">ARK</div><div><div class="opp-name">at Arkansas</div><div class="opp-meta"><span class="tag tag-a">Away</span> Razorback Stadium · Fayetteville, AR</div></div></div><div class="g-time">Nov 8<div class="g-sub">6:30 PM CT</div></div><div class="g-venue">Razorback Stadium · Fayetteville, AR</div><div class="g-tv tv-sec">SEC Network</div><div class="g-result"><div class="res-letter res-l">L</div><span class="res-score">21–28</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W11</div><div class="wk-date">Nov 15</div></div><div class="opp-wrap"><div class="opp-init">MSU</div><div><div class="opp-name">Mississippi State</div><div class="opp-meta"><span class="tag tag-h">Home</span> DKR · Austin, TX</div></div></div><div class="g-time">Nov 15<div class="g-sub">TBA</div></div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-sec">SEC Network</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">41–7</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W12</div><div class="wk-date">Nov 22</div></div><div class="opp-wrap"><div class="opp-init">LSU</div><div><div class="opp-name"><span class="opp-rank">#14</span> at LSU</div><div class="opp-meta"><span class="tag tag-a">Away</span> Tiger Stadium · Baton Rouge, LA</div></div></div><div class="g-time">Nov 22<div class="g-sub">6:30 PM CT</div></div><div class="g-venue">Tiger Stadium · Baton Rouge, LA</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">29–26</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W13</div><div class="wk-date">Nov 28</div></div><div class="opp-wrap"><div class="opp-init">A&M</div><div><div class="opp-name"><span class="opp-rank">#3</span> at Texas A&M <span class="badge">Lone Star</span></div><div class="opp-meta"><span class="tag tag-a">Away</span> Kyle Field · College Station, TX</div></div></div><div class="g-time">Nov 28<div class="g-sub">6:30 PM CT</div></div><div class="g-venue">Kyle Field · College Station, TX</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-l">L</div><span class="res-score">13–26</span></div></div>
+  <div class="section-head">2025 Bowl Game</div>
+  <div class="game-row bowl-row"><div><div class="wk-num">Bowl</div><div class="wk-date">Dec 31</div></div><div class="opp-wrap"><div class="opp-init">MICH</div><div><div class="opp-name"><span class="opp-rank">#18</span> Michigan <span class="badge">Citrus Bowl ✓</span></div><div class="opp-meta"><span class="tag tag-n">Neutral</span> Camping World Stadium · Orlando, FL</div></div></div><div class="g-time">Dec 31<div class="g-sub">2:00 PM CT</div></div><div class="g-venue">Camping World Stadium · Orlando, FL</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">41–27</span></div></div>
+</div>
+
+<!-- 2024 -->
+<div id="yr-2024" class="season-panel">
+  <div class="season-summary">
+    <div class="sum-cell"><div class="sum-num g">13</div><div class="sum-label">Wins</div></div>
+    <div class="sum-cell"><div class="sum-num r">3</div><div class="sum-label">Losses</div></div>
+    <div class="sum-cell"><div class="sum-num o">5-3</div><div class="sum-label">SEC Record</div></div>
+    <div class="sum-cell"><div class="sum-num o">#9</div><div class="sum-label">Final AP Rank</div></div>
+    <div class="sum-cell"><div class="sum-num w">CFP Semifinal</div><div class="sum-label">CFP Result</div></div>
+  </div>
+  <div class="section-head">2024 Season — CFP Semifinal Run</div>
+  <div class="game-row"><div><div class="wk-num">W1</div><div class="wk-date">Aug 31</div></div><div class="opp-wrap"><div class="opp-init">CSU</div><div><div class="opp-name">Colorado State</div><div class="opp-meta"><span class="tag tag-h">Home</span> DKR · Austin, TX</div></div></div><div class="g-time">Aug 31</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">52–0</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W2</div><div class="wk-date">Sep 7</div></div><div class="opp-wrap"><div class="opp-init">MICH</div><div><div class="opp-name">at Michigan</div><div class="opp-meta"><span class="tag tag-a">Away</span> Michigan Stadium · Ann Arbor, MI</div></div></div><div class="g-time">Sep 7</div><div class="g-venue">Michigan Stadium · Ann Arbor, MI</div><div class="g-tv tv-fox">FOX</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">31–12</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W3</div><div class="wk-date">Sep 14</div></div><div class="opp-wrap"><div class="opp-init">UTSA</div><div><div class="opp-name">UTSA</div><div class="opp-meta"><span class="tag tag-h">Home</span> DKR · Austin, TX</div></div></div><div class="g-time">Sep 14</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-sec">SEC Network</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">49–14</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W4</div><div class="wk-date">Sep 21</div></div><div class="opp-wrap"><div class="opp-init">ULM</div><div><div class="opp-name">UL Monroe</div><div class="opp-meta"><span class="tag tag-h">Home</span> DKR · Austin, TX</div></div></div><div class="g-time">Sep 21</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-sec">SEC Network</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">51–3</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W5</div><div class="wk-date">Sep 28</div></div><div class="opp-wrap"><div class="opp-init">MSST</div><div><div class="opp-name">Mississippi State</div><div class="opp-meta"><span class="tag tag-h">Home</span> DKR · Austin, TX</div></div></div><div class="g-time">Sep 28</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">35–13</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W6</div><div class="wk-date">Oct 12</div></div><div class="opp-wrap"><div class="opp-init">OU</div><div><div class="opp-name">Oklahoma <span class="badge">Red River</span></div><div class="opp-meta"><span class="tag tag-n">Neutral</span> Cotton Bowl · Dallas, TX</div></div></div><div class="g-time">Oct 12</div><div class="g-venue">Cotton Bowl · Dallas, TX</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">34–3</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W7</div><div class="wk-date">Oct 19</div></div><div class="opp-wrap"><div class="opp-init">UGA</div><div><div class="opp-name"><span class="opp-rank">#1</span> Georgia</div><div class="opp-meta"><span class="tag tag-h">Home</span> DKR · Austin, TX</div></div></div><div class="g-time">Oct 19</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">30–15</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W8</div><div class="wk-date">Oct 26</div></div><div class="opp-wrap"><div class="opp-init">VU</div><div><div class="opp-name">at Vanderbilt</div><div class="opp-meta"><span class="tag tag-a">Away</span> FirstBank Stadium · Nashville, TN</div></div></div><div class="g-time">Oct 26</div><div class="g-venue">FirstBank Stadium · Nashville, TN</div><div class="g-tv tv-sec">SEC Network</div><div class="g-result"><div class="res-letter res-l">L</div><span class="res-score">27–40</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W9</div><div class="wk-date">Nov 9</div></div><div class="opp-wrap"><div class="opp-init">UF</div><div><div class="opp-name">Florida</div><div class="opp-meta"><span class="tag tag-h">Home</span> DKR · Austin, TX</div></div></div><div class="g-time">Nov 9</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">48–21</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W10</div><div class="wk-date">Nov 16</div></div><div class="opp-wrap"><div class="opp-init">ARK</div><div><div class="opp-name">at Arkansas</div><div class="opp-meta"><span class="tag tag-a">Away</span> Razorback Stadium · Fayetteville, AR</div></div></div><div class="g-time">Nov 16</div><div class="g-venue">Razorback Stadium · Fayetteville, AR</div><div class="g-tv tv-sec">SEC Network</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">20–10</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W11</div><div class="wk-date">Nov 23</div></div><div class="opp-wrap"><div class="opp-init">UK</div><div><div class="opp-name">Kentucky</div><div class="opp-meta"><span class="tag tag-h">Home</span> DKR · Austin, TX</div></div></div><div class="g-time">Nov 23</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-sec">SEC Network</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">38–21</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W12</div><div class="wk-date">Nov 30</div></div><div class="opp-wrap"><div class="opp-init">A&M</div><div><div class="opp-name">at Texas A&M <span class="badge">Lone Star</span></div><div class="opp-meta"><span class="tag tag-a">Away</span> Kyle Field · College Station, TX</div></div></div><div class="g-time">Nov 30</div><div class="g-venue">Kyle Field · College Station, TX</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-l">L</div><span class="res-score">17–24</span></div></div>
+  <div class="section-head">2024 CFP Run</div>
+  <div class="game-row bowl-row"><div><div class="wk-num">CFP</div><div class="wk-date">Jan 10</div></div><div class="opp-wrap"><div class="opp-init">OSU</div><div><div class="opp-name">Ohio State <span class="badge">CFP Semifinal</span></div><div class="opp-meta"><span class="tag tag-n">Neutral</span> AT&T Stadium · Arlington, TX</div></div></div><div class="g-time">Jan 10, 2025</div><div class="g-venue">AT&T Stadium · Arlington, TX</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-l">L</div><span class="res-score">28–23</span></div></div>
+</div>
+
+<!-- 2023 -->
+<div id="yr-2023" class="season-panel">
+  <div class="season-summary">
+    <div class="sum-cell"><div class="sum-num g">12</div><div class="sum-label">Wins</div></div>
+    <div class="sum-cell"><div class="sum-num r">2</div><div class="sum-label">Losses</div></div>
+    <div class="sum-cell"><div class="sum-num o">6-2</div><div class="sum-label">Big 12 Record</div></div>
+    <div class="sum-cell"><div class="sum-num o">#3</div><div class="sum-label">Final AP Rank</div></div>
+    <div class="sum-cell"><div class="sum-num w">Sugar Bowl W</div><div class="sum-label">Bowl Result</div></div>
+  </div>
+  <div class="section-head">2023 Season — Big 12 Final Year</div>
+  <div class="game-row"><div><div class="wk-num">W1</div></div><div class="opp-wrap"><div class="opp-init">RIC</div><div><div class="opp-name">Rice</div><div class="opp-meta"><span class="tag tag-h">Home</span></div></div></div><div class="g-time">Sep 2</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">37–10</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W2</div></div><div class="opp-wrap"><div class="opp-init">ASU</div><div><div class="opp-name">Alabama</div><div class="opp-meta"><span class="tag tag-h">Home</span></div></div></div><div class="g-time">Sep 9</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-fox">FOX</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">34–24</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W3</div></div><div class="opp-wrap"><div class="opp-init">WYO</div><div><div class="opp-name">Wyoming</div><div class="opp-meta"><span class="tag tag-h">Home</span></div></div></div><div class="g-time">Sep 16</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-sec">LHN</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">41–13</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W4</div></div><div class="opp-wrap"><div class="opp-init">BAYLOR</div><div><div class="opp-name">Baylor</div><div class="opp-meta"><span class="tag tag-h">Home</span></div></div></div><div class="g-time">Sep 23</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">38–6</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W5</div></div><div class="opp-wrap"><div class="opp-init">KSU</div><div><div class="opp-name">at Kansas State</div><div class="opp-meta"><span class="tag tag-a">Away</span></div></div></div><div class="g-time">Sep 30</div><div class="g-venue">Bill Snyder Family Stadium · Manhattan, KS</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">33–30</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W6</div></div><div class="opp-wrap"><div class="opp-init">OU</div><div><div class="opp-name">Oklahoma <span class="badge">Red River</span></div><div class="opp-meta"><span class="tag tag-n">Neutral</span> Cotton Bowl · Dallas, TX</div></div></div><div class="g-time">Oct 7</div><div class="g-venue">Cotton Bowl · Dallas, TX</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-l">L</div><span class="res-score">30–34</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W7</div></div><div class="opp-wrap"><div class="opp-init">BYU</div><div><div class="opp-name">BYU</div><div class="opp-meta"><span class="tag tag-h">Home</span></div></div></div><div class="g-time">Oct 28</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">35–6</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W8</div></div><div class="opp-wrap"><div class="opp-init">KU</div><div><div class="opp-name">at Kansas</div><div class="opp-meta"><span class="tag tag-a">Away</span></div></div></div><div class="g-time">Nov 4</div><div class="g-venue">Memorial Stadium · Lawrence, KS</div><div class="g-tv tv-fox">FOX</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">40–14</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W9</div></div><div class="opp-wrap"><div class="opp-init">WVU</div><div><div class="opp-name">West Virginia</div><div class="opp-meta"><span class="tag tag-h">Home</span></div></div></div><div class="g-time">Nov 11</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-espn">ESPN+</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">31–20</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W10</div></div><div class="opp-wrap"><div class="opp-init">TCU</div><div><div class="opp-name">at TCU</div><div class="opp-meta"><span class="tag tag-a">Away</span></div></div></div><div class="g-time">Nov 18</div><div class="g-venue">Amon G. Carter Stadium · Fort Worth, TX</div><div class="g-tv tv-fox">FOX</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">29–26 OT</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W11</div></div><div class="opp-wrap"><div class="opp-init">IAst</div><div><div class="opp-name">Iowa State</div><div class="opp-meta"><span class="tag tag-h">Home</span></div></div></div><div class="g-time">Nov 25</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">26–16</span></div></div>
+  <div class="game-row"><div><div class="wk-num">B12</div></div><div class="opp-wrap"><div class="opp-init">OU</div><div><div class="opp-name">Oklahoma <span class="badge">Big 12 Champ</span></div><div class="opp-meta"><span class="tag tag-n">Neutral</span> AT&T Stadium · Arlington, TX</div></div></div><div class="g-time">Dec 2</div><div class="g-venue">AT&T Stadium · Arlington, TX</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-l">L</div><span class="res-score">34–49</span></div></div>
+  <div class="section-head">2023 Bowl Game</div>
+  <div class="game-row bowl-row"><div><div class="wk-num">Bowl</div></div><div class="opp-wrap"><div class="opp-init">WASH</div><div><div class="opp-name"><span class="opp-rank">#5</span> Washington <span class="badge">Sugar Bowl ✓</span></div><div class="opp-meta"><span class="tag tag-n">Neutral</span> Caesars Superdome · New Orleans, LA</div></div></div><div class="g-time">Jan 1, 2024</div><div class="g-venue">Caesars Superdome · New Orleans, LA</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">37–31</span></div></div>
+</div>
+
+<!-- 2022 -->
+<div id="yr-2022" class="season-panel">
+  <div class="season-summary">
+    <div class="sum-cell"><div class="sum-num g">8</div><div class="sum-label">Wins</div></div>
+    <div class="sum-cell"><div class="sum-num r">5</div><div class="sum-label">Losses</div></div>
+    <div class="sum-cell"><div class="sum-num o">5-4</div><div class="sum-label">Big 12 Record</div></div>
+    <div class="sum-cell"><div class="sum-num o">NR</div><div class="sum-label">Final AP Rank</div></div>
+    <div class="sum-cell"><div class="sum-num w">Alamo Bowl W</div><div class="sum-label">Bowl Result</div></div>
+  </div>
+  <div class="section-head">2022 Season — Sarkisian Year 2</div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">ULM</div><div><div class="opp-name">Louisiana Monroe</div><div class="opp-meta"><span class="tag tag-h">Home</span></div></div></div><div class="g-time">Sep 3</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-sec">LHN</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">52–10</span></div></div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">ASU</div><div><div class="opp-name">Alabama</div><div class="opp-meta"><span class="tag tag-a">Away</span></div></div></div><div class="g-time">Sep 10</div><div class="g-venue">Bryant-Denny Stadium · Tuscaloosa, AL</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-l">L</div><span class="res-score">19–20</span></div></div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">UTSA</div><div><div class="opp-name">UTSA</div><div class="opp-meta"><span class="tag tag-h">Home</span></div></div></div><div class="g-time">Sep 17</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">41–20</span></div></div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">TX&M</div><div><div class="opp-name">Texas Tech</div><div class="opp-meta"><span class="tag tag-a">Away</span></div></div></div><div class="g-time">Sep 24</div><div class="g-venue">Jones AT&T Stadium · Lubbock, TX</div><div class="g-tv tv-fox">FOX</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">37–34 OT</span></div></div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">WVU</div><div><div class="opp-name">West Virginia</div><div class="opp-meta"><span class="tag tag-h">Home</span></div></div></div><div class="g-time">Oct 1</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">38–20</span></div></div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">OU</div><div><div class="opp-name">Oklahoma <span class="badge">Red River</span></div><div class="opp-meta"><span class="tag tag-n">Neutral</span></div></div></div><div class="g-time">Oct 8</div><div class="g-venue">Cotton Bowl · Dallas, TX</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-l">L</div><span class="res-score">17–49</span></div></div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">IOWA</div><div><div class="opp-name">Iowa State</div><div class="opp-meta"><span class="tag tag-a">Away</span></div></div></div><div class="g-time">Oct 15</div><div class="g-venue">Jack Trice Stadium · Ames, IA</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-l">L</div><span class="res-score">14–24</span></div></div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">OKST</div><div><div class="opp-name">Oklahoma State</div><div class="opp-meta"><span class="tag tag-h">Home</span></div></div></div><div class="g-time">Oct 22</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-l">L</div><span class="res-score">14–41</span></div></div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">KSU</div><div><div class="opp-name">Kansas State</div><div class="opp-meta"><span class="tag tag-h">Home</span></div></div></div><div class="g-time">Nov 5</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-fox">FOX</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">34–27</span></div></div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">TCU</div><div><div class="opp-name">TCU</div><div class="opp-meta"><span class="tag tag-h">Home</span></div></div></div><div class="g-time">Nov 12</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-l">L</div><span class="res-score">17–17 OT L</span></div></div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">KU</div><div><div class="opp-name">at Kansas</div><div class="opp-meta"><span class="tag tag-a">Away</span></div></div></div><div class="g-time">Nov 19</div><div class="g-venue">Memorial Stadium · Lawrence, KS</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">55–14</span></div></div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">BAYLOR</div><div><div class="opp-name">Baylor</div><div class="opp-meta"><span class="tag tag-h">Home</span></div></div></div><div class="g-time">Nov 25</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">38–27</span></div></div>
+  <div class="section-head">2022 Bowl</div>
+  <div class="game-row bowl-row"><div><div class="wk-num">Bowl</div></div><div class="opp-wrap"><div class="opp-init">WASH</div><div><div class="opp-name">Washington <span class="badge">Alamo Bowl ✓</span></div><div class="opp-meta"><span class="tag tag-n">Neutral</span> Alamodome · San Antonio, TX</div></div></div><div class="g-time">Dec 29</div><div class="g-venue">Alamodome · San Antonio, TX</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">38–35</span></div></div>
+</div>
+
+<!-- 2021 -->
+<div id="yr-2021" class="season-panel">
+  <div class="season-summary">
+    <div class="sum-cell"><div class="sum-num g">5</div><div class="sum-label">Wins</div></div>
+    <div class="sum-cell"><div class="sum-num r">7</div><div class="sum-label">Losses</div></div>
+    <div class="sum-cell"><div class="sum-num o">3-6</div><div class="sum-label">Big 12 Record</div></div>
+    <div class="sum-cell"><div class="sum-num o">NR</div><div class="sum-label">Final AP Rank</div></div>
+    <div class="sum-cell"><div class="sum-num w">No Bowl</div><div class="sum-label">Postseason</div></div>
+  </div>
+  <div class="section-head">2021 Season — Sarkisian Year 1 · "It's a great day to be a Texas Longhorn"</div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">LA</div><div><div class="opp-name">Louisiana</div><div class="opp-meta"><span class="tag tag-h">Home</span></div></div></div><div class="g-time">Sep 4</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">38–18</span></div></div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">ARK</div><div><div class="opp-name">at Arkansas</div><div class="opp-meta"><span class="tag tag-a">Away</span></div></div></div><div class="g-time">Sep 11</div><div class="g-venue">Razorback Stadium · Fayetteville, AR</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-l">L</div><span class="res-score">21–40</span></div></div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">RICE</div><div><div class="opp-name">Rice</div><div class="opp-meta"><span class="tag tag-h">Home</span></div></div></div><div class="g-time">Sep 18</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-sec">LHN</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">58–0</span></div></div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">TX&M</div><div><div class="opp-name">Texas Tech</div><div class="opp-meta"><span class="tag tag-h">Home</span></div></div></div><div class="g-time">Sep 25</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">70–35</span></div></div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">OU</div><div><div class="opp-name">Oklahoma <span class="badge">Red River</span></div><div class="opp-meta"><span class="tag tag-n">Neutral</span></div></div></div><div class="g-time">Oct 9</div><div class="g-venue">Cotton Bowl · Dallas, TX</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-l">L</div><span class="res-score">55–48</span></div></div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">OKST</div><div><div class="opp-name">Oklahoma State</div><div class="opp-meta"><span class="tag tag-h">Home</span></div></div></div><div class="g-time">Oct 16</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-l">L</div><span class="res-score">24–32</span></div></div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">BAYLOR</div><div><div class="opp-name">at Baylor</div><div class="opp-meta"><span class="tag tag-a">Away</span></div></div></div><div class="g-time">Oct 30</div><div class="g-venue">McLane Stadium · Waco, TX</div><div class="g-tv tv-fox">FOX</div><div class="g-result"><div class="res-letter res-l">L</div><span class="res-score">14–31</span></div></div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">KSU</div><div><div class="opp-name">at Kansas State</div><div class="opp-meta"><span class="tag tag-a">Away</span></div></div></div><div class="g-time">Nov 6</div><div class="g-venue">Bill Snyder Family Stadium · Manhattan, KS</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-l">L</div><span class="res-score">21–26</span></div></div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">WVU</div><div><div class="opp-name">West Virginia</div><div class="opp-meta"><span class="tag tag-h">Home</span></div></div></div><div class="g-time">Nov 13</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">23–13</span></div></div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">KU</div><div><div class="opp-name">Kansas</div><div class="opp-meta"><span class="tag tag-h">Home</span></div></div></div><div class="g-time">Nov 13</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-sec">LHN</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">55–23</span></div></div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">IOWA</div><div><div class="opp-name">Iowa State</div><div class="opp-meta"><span class="tag tag-h">Home</span></div></div></div><div class="g-time">Nov 27</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-fox">FOX</div><div class="g-result"><div class="res-letter res-l">L</div><span class="res-score">14–17</span></div></div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">KU</div><div><div class="opp-name">Kansas</div><div class="opp-meta"><span class="tag tag-a">Away</span></div></div></div><div class="g-time">Dec 4</div><div class="g-venue">Memorial Stadium · Lawrence, KS</div><div class="g-tv tv-fox">FOX</div><div class="g-result"><div class="res-letter res-l">L</div><span class="res-score">55–57</span></div></div>
+</div>
+
+<!-- 2020 -->
+<div id="yr-2020" class="season-panel">
+  <div class="season-summary">
+    <div class="sum-cell"><div class="sum-num g">7</div><div class="sum-label">Wins</div></div>
+    <div class="sum-cell"><div class="sum-num r">3</div><div class="sum-label">Losses</div></div>
+    <div class="sum-cell"><div class="sum-num o">5-3</div><div class="sum-label">Big 12 Record</div></div>
+    <div class="sum-cell"><div class="sum-num o">#9</div><div class="sum-label">Final AP Rank</div></div>
+    <div class="sum-cell"><div class="sum-num w">Sugar Bowl L</div><div class="sum-label">Bowl Result</div></div>
+  </div>
+  <div class="section-head">2020 Season — COVID Year · Tom Herman</div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">TX&M</div><div><div class="opp-name">Texas Tech</div><div class="opp-meta"><span class="tag tag-h">Home</span></div></div></div><div class="g-time">Sep 12</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-fox">FOX</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">63–56 2OT</span></div></div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">OKST</div><div><div class="opp-name">Oklahoma State</div><div class="opp-meta"><span class="tag tag-h">Home</span></div></div></div><div class="g-time">Sep 26</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-l">L</div><span class="res-score">24–41</span></div></div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">OU</div><div><div class="opp-name">Oklahoma <span class="badge">Red River</span></div><div class="opp-meta"><span class="tag tag-n">Neutral</span></div></div></div><div class="g-time">Oct 10</div><div class="g-venue">Cotton Bowl · Dallas, TX</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-l">L</div><span class="res-score">53–45</span></div></div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">BAYLOR</div><div><div class="opp-name">Baylor</div><div class="opp-meta"><span class="tag tag-h">Home</span></div></div></div><div class="g-time">Oct 24</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">27–16</span></div></div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">WVU</div><div><div class="opp-name">at West Virginia</div><div class="opp-meta"><span class="tag tag-a">Away</span></div></div></div><div class="g-time">Oct 31</div><div class="g-venue">Milan Puskar Stadium · Morgantown, WV</div><div class="g-tv tv-fox">FOX</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">17–13</span></div></div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">KSU</div><div><div class="opp-name">Kansas State</div><div class="opp-meta"><span class="tag tag-h">Home</span></div></div></div><div class="g-time">Nov 7</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-fox">FOX</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">69–31</span></div></div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">IOWA</div><div><div class="opp-name">at Iowa State</div><div class="opp-meta"><span class="tag tag-a">Away</span></div></div></div><div class="g-time">Nov 27</div><div class="g-venue">Jack Trice Stadium · Ames, IA</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-l">L</div><span class="res-score">21–23</span></div></div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">KU</div><div><div class="opp-name">Kansas</div><div class="opp-meta"><span class="tag tag-h">Home</span></div></div></div><div class="g-time">Dec 5</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-sec">LHN</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">84–56</span></div></div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">TX&M</div><div><div class="opp-name">Texas Tech</div><div class="opp-meta"><span class="tag tag-a">Away</span></div></div></div><div class="g-time">Dec 12</div><div class="g-venue">Jones AT&T Stadium · Lubbock, TX</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">17–13</span></div></div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">COL</div><div><div class="opp-name">Colorado</div><div class="opp-meta"><span class="tag tag-h">Home</span></div></div></div><div class="g-time">Dec 19</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">55–23</span></div></div>
+  <div class="section-head">2020 Bowl</div>
+  <div class="game-row bowl-row"><div><div class="wk-num">Bowl</div></div><div class="opp-wrap"><div class="opp-init">FLRDA</div><div><div class="opp-name"><span class="opp-rank">#7</span> Florida <span class="badge">Sugar Bowl</span></div><div class="opp-meta"><span class="tag tag-n">Neutral</span> Caesars Superdome · New Orleans, LA</div></div></div><div class="g-time">Jan 1, 2021</div><div class="g-venue">Caesars Superdome · New Orleans, LA</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-l">L</div><span class="res-score">7–31</span></div></div>
+</div>
+
+<!-- 2019 -->
+<div id="yr-2019" class="season-panel">
+  <div class="season-summary">
+    <div class="sum-cell"><div class="sum-num g">8</div><div class="sum-label">Wins</div></div>
+    <div class="sum-cell"><div class="sum-num r">5</div><div class="sum-label">Losses</div></div>
+    <div class="sum-cell"><div class="sum-num o">4-5</div><div class="sum-label">Big 12 Record</div></div>
+    <div class="sum-cell"><div class="sum-num o">NR</div><div class="sum-label">Final AP Rank</div></div>
+    <div class="sum-cell"><div class="sum-num w">Alamo Bowl L</div><div class="sum-label">Bowl Result</div></div>
+  </div>
+  <div class="section-head">2019 Season — Tom Herman Year 3</div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">LSU</div><div><div class="opp-name"><span class="opp-rank">#6</span> at LSU</div><div class="opp-meta"><span class="tag tag-a">Away</span></div></div></div><div class="g-time">Sep 7</div><div class="g-venue">Tiger Stadium · Baton Rouge, LA</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-l">L</div><span class="res-score">7–45</span></div></div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">LS</div><div><div class="opp-name">Louisiana State (Rice)</div><div class="opp-meta"><span class="tag tag-h">Home</span></div></div></div><div class="g-time">Sep 14</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-sec">LHN</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">48–13</span></div></div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">OU</div><div><div class="opp-name">Oklahoma <span class="badge">Red River</span></div><div class="opp-meta"><span class="tag tag-n">Neutral</span></div></div></div><div class="g-time">Oct 12</div><div class="g-venue">Cotton Bowl · Dallas, TX</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-l">L</div><span class="res-score">27–34</span></div></div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">KSTATE</div><div><div class="opp-name">Kansas State</div><div class="opp-meta"><span class="tag tag-h">Home</span></div></div></div><div class="g-time">Oct 19</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">27–24</span></div></div>
+  <div style="padding:12px 0;border-bottom:1px solid var(--gray-border);font-size:12px;color:var(--muted);">+ additional 2019 games — full data in pipeline</div>
+  <div class="section-head">2019 Bowl</div>
+  <div class="game-row bowl-row"><div><div class="wk-num">Bowl</div></div><div class="opp-wrap"><div class="opp-init">UTA</div><div><div class="opp-name">Utah <span class="badge">Alamo Bowl</span></div><div class="opp-meta"><span class="tag tag-n">Neutral</span> Alamodome · San Antonio, TX</div></div></div><div class="g-time">Dec 31</div><div class="g-venue">Alamodome · San Antonio, TX</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-l">L</div><span class="res-score">10–38</span></div></div>
+</div>
+
+<!-- 2018 -->
+<div id="yr-2018" class="season-panel">
+  <div class="season-summary">
+    <div class="sum-cell"><div class="sum-num g">10</div><div class="sum-label">Wins</div></div>
+    <div class="sum-cell"><div class="sum-num r">4</div><div class="sum-label">Losses</div></div>
+    <div class="sum-cell"><div class="sum-num o">6-3</div><div class="sum-label">Big 12 Record</div></div>
+    <div class="sum-cell"><div class="sum-num o">#19</div><div class="sum-label">Final AP Rank</div></div>
+    <div class="sum-cell"><div class="sum-num w">Sugar Bowl W</div><div class="sum-label">Bowl Result</div></div>
+  </div>
+  <div class="section-head">2018 Season — "Texas Is Back" · Tom Herman Year 2</div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">MD</div><div><div class="opp-name">Maryland</div><div class="opp-meta"><span class="tag tag-a">Away</span></div></div></div><div class="g-time">Sep 1</div><div class="g-venue">Capital One Field · College Park, MD</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">29–7</span></div></div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">USC</div><div><div class="opp-name">USC</div><div class="opp-meta"><span class="tag tag-h">Home</span></div></div></div><div class="g-time">Sep 15</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-fox">FOX</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">37–14</span></div></div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">OU</div><div><div class="opp-name"><span class="opp-rank">#7</span> Oklahoma <span class="badge">Red River</span></div><div class="opp-meta"><span class="tag tag-n">Neutral</span></div></div></div><div class="g-time">Oct 6</div><div class="g-venue">Cotton Bowl · Dallas, TX</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">48–45</span></div></div>
+  <div style="padding:12px 0;border-bottom:1px solid var(--gray-border);font-size:12px;color:var(--muted);">+ additional 2018 games — full data in pipeline</div>
+  <div class="section-head">2018 Bowl</div>
+  <div class="game-row bowl-row"><div><div class="wk-num">Bowl</div></div><div class="opp-wrap"><div class="opp-init">UGA</div><div><div class="opp-name"><span class="opp-rank">#5</span> Georgia <span class="badge">Sugar Bowl ✓</span></div><div class="opp-meta"><span class="tag tag-n">Neutral</span> Caesars Superdome · New Orleans, LA</div></div></div><div class="g-time">Jan 1, 2019</div><div class="g-venue">Caesars Superdome · New Orleans, LA</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">28–21</span></div></div>
+</div>
+
+<!-- 2017 -->
+<div id="yr-2017" class="season-panel">
+  <div class="season-summary">
+    <div class="sum-cell"><div class="sum-num g">7</div><div class="sum-label">Wins</div></div>
+    <div class="sum-cell"><div class="sum-num r">6</div><div class="sum-label">Losses</div></div>
+    <div class="sum-cell"><div class="sum-num o">4-5</div><div class="sum-label">Big 12 Record</div></div>
+    <div class="sum-cell"><div class="sum-num o">NR</div><div class="sum-label">Final AP Rank</div></div>
+    <div class="sum-cell"><div class="sum-num w">Texas Bowl W</div><div class="sum-label">Bowl Result</div></div>
+  </div>
+  <div class="section-head">2017 Season — Tom Herman Year 1</div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">MD</div><div><div class="opp-name">Maryland</div><div class="opp-meta"><span class="tag tag-h">Home</span></div></div></div><div class="g-time">Sep 2</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">51–41</span></div></div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">OU</div><div><div class="opp-name">Oklahoma <span class="badge">Red River</span></div><div class="opp-meta"><span class="tag tag-n">Neutral</span></div></div></div><div class="g-time">Oct 14</div><div class="g-venue">Cotton Bowl · Dallas, TX</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-l">L</div><span class="res-score">10–29</span></div></div>
+  <div style="padding:12px 0;border-bottom:1px solid var(--gray-border);font-size:12px;color:var(--muted);">+ additional 2017 games — full data in pipeline</div>
+  <div class="section-head">2017 Bowl</div>
+  <div class="game-row bowl-row"><div><div class="wk-num">Bowl</div></div><div class="opp-wrap"><div class="opp-init">MO</div><div><div class="opp-name">Missouri <span class="badge">Texas Bowl ✓</span></div><div class="opp-meta"><span class="tag tag-n">Neutral</span> NRG Stadium · Houston, TX</div></div></div><div class="g-time">Dec 27</div><div class="g-venue">NRG Stadium · Houston, TX</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">33–16</span></div></div>
+</div>
+
+<!-- 2016 -->
+<div id="yr-2016" class="season-panel">
+  <div class="season-summary">
+    <div class="sum-cell"><div class="sum-num g">5</div><div class="sum-label">Wins</div></div>
+    <div class="sum-cell"><div class="sum-num r">7</div><div class="sum-label">Losses</div></div>
+    <div class="sum-cell"><div class="sum-num o">3-6</div><div class="sum-label">Big 12 Record</div></div>
+    <div class="sum-cell"><div class="sum-num o">NR</div><div class="sum-label">Final AP Rank</div></div>
+    <div class="sum-cell"><div class="sum-num w">No Bowl</div><div class="sum-label">Postseason</div></div>
+  </div>
+  <div class="section-head">2016 Season — Charlie Strong Year 3 (Final)</div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">NDST</div><div><div class="opp-name">Notre Dame</div><div class="opp-meta"><span class="tag tag-h">Home</span></div></div></div><div class="g-time">Sep 4</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-l">L</div><span class="res-score">45–50</span></div></div>
+  <div class="game-row"><div><div class="wk-num">—</div></div><div class="opp-wrap"><div class="opp-init">OU</div><div><div class="opp-name">Oklahoma <span class="badge">Red River</span></div><div class="opp-meta"><span class="tag tag-n">Neutral</span></div></div></div><div class="g-time">Oct 8</div><div class="g-venue">Cotton Bowl · Dallas, TX</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-l">L</div><span class="res-score">10–45</span></div></div>
+  <div style="padding:12px 0;border-bottom:1px solid var(--gray-border);font-size:12px;color:var(--muted);">+ additional 2016 games — full data in pipeline</div>
+</div>
+
+<footer>
+  <div class="footer-logo">TOWER<span>REPORT</span></div>
+  <div class="footer-text">The Tower Never Sleeps. © 2026</div>
+</footer>
+
+<script>
+function showYear(yr, btn) {
+  document.querySelectorAll('.season-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.year-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('yr-' + yr).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
