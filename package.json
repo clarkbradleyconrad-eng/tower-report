@@ -1,0 +1,12 @@
+{
+  "name": "tower-report",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Tower Report — Texas Longhorns Intelligence Platform",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "dev": "vercel dev"
+  }
+}

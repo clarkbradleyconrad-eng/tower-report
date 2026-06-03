@@ -1,0 +1,27 @@
+{
+  "_comment": "Static seed data. Returned by /api/odds when no API key is set or live fetch fails. Update values here for manual overrides.",
+  "_lastManualUpdate": "2026-06-03",
+  "odds": {
+    "w1":  { "spread": "TEX −38.5", "ou": "62.5",  "ml": "-5000", "mlRaw": -5000, "impliedWin": "98.0%", "bookmaker": "consensus", "lastUpdated": null, "source": "placeholder", "freshness": "placeholder", "isStale": false },
+    "w2":  { "spread": "TEX −3.5",  "ou": "57.0",  "ml": "-115",  "mlRaw": -115,  "impliedWin": "53.5%", "bookmaker": "consensus", "lastUpdated": null, "source": "placeholder", "freshness": "placeholder", "isStale": false },
+    "w3":  { "spread": "TEX −35",   "ou": "58.0",  "ml": "-3000", "mlRaw": -3000, "impliedWin": "96.8%", "bookmaker": "consensus", "lastUpdated": null, "source": "placeholder", "freshness": "placeholder", "isStale": false },
+    "w4":  { "spread": "TN −2.5",   "ou": "55.0",  "ml": "+165",  "mlRaw": 165,   "impliedWin": "37.7%", "bookmaker": "consensus", "lastUpdated": null, "source": "placeholder", "freshness": "placeholder", "isStale": false },
+    "w5":  { "spread": "TEX −6",    "ou": "59.0",  "ml": "-165",  "mlRaw": -165,  "impliedWin": "62.3%", "bookmaker": "consensus", "lastUpdated": null, "source": "placeholder", "freshness": "placeholder", "isStale": false },
+    "w6":  { "spread": "TEX −7",    "ou": "55.0",  "ml": "-215",  "mlRaw": -215,  "impliedWin": "68.3%", "bookmaker": "consensus", "lastUpdated": null, "source": "placeholder", "freshness": "placeholder", "isStale": false },
+    "w7":  { "spread": "TEX −4.5",  "ou": "57.0",  "ml": "-150",  "mlRaw": -150,  "impliedWin": "60.0%", "bookmaker": "consensus", "lastUpdated": null, "source": "placeholder", "freshness": "placeholder", "isStale": false },
+    "w8":  { "spread": "TEX −17",   "ou": "56.5",  "ml": "-750",  "mlRaw": -750,  "impliedWin": "88.2%", "bookmaker": "consensus", "lastUpdated": null, "source": "placeholder", "freshness": "placeholder", "isStale": false },
+    "w9":  { "spread": "MIZ −1",    "ou": "54.0",  "ml": "+110",  "mlRaw": 110,   "impliedWin": "47.6%", "bookmaker": "consensus", "lastUpdated": null, "source": "placeholder", "freshness": "placeholder", "isStale": false },
+    "w10": { "spread": "LSU −1.5",  "ou": "56.0",  "ml": "+120",  "mlRaw": 120,   "impliedWin": "45.5%", "bookmaker": "consensus", "lastUpdated": null, "source": "placeholder", "freshness": "placeholder", "isStale": false },
+    "w11": { "spread": "TEX −9",    "ou": "58.0",  "ml": "-260",  "mlRaw": -260,  "impliedWin": "72.2%", "bookmaker": "consensus", "lastUpdated": null, "source": "placeholder", "freshness": "placeholder", "isStale": false },
+    "w12": { "spread": "A&M −3",    "ou": "52.0",  "ml": "+130",  "mlRaw": 130,   "impliedWin": "43.5%", "bookmaker": "consensus", "lastUpdated": null, "source": "placeholder", "freshness": "placeholder", "isStale": false }
+  },
+  "meta": {
+    "lastUpdated": null,
+    "source": "placeholder",
+    "liveGames": 0,
+    "totalGames": 12,
+    "isStale": false,
+    "freshness": "placeholder",
+    "notice": "Set ODDS_API_KEY in Vercel environment variables to enable live odds."
+  }
+}

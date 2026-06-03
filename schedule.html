@@ -138,6 +138,21 @@ nav{position:sticky;top:0;z-index:200;background:rgba(8,8,8,0.97);backdrop-filte
 .gd-odds-updated{background:var(--surface2);display:flex;flex-direction:column;align-items:flex-end;justify-content:center;padding:11px 14px;gap:3px;white-space:nowrap;}
 .gd-odds-updated-label{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);}
 .gd-odds-updated-val{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:.5px;color:var(--secondary);}
+/* Freshness badges */
+.fresh-badge{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:2px 7px;border:1px solid;flex-shrink:0;display:inline-block;}
+.fresh-live   {color:var(--green); border-color:rgba(34,197,94,0.35); background:rgba(34,197,94,0.07);}
+.fresh-today  {color:var(--orange);border-color:rgba(191,87,0,0.35);  background:rgba(191,87,0,0.07);}
+.fresh-needs  {color:var(--amber); border-color:rgba(245,158,11,0.35);background:rgba(245,158,11,0.07);}
+.fresh-stale  {color:var(--red);   border-color:rgba(239,68,68,0.35); background:rgba(239,68,68,0.06);}
+.fresh-old    {color:var(--muted); border-color:var(--border);}
+.fresh-placeholder{color:var(--muted);border-color:var(--border);}
+/* Global odds status bar */
+.odds-status-bar{display:flex;align-items:center;gap:10px;padding:8px 20px;background:var(--surface);border-bottom:1px solid var(--border);flex-wrap:wrap;}
+.osb-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.osb-source{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:.5px;color:var(--secondary);}
+.osb-notice{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:.3px;color:var(--amber);font-style:italic;}
+/* Loading skeleton */
+.odds-loading{opacity:.45;pointer-events:none;}
 /* Disclaimer */
 .odds-disclaimer{padding:10px 20px;border-top:1px solid var(--border);display:flex;align-items:center;gap:6px;background:var(--surface);}
 .odds-disclaimer-icon{font-size:10px;color:var(--muted);flex-shrink:0;}
@@ -451,11 +466,17 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
   <button class="sched-filter" data-filter="rivalry">Rivalry</button>
 </div>
 
+<div class="odds-status-bar" id="odds-status-bar">
+  <span class="osb-label">Market Signal</span>
+  <span class="fresh-badge fresh-placeholder" id="odds-global-badge">Loading</span>
+  <span class="osb-source" id="odds-global-source">Fetching latest data…</span>
+  <span class="osb-notice" id="odds-global-notice" style="display:none;"></span>
+</div>
 <div class="schedule-wrap">
   <div class="schedule-list" id="schedule-list"></div>
   <div class="odds-disclaimer">
     <span class="odds-disclaimer-icon">ℹ</span>
-    <span class="odds-disclaimer-text">Odds are for informational purposes only, may change, and do not constitute betting advice.</span>
+    <span class="odds-disclaimer-text">Market data is informational only. Tower Report does not provide betting advice. Odds may change and are not guaranteed accurate.</span>
   </div>
 </div>
 
@@ -1180,33 +1201,36 @@ function renderGame(g) {
         <div class="gc-prob-bar"><div class="gc-prob-fill" style="width:${g.winProb}%"></div></div>
       </div>
       <div class="gc-diff" title="Difficulty">${diffDots(g.difficulty)}</div>
-      <div class="gc-spread">${o.spread || g.spread}</div>
-      <div class="gc-odds-line">ML ${mlStr} · O/U ${o.ou || g.ou}</div>
+      <div class="gc-spread" id="odds-card-spread-${g.id}">${o.spread || g.spread}</div>
+      <div class="gc-odds-line" id="odds-card-line-${g.id}">ML ${mlStr} · O/U ${o.ou || g.ou}</div>
       <div class="gc-toggle"><span class="gc-toggle-arrow">▾</span></div>
     </div>
   </div>
   <div class="game-detail">
     <div class="gd-inner">
-      <div class="gd-odds">
+      <div class="gd-odds" id="odds-block-${g.id}">
         <div class="gd-odds-cell">
-          <div class="gd-odds-val ov">${o.spread || g.spread}</div>
-          <div class="gd-odds-label">Spread</div>
+          <div class="gd-odds-val ov" id="odds-spread-${g.id}">${o.spread || g.spread}</div>
+          <div class="gd-odds-label">Consensus Spread</div>
         </div>
         <div class="gd-odds-cell">
-          <div class="gd-odds-val">O/U ${o.ou || g.ou}</div>
+          <div class="gd-odds-val" id="odds-ou-${g.id}">O/U ${o.ou || g.ou}</div>
           <div class="gd-odds-label">Over / Under</div>
         </div>
         <div class="gd-odds-cell">
-          <div class="gd-odds-val">${mlStr}</div>
+          <div class="gd-odds-val" id="odds-ml-${g.id}">${mlStr}</div>
           <div class="gd-odds-label">Moneyline (TEX)</div>
         </div>
         <div class="gd-odds-cell">
-          <div class="gd-odds-val">${impliedStr}</div>
-          <div class="gd-odds-label">Implied Win %</div>
+          <div class="gd-odds-val" id="odds-implied-${g.id}">${impliedStr}</div>
+          <div class="gd-odds-label">Implied Win Probability</div>
         </div>
         <div class="gd-odds-updated">
-          <span class="gd-odds-updated-label">Updated</span>
-          <span class="gd-odds-updated-val">${o.updated || '—'}</span>
+          <span class="gd-odds-updated-label">Source</span>
+          <span class="gd-odds-updated-val" id="odds-source-${g.id}">pre-season</span>
+          <span class="gd-odds-updated-label" style="margin-top:4px;">Last Updated</span>
+          <span class="gd-odds-updated-val" id="odds-updated-${g.id}">—</span>
+          <span class="fresh-badge fresh-placeholder" id="odds-badge-${g.id}" style="margin-top:6px;">Pre-Season</span>
         </div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);margin-bottom:1px;">
@@ -1216,7 +1240,7 @@ function renderGame(g) {
         </div>
         <div style="background:var(--surface);padding:14px 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
           <div class="gd-pred-pill">Model Win Prob: ${g.winProb}%</div>
-          <div class="gd-pred-pill">Implied: ${impliedStr}</div>
+          <div class="gd-pred-pill" id="odds-implied-pill-${g.id}">Implied: ${impliedStr}</div>
         </div>
       </div>
       <div class="gd-grid">
@@ -1259,6 +1283,148 @@ function renderGame(g) {
 function buildSchedule() {
   document.getElementById('schedule-list').innerHTML = GAMES.map(renderGame).join('');
 }
+
+/* ============================================================
+   LIVE ODDS — fetch from /api/odds and patch the rendered cards
+============================================================ */
+
+const FRESHNESS_CONFIG = {
+  'live':         { label:'Live',           cls:'fresh-live'        },
+  'updated-today':{ label:'Updated Today',  cls:'fresh-today'       },
+  'needs-update': { label:'Needs Update',   cls:'fresh-needs'       },
+  'stale':        { label:'Stale',          cls:'fresh-stale'       },
+  'outdated':     { label:'Outdated',       cls:'fresh-old'         },
+  'placeholder':  { label:'Pre-Season',     cls:'fresh-placeholder' },
+};
+
+/** Format an ISO timestamp to a human-readable short date/time. */
+function formatOddsDate(iso) {
+  if (!iso) return '—';
+  try {
+    const d = new Date(iso);
+    return d.toLocaleDateString('en-US', { month:'short', day:'numeric' }) +
+           ' · ' + d.toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit' });
+  } catch { return '—'; }
+}
+
+/** Patch the DOM for a single game's odds section. */
+function patchGameOdds(id, data) {
+  const set = (elId, val) => {
+    const el = document.getElementById(elId);
+    if (el && val != null) el.textContent = val;
+  };
+
+  set(`odds-spread-${id}`, data.spread);
+  set(`odds-ou-${id}`, data.ou ? `O/U ${data.ou}` : null);
+  set(`odds-ml-${id}`, data.ml ?? '—');
+  set(`odds-implied-${id}`, data.impliedWin ?? '—');
+  set(`odds-source-${id}`, data.bookmaker || data.source || '—');
+  set(`odds-updated-${id}`, formatOddsDate(data.lastUpdated));
+  set(`odds-implied-pill-${id}`, data.impliedWin ? `Implied: ${data.impliedWin}` : null);
+
+  // Card-level compact display
+  set(`odds-card-spread-${id}`, data.spread);
+  const cardLine = document.getElementById(`odds-card-line-${id}`);
+  if (cardLine) {
+    cardLine.textContent = `ML ${data.ml ?? '—'} · O/U ${data.ou ?? '—'}`;
+  }
+
+  // Freshness badge
+  const badge = document.getElementById(`odds-badge-${id}`);
+  if (badge) {
+    const cfg = FRESHNESS_CONFIG[data.freshness] || FRESHNESS_CONFIG['placeholder'];
+    badge.textContent = cfg.label;
+    badge.className = `fresh-badge ${cfg.cls}`;
+  }
+
+  // Dim the block if stale
+  const block = document.getElementById(`odds-block-${id}`);
+  if (block) block.classList.toggle('odds-loading', !!data.isStale);
+}
+
+/** Update the global status bar above the schedule. */
+function updateStatusBar(meta) {
+  const badge = document.getElementById('odds-global-badge');
+  const source = document.getElementById('odds-global-source');
+  const notice = document.getElementById('odds-global-notice');
+
+  if (!meta) {
+    if (badge) badge.textContent = 'Unavailable';
+    if (source) source.textContent = 'Market data temporarily unavailable. Showing last saved update.';
+    if (notice) { notice.textContent = 'Market data temporarily unavailable. Showing last saved update.'; notice.style.display = ''; }
+    return;
+  }
+
+  const cfg = FRESHNESS_CONFIG[meta.freshness] || FRESHNESS_CONFIG['placeholder'];
+  if (badge) { badge.textContent = cfg.label; badge.className = `fresh-badge ${cfg.cls}`; }
+
+  const sourceText = meta.source === 'the-odds-api'
+    ? `The Odds API · ${meta.liveGames} of ${meta.totalGames} games live`
+    : meta.source === 'placeholder'
+      ? 'Pre-season consensus lines · Set ODDS_API_KEY for live data'
+      : meta.source;
+  if (source) source.textContent = sourceText;
+
+  if (meta.notice) {
+    if (notice) { notice.textContent = meta.notice; notice.style.display = ''; }
+  } else {
+    if (notice) notice.style.display = 'none';
+  }
+}
+
+/**
+ * Fetch odds from /api/odds and patch every game card.
+ * Falls back gracefully to the static ODDS object already in the page.
+ */
+async function initOdds() {
+  try {
+    const res = await fetch('/api/odds', {
+      headers: { 'Accept': 'application/json' },
+      signal: AbortSignal.timeout(10000),
+    });
+
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+
+    if (data.odds) {
+      Object.entries(data.odds).forEach(([id, oddData]) => patchGameOdds(id, oddData));
+    }
+    updateStatusBar(data.meta || null);
+
+  } catch (err) {
+    console.warn('[Tower] Odds fetch failed — using static fallback:', err.message);
+    // Static ODDS object (already in the page) is already rendered — just update status bar
+    updateStatusBar({
+      source: 'static-fallback',
+      freshness: 'placeholder',
+      liveGames: 0,
+      totalGames: 12,
+      notice: 'Market data temporarily unavailable. Showing last saved update.',
+    });
+  }
+}
+
+/**
+ * Admin helper — call from the browser dev console to force a live refresh.
+ * Usage: window.towerAdminRefresh('YOUR_ADMIN_TOKEN')
+ * Requires ADMIN_REFRESH_TOKEN set in Vercel env vars.
+ */
+window.towerAdminRefresh = async function(token) {
+  if (!token) { console.warn('[Tower] Usage: towerAdminRefresh("YOUR_TOKEN")'); return; }
+  console.log('[Tower] Requesting admin odds refresh…');
+  try {
+    const res = await fetch(`/api/admin-refresh?token=${encodeURIComponent(token)}`);
+    const data = await res.json();
+    if (!res.ok) { console.error('[Tower] Refresh failed:', data.error); return; }
+    if (data.odds) {
+      Object.entries(data.odds).forEach(([id, oddData]) => patchGameOdds(id, oddData));
+    }
+    updateStatusBar(data.meta || null);
+    console.log('[Tower] Odds refreshed successfully.', data.meta);
+  } catch (err) {
+    console.error('[Tower] Admin refresh error:', err.message);
+  }
+};
 
 function toggleGame(id) {
   const card = document.getElementById(`gc-${id}`);
@@ -1361,6 +1527,7 @@ document.addEventListener('DOMContentLoaded', () => {
   buildWinDist();
   buildDifficultyList();
   animateBars();
+  initOdds(); // fetch live odds and patch cards async
 });
 </script>
 </body>
