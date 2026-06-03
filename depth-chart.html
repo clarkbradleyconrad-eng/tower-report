@@ -3,1079 +3,771 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>2026 Depth Chart — Tower Report</title>
-<meta name="description" content="Interactive 2026 Texas Longhorns depth chart. Post-spring snapshot with confidence ratings, position battles, trending indicators, and AI scouting notes."/>
+<title>2026 Roster & Depth Chart — Tower Report</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet"/>
 <style>
-/* ============================================================
-   DESIGN TOKENS
-============================================================ */
-:root{
-  --orange:#BF5700;--orange-hi:#CF6210;--orange-lo:rgba(191,87,0,0.10);--orange-glow:rgba(191,87,0,0.06);
-  --black:#080808;--surface:#0F0F0F;--surface2:#151515;--surface3:#1C1C1C;--surface4:#232323;
-  --border:rgba(255,255,255,0.055);--border-mid:rgba(255,255,255,0.10);--border-strong:rgba(255,255,255,0.16);
-  --white:#F0EBE1;--white2:#C4BCB0;--muted:#5A5450;--secondary:#948C82;
-  --green:#22c55e;--amber:#f59e0b;--red:#ef4444;--blue:#60a5fa;--purple:#c084fc;
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
-body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);overflow-x:hidden;line-height:1.5;}
-a{text-decoration:none;color:inherit;}
+:root{--orange:#BF5700;--black:#080808;--surface:#111;--surface2:#181818;--surface3:#202020;--border:rgba(255,255,255,0.07);--border-strong:rgba(255,255,255,0.12);--white:#F5F0E8;--muted:#6B6560;--secondary:#A09890;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);}
 
-/* ============================================================
-   NAV
-============================================================ */
-nav{position:sticky;top:0;z-index:200;background:rgba(8,8,8,0.97);backdrop-filter:blur(24px);border-bottom:1px solid var(--border-mid);}
-.nav-inner{display:flex;justify-content:space-between;align-items:center;padding:0 48px;max-width:1600px;margin:0 auto;}
-.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;padding:11px 0;}
-.nav-logo-text{display:flex;flex-direction:column;line-height:1;}
-.nav-logo-top{font-family:'Barlow Condensed',sans-serif;font-size:21px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--white);}
-.nav-logo-sub{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:var(--orange);}
-.nav-links{display:flex;align-items:center;}
-.nav-link{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:18px 13px;border-bottom:2px solid transparent;transition:all .2s;}
+nav{position:sticky;top:0;z-index:200;background:rgba(8,8,8,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.nav-inner{display:flex;justify-content:space-between;align-items:center;padding:0 48px;max-width:1400px;margin:0 auto;}
+.nav-logo{display:flex;align-items:center;text-decoration:none;padding:14px 0;}
+.nav-links{display:flex;gap:0;align-items:center;}
+.nav-link{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:20px 16px;border-bottom:2px solid transparent;transition:all .2s;}
 .nav-link:hover,.nav-link.active{color:var(--white);border-bottom-color:var(--orange);}
-.nav-cta{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;background:var(--orange);color:#fff;text-decoration:none;padding:9px 20px;margin-left:16px;border:1px solid var(--orange);transition:all .2s;}
+.nav-cta{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;background:var(--orange);color:#fff;text-decoration:none;padding:9px 20px;margin-left:12px;border:1px solid var(--orange);transition:all .2s;}
 .nav-cta:hover{background:transparent;color:var(--orange);}
 
-/* ============================================================
-   PAGE HEADER
-============================================================ */
-.dc-header{padding:44px 48px 32px;border-bottom:1px solid var(--border);}
-.breadcrumb{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:6px;}
-.breadcrumb a{color:var(--muted);transition:color .2s;}
-.breadcrumb a:hover{color:var(--orange);}
-.breadcrumb-sep{color:var(--border-mid);}
+.page-header{padding:36px 48px 24px;border-bottom:1px solid var(--border);}
+.breadcrumb{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
 .breadcrumb span{color:var(--orange);}
-.dc-title-row{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:10px;}
-.dc-title{font-family:'Playfair Display',serif;font-size:clamp(36px,5vw,66px);font-weight:900;line-height:.92;letter-spacing:-2.5px;}
-.dc-title em{font-style:italic;color:var(--orange);}
-.dc-header-meta{display:flex;flex-direction:column;align-items:flex-end;gap:6px;padding-bottom:6px;}
-.dc-updated{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
-.dc-season-badge{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);background:var(--orange-lo);border:1px solid rgba(191,87,0,0.25);padding:4px 12px;}
-.dc-sub{font-size:14px;color:var(--secondary);font-style:italic;margin-bottom:18px;}
-.dc-context{max-width:820px;padding:16px 20px;background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--orange);font-size:13px;line-height:1.72;color:var(--secondary);}
-.dc-context strong{color:var(--white);}
+.page-title{font-family:'Playfair Display',serif;font-size:clamp(32px,4vw,56px);font-weight:900;line-height:1;letter-spacing:-2px;margin-bottom:8px;}
+.page-sub{font-size:14px;color:var(--secondary);font-style:italic;}
+.page-header-meta{display:flex;align-items:center;gap:20px;margin-top:14px;flex-wrap:wrap;}
+.meta-chip{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:5px 12px;border:1px solid var(--border);color:var(--muted);}
+.meta-chip span{color:var(--white);}
+.meta-chip.highlight{border-color:rgba(191,87,0,0.4);color:var(--orange);}
+.export-btn{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:7px 16px;border:1px solid var(--border-strong);color:var(--muted);background:transparent;cursor:pointer;transition:all .15s;margin-left:auto;}
+.export-btn:hover{border-color:var(--orange);color:var(--orange);}
 
-/* ============================================================
-   STATS STRIP
-============================================================ */
-.dc-stats-strip{display:flex;gap:0;border-bottom:1px solid var(--border);}
-.dc-stat{padding:14px 28px;border-right:1px solid var(--border);display:flex;flex-direction:column;gap:4px;}
-.dc-stat:last-child{border-right:none;}
-.dcs-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
-.dcs-val{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--white);line-height:1;letter-spacing:.5px;}
-.dcs-val.orange{color:var(--orange);}
-.dcs-val.amber{color:var(--amber);}
-.dcs-val.green{color:var(--green);}
+/* BATTLES STRIP */
+.battles-strip{border-bottom:1px solid var(--border);background:var(--surface);overflow-x:auto;padding:0 48px;}
+.battles-inner{display:flex;align-items:stretch;gap:0;min-width:max-content;}
+.battles-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted);padding:12px 20px 12px 0;display:flex;align-items:center;border-right:1px solid var(--border);margin-right:0;white-space:nowrap;}
+.battle-pill{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:0 20px;display:flex;align-items:center;gap:8px;border-right:1px solid var(--border);white-space:nowrap;cursor:pointer;transition:background .15s;}
+.battle-pill:hover{background:var(--surface2);}
+.battle-dot{width:6px;height:6px;border-radius:50%;}
+.dot-hot{background:#ef4444;box-shadow:0 0 6px #ef444488;}
+.dot-open{background:#f59e0b;box-shadow:0 0 6px #f59e0b88;}
+.battle-pill-label{color:var(--white);}
+.battle-pill-sub{color:var(--muted);font-size:10px;}
 
-/* ============================================================
-   STICKY CONTROLS
-============================================================ */
-.dc-controls{position:sticky;top:47px;z-index:100;background:rgba(8,8,8,0.97);backdrop-filter:blur(24px);border-bottom:1px solid var(--border-mid);padding:10px 48px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-.dc-search-wrap{position:relative;}
-.dc-search{padding:8px 14px 8px 34px;font-family:'Barlow',sans-serif;font-size:13px;background:var(--surface);border:1px solid var(--border-mid);color:var(--white);outline:none;width:210px;transition:border-color .2s,width .25s;}
-.dc-search:focus{border-color:var(--orange);width:270px;}
-.dc-search::placeholder{color:var(--muted);}
-.dc-search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:12px;pointer-events:none;font-style:normal;}
-.dc-unit-tabs{display:flex;gap:0;}
-.dc-unit-tab{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:8px 15px;border:1px solid var(--border);color:var(--muted);cursor:pointer;background:none;transition:all .15s;margin-right:-1px;position:relative;z-index:1;}
-.dc-unit-tab:hover{color:var(--white);z-index:2;}
-.dc-unit-tab.active{background:var(--orange);border-color:var(--orange);color:#fff;z-index:2;}
-.dc-actions{display:flex;gap:6px;margin-left:auto;}
-.dc-action-btn{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:7px 13px;border:1px solid var(--border);color:var(--muted);cursor:pointer;background:none;transition:all .15s;}
-.dc-action-btn:hover{color:var(--white);border-color:var(--border-mid);}
-.dc-result-bar{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:6px 48px;background:var(--surface);border-bottom:1px solid var(--border);display:none;}
-.dc-result-bar span{color:var(--orange);}
+/* MAIN LAYOUT */
+.main-layout{display:flex;max-width:1400px;margin:0 auto;min-height:calc(100vh - 200px);}
+.depth-col{flex:0 0 62%;border-right:1px solid var(--border);padding:0;}
+.roster-col{flex:0 0 38%;position:sticky;top:60px;height:calc(100vh - 60px);display:flex;flex-direction:column;overflow:hidden;}
 
-/* ============================================================
-   LEGEND
-============================================================ */
-.dc-legend{display:flex;align-items:center;gap:20px;padding:9px 48px;border-bottom:1px solid var(--border);flex-wrap:wrap;}
-.legend-title{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-right:4px;}
-.legend-item{display:flex;align-items:center;gap:5px;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);}
-.leg-stripe{width:3px;height:14px;flex-shrink:0;}
-.leg-stripe.s1{background:var(--orange);}
-.leg-stripe.s2{background:var(--border-strong);}
-.leg-stripe.sb{background:var(--amber);}
-.leg-up{color:var(--green);font-size:12px;}
-.leg-down{color:var(--red);font-size:12px;}
-.leg-dots{display:flex;gap:2px;}
-.leg-dot{width:6px;height:6px;border-radius:50%;}
-.leg-dot.on{background:var(--orange);}
-.leg-dot.off{background:var(--surface3);border:1px solid var(--border-strong);}
-.leg-divider{width:1px;height:16px;background:var(--border);}
+/* DEPTH CHART TABS */
+.phase-tabs{display:flex;border-bottom:1px solid var(--border);position:sticky;top:60px;z-index:10;background:var(--black);}
+.phase-tab{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:14px 24px;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;}
+.phase-tab:hover{color:var(--secondary);}
+.phase-tab.active{color:var(--white);border-bottom-color:var(--orange);}
 
-/* ============================================================
-   DEPTH CHART BODY
-============================================================ */
-.dc-body{padding:32px 48px 72px;}
-.dc-no-results{font-family:'Barlow Condensed',sans-serif;font-size:14px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);text-align:center;padding:64px;display:none;}
+/* POSITION GROUPS */
+.depth-content{padding:0;}
+.pos-group{border-bottom:1px solid var(--border);}
+.pos-group-header{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;background:var(--surface2);cursor:pointer;transition:background .15s;user-select:none;}
+.pos-group-header:hover{background:var(--surface3);}
+.pos-group-title{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--white);display:flex;align-items:center;gap:10px;}
+.pos-abbr-badge{font-size:11px;padding:2px 8px;background:rgba(191,87,0,0.15);color:var(--orange);border:1px solid rgba(191,87,0,0.3);}
+.pos-group-right{display:flex;align-items:center;gap:12px;}
+.status-badge{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:3px 8px;display:flex;align-items:center;gap:5px;}
+.status-locked{color:#4ade80;border:1px solid rgba(74,222,128,0.25);}
+.status-open{color:#f59e0b;border:1px solid rgba(245,158,11,0.25);}
+.status-hot{color:#f87171;border:1px solid rgba(248,113,113,0.25);animation:pulse-status 2s ease infinite;}
+@keyframes pulse-status{0%,100%{opacity:1}50%{opacity:.65}}
+.status-dot{width:5px;height:5px;border-radius:50%;display:inline-block;}
+.dot-green{background:#4ade80;}
+.dot-amber{background:#f59e0b;}
+.dot-red{background:#f87171;}
+.collapse-arrow{color:var(--muted);font-size:12px;transition:transform .25s;}
+.collapse-arrow.open{transform:rotate(180deg);}
 
-/* Unit section */
-.unit-section{margin-bottom:48px;}
-.unit-section.unit-hidden{display:none;}
-.unit-header-row{display:flex;align-items:center;gap:14px;margin-bottom:16px;}
-.unit-name{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;letter-spacing:4px;text-transform:uppercase;color:var(--orange);}
-.unit-hr{flex:1;height:1px;background:var(--border);}
-.unit-meta{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);}
+.pos-group-body{overflow:hidden;transition:max-height .3s ease;max-height:2000px;}
+.pos-group-body.closed{max-height:0;}
 
-/* Position groups grid */
-.pos-groups-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);}
+/* DEPTH ROWS */
+.depth-tiers{padding:8px 0;}
+.tier-section{margin-bottom:2px;}
+.tier-label-row{display:flex;align-items:center;gap:8px;padding:6px 24px 4px;}
+.tier-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);}
 
-/* Position group card */
-.pos-group{background:var(--surface);position:relative;}
-.pos-group.pg-hidden{display:none;}
+.depth-row{display:flex;align-items:center;gap:12px;padding:8px 24px;transition:background .1s;cursor:pointer;border-left:3px solid transparent;}
+.depth-row:hover{background:var(--surface2);}
+.depth-row.is-starter{border-left-color:var(--orange);background:rgba(191,87,0,0.04);}
+.depth-row.is-starter:hover{background:rgba(191,87,0,0.08);}
+.depth-row.is-competing{border-left-color:#f59e0b;}
 
-/* Group header */
-.pg-header{display:flex;align-items:center;gap:8px;padding:11px 16px;cursor:pointer;border-bottom:1px solid var(--border);user-select:none;transition:background .15s;}
-.pg-header:hover{background:var(--surface2);}
-.pg-abbr{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--orange);min-width:48px;flex-shrink:0;}
-.pg-name{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--white);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.pg-battle-badge{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.28);color:var(--amber);white-space:nowrap;flex-shrink:0;}
-.pg-count{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);flex-shrink:0;}
-.pg-toggle{font-size:11px;color:var(--muted);transition:transform .22s;flex-shrink:0;margin-left:2px;}
-.pos-group.pg-collapsed .pg-toggle{transform:rotate(-90deg);}
-.pos-group.pg-collapsed .pg-body{display:none;}
+.tier-badge{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;width:28px;text-align:center;padding:3px 0;flex-shrink:0;}
+.badge-1{background:var(--orange);color:#fff;}
+.badge-2{background:var(--surface3);color:var(--secondary);}
+.badge-3{border:1px solid var(--border);color:var(--muted);}
+.badge-c{background:#f59e0b22;color:#f59e0b;border:1px solid #f59e0b44;}
 
-/* Depth rows */
-.depth-slot-wrap{border-bottom:1px solid var(--border);}
-.depth-slot-wrap:last-child{border-bottom:none;}
+.player-avatar{width:34px;height:34px;background:var(--surface3);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;}
+.player-avatar img{width:100%;height:100%;object-fit:cover;object-position:top center;}
+.avatar-initials{font-family:'Playfair Display',serif;font-size:14px;font-weight:900;color:var(--orange);opacity:.7;}
+.avatar-null{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;color:var(--muted);}
 
-.drow{display:grid;grid-template-columns:30px 1fr auto;align-items:stretch;min-height:50px;position:relative;transition:background .12s;}
-.drow:hover{background:var(--surface2);}
-.drow.drow-battle{background:rgba(245,158,11,0.018);}
-.drow.drow-match{background:rgba(191,87,0,0.05);}
+.depth-player-info{flex:1;min-width:0;}
+.depth-player-name{font-size:13px;font-weight:600;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.depth-player-name.is-starter-name{color:var(--white);}
+.depth-player-sub{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-top:1px;}
+.depth-player-sub span{color:var(--orange);}
 
-/* Left stripe */
-.drow-stripe{width:3px;position:absolute;left:0;top:0;bottom:0;}
-.stripe-s1{background:var(--orange);}
-.stripe-s2{background:var(--border-mid);}
-.stripe-s3{background:transparent;}
-.stripe-battle{background:var(--amber);}
+.depth-right{display:flex;align-items:center;gap:8px;margin-left:auto;flex-shrink:0;}
+.depth-trait{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;background:var(--surface3);color:var(--secondary);white-space:nowrap;max-width:140px;overflow:hidden;text-overflow:ellipsis;}
+.depth-num{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--muted);width:24px;text-align:right;}
+.depth-transfer{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 5px;background:rgba(59,130,246,0.1);color:#60a5fa;border:1px solid rgba(59,130,246,0.2);}
+.depth-phys{font-family:'Barlow Condensed',sans-serif;font-size:10px;color:var(--muted);white-space:nowrap;}
 
-/* Slot number */
-.drow-num{display:flex;align-items:flex-start;padding:13px 0 0 9px;font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;line-height:1;color:var(--muted);flex-shrink:0;}
-.drow.drow-s1 .drow-num{color:var(--orange);font-size:19px;}
-.drow.drow-s2 .drow-num{color:var(--white2);}
+/* BATTLE NOTE */
+.battle-note{margin:4px 24px 12px;padding:10px 14px;border-left:2px solid var(--orange);background:rgba(191,87,0,0.06);}
+.battle-note-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:4px;}
+.battle-note-text{font-size:12px;color:var(--secondary);line-height:1.5;}
+.group-note{margin:0 24px 10px;padding:8px 12px;background:var(--surface3);border-left:2px solid var(--border-strong);}
+.group-note-text{font-size:11px;color:var(--muted);line-height:1.55;font-style:italic;}
 
-/* Player info */
-.drow-info{padding:10px 12px 10px 8px;min-width:0;flex:1;}
-.drow-top{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:3px;}
-.drow-name{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:.3px;color:var(--white);white-space:nowrap;}
-mark.drow-hl{background:rgba(191,87,0,0.35);color:var(--white);border-radius:1px;}
-.drow-year{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 5px;background:var(--surface3);border:1px solid var(--border);color:var(--muted);flex-shrink:0;}
-.drow-key{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:2px 6px;background:var(--orange-lo);border:1px solid rgba(191,87,0,0.3);color:var(--orange);flex-shrink:0;}
-.drow-attrs{display:flex;align-items:center;gap:5px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:.3px;color:var(--muted);}
-.drow-attrs-sep{color:var(--border-strong);}
-.drow-stars{color:var(--amber);letter-spacing:-1px;font-size:10px;}
+/* ROSTER COLUMN */
+.roster-controls{padding:14px 20px;border-bottom:1px solid var(--border);background:var(--surface);}
+.roster-col-title{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.search-wrap{position:relative;margin-bottom:8px;}
+.search-wrap input{width:100%;padding:8px 12px 8px 32px;font-size:12px;font-family:'Barlow',sans-serif;background:var(--surface2);border:1px solid var(--border-strong);color:var(--white);}
+.search-wrap input:focus{outline:none;border-color:var(--orange);}
+.search-wrap input::placeholder{color:var(--muted);}
+.search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:13px;}
+.roster-filters{display:flex;gap:4px;flex-wrap:wrap;}
+.rf-btn{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;background:transparent;border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all .1s;}
+.rf-btn:hover{color:var(--secondary);border-color:var(--border-strong);}
+.rf-btn.active{background:var(--orange);border-color:var(--orange);color:#fff;}
 
-/* Side panel */
-.drow-side{display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:5px;padding:10px 12px;flex-shrink:0;}
-.drow-trend{font-size:12px;font-weight:800;line-height:1;}
-.trend-up{color:var(--green);}
-.trend-down{color:var(--red);}
-.trend-stable{color:var(--muted);font-size:10px;}
-.drow-conf{display:flex;gap:2px;align-items:center;}
-.cdot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
-.cdot.on{background:var(--orange);}
-.cdot.off{background:var(--surface4);border:1px solid var(--border-strong);}
-.drow-conf-label{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
+.roster-list{flex:1;overflow-y:auto;}
+.roster-entry{display:flex;align-items:center;gap:10px;padding:9px 20px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s;}
+.roster-entry:hover{background:var(--surface2);}
+.roster-avatar{width:34px;height:34px;background:var(--surface3);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;}
+.roster-avatar img{width:100%;height:100%;object-fit:cover;object-position:top center;}
+.roster-entry-info{flex:1;min-width:0;}
+.roster-entry-name{font-size:13px;font-weight:600;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.roster-entry-sub{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-top:1px;}
+.roster-entry-sub span{color:var(--orange);}
+.roster-entry-right{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.r-num{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--muted);width:22px;text-align:right;}
+.r-transfer{font-size:8px;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:1px 5px;background:rgba(59,130,246,0.1);color:#60a5fa;border:1px solid rgba(59,130,246,0.2);}
 
-/* AI note */
-.drow-note{font-size:12px;line-height:1.65;color:var(--muted);font-style:italic;padding:0 12px 9px 46px;margin-top:-3px;}
+/* MODAL (matches roster.html exactly) */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:500;display:none;align-items:flex-start;justify-content:center;overflow-y:auto;padding:40px 20px;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--surface);max-width:700px;width:100%;position:relative;margin:auto;}
+.modal-close{position:absolute;top:16px;right:16px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);background:var(--surface2);border:1px solid var(--border);padding:6px 12px;cursor:pointer;z-index:10;transition:all .15s;}
+.modal-close:hover{color:var(--white);}
+.modal-hero{display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid var(--border);}
+.modal-photo{width:180px;height:220px;overflow:hidden;background:var(--surface2);}
+.modal-photo img{width:100%;height:100%;object-fit:cover;object-position:top;}
+.modal-photo-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:56px;font-weight:900;color:var(--orange);opacity:.2;}
+.modal-identity{padding:24px;display:flex;flex-direction:column;justify-content:space-between;}
+.modal-num{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+.modal-name{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;line-height:1;color:var(--white);margin-bottom:5px;}
+.modal-pos-yr{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;}
+.modal-vitals{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);}
+.modal-vital{background:var(--surface2);padding:9px 10px;text-align:center;}
+.modal-vital-val{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--white);}
+.modal-vital-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-top:2px;font-family:'Barlow Condensed',sans-serif;font-weight:600;}
+.modal-body{padding:0;}
+.modal-section{padding:18px 22px;border-bottom:1px solid var(--border);}
+.modal-section-title{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:10px;}
+.modal-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);}
+.modal-field{background:var(--surface2);padding:9px 12px;}
+.modal-field-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;font-family:'Barlow Condensed',sans-serif;font-weight:600;margin-bottom:3px;}
+.modal-field-val{font-size:13px;font-weight:600;color:var(--white);}
+.modal-field-val.orange{color:var(--orange);}
+.modal-field-val.muted{color:var(--muted);font-size:12px;font-weight:400;}
+.modal-bio{margin-top:10px;padding:10px 12px;background:var(--surface2);font-size:12px;line-height:1.65;color:var(--secondary);}
+.modal-stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);}
+.modal-stat{background:var(--surface2);padding:10px;text-align:center;}
+.modal-stat-val{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:var(--white);}
+.modal-stat-label{font-size:9px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-top:1px;}
+.stars{color:var(--orange);}
+.transfer-note{display:inline-flex;align-items:center;gap:5px;font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 8px;background:rgba(59,130,246,0.1);color:#60a5fa;border:1px solid rgba(59,130,246,0.2);}
+.modal-links{display:flex;gap:8px;flex-wrap:wrap;padding:14px 22px;border-bottom:1px solid var(--border);}
+.modal-link{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:6px 12px;border:1px solid var(--border);color:var(--secondary);text-decoration:none;transition:all .15s;}
+.modal-link:hover{color:var(--white);border-color:var(--border-strong);}
+.modal-link.primary{background:var(--orange);border-color:var(--orange);color:#fff;}
+.modal-link.primary:hover{background:transparent;color:var(--orange);}
 
-/* OR separator */
-.or-sep{display:flex;align-items:center;background:rgba(245,158,11,0.04);border-top:1px dashed rgba(245,158,11,0.18);border-bottom:1px dashed rgba(245,158,11,0.18);}
-.or-sep-line{flex:1;height:1px;}
-.or-badge{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:800;letter-spacing:3px;text-transform:uppercase;padding:4px 12px;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.28);color:var(--amber);}
-.or-slot-note{font-size:11px;font-style:italic;color:var(--muted);padding:6px 14px 8px;background:rgba(245,158,11,0.025);border-top:1px solid rgba(245,158,11,0.08);}
-
-/* Tandem "&" separator */
-.tandem-sep{display:flex;align-items:center;justify-content:center;padding:4px 0;background:var(--surface2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
-.tandem-badge{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--secondary);}
-
-/* ============================================================
-   FOOTER
-============================================================ */
-footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:24px;background:var(--surface);}
-.footer-brand{display:flex;flex-direction:column;gap:4px;}
-.footer-logo{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;letter-spacing:4px;text-transform:uppercase;}
+footer{padding:20px 48px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.footer-logo{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:3px;color:var(--muted);}
 .footer-logo span{color:var(--orange);}
-.footer-tagline{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);}
-.footer-links{display:flex;gap:16px;justify-content:center;}
-.f-link{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s;}
-.f-link:hover{color:var(--orange);}
-.footer-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
-.footer-copy{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);}
-.footer-ai{display:inline-flex;align-items:center;gap:5px;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);background:var(--orange-lo);border:1px solid rgba(191,87,0,0.2);padding:3px 8px;}
+.footer-text{font-size:11px;color:var(--muted);}
 
-/* ============================================================
-   RESPONSIVE
-============================================================ */
-@media(max-width:1200px){
-  .pos-groups-grid{grid-template-columns:1fr;}
+@media(max-width:1024px){
+  .main-layout{flex-direction:column;}
+  .depth-col{flex:none;border-right:none;border-bottom:1px solid var(--border);}
+  .roster-col{flex:none;height:auto;position:static;}
+  .roster-list{max-height:500px;}
 }
-@media(max-width:860px){
-  .dc-header,.dc-body{padding-left:20px;padding-right:20px;}
-  .dc-controls{padding:8px 20px;top:47px;}
-  .dc-legend{padding:8px 20px;}
-  .dc-result-bar{padding-left:20px;padding-right:20px;}
-  .dc-stats-strip{overflow-x:auto;scrollbar-width:none;}
-  .dc-stats-strip::-webkit-scrollbar{display:none;}
-  .dc-stat{padding:12px 18px;flex-shrink:0;}
-  .dc-actions{display:none;}
-  .dc-search{width:100%;}
-  .dc-search:focus{width:100%;}
-  .dc-search-wrap{flex:1;}
-  .dc-unit-tabs{overflow-x:auto;scrollbar-width:none;}
-  .dc-unit-tabs::-webkit-scrollbar{display:none;}
-  .nav-inner{padding:0 20px;}
-  .nav-link{display:none;}
-  .nav-link.keep{display:flex;}
-  footer{grid-template-columns:1fr;gap:16px;padding:24px 20px;}
-  .footer-links{justify-content:flex-start;}
-  .footer-right{align-items:flex-start;}
-  .dc-title-row{flex-direction:column;align-items:flex-start;}
-  .dc-header-meta{align-items:flex-start;}
+@media(max-width:768px){
+  .nav-inner{padding:0 20px;}.nav-link.hm{display:none;}
+  .page-header,.battles-strip{padding-left:20px;padding-right:20px;}
+  .depth-row,.pos-group-header,.depth-tiers,.group-note,.battle-note,.tier-label-row{padding-left:16px;padding-right:16px;}
+  .roster-controls,.roster-entry{padding-left:16px;padding-right:16px;}
+  .modal-hero{grid-template-columns:1fr;}.modal-photo{width:100%;height:180px;}
+  footer{padding:16px 20px;flex-direction:column;gap:6px;}
+  .depth-phys{display:none;}
+  .depth-trait{display:none;}
 }
-@media(max-width:480px){
-  .drow-name{font-size:13px;}
-  .dc-unit-tab{font-size:10px;padding:7px 11px;}
+@media print{
+  .nav-link,.nav-cta,.roster-col,.battles-strip,.export-btn,.modal-overlay{display:none!important;}
+  .main-layout{display:block;}
+  .depth-col{border:none;}
+  .pos-group-body.closed{max-height:2000px!important;}
 }
 </style>
 </head>
 <body>
 
-<!-- ============================================================
-     NAV
-============================================================ -->
 <nav>
   <div class="nav-inner">
     <a href="index.html" class="nav-logo">
-      <svg viewBox="0 0 34 42" width="26" height="32" fill="none" aria-hidden="true">
-        <rect x="10" y="28" width="14" height="12" fill="#BF5700" opacity=".9"/>
-        <rect x="12" y="17" width="10" height="12" fill="#BF5700"/>
-        <rect x="14" y="7" width="6" height="11" fill="#BF5700"/>
-        <circle cx="17" cy="10" r="2.5" fill="#080808" stroke="#BF5700" stroke-width=".6"/>
-        <line x1="17" y1="7" x2="17" y2="2" stroke="#BF5700" stroke-width="1.5"/>
-        <circle cx="17" cy="1.5" r="1.3" fill="#E8620A"/>
-        <line x1="24" y1="13" x2="29" y2="10" stroke="#BF5700" stroke-width=".8" opacity=".6"/>
-        <circle cx="30" cy="9.5" r="1.1" fill="#BF5700" opacity=".6"/>
-        <line x1="10" y1="13" x2="5" y2="10" stroke="#BF5700" stroke-width=".8" opacity=".6"/>
-        <circle cx="4" cy="9.5" r="1.1" fill="#BF5700" opacity=".6"/>
+      <svg viewBox="0 0 180 44" width="160" height="40" fill="none">
+        <g transform="translate(0,2)"><rect x="14" y="28" width="12" height="10" fill="#BF5700" opacity="0.9"/><rect x="15.5" y="18" width="9" height="11" fill="#BF5700"/><rect x="17" y="10" width="6" height="9" fill="#BF5700"/><circle cx="20" cy="13.5" r="2.2" fill="#080808" stroke="#BF5700" stroke-width="0.5"/><line x1="20" y1="10" x2="20" y2="5" stroke="#BF5700" stroke-width="1.5"/><circle cx="20" cy="4.5" r="1" fill="#E8620A"/><line x1="26" y1="15" x2="32" y2="12" stroke="#BF5700" stroke-width="0.8" opacity="0.7"/><circle cx="32.5" cy="11.5" r="1.2" fill="#BF5700" opacity="0.7"/><line x1="14" y1="15" x2="8" y2="12" stroke="#BF5700" stroke-width="0.8" opacity="0.7"/><circle cx="7.5" cy="11.5" r="1.2" fill="#BF5700" opacity="0.7"/></g>
+        <text x="44" y="20" font-family="'Barlow Condensed',sans-serif" font-weight="700" font-size="20" letter-spacing="3" fill="#F5F0E8">TOWER</text>
+        <text x="44" y="38" font-family="'Barlow Condensed',sans-serif" font-weight="600" font-size="14" letter-spacing="5" fill="#BF5700">REPORT</text>
       </svg>
-      <div class="nav-logo-text">
-        <span class="nav-logo-top">TOWER</span>
-        <span class="nav-logo-sub">REPORT</span>
-      </div>
     </a>
     <div class="nav-links">
-      <a href="index.html" class="nav-link keep">Home</a>
-      <a href="schedule.html" class="nav-link">Season Hub</a>
-      <a href="depth-chart.html" class="nav-link active keep">Depth Chart</a>
-      <a href="recruiting.html" class="nav-link">Recruiting</a>
-      <a href="portal.html" class="nav-link">Portal</a>
-      <a href="stories.html" class="nav-link">Stories</a>
-      <a href="players.html" class="nav-link">Players</a>
-      <a href="history.html" class="nav-link">History</a>
+      <a href="index.html" class="nav-link hm">Home</a>
+      <a href="schedule.html" class="nav-link hm">Schedule</a>
+      <a href="depth-chart.html" class="nav-link active">Depth Chart</a>
+      <a href="roster.html" class="nav-link hm">Roster</a>
+      <a href="history.html" class="nav-link hm">History</a>
       <a href="index.html#waitlist" class="nav-cta">Join Waitlist</a>
     </div>
   </div>
 </nav>
 
-<!-- ============================================================
-     PAGE HEADER
-============================================================ -->
-<div class="dc-header">
-  <div class="breadcrumb">
-    <a href="index.html">Tower Report</a>
-    <span class="breadcrumb-sep">›</span>
-    <span>2026 Depth Chart</span>
+<div class="page-header">
+  <div class="breadcrumb">Tower Report <span>/ Football / 2026 Roster &amp; Depth Chart</span></div>
+  <h1 class="page-title">2026 Roster &amp; Depth Chart</h1>
+  <p class="page-sub">Steve Sarkisian · SEC · Click any player for full profile · Projected depth as of June 2026</p>
+  <div class="page-header-meta">
+    <div class="meta-chip highlight">Returning Starters <span>12</span></div>
+    <div class="meta-chip">Portal Additions <span>7</span></div>
+    <div class="meta-chip">Conference <span>SEC</span></div>
+    <div class="meta-chip">QB <span>Arch Manning — Heisman Favorite</span></div>
+    <div class="meta-chip">Last Updated <span>June 3, 2026</span></div>
+    <button class="export-btn" onclick="window.print()">⎙ Export / Print</button>
   </div>
-  <div class="dc-title-row">
-    <h1 class="dc-title">2026 Depth Chart<br><em>Post-Spring Snapshot</em></h1>
-    <div class="dc-header-meta">
-      <span class="dc-season-badge">2026 Season</span>
-      <span class="dc-updated">Updated · June 2026</span>
+</div>
+
+<div class="battles-strip">
+  <div class="battles-inner" id="battles-inner">
+    <div class="battles-label">KEY BATTLES</div>
+  </div>
+</div>
+
+<div class="main-layout">
+
+  <!-- DEPTH CHART COLUMN -->
+  <div class="depth-col">
+    <div class="phase-tabs">
+      <button class="phase-tab active" onclick="setPhase('offense',this)">Offense</button>
+      <button class="phase-tab" onclick="setPhase('defense',this)">Defense</button>
+      <button class="phase-tab" onclick="setPhase('specialTeams',this)">Special Teams</button>
     </div>
+    <div class="depth-content" id="depth-content"></div>
   </div>
-  <p class="dc-sub">Spring Practice Complete · Preseason Camp Projections · AI Scouting Notes</p>
-  <div class="dc-context">
-    With spring practice in the books, this is a snapshot of the 2026 Texas depth chart — a combination of where players stood at the end of spring practice and projections for those who missed time.
-    <strong>Note:</strong> Four incoming summer transfers — Laurence Seymore and Paris Patterson Jr. (OL), Darius Snow (LB), and Nick Hudson (DB) — are not included and will be added before preseason camp.
-  </div>
-</div>
 
-<!-- ============================================================
-     STATS STRIP
-============================================================ -->
-<div class="dc-stats-strip" id="dc-stats-strip">
-  <div class="dc-stat"><div class="dcs-label">Total Players</div><div class="dcs-val orange" id="stat-total">—</div></div>
-  <div class="dc-stat"><div class="dcs-label">Position Groups</div><div class="dcs-val" id="stat-groups">—</div></div>
-  <div class="dc-stat"><div class="dcs-label">Position Battles</div><div class="dcs-val amber" id="stat-battles">—</div></div>
-  <div class="dc-stat"><div class="dcs-label">Trending Up</div><div class="dcs-val green" id="stat-trending">—</div></div>
-  <div class="dc-stat"><div class="dcs-label">Key Players</div><div class="dcs-val" id="stat-featured">—</div></div>
-  <div class="dc-stat"><div class="dcs-label">5-Star Recruits</div><div class="dcs-val orange" id="stat-5star">—</div></div>
-</div>
-
-<!-- ============================================================
-     STICKY CONTROLS
-============================================================ -->
-<div class="dc-controls">
-  <div class="dc-search-wrap">
-    <i class="dc-search-icon">⌕</i>
-    <input class="dc-search" id="dc-search" type="text" placeholder="Search players…" autocomplete="off"/>
-  </div>
-  <div class="dc-unit-tabs" id="dc-unit-tabs">
-    <button class="dc-unit-tab active" data-unit="all">All</button>
-    <button class="dc-unit-tab" data-unit="offense">Offense</button>
-    <button class="dc-unit-tab" data-unit="defense">Defense</button>
-    <button class="dc-unit-tab" data-unit="special">Special Teams</button>
-  </div>
-  <div class="dc-actions">
-    <button class="dc-action-btn" onclick="toggleAll(false)">Expand All</button>
-    <button class="dc-action-btn" onclick="toggleAll(true)">Collapse All</button>
-  </div>
-</div>
-
-<!-- ============================================================
-     LEGEND
-============================================================ -->
-<div class="dc-legend">
-  <span class="legend-title">Key:</span>
-  <div class="legend-item"><div class="leg-stripe s1"></div>Starter</div>
-  <div class="legend-item"><div class="leg-stripe s2"></div>Backup</div>
-  <div class="legend-item"><div class="leg-stripe sb"></div>Battle</div>
-  <div class="leg-divider"></div>
-  <div class="legend-item"><span class="leg-up">▲</span>Trending Up</div>
-  <div class="legend-item"><span class="leg-down">▼</span>Trending Down</div>
-  <div class="leg-divider"></div>
-  <div class="legend-item">
-    <div class="leg-dots">
-      <div class="leg-dot on"></div><div class="leg-dot on"></div><div class="leg-dot on"></div><div class="leg-dot on"></div><div class="leg-dot on"></div>
+  <!-- ROSTER COLUMN -->
+  <div class="roster-col">
+    <div class="roster-controls">
+      <div class="roster-col-title">Player Directory</div>
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="roster-search" placeholder="Search players..." oninput="renderRoster()"/>
+      </div>
+      <div class="roster-filters" id="roster-filters">
+        <button class="rf-btn active" onclick="setRosterFilter('ALL',this)">All</button>
+        <button class="rf-btn" onclick="setRosterFilter('QB',this)">QB</button>
+        <button class="rf-btn" onclick="setRosterFilter('RB',this)">RB</button>
+        <button class="rf-btn" onclick="setRosterFilter('WR',this)">WR</button>
+        <button class="rf-btn" onclick="setRosterFilter('TE',this)">TE</button>
+        <button class="rf-btn" onclick="setRosterFilter('OL',this)">OL</button>
+        <button class="rf-btn" onclick="setRosterFilter('DL',this)">DL</button>
+        <button class="rf-btn" onclick="setRosterFilter('LB',this)">LB</button>
+        <button class="rf-btn" onclick="setRosterFilter('DB',this)">DB</button>
+        <button class="rf-btn" onclick="setRosterFilter('ST',this)">ST</button>
+        <button class="rf-btn" onclick="setRosterFilter('XFER',this)">Transfers</button>
+      </div>
     </div>
-    Locked
+    <div class="roster-list" id="roster-list"></div>
   </div>
-  <div class="legend-item">
-    <div class="leg-dots">
-      <div class="leg-dot on"></div><div class="leg-dot on"></div><div class="leg-dot off"></div><div class="leg-dot off"></div><div class="leg-dot off"></div>
-    </div>
-    Battle
-  </div>
+
 </div>
 
-<!-- ============================================================
-     RESULT BAR
-============================================================ -->
-<div class="dc-result-bar" id="dc-result-bar">
-  Showing <span id="dc-result-num">0</span> players matching "<span id="dc-result-query"></span>"
-</div>
-
-<!-- ============================================================
-     DEPTH CHART BODY
-============================================================ -->
-<div class="dc-body">
-  <div class="dc-no-results" id="dc-no-results">No players match your search.</div>
-  <div id="dc-body"></div>
-</div>
-
-<!-- ============================================================
-     FOOTER
-============================================================ -->
 <footer>
-  <div class="footer-brand">
-    <div class="footer-logo"><span>TOWER</span> REPORT</div>
-    <div class="footer-tagline">AI-Powered · Human Trusted · Longhorn Focused</div>
-  </div>
-  <div class="footer-links">
-    <a href="index.html" class="f-link">Home</a>
-      <a href="depth-chart.html" class="f-link">Depth Chart</a>
-    <a href="schedule.html" class="f-link">Season Hub</a>
-    <a href="recruiting.html" class="f-link">Recruiting</a>
-    <a href="stories.html" class="f-link">Stories</a>
-  </div>
-  <div class="footer-right">
-    <div class="footer-copy">© 2026 Tower Report · Austin, Texas</div>
-    <div class="footer-copy">The Tower Never Sleeps.</div>
-    <div class="footer-ai">⚡ AI Powered Platform</div>
-  </div>
+  <div class="footer-logo">TOWER<span>REPORT</span></div>
+  <div class="footer-text">Source: Texas Athletics · On3 · 247Sports · The Tower Never Sleeps · © 2026</div>
 </footer>
 
-<!-- ============================================================
-     DATA + RENDER ENGINE
-============================================================ -->
-<script>
-/* ----------------------------------------------------------------
-   DEPTH CHART DATA
-   Structure: each position has slots. Each slot can be:
-   - single player  → players: [player]
-   - OR battle      → battle: true, players: [p1, p2]
-   - tandem pair    → tandem: true, players: [p1, p2]
----------------------------------------------------------------- */
-const DC = [
-  /* ==================== OFFENSE ==================== */
-  {
-    id:'qb', name:'Quarterback', abbr:'QB', unit:'offense',
-    slots:[
-      { depth:1, players:[
-        { name:'Arch Manning', year:'Jr.', ht:'6-4', wt:'230', stars:5, conf:5, trend:'up', key:true,
-          note:'Heisman frontrunner entering senior season — red-zone efficiency is the one area scouts want cleaned up before the NFL.' }
-      ]},
-      { depth:2, players:[
-        { name:'KJ Lacey', year:'So.', ht:'6-2', wt:'205', stars:4, conf:4, trend:'stable', key:false, note:null }
-      ]},
-      { depth:3, battle:true, players:[
-        { name:'MJ Morris', year:'So.', ht:'6-3', wt:'205', stars:4, conf:2, trend:'stable', key:false, note:null },
-        { name:'Dia Bell', year:'Fr.', ht:'6-1', wt:'195', stars:4, conf:2, trend:'up', key:false, note:null }
-      ], battleNote:'Fall camp determines the emergency role — both bring dual-threat tools with different strengths.' }
-    ]
-  },
-  {
-    id:'rb', name:'Running Back', abbr:'RB', unit:'offense',
-    slots:[
-      { depth:1, battle:true, players:[
-        { name:'Raleek Brown', year:'Sr.', ht:'5-9', wt:'185', stars:4, conf:3, trend:'up', key:false, note:null },
-        { name:'Hollywood Smothers', year:'Jr.', ht:'5-11', wt:'200', stars:4, conf:3, trend:'up', key:false, note:null }
-      ], battleNote:'Sark has said both will play significant snaps — Brown is speed and YAC, Smothers brings power and pass protection.' },
-      { depth:2, players:[
-        { name:'Derrek Cooper', year:'Jr.', ht:'5-10', wt:'190', stars:3, conf:3, trend:'stable', key:false, note:null }
-      ]},
-      { depth:3, players:[
-        { name:'James Simon', year:'So.', ht:'5-10', wt:'185', stars:3, conf:2, trend:'stable', key:false, note:null }
-      ]},
-      { depth:4, players:[
-        { name:'Michael Terry III', year:'Fr.', ht:'5-11', wt:'190', stars:4, conf:2, trend:'up', key:false, note:null }
-      ]},
-      { depth:5, players:[
-        { name:'Ryan Niblett', year:'So.', ht:'5-8', wt:'175', stars:3, conf:3, trend:'stable', key:false, note:null }
-      ]},
-      { depth:6, players:[
-        { name:'Jett Walker', year:'Fr.', ht:'6-0', wt:'190', stars:3, conf:1, trend:'up', key:false, note:null }
-      ]}
-    ]
-  },
-  {
-    id:'wr-x', name:'Wide Receiver (X)', abbr:'WR-X', unit:'offense',
-    slots:[
-      { depth:1, players:[
-        { name:'Cam Coleman', year:'Jr.', ht:'6-3', wt:'195', stars:4, conf:4, trend:'up', key:true,
-          note:'1,247 receiving yards at Auburn without an elite QB — pairing with Arch Manning makes 1,200+ yards the floor of his ceiling.' }
-      ]},
-      { depth:2, players:[
-        { name:'Sterling Berkhalter', year:'So.', ht:'6-2', wt:'185', stars:3, conf:3, trend:'up', key:false, note:null }
-      ]},
-      { depth:3, players:[
-        { name:'Kaliq Lockett', year:'Jr.', ht:'5-11', wt:'175', stars:3, conf:2, trend:'stable', key:false, note:null }
-      ]}
-    ]
-  },
-  {
-    id:'wr-z', name:'Wide Receiver (Z)', abbr:'WR-Z', unit:'offense',
-    slots:[
-      { depth:1, players:[
-        { name:'Ryan Wingo', year:'Jr.', ht:'6-1', wt:'195', stars:4, conf:5, trend:'stable', key:true,
-          note:'All-SEC caliber returning starter — his ability to separate vs. press coverage is the key variable in the Ohio State and Tennessee matchups.' }
-      ]},
-      { depth:2, players:[
-        { name:'Kohen Brown', year:'Fr.', ht:'6-0', wt:'180', stars:4, conf:3, trend:'up', key:false, note:null }
-      ]},
-      { depth:3, players:[
-        { name:'Chris Stewart', year:'Jr.', ht:'6-2', wt:'185', stars:3, conf:2, trend:'stable', key:false, note:null }
-      ]}
-    ]
-  },
-  {
-    id:'wr-h', name:'Wide Receiver (H)', abbr:'WR-H', unit:'offense',
-    slots:[
-      { depth:1, players:[
-        { name:'Emmett Mosley V', year:'Sr.', ht:'5-11', wt:'185', stars:4, conf:4, trend:'stable', key:false, note:null }
-      ]},
-      { depth:2, players:[
-        { name:'Jermaine Bishop Jr.', year:'So.', ht:'5-10', wt:'175', stars:4, conf:3, trend:'up', key:false, note:null }
-      ]},
-      { depth:3, players:[
-        { name:'Daylan McCutcheon', year:'Fr.', ht:'5-10', wt:'175', stars:3, conf:2, trend:'up', key:false, note:null }
-      ]}
-    ]
-  },
-  {
-    id:'te-y', name:'Tight End (Y)', abbr:'TE-Y', unit:'offense',
-    slots:[
-      { depth:1, battle:true, players:[
-        { name:'Michael Masunas', year:'Jr.', ht:'6-5', wt:'245', stars:3, conf:2, trend:'stable', key:false, note:null },
-        { name:'Spencer Shannon', year:'So.', ht:'6-4', wt:'235', stars:3, conf:2, trend:'up', key:false, note:null }
-      ], battleNote:'Opposite skill sets — Masunas is the better blocker, Shannon the better receiver. Sark may deploy both situationally.' },
-      { depth:2, players:[
-        { name:'Charlie Jilek', year:'Jr.', ht:'6-5', wt:'240', stars:3, conf:3, trend:'stable', key:false, note:null }
-      ]}
-    ]
-  },
-  {
-    id:'te-h', name:'Tight End (H)', abbr:'TE-H', unit:'offense',
-    slots:[
-      { depth:1, players:[
-        { name:'Nick Townsend', year:'Sr.', ht:'6-4', wt:'240', stars:3, conf:4, trend:'stable', key:false, note:null }
-      ]},
-      { depth:2, players:[
-        { name:'Emaree Winston', year:'Jr.', ht:'6-5', wt:'245', stars:3, conf:3, trend:'stable', key:false, note:null }
-      ]},
-      { depth:3, players:[
-        { name:'Will Randle', year:'So.', ht:'6-3', wt:'230', stars:3, conf:2, trend:'up', key:false, note:null }
-      ]}
-    ]
-  },
-  {
-    id:'lt', name:'Left Tackle', abbr:'LT', unit:'offense',
-    slots:[
-      { depth:1, players:[
-        { name:'Trevor Goosby', year:'Sr.', ht:'6-7', wt:'315', stars:4, conf:4, trend:'stable', key:true,
-          note:'LT is the most critical position behind QB — Goosby\'s performance against elite pass rushers in Columbus, Knoxville, and College Station defines the season.' }
-      ]},
-      { depth:2, players:[
-        { name:'Jordan Coleman', year:'Jr.', ht:'6-6', wt:'310', stars:3, conf:3, trend:'up', key:false, note:null }
-      ]},
-      { depth:3, players:[
-        { name:'John Turntine III', year:'Fr.', ht:'6-7', wt:'305', stars:4, conf:2, trend:'up', key:false, note:null }
-      ]}
-    ]
-  },
-  {
-    id:'lg', name:'Left Guard', abbr:'LG', unit:'offense',
-    slots:[
-      { depth:1, players:[
-        { name:'Jaydon Chatman', year:'Jr.', ht:'6-4', wt:'310', stars:4, conf:3, trend:'up', key:false, note:null }
-      ]},
-      { depth:2, players:[
-        { name:'Dylan Sikorski', year:'So.', ht:'6-4', wt:'300', stars:3, conf:3, trend:'stable', key:false, note:null }
-      ]},
-      { depth:3, players:[
-        { name:'Jackson Christian', year:'Fr.', ht:'6-3', wt:'305', stars:3, conf:2, trend:'stable', key:false, note:null }
-      ]}
-    ]
-  },
-  {
-    id:'c', name:'Center', abbr:'C', unit:'offense',
-    slots:[
-      { depth:1, players:[
-        { name:'Connor Robertson', year:'Sr.', ht:'6-4', wt:'305', stars:3, conf:4, trend:'stable', key:false,
-          note:'Senior anchor — his ability to make pre-snap line calls is the intelligence engine for the entire interior offensive line.' }
-      ]},
-      { depth:2, players:[
-        { name:'Jackson Christian', year:'Fr.', ht:'6-3', wt:'305', stars:3, conf:2, trend:'stable', key:false, note:null }
-      ]},
-      { depth:3, players:[
-        { name:'Dylan Sikorski', year:'So.', ht:'6-4', wt:'300', stars:3, conf:2, trend:'stable', key:false, note:null }
-      ]}
-    ]
-  },
-  {
-    id:'rg', name:'Right Guard', abbr:'RG', unit:'offense',
-    slots:[
-      { depth:1, players:[
-        { name:'Brandon Baker', year:'Sr.', ht:'6-4', wt:'315', stars:3, conf:4, trend:'stable', key:false, note:null }
-      ]},
-      { depth:2, players:[
-        { name:'Devin Coleman', year:'Jr.', ht:'6-5', wt:'305', stars:3, conf:3, trend:'up', key:false, note:null }
-      ]},
-      { depth:3, players:[
-        { name:'Kaden Scherer', year:'So.', ht:'6-4', wt:'300', stars:3, conf:2, trend:'stable', key:false, note:null }
-      ]}
-    ]
-  },
-  {
-    id:'rt', name:'Right Tackle', abbr:'RT', unit:'offense',
-    slots:[
-      { depth:1, players:[
-        { name:'Melvin Siani', year:'Sr.', ht:'6-6', wt:'310', stars:4, conf:4, trend:'stable', key:false, note:null }
-      ]},
-      { depth:2, players:[
-        { name:'Andre Cojoe', year:'Jr.', ht:'6-5', wt:'300', stars:3, conf:3, trend:'up', key:false, note:null }
-      ]},
-      { depth:3, players:[
-        { name:'Jonte Newman', year:'Fr.', ht:'6-6', wt:'305', stars:3, conf:2, trend:'stable', key:false, note:null }
-      ]}
-    ]
-  },
-
-  /* ==================== DEFENSE ==================== */
-  {
-    id:'nt', name:'Nose Tackle', abbr:'NT', unit:'defense',
-    slots:[
-      { depth:1, players:[
-        { name:'Ian Geffrard', year:'Jr.', ht:'6-2', wt:'310', stars:4, conf:4, trend:'stable', key:false,
-          note:'NT is the most underrated position on this roster — Geffrard\'s ability to eat blocks determines whether this defense is good or elite against SEC run games.' }
-      ]},
-      { depth:2, players:[
-        { name:'Maraad Watson', year:'Sr.', ht:'6-3', wt:'305', stars:3, conf:3, trend:'stable', key:false, note:null }
-      ]},
-      { depth:3, players:[
-        { name:'Josiah Sharma', year:'Fr.', ht:'6-3', wt:'300', stars:3, conf:2, trend:'up', key:false, note:null }
-      ]},
-      { depth:4, players:[
-        { name:'Zion Williams', year:'Fr.', ht:'6-2', wt:'295', stars:3, conf:1, trend:'stable', key:false, note:null }
-      ]}
-    ]
-  },
-  {
-    id:'dt1', name:'Defensive Tackle', abbr:'DT', unit:'defense',
-    slots:[
-      { depth:1, players:[
-        { name:'Hero Kanu', year:'Jr.', ht:'6-4', wt:'295', stars:4, conf:4, trend:'up', key:false, note:null }
-      ]},
-      { depth:2, players:[
-        { name:'Justus Terry', year:'Jr.', ht:'6-3', wt:'290', stars:4, conf:3, trend:'stable', key:false, note:null }
-      ]},
-      { depth:3, players:[
-        { name:'James Johnson', year:'So.', ht:'6-4', wt:'285', stars:3, conf:2, trend:'stable', key:false, note:null }
-      ]}
-    ]
-  },
-  {
-    id:'dt2', name:'Defensive Tackle', abbr:'DT', unit:'defense',
-    slots:[
-      { depth:1, players:[
-        { name:'Alex January', year:'Sr.', ht:'6-3', wt:'285', stars:3, conf:3, trend:'stable', key:false, note:null }
-      ]},
-      { depth:2, players:[
-        { name:'Myron Charles', year:'Jr.', ht:'6-4', wt:'280', stars:3, conf:3, trend:'stable', key:false, note:null }
-      ]}
-    ]
-  },
-  {
-    id:'jack', name:'JACK — Edge', abbr:'JACK', unit:'defense',
-    slots:[
-      { depth:1, players:[
-        { name:'Colin Simmons', year:'So.', ht:'6-3', wt:'245', stars:5, conf:5, trend:'up', key:true,
-          note:'Best pass rusher in college football — 12+ sacks is the conservative projection. Bednarik Award frontrunner entering his sophomore season.' }
-      ]},
-      { depth:2, players:[
-        { name:'Colton Vasek', year:'Jr.', ht:'6-4', wt:'250', stars:4, conf:4, trend:'stable', key:false, note:null }
-      ]},
-      { depth:3, battle:true, players:[
-        { name:'Smith Orogbo', year:'So.', ht:'6-3', wt:'240', stars:3, conf:2, trend:'up', key:false, note:null },
-        { name:'Richard Wesley', year:'Jr.', ht:'6-4', wt:'245', stars:3, conf:2, trend:'stable', key:false, note:null }
-      ], battleNote:'Determines the rotation depth behind Simmons — both developing edge rushers with different strengths.' }
-    ]
-  },
-  {
-    id:'end', name:'End', abbr:'END', unit:'defense',
-    slots:[
-      { depth:1, players:[
-        { name:'Lance Jackson', year:'Sr.', ht:'6-4', wt:'255', stars:4, conf:4, trend:'stable', key:false, note:null }
-      ]},
-      { depth:2, players:[
-        { name:'Zina Umeozulu', year:'Jr.', ht:'6-4', wt:'250', stars:4, conf:3, trend:'up', key:false, note:null }
-      ]},
-      { depth:3, players:[
-        { name:'Jamarion Carlton', year:'Fr.', ht:'6-4', wt:'240', stars:4, conf:2, trend:'up', key:false, note:null }
-      ]}
-    ]
-  },
-  {
-    id:'wlb', name:'Will Linebacker', abbr:'WLB', unit:'defense',
-    slots:[
-      { depth:1, players:[
-        { name:'Rasheem Biles', year:'Jr.', ht:'6-1', wt:'225', stars:4, conf:4, trend:'stable', key:false, note:null }
-      ]},
-      { depth:2, players:[
-        { name:'Rocky Cummings', year:'Fr.', ht:'6-1', wt:'220', stars:4, conf:2, trend:'up', key:false, note:null }
-      ]}
-    ]
-  },
-  {
-    id:'slb', name:'Sam Linebacker', abbr:'SLB', unit:'defense',
-    slots:[
-      { depth:1, players:[
-        { name:'Brad Spence', year:'Jr.', ht:'6-2', wt:'225', stars:4, conf:4, trend:'stable', key:false, note:null }
-      ]},
-      { depth:2, players:[
-        { name:'Kosi Okpala', year:'So.', ht:'6-2', wt:'220', stars:3, conf:3, trend:'up', key:false, note:null }
-      ]}
-    ]
-  },
-  {
-    id:'mlb', name:'Mike Linebacker', abbr:'MLB', unit:'defense',
-    slots:[
-      { depth:1, players:[
-        { name:"Ty'Anthony Smith", year:'Jr.', ht:'6-1', wt:'230', stars:4, conf:4, trend:'stable', key:false, note:null }
-      ]},
-      { depth:2, players:[
-        { name:'Justin Cryer', year:'Sr.', ht:'6-2', wt:'230', stars:3, conf:3, trend:'stable', key:false, note:null }
-      ]},
-      { depth:3, players:[
-        { name:'Tyler Atkinson', year:'Jr.', ht:'6-1', wt:'225', stars:3, conf:2, trend:'stable', key:false, note:null }
-      ]},
-      { depth:4, players:[
-        { name:'Markus Boswell', year:'So.', ht:'6-2', wt:'225', stars:3, conf:2, trend:'up', key:false, note:null }
-      ]}
-    ]
-  },
-  {
-    id:'nickel', name:'Nickel', abbr:'NICK', unit:'defense',
-    slots:[
-      { depth:1, players:[
-        { name:'Graceson Littleton', year:'Jr.', ht:'5-11', wt:'195', stars:4, conf:4, trend:'up', key:false,
-          note:'Nickel demands elite coverage and linebacker instincts simultaneously — Littleton\'s spring tape was among the most impressive in the entire defensive backfield.' }
-      ]},
-      { depth:2, players:[
-        { name:'Bo Mascoe', year:'Jr.', ht:'5-11', wt:'185', stars:4, conf:3, trend:'stable', key:false, note:null }
-      ]},
-      { depth:3, players:[
-        { name:'Wardell Mack', year:'Fr.', ht:'5-11', wt:'185', stars:3, conf:2, trend:'up', key:false, note:null }
-      ]}
-    ]
-  },
-  {
-    id:'cb1', name:'Cornerback', abbr:'CB', unit:'defense',
-    slots:[
-      { depth:1, players:[
-        { name:'Kobe Black', year:'Jr.', ht:'6-1', wt:'195', stars:4, conf:4, trend:'up', key:false,
-          note:'Emerging as Texas\'s next great corner — plays with a Barron-like physicality at the catch point that wins contested ball battles.' }
-      ]},
-      { depth:2, players:[
-        { name:'Kade Phillips', year:'So.', ht:'6-0', wt:'185', stars:4, conf:3, trend:'up', key:false, note:null }
-      ]},
-      { depth:3, players:[
-        { name:'Hayward Howard Jr.', year:'Fr.', ht:'5-11', wt:'180', stars:4, conf:2, trend:'stable', key:false, note:null }
-      ]}
-    ]
-  },
-  {
-    id:'cb2', name:'Cornerback', abbr:'CB', unit:'defense',
-    slots:[
-      { depth:1, players:[
-        { name:'Bo Mascoe', year:'Jr.', ht:'5-11', wt:'185', stars:4, conf:3, trend:'stable', key:false, note:null }
-      ]},
-      { depth:2, players:[
-        { name:'Warren Roberson', year:'Sr.', ht:'6-0', wt:'185', stars:3, conf:3, trend:'stable', key:false, note:null }
-      ]},
-      { depth:3, players:[
-        { name:'Samari Matthews', year:'So.', ht:'5-11', wt:'180', stars:3, conf:2, trend:'up', key:false, note:null }
-      ]}
-    ]
-  },
-  {
-    id:'fs', name:'Free Safety', abbr:'FS', unit:'defense',
-    slots:[
-      { depth:1, players:[
-        { name:'Jelani McDonald', year:'Sr.', ht:'6-1', wt:'200', stars:4, conf:4, trend:'stable', key:false,
-          note:'Senior FS who sets the coverage from the back end — his communication with the corner corps is the organizational backbone of this secondary.' }
-      ]},
-      { depth:2, players:[
-        { name:'Jordon Johnson-Rubell', year:'Jr.', ht:'6-0', wt:'195', stars:3, conf:3, trend:'stable', key:false, note:null }
-      ]},
-      { depth:3, players:[
-        { name:'Toray Davis', year:'Jr.', ht:'6-0', wt:'195', stars:3, conf:2, trend:'stable', key:false, note:null }
-      ]},
-      { depth:4, players:[
-        { name:'Zelus Hicks', year:'Fr.', ht:'6-1', wt:'195', stars:3, conf:2, trend:'up', key:false, note:null }
-      ]}
-    ]
-  },
-  {
-    id:'ss', name:'Strong Safety', abbr:'SS', unit:'defense',
-    slots:[
-      { depth:1, players:[
-        { name:'Derek Williams Jr.', year:'Jr.', ht:'6-2', wt:'210', stars:4, conf:4, trend:'stable', key:false, note:null }
-      ]},
-      { depth:2, players:[
-        { name:'Xavier Filsaime', year:'Jr.', ht:'6-1', wt:'200', stars:3, conf:3, trend:'up', key:false, note:null }
-      ]},
-      { depth:3, players:[
-        { name:'Jonathan Cunningham', year:'So.', ht:'6-1', wt:'200', stars:3, conf:2, trend:'stable', key:false, note:null }
-      ]},
-      { depth:4, players:[
-        { name:'Jonah Williams', year:'Fr.', ht:'6-2', wt:'205', stars:4, conf:2, trend:'up', key:false, note:null }
-      ]},
-      { depth:5, players:[
-        { name:'Yaheim Riley', year:'Fr.', ht:'6-0', wt:'195', stars:3, conf:1, trend:'stable', key:false, note:null }
-      ]}
-    ]
-  },
-
-  /* ==================== SPECIAL TEAMS ==================== */
-  {
-    id:'p', name:'Punter', abbr:'P', unit:'special',
-    slots:[
-      { depth:1, players:[
-        { name:'Mac Chuimento', year:'Jr.', ht:'6-2', wt:'195', stars:null, conf:4, trend:'stable', key:false, note:null }
-      ]},
-      { depth:2, players:[
-        { name:'Mikey Bukauskus', year:'So.', ht:'6-1', wt:'190', stars:null, conf:3, trend:'stable', key:false, note:null }
-      ]}
-    ]
-  },
-  {
-    id:'k', name:'Kicker', abbr:'K', unit:'special',
-    slots:[
-      { depth:1, players:[
-        { name:'Gianni Spetic', year:'Jr.', ht:'6-1', wt:'185', stars:null, conf:5, trend:'stable', key:true,
-          note:'Entering third year as the starter — 14-of-18 career field goals with proven clutch ability in high-leverage situations.' }
-      ]},
-      { depth:2, players:[
-        { name:'Spencer Barnett', year:'Fr.', ht:'6-0', wt:'180', stars:null, conf:2, trend:'up', key:false, note:null }
-      ]},
-      { depth:3, players:[
-        { name:'Jake Collett', year:'So.', ht:'6-0', wt:'185', stars:null, conf:2, trend:'stable', key:false, note:null }
-      ]}
-    ]
-  },
-  {
-    id:'pr', name:'Punt Return', abbr:'PR', unit:'special',
-    slots:[
-      { depth:1, players:[
-        { name:'Ryan Niblett', year:'So.', ht:'5-8', wt:'175', stars:3, conf:4, trend:'stable', key:false, note:null }
-      ]},
-      { depth:2, players:[
-        { name:'Raleek Brown', year:'Sr.', ht:'5-9', wt:'185', stars:4, conf:3, trend:'stable', key:false, note:null }
-      ]},
-      { depth:3, players:[
-        { name:'Daylan McCutcheon', year:'Fr.', ht:'5-10', wt:'175', stars:3, conf:2, trend:'stable', key:false, note:null }
-      ]}
-    ]
-  },
-  {
-    id:'kor', name:'Kickoff Return', abbr:'KOR', unit:'special',
-    slots:[
-      { depth:1, tandem:true, players:[
-        { name:'Raleek Brown', year:'Sr.', ht:'5-9', wt:'185', stars:4, conf:4, trend:'stable', key:false, note:null },
-        { name:'Jermaine Bishop Jr.', year:'So.', ht:'5-10', wt:'175', stars:4, conf:4, trend:'up', key:false, note:null }
-      ]},
-      { depth:2, tandem:true, players:[
-        { name:'Derrek Cooper', year:'Jr.', ht:'5-10', wt:'190', stars:3, conf:3, trend:'stable', key:false, note:null },
-        { name:'Michael Terry III', year:'Fr.', ht:'5-11', wt:'190', stars:4, conf:2, trend:'up', key:false, note:null }
-      ]}
-    ]
-  }
-];
-
-/* ----------------------------------------------------------------
-   HELPERS
----------------------------------------------------------------- */
-const UNITS = [
-  { key:'offense', label:'Offense' },
-  { key:'defense', label:'Defense' },
-  { key:'special', label:'Special Teams' }
-];
-
-const CONF_LABELS = ['','Open','Battle','Projected','Solid','Locked'];
-
-function stars(n){ return n ? '★'.repeat(n) : ''; }
-function confDots(n){
-  return Array.from({length:5},(_, i)=>
-    `<span class="cdot ${i<n?'on':'off'}"></span>`
-  ).join('');
-}
-function trend(t){
-  if(t==='up') return '<span class="drow-trend trend-up">▲</span>';
-  if(t==='down') return '<span class="drow-trend trend-down">▼</span>';
-  return '<span class="drow-trend trend-stable">—</span>';
-}
-function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function highlight(name, q){
-  if(!q) return esc(name);
-  const safe = q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-  return esc(name).replace(new RegExp(`(${safe})`,'gi'),'<mark class="drow-hl">$1</mark>');
-}
-
-function slotStripeClass(slot){
-  if(slot.battle || slot.tandem) return 'stripe-battle';
-  return slot.depth===1?'stripe-s1':slot.depth===2?'stripe-s2':'stripe-s3';
-}
-function rowClass(slot){
-  let cls = `drow-s${Math.min(slot.depth,3)}`;
-  if(slot.battle||slot.tandem) cls += ' drow-battle';
-  return cls;
-}
-
-function renderPlayer(p, depth, isBattle, isTandem, q, showNote){
-  const stripeClass = isBattle||isTandem ? 'stripe-battle' : depth===1?'stripe-s1':depth===2?'stripe-s2':'stripe-s3';
-  const rowExtraClass = isBattle||isTandem ? 'drow-battle' : '';
-  const isMatch = q && p.name.toLowerCase().includes(q.toLowerCase());
-  return `
-<div class="drow drow-s${Math.min(depth,3)} ${rowExtraClass} ${isMatch?'drow-match':''}" data-name="${p.name.toLowerCase()}">
-  <div class="drow-stripe ${stripeClass}"></div>
-  <div class="drow-num">${depth}</div>
-  <div class="drow-info">
-    <div class="drow-top">
-      <span class="drow-name">${highlight(p.name,q)}</span>
-      <span class="drow-year">${p.year}</span>
-      ${p.key?'<span class="drow-key">Key</span>':''}
-    </div>
-    <div class="drow-attrs">
-      <span>${p.ht}</span><span class="drow-attrs-sep">·</span>
-      <span>${p.wt}</span>
-      ${p.stars?`<span class="drow-attrs-sep">·</span><span class="drow-stars">${stars(p.stars)}</span>`:''}
-    </div>
-  </div>
-  <div class="drow-side">
-    ${trend(p.trend)}
-    <div class="drow-conf">${confDots(p.conf)}</div>
-    <div class="drow-conf-label">${CONF_LABELS[p.conf]||''}</div>
-  </div>
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal" id="modal-content"></div>
 </div>
-${showNote && p.note ? `<div class="drow-note">${p.note}</div>` : ''}`;
+
+<script>
+/* =========================================================
+   DATA
+   ========================================================= */
+const IMG = p => p ? `https://images.sidearmdev.com/crop?url=https%3A%2F%2Fdxbhsrqyrr690.cloudfront.net%2Fsidearm.nextgen.sites%2Ftexassports_com%2Fimages%2F${encodeURIComponent(p)}&width=300&height=360&type=webp` : null;
+
+const PLAYERS = [
+  // ── QUARTERBACKS ──
+  {id:'arch-manning',num:'16',name:'Arch Manning',pos:'QB',group:'QB',yr:'Jr',ht:"6'4\"",wt:'225',home:'New Orleans, LA',hs:'Isidore Newman',photo:'2024/9/5/Manning_Arch_2024_crop_T3l3M.jpg',recruit:{stars:5,rating:'99',natl:1,pos:1,yr:2023},nil:'$5.1M',transfer:false,transferFrom:null,trait:'Heisman Candidate',stats:{g:13,comp:'247/357',yds:3562,td:35,int:8,type:'QB'},bio:"The nephew of Peyton and Eli Manning and the most anticipated quarterback in college football history. After backing up in his first two seasons, Manning took full command of the Texas offense in 2025 — 3,562 passing yards, 35 touchdowns, leading the Longhorns to the Big 12 Championship. Enters 2026 as the clear Heisman Trophy frontrunner.",social:{x:'archmanning',ig:'archmanning'}},
+  {id:'kj-lacey',num:'8',name:'Karle Lacey Jr.',pos:'QB',group:'QB',yr:'So',ht:"6'0\"",wt:'182',home:'Saraland, AL',hs:'Saraland HS',photo:'2025/7/31/Lacey_Karle2025.png',recruit:{stars:3,rating:'86',natl:412,pos:28,yr:2025},nil:'$25K',transfer:false,transferFrom:null,trait:'Dual-Threat Backup',stats:null,bio:'Athletic backup quarterback with quick feet and an improving arm. Emerged as an intriguing option in limited freshman action. Competing with transfer MJ Morris for backup reps.',social:{x:'',ig:''}},
+  {id:'mj-morris',num:'12',name:'MJ Morris',pos:'QB',group:'QB',yr:'So',ht:"6'1\"",wt:'198',home:'Cary, NC',hs:'Cary HS',photo:null,recruit:{stars:4,rating:'90',natl:null,pos:null,yr:2024},nil:'$75K',transfer:true,transferFrom:'NC State',trait:'Transfer — Portal Competition',stats:{g:10,comp:'144/230',yds:1850,td:16,int:8,type:'QB'},bio:'Former NC State starter who transferred after two productive seasons with the Wolfpack. Brings starting experience and a strong arm. Competing for backup snaps behind Arch Manning.',social:{x:'',ig:''}},
+
+  // ── RUNNING BACKS ──
+  {id:'hollywood-smothers',num:'2',name:'Hollywood Smothers',pos:'RB',group:'RB',yr:'Jr',ht:"5'10\"",wt:'200',home:'Beaumont, TX',hs:'Westbrook HS',photo:null,recruit:{stars:4,rating:'91',natl:null,pos:null,yr:2023},nil:'$90K',transfer:true,transferFrom:'Unknown',trait:'Explosive 1A Back',stats:{g:11,car:168,yds:821,avg:4.8,td:9,type:'RB'},bio:'Portal addition who brings home-run ability and elite speed in space. Nightmarish on screens and draws — Smothers thrives when given one-on-one opportunities in open field. Shares 1A duties with Raleek Brown based on situation.',social:{x:'',ig:''}},
+  {id:'raleek-brown',num:'3',name:'Raleek Brown',pos:'RB',group:'RB',yr:'Sr',ht:"5'9\"",wt:'195',home:'Tulsa, OK',hs:'Union HS',photo:null,recruit:{stars:4,rating:'90',natl:null,pos:null,yr:2021},nil:'$120K',transfer:true,transferFrom:'Oklahoma State',trait:'Power/Vision — 1B Back',stats:{g:12,car:213,yds:1103,avg:5.1,td:11,type:'RB'},bio:'Transfer from Oklahoma State who was one of the best backs in the Big 12 over three seasons. Power-speed hybrid with exceptional vision. His senior year is a platform to cement NFL Draft stock.',social:{x:'',ig:''}},
+  {id:'cj-baxter',num:'4',name:'CJ Baxter Jr.',pos:'RB',group:'RB',yr:'Jr',ht:"6'1\"",wt:'227',home:'Orlando, FL',hs:'Edgewater HS',photo:'2025/7/31/Baxter_CJ2025.png',recruit:{stars:5,rating:'96',natl:22,pos:3,yr:2024},nil:'$340K',transfer:false,transferFrom:null,trait:'Five-Star — Complete Back',stats:{g:12,car:94,yds:612,avg:6.5,td:7,type:'RB'},bio:'5-star recruit who has shown elite burst and power in his first two seasons. A complete back — runs, receives, protects. Projects as a primary option with Smothers and Brown, and an NFL Draft prospect.',social:{x:'cjbaxterjr',ig:'cjbaxterjr4'}},
+  {id:'qw-wisner',num:'5',name:'Quintrevion Wisner',pos:'RB',group:'RB',yr:'Sr',ht:"6'0\"",wt:'194',home:'Glenn Heights, TX',hs:'DeSoto HS',photo:'2023/10/13/Wisner_Quintrevion_2023.png',recruit:{stars:4,rating:'90',natl:155,pos:18,yr:2023},nil:'$115K',transfer:false,transferFrom:null,trait:'Senior Veteran — Speed Back',stats:{g:13,car:78,yds:485,avg:6.2,td:5,type:'RB'},bio:'Explosive Texas native from DeSoto entering his senior season. A reliable change-of-pace back and special teams contributor who has earned trust in the program.',social:{x:'qwisner5',ig:'quintrevionwisner'}},
+
+  // ── WIDE RECEIVERS ──
+  {id:'cam-coleman',num:'0',name:'Cam Coleman',pos:'WR',group:'WR',yr:'Jr',ht:"6'2\"",wt:'190',home:'Phenix City, AL',hs:'Central HS',photo:null,recruit:{stars:5,rating:'97',natl:10,pos:1,yr:2023},nil:'$495K',transfer:true,transferFrom:'Auburn',trait:'WR1 — Elite Portal Acquisition',stats:{g:12,rec:58,yds:912,avg:15.7,td:9,type:'WR'},bio:"One of the most coveted transfer additions in the portal cycle. The former #1 WR recruit never found the right fit at Auburn — now paired with Arch Manning in Texas' pro-spread offense, the ceiling is unlimited. Elite separation ability, contested-catch prowess, and deep-ball tracking.",social:{x:'',ig:''}},
+  {id:'ryan-wingo',num:'1',name:'Ryan Wingo',pos:'WR',group:'WR',yr:'Jr',ht:"6'2\"",wt:'214',home:'St. Louis, MO',hs:'St. Louis University HS',photo:'2025/7/31/Wingo_Ryan2025.png',recruit:{stars:5,rating:'97',natl:12,pos:1,yr:2024},nil:'$460K',transfer:false,transferFrom:null,trait:'WR-Z Starter — NFL 1st Round',stats:{g:13,rec:61,yds:924,avg:15.1,td:9,type:'WR'},bio:'#1 WR recruit nationally in 2024. After a breakout sophomore season with 61 catches and 9 touchdowns, Wingo enters 2026 as a legitimate first-round NFL Draft prospect. Physical, long, and exceptional in contested situations.',social:{x:'ryanwingo1',ig:'ryanwingo1'}},
+  {id:'emmett-mosley',num:'19',name:'Emmett Mosley V',pos:'WR',group:'WR',yr:'Jr',ht:"6'2\"",wt:'210',home:'Chicago, IL',hs:'Santa Margarita CA',photo:'2025/7/10/Mosley_EmmettHeadshot.png',recruit:{stars:4,rating:'92',natl:98,pos:9,yr:2024},nil:'$195K',transfer:false,transferFrom:null,trait:'Slot WR — YAC Machine',stats:{g:11,rec:34,yds:448,avg:13.2,td:4,type:'WR'},bio:"Elusive slot receiver with exceptional yards-after-catch ability. Mosley's quick-twitch movement and vision after the catch make him a nightmare in space. Entering his third year, he's the prototype slot receiver for Sarkisian's spread system.",social:{x:'emmettmosley5',ig:'emmettmosley5'}},
+  {id:'deandre-moore',num:'10',name:'DeAndre Moore Jr.',pos:'WR',group:'WR',yr:'Sr',ht:"6'0\"",wt:'192',home:'Anaheim, CA',hs:'St. John Bosco',photo:'2024/9/5/Moore_DeAndre_2024_crop_Lgj3U.jpg',recruit:{stars:5,rating:'95',natl:35,pos:4,yr:2023},nil:'$295K',transfer:false,transferFrom:null,trait:'WR Veteran — Senior Leader',stats:{g:13,rec:52,yds:748,avg:14.4,td:8,type:'WR'},bio:'Elite route-runner from powerhouse St. John Bosco who has been a consistent producer at Texas. Senior season is his chance to cement his legacy and boost NFL Draft stock in his final year in Burnt Orange.',social:{x:'deandremoorejr',ig:'deandremoorejr0'}},
+  {id:'jaime-ffrench',num:'6',name:'Jaime Ffrench Jr.',pos:'WR',group:'WR',yr:'So',ht:"6'1\"",wt:'185',home:'Jacksonville, FL',hs:'Mandarin HS',photo:'2025/7/31/Ffrench_Jaime2025.png',recruit:{stars:4,rating:'91',natl:130,pos:11,yr:2025},nil:'$65K',transfer:false,transferFrom:null,trait:'Sophomore Breakout Candidate',stats:null,bio:'Son of former NFL WR Jaime Ffrench. Showed flashes in limited freshman action and is expected to take a significant step as a sophomore. Versatile enough to play X, Z, or slot.',social:{x:'',ig:''}},
+  {id:'jermaine-bishop',num:'11',name:'Jermaine Bishop Jr.',pos:'WR',group:'WR',yr:'So',ht:"6'0\"",wt:'182',home:'Rockwall, TX',hs:'Rockwall HS',photo:null,recruit:{stars:4,rating:'90',natl:145,pos:13,yr:2025},nil:'$35K',transfer:false,transferFrom:null,trait:'Texas Native — Competing',stats:null,bio:"Home-state talent from Rockwall with good athleticism and speed. Bishop is competing for WR-Z depth snaps and has earned coaches' trust through effort and special teams play.",social:{x:'',ig:''}},
+
+  // ── TIGHT ENDS ──
+  {id:'jack-endries',num:'85',name:'Jack Endries',pos:'TE',group:'TE',yr:'Sr',ht:"6'5\"",wt:'248',home:'Rocklin, CA',hs:'Rocklin HS',photo:'2024/9/5/Endries_Jack_2024_crop.jpg',recruit:{stars:4,rating:'90',natl:140,pos:7,yr:2023},nil:'$115K',transfer:false,transferFrom:null,trait:'Dual-Threat TE — Senior Leader',stats:{g:13,rec:22,yds:248,avg:11.3,td:2,type:'WR'},bio:'Physical tight end from California who has developed into a reliable two-way threat. Senior season is his best opportunity to establish NFL Draft credentials. Strong blocker with improving route running in the seam.',social:{x:'jackendries',ig:'jackendries85'}},
+  {id:'michael-masunas',num:'88',name:'Michael Masunas',pos:'TE',group:'TE',yr:'Jr',ht:"6'4\"",wt:'245',home:'Pearland, TX',hs:'Pearland HS',photo:null,recruit:{stars:3,rating:'87',natl:null,pos:null,yr:2024},nil:'$35K',transfer:false,transferFrom:null,trait:'TE Battle — Athletic Upside',stats:null,bio:'In-house tight end from the Houston area who is pushing hard for significant snaps. His pass-catching athleticism could earn him more passing-down usage and make this a genuine competition with Endries.',social:{x:'',ig:''}},
+
+  // ── OFFENSIVE LINE ──
+  {id:'christian-jones',num:'74',name:'Christian Jones',pos:'OT',group:'OL',yr:'Sr',ht:"6'6\"",wt:'310',home:'Duncanville, TX',hs:'Duncanville',photo:'2024/9/5/Jones_Christian_2024_crop.jpg',recruit:{stars:5,rating:'96',natl:28,pos:3,yr:2023},nil:'$270K',transfer:false,transferFrom:null,trait:'LT — NFL Draft Prospect',stats:null,bio:"The heir apparent to Kelvin Banks Jr. Christian Jones has all the tools for a first-round pick — elite athleticism, length, and rapidly improving technique. Manning's blindside protection in 2026 starts and ends with him.",social:{x:'christianjones74',ig:'christianjones74'}},
+  {id:'laurence-seymore',num:'63',name:'Laurence Seymore',pos:'OG',group:'OL',yr:'Sr',ht:"6'4\"",wt:'315',home:'New Orleans, LA',hs:'Edna Karr HS',photo:null,recruit:{stars:4,rating:'90',natl:null,pos:null,yr:2022},nil:'$65K',transfer:true,transferFrom:'LSU',trait:'LG — Portal Upgrade',stats:null,bio:'A key portal acquisition from rival LSU who brings SEC experience and elite physicality. Seymore is expected to anchor the left guard spot and shore up an interior that needed an upgrade.',social:{x:'',ig:''}},
+  {id:'connor-robertson',num:'54',name:'Connor Robertson',pos:'C',group:'OL',yr:'RS Sr',ht:"6'3\"",wt:'302',home:'Midland, TX',hs:'Midland Christian',photo:null,recruit:{stars:3,rating:'85',natl:null,pos:null,yr:2021},nil:'$45K',transfer:false,transferFrom:null,trait:'Center — Line Leader',stats:null,bio:'The heartbeat of the Texas offensive line. Robertson is a veteran presence who makes pre-snap adjustments, calls out stunts, and communicates protection schemes. His football IQ is as valuable as his physical tools.',social:{x:'',ig:''}},
+  {id:'brandon-baker',num:'67',name:'Brandon Baker',pos:'OG',group:'OL',yr:'Jr',ht:"6'4\"",wt:'321',home:'Katy, TX',hs:'Katy HS',photo:null,recruit:{stars:4,rating:'89',natl:null,pos:null,yr:2024},nil:'$55K',transfer:false,transferFrom:null,trait:'RG — Power Mauler',stats:null,bio:'Physical, powerful guard who excels in the run game and at the point of attack. Baker has developed quickly and his combination of size, strength, and aggression make him a standout interior blocker.',social:{x:'',ig:''}},
+  {id:'mason-shipley',num:'78',name:'Mason Shipley',pos:'OT',group:'OL',yr:'Jr',ht:"6'5\"",wt:'305',home:'Georgetown, TX',hs:'Georgetown HS',photo:'2025/7/31/Shipley_Mason2025.png',recruit:{stars:4,rating:'91',natl:118,pos:8,yr:2024},nil:'$95K',transfer:false,transferFrom:null,trait:'RT — Versatile Swing Tackle',stats:null,bio:'Son of UT legend Jordan Shipley who transitioned to offensive line and developed rapidly. His versatility to play either tackle spot is invaluable, and he enters 2026 competing for the RT starting role.',social:{x:'masonshipley78',ig:'masonshipley78'}},
+
+  // ── DEFENSIVE LINE / EDGE ──
+  {id:'colin-simmons',num:'11',name:'Colin Simmons',pos:'EDGE',group:'DL',yr:'Jr',ht:"6'3\"",wt:'240',home:'Duncanville, TX',hs:'Duncanville',photo:'2024/2/15/Simmons_Colin-2024.jpg',recruit:{stars:5,rating:'99',natl:2,pos:1,yr:2024},nil:'$640K',transfer:false,transferFrom:null,trait:'All-American — Top NFL Prospect',stats:{g:13,tkl:38,sack:14.5,tfl:22,ff:4,type:'DL'},bio:'One of the best edge rushers in college football, period. After a Defensive Freshman of the Year campaign, Simmons erupted with 14.5 sacks in 2025 and is a consensus preseason All-American. Projected top-3 NFL Draft pick in 2027. His first-step quickness and hand-technique are elite.',social:{x:'colinsimmons1',ig:'colinsimmons1'}},
+  {id:'colton-vasek',num:'45',name:'Colton Vasek',pos:'EDGE',group:'DL',yr:'Sr',ht:"6'4\"",wt:'250',home:'Katy, TX',hs:'Cinco Ranch HS',photo:null,recruit:{stars:4,rating:'89',natl:null,pos:null,yr:2022},nil:'$55K',transfer:false,transferFrom:null,trait:'EDGE Veteran — Rotation',stats:{g:13,tkl:28,sack:4.5,tfl:8,ff:2,type:'DL'},bio:'Reliable veteran who provides quality rotation behind Simmons. Vasek is a strong run-stopper and capable pass rusher whose senior experience gives the unit depth confidence.',social:{x:'',ig:''}},
+  {id:'lance-jackson',num:'97',name:'Lance Jackson',pos:'DE',group:'DL',yr:'So',ht:"6'4\"",wt:'275',home:'Richmond, TX',hs:'Foster HS',photo:null,recruit:{stars:4,rating:'90',natl:null,pos:null,yr:2025},nil:'$65K',transfer:false,transferFrom:null,trait:'DE — Emerging Star',stats:{g:12,tkl:32,sack:5.0,tfl:9,ff:1,type:'DL'},bio:'A physically imposing defensive end who developed rapidly in his freshman season. Jackson pairs well with Simmons to give Texas a formidable D-line. His combination of size and athleticism suggests a breakout 2026 campaign.',social:{x:'',ig:''}},
+  {id:'hero-kanu',num:'90',name:'Hero Kanu',pos:'DT',group:'DL',yr:'Sr',ht:"6'4\"",wt:'318',home:'Long Beach, CA',hs:'Poly HS',photo:null,recruit:{stars:4,rating:'91',natl:null,pos:null,yr:2022},nil:'$75K',transfer:false,transferFrom:null,trait:'DT — Senior Interior Anchor',stats:{g:12,tkl:40,sack:3.0,tfl:7,ff:0,type:'DL'},bio:'Powerful interior defensive tackle entering his final season as the undisputed anchor of the Texas D-line. Kanu eats blockers and creates downstream chaos that allows the linebackers to run free.',social:{x:'',ig:''}},
+  {id:'alex-january',num:'92',name:'Alex January',pos:'DT',group:'DL',yr:'Jr',ht:"6'3\"",wt:'305',home:'Houston, TX',hs:'Dekaney HS',photo:null,recruit:{stars:4,rating:'89',natl:null,pos:null,yr:2024},nil:'$40K',transfer:false,transferFrom:null,trait:'DT — Interior Pass Rush',stats:{g:11,tkl:22,sack:2.0,tfl:5,ff:1,type:'DL'},bio:'Ascending interior tackle who has developed excellent inside pass rush technique. January is one of the program\'s most improved players and is set for an expanded role alongside Kanu in 2026.',social:{x:'',ig:''}},
+  {id:'ian-geffrard',num:'91',name:'Ian Geffrard',pos:'NT',group:'DL',yr:'Jr',ht:"6'2\"",wt:'328',home:'Miami, FL',hs:'St. Thomas Aquinas',photo:null,recruit:{stars:3,rating:'86',natl:null,pos:null,yr:2024},nil:'$40K',transfer:false,transferFrom:null,trait:'Nose Tackle — Immovable Force',stats:{g:12,tkl:48,sack:2.0,tfl:5,ff:0,type:'DL'},bio:'Massive nose tackle whose primary role is run stopping and double-team consumption. Geffrard does everything the coaches ask without needing statistical recognition. The unsung hero of the Texas defense.',social:{x:'',ig:''}},
+
+  // ── LINEBACKERS ──
+  {id:'anthony-hill',num:'0',name:'Anthony Hill Jr.',pos:'LB',group:'LB',yr:'Jr',ht:"6'3\"",wt:'238',home:'Denton, TX',hs:'Ryan HS',photo:'2024/9/5/Hill_Anthony_2024_crop_ZQDp4.jpg',recruit:{stars:5,rating:'99',natl:1,pos:1,yr:2023},nil:'$560K',transfer:false,transferFrom:null,trait:'All-American — NFL Top-10 Pick',stats:{g:13,tkl:97,sack:4.5,tfl:11,ff:2,type:'LB'},bio:'#1 overall recruit in 2023. After back-to-back dominant seasons, Anthony Hill Jr. is unquestionably one of the two best linebackers in college football. Freakish combination of size, speed, and instinct. A projected top-10 NFL Draft pick in 2027 — if he leaves.',social:{x:'anthonyhill0',ig:'anthonyhill0'}},
+  {id:'rasheem-biles',num:'47',name:'Rasheem Biles',pos:'LB',group:'LB',yr:'Sr',ht:"6'1\"",wt:'230',home:'Waco, TX',hs:'Midway HS',photo:null,recruit:{stars:3,rating:'84',natl:null,pos:null,yr:2022},nil:'$55K',transfer:true,transferFrom:'Baylor',trait:'LB — Portal Veteran',stats:{g:12,tkl:78,sack:2.0,tfl:5,ff:1,type:'LB'},bio:'Transfer from rival Baylor who provides veteran leadership alongside Anthony Hill Jr. Biles is an instinctive, downhill linebacker with reliable tackling and composure. A perfect complement to Hill\'s explosiveness.',social:{x:'',ig:''}},
+
+  // ── DEFENSIVE BACKS ──
+  {id:'malik-muhammad',num:'5',name:'Malik Muhammad',pos:'CB',group:'DB',yr:'Sr',ht:"6'0\"",wt:'188',home:'DeSoto, TX',hs:'South Oak Cliff',photo:'2023/10/13/Muhammad_Malik_2023.png',recruit:{stars:5,rating:'97',natl:14,pos:1,yr:2023},nil:'$365K',transfer:false,transferFrom:null,trait:'CB1 — Best CB in the SEC',stats:{g:13,tkl:38,int:3,pbu:9,ff:1,type:'DB'},bio:'#1 CB recruit in 2023. After three dominant seasons, Muhammad enters his senior year as arguably the best cornerback in the SEC. Elite athleticism, ball skills, and press-coverage technique. NFL first-round projection.',social:{x:'malikmuhammad5',ig:'malikmuhammad5'}},
+  {id:'kade-phillips',num:'4',name:'Kade Phillips',pos:'CB',group:'DB',yr:'Jr',ht:"6'1\"",wt:'188',home:'Round Rock, TX',hs:'Round Rock HS',photo:null,recruit:{stars:4,rating:'91',natl:null,pos:null,yr:2024},nil:'$100K',transfer:false,transferFrom:null,trait:'CB2 — Rising Star',stats:{g:12,tkl:42,int:4,pbu:12,ff:0,type:'DB'},bio:'Lengthy, physical corner who emerged as a standout in 2025 with 4 interceptions. Phillips pairs perfectly with Muhammad to give Texas one of the best CB duos in college football. His development in zone technique has been a key story.',social:{x:'',ig:''}},
+  {id:'kobe-black',num:'26',name:'Kobe Black',pos:'CB',group:'DB',yr:'Jr',ht:"5'11\"",wt:'185',home:'Beaumont, TX',hs:'West Brook HS',photo:null,recruit:{stars:4,rating:'89',natl:null,pos:null,yr:2024},nil:'$55K',transfer:false,transferFrom:null,trait:'CB3/Nickel — Open Competition',stats:{g:11,tkl:28,int:2,pbu:7,ff:0,type:'DB'},bio:'Athletic nickel corner competing for the CB3/slot defender role. Black has good instincts and quickness but continues developing press technique. His performance in fall camp is one of the key defensive storylines.',social:{x:'',ig:''}},
+  {id:'jelani-mcdonald',num:'23',name:'Jelani McDonald',pos:'S',group:'DB',yr:'Sr',ht:"6'2\"",wt:'199',home:'Waco, TX',hs:'Connally HS',photo:'2025/7/31/McDonald_Jelani2025.png',recruit:{stars:4,rating:'90',natl:155,pos:12,yr:2023},nil:'$115K',transfer:false,transferFrom:null,trait:'Free Safety — Center Field',stats:{g:12,tkl:42,int:2,pbu:7,ff:0,type:'DB'},bio:'Long, rangy free safety who has evolved into one of the best deep safeties in the SEC. McDonald\'s center-field range and ball instincts are what make the Texas secondary elite. Senior season is a chance to cement his legacy.',social:{x:'jelanimcdonald4',ig:'jelanimcdonald4'}},
+  {id:'derek-williams',num:'2',name:'Derek Williams Jr.',pos:'S',group:'DB',yr:'Jr',ht:"6'2\"",wt:'201',home:'New Iberia, LA',hs:'Westgate HS',photo:'2024/9/5/Williams_Derek_2024_crop_8Mo2n.jpg',recruit:{stars:5,rating:'96',natl:25,pos:2,yr:2024},nil:'$290K',transfer:false,transferFrom:null,trait:'Strong Safety — Star Prospect',stats:{g:13,tkl:48,int:4,pbu:8,ff:2,type:'DB'},bio:'Elite safety prospect and one of the most complete defensive players in college football. Williams plays with relentless physicality and exceptional range. A projected first-round pick — if he stays in 2026.',social:{x:'derekwilliamsjr2',ig:'derekwilliamsjr2'}},
+
+  // ── SPECIAL TEAMS ──
+  {id:'nick-townsend',num:'36',name:'Nick Townsend',pos:'K',group:'ST',yr:'Sr',ht:"6'1\"",wt:'185',home:'Bendigo, Australia',hs:'—',photo:'2024/9/5/Townsend_Nick_2024_crop.jpg',recruit:{stars:null,rating:'—',natl:null,pos:null,yr:null},nil:'$65K',transfer:false,transferFrom:null,trait:'Kicker — Australian Leg',stats:{g:13,fgm:22,fga:26,long:54,xpm:48,type:'K'},bio:'Australian-born kicker who has been one of the most accurate in the SEC. Enters his senior season with 22 career field goals, including a career-long of 54 yards. The unquestioned starting kicker for Texas.',social:{x:'nicktownsend36',ig:'nicktownsend36'}},
+];
+
+/* =========================================================
+   DEPTH CHART DATA
+   ========================================================= */
+const DEPTH = {
+  offense: [
+    {key:'qb',label:'Quarterback',abbr:'QB',status:'locked',
+     note:'Arch Manning is the undisputed starter. Fall camp settles backup rep distribution between KJ Lacey and transfer MJ Morris.',
+     battleNote:null,
+     tiers:[
+       [{id:'arch-manning',note:'Starter — Heisman frontrunner'}],
+       [{id:'kj-lacey',note:'Backup — mobile option'},{id:'mj-morris',note:'Transfer — portal competition'}],
+     ]},
+    {key:'rb',label:'Running Back',abbr:'RB',status:'hot',
+     note:'One of the best backfields in the SEC. Smothers and Brown operate as 1A/1B based on game situation and matchup.',
+     battleNote:'RB USAGE: Hollywood Smothers vs. Raleek Brown — who earns higher snap share? Brown\'s power and Smothers\' speed could be a true 50/50 split, or one separates in fall camp.',
+     tiers:[
+       [{id:'hollywood-smothers',note:'1A — Explosive speed'},{id:'raleek-brown',note:'1B — Power/vision'}],
+       [{id:'cj-baxter',note:'5-star depth / third option'},{id:'qw-wisner',note:'Senior depth / ST'}],
+     ]},
+    {key:'wr-x',label:'WR — Boundary (X)',abbr:'WR-X',status:'locked',
+     note:'Cam Coleman is the alpha. Pairing a 5-star portal WR with Arch Manning is the biggest offensive upgrade of the offseason.',
+     battleNote:null,
+     tiers:[
+       [{id:'cam-coleman',note:'WR1 — Alpha, elite portal add'}],
+       [{id:'deandre-moore',note:'Senior veteran, proven target'}],
+       [{id:'jaime-ffrench',note:'Sophomore — upside depth'}],
+     ]},
+    {key:'wr-z',label:'WR — Boundary (Z)',abbr:'WR-Z',status:'locked',
+     note:'Ryan Wingo is a first-round NFL Draft prospect and one of the most physical WRs in the country.',
+     battleNote:null,
+     tiers:[
+       [{id:'ryan-wingo',note:'WR-Z Starter — NFL 1st round'}],
+       [{id:'jaime-ffrench',note:'Versatile depth'},{id:'jermaine-bishop',note:'Competing for reps'}],
+     ]},
+    {key:'wr-sl',label:'Slot Receiver',abbr:'SL',status:'locked',
+     note:"Emmett Mosley V is Manning's security blanket. His YAC ability makes him one of the best slot receivers in the SEC.",
+     battleNote:null,
+     tiers:[
+       [{id:'emmett-mosley',note:'Slot WR — YAC machine'}],
+       [{id:'jaime-ffrench',note:'Slot depth / multi-role'}],
+     ]},
+    {key:'te',label:'Tight End',abbr:'TE',status:'open',
+     note:'Jack Endries is the senior veteran leader. Michael Masunas\' athleticism makes this a genuine competition.',
+     battleNote:'TE BATTLE: Endries vs. Masunas — split snap counts by down and distance are possible. Masunas\' receiving speed could earn him more passing-down snaps.',
+     tiers:[
+       [{id:'jack-endries',note:'Veteran starter'}],
+       [{id:'michael-masunas',note:'Pushing for time — athletic edge'}],
+     ]},
+    {key:'ol',label:'Offensive Line',abbr:'OL',status:'open',
+     note:'One of the best O-lines in the SEC. Cohesion and health are the only questions.',
+     battleNote:'RT BATTLE: Mason Shipley vs. depth options — Shipley is the frontrunner but his technique at the spot is still developing.',
+     tiers:[
+       [{id:'christian-jones',note:'LT — All-American candidate'},{id:'laurence-seymore',note:'LG — Portal upgrade'},{id:'connor-robertson',note:'C — Line leader'},{id:'brandon-baker',note:'RG — Power mauler'},{id:'mason-shipley',note:'RT — Competing'}],
+     ]},
+  ],
+  defense: [
+    {key:'edge',label:'Edge Rusher',abbr:'EDGE',status:'open',
+     note:'Colin Simmons is a preseason All-American and one of the best edge rushers in the country. EDGE2 is the key rotation competition.',
+     battleNote:'EDGE2: Colton Vasek is the frontrunner, but younger options are pushing. Quality rotation depth is critical for sustaining pressure throughout games.',
+     tiers:[
+       [{id:'colin-simmons',note:'All-American — Elite pass rusher'}],
+       [{id:'colton-vasek',note:'Veteran rotation anchor'}],
+     ]},
+    {key:'de',label:'Defensive End',abbr:'DE',status:'open',
+     note:'Lance Jackson emerged as a force in 2025. Depth behind him is a key focus of fall camp.',
+     battleNote:"DE DEPTH: Developing young talent needs to push Jackson's rotation. A healthy D-line rotation is critical for SEC play.",
+     tiers:[
+       [{id:'lance-jackson',note:'Emerging starter — power + athleticism'}],
+       [{id:'alex-january',note:'Interior / exterior hybrid'}],
+     ]},
+    {key:'dt',label:'Defensive Tackle',abbr:'DT',status:'locked',
+     note:'Hero Kanu leads the interior with veteran presence and elite block-eating ability.',
+     battleNote:null,
+     tiers:[
+       [{id:'hero-kanu',note:'Senior anchor — block eater'}],
+       [{id:'alex-january',note:'Pass rush specialist rotation'}],
+     ]},
+    {key:'nt',label:'Nose Tackle',abbr:'NT',status:'locked',
+     note:"Ian Geffrard is massive, immovable, and the unsung hero of the Texas run defense.",
+     battleNote:null,
+     tiers:[
+       [{id:'ian-geffrard',note:'Run-stopping anchor'}],
+     ]},
+    {key:'lb',label:'Linebacker',abbr:'LB',status:'locked',
+     note:'Anthony Hill Jr. and Rasheem Biles form one of the elite LB duos in college football.',
+     battleNote:null,
+     tiers:[
+       [{id:'anthony-hill',note:'Star LB — NFL top-10 prospect'},{id:'rasheem-biles',note:'Portal veteran — reliable'}],
+     ]},
+    {key:'cb',label:'Cornerback',abbr:'CB',status:'hot',
+     note:'CB1 and CB2 are locked. CB3/Nickel is the most hotly contested position on the team entering fall camp.',
+     battleNote:'CB3/NICKEL: Kobe Black leads but no one has separated. Portal additions could still factor in. This is the most important fall camp battle on the roster.',
+     tiers:[
+       [{id:'malik-muhammad',note:'CB1 — Lockdown, best in SEC'},{id:'kade-phillips',note:'CB2 — 4 INTs in 2025'}],
+       [{id:'kobe-black',note:'CB3/Nickel — Hot competition'}],
+     ]},
+    {key:'s',label:'Safety',abbr:'S',status:'locked',
+     note:'Jelani McDonald and Derek Williams Jr. are an elite safety tandem. One of the best position groups on the team.',
+     battleNote:null,
+     tiers:[
+       [{id:'jelani-mcdonald',note:'FS — Center field, elite range'},{id:'derek-williams',note:'SS/Hybrid — Star prospect'}],
+     ]},
+  ],
+  specialTeams: [
+    {key:'k',label:'Kicker',abbr:'K',status:'locked',
+     note:'Nick Townsend returns as one of the most reliable kickers in the SEC.',
+     battleNote:null,
+     tiers:[[{id:'nick-townsend',note:'Returning starter — 84.6% FG in 2025'}]]},
+    {key:'kr',label:'Kick Returner',abbr:'KR',status:'open',
+     note:"Raleek Brown's shiftiness and Smothers' speed make this a natural competition.",
+     battleNote:null,
+     tiers:[[{id:'raleek-brown',note:'Primary option'},{id:'hollywood-smothers',note:'Speed return option'}]]},
+    {key:'pr',label:'Punt Returner',abbr:'PR',status:'open',
+     note:"Emmett Mosley V's elusiveness makes him the clear favorite for PR duties.",
+     battleNote:null,
+     tiers:[[{id:'emmett-mosley',note:'PR favorite — elite RAC'},{id:'jaime-ffrench',note:'Competing'}]]},
+  ]
+};
+
+/* =========================================================
+   STATE
+   ========================================================= */
+let currentPhase = 'offense';
+let rosterFilter = 'ALL';
+const playerMap = {};
+PLAYERS.forEach(p => playerMap[p.id] = p);
+
+/* =========================================================
+   UTILITIES
+   ========================================================= */
+function posColor(pos){
+  const m={QB:'#E8620A',RB:'#4ade80',WR:'#60a5fa',TE:'#a78bfa',OT:'#f472b6',OG:'#f472b6',C:'#f472b6',DE:'#fb923c',DT:'#fb923c',EDGE:'#fb923c',NT:'#fb923c',LB:'#facc15',CB:'#34d399',S:'#34d399',DB:'#34d399',K:'#94a3b8',P:'#94a3b8'};
+  return m[pos] || '#BF5700';
 }
 
-function renderSlot(slot, q){
-  if(slot.battle && slot.players.length>=2){
-    const [p1,p2] = slot.players;
-    return `
-<div class="depth-slot-wrap">
-  ${renderPlayer(p1, slot.depth, true, false, q, false)}
-  <div class="or-sep"><div class="or-sep-line"></div><span class="or-badge">OR</span><div class="or-sep-line"></div></div>
-  ${renderPlayer(p2, slot.depth, true, false, q, false)}
-  ${slot.battleNote ? `<div class="or-slot-note">${slot.battleNote}</div>` : ''}
-</div>`;
+function avatarHTML(p, cls='player-avatar'){
+  if(!p) return `<div class="${cls}"><span class="avatar-null">—</span></div>`;
+  const url = p.photo ? IMG(p.photo) : null;
+  const initials = p.name.split(' ').map(w=>w[0]).slice(0,2).join('');
+  if(url){
+    return `<div class="${cls}"><img src="${url}" alt="${p.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><span class="avatar-initials" style="display:none">${initials}</span></div>`;
   }
-  if(slot.tandem && slot.players.length>=2){
-    const [p1,p2] = slot.players;
-    return `
-<div class="depth-slot-wrap">
-  ${renderPlayer(p1, slot.depth, false, true, q, false)}
-  <div class="tandem-sep"><span class="tandem-badge">&amp;</span></div>
-  ${renderPlayer(p2, slot.depth, false, true, q, false)}
-</div>`;
-  }
-  const p = slot.players[0];
-  return `
-<div class="depth-slot-wrap">
-  ${renderPlayer(p, slot.depth, false, false, q, true)}
-</div>`;
+  return `<div class="${cls}"><span class="avatar-initials">${initials}</span></div>`;
 }
 
-function posMatchesQuery(pos, q){
-  if(!q) return true;
-  return pos.slots.some(s=>s.players.some(p=>p.name.toLowerCase().includes(q.toLowerCase())));
+function statusHTML(s){
+  const map={locked:{cls:'status-locked',dot:'dot-green',label:'LOCKED'},open:{cls:'status-open',dot:'dot-amber',label:'OPEN BATTLE'},hot:{cls:'status-hot',dot:'dot-red',label:'HOT BATTLE'}};
+  const d = map[s] || map.locked;
+  return `<span class="status-badge ${d.cls}"><span class="status-dot ${d.dot}"></span>${d.label}</span>`;
 }
 
-function renderPosGroup(pos, q){
-  const hasBattle = pos.slots.some(s=>s.battle);
-  const total = pos.slots.reduce((a,s)=>a+s.players.length,0);
-  const anyMatch = q ? posMatchesQuery(pos,q) : true;
-  const hiddenClass = anyMatch ? '' : 'pg-hidden';
-  return `
-<div class="pos-group ${hiddenClass}" id="pg-${pos.id}">
-  <div class="pg-header" onclick="toggleGroup('${pos.id}')">
-    <span class="pg-abbr">${pos.abbr}</span>
-    <span class="pg-name">${pos.name}</span>
-    ${hasBattle ? '<span class="pg-battle-badge">Battle</span>' : ''}
-    <span class="pg-count">${total}</span>
-    <span class="pg-toggle">▾</span>
-  </div>
-  <div class="pg-body">
-    ${pos.slots.map(s=>renderSlot(s,q)).join('')}
-  </div>
-</div>`;
+/* =========================================================
+   DEPTH CHART RENDER
+   ========================================================= */
+function renderDepthChart(){
+  const groups = DEPTH[currentPhase];
+  const html = groups.map((grp,gi) => {
+    const tierRows = grp.tiers.map((tier, ti) => {
+      if(!tier.length) return '';
+      const tierBadgeClass = ti===0?'badge-1':ti===1?'badge-2':'badge-3';
+      const tierName = ti===0?'1ST':ti===1?'2ND':'3RD';
+      return tier.map((entry, ei) => {
+        const p = entry.id ? playerMap[entry.id] : null;
+        if(!p && !entry.name) return '';
+        const isStarter = ti===0;
+        const isCo = tier.length > 1;
+        const rowClass = isStarter ? 'depth-row is-starter' : (isCo && ti===1 ? 'depth-row is-competing' : 'depth-row');
+        const badge = (ei===0) ? `<span class="tier-badge ${tierBadgeClass}">${tierName}</span>` : `<span class="tier-badge badge-c">CO</span>`;
+        const name = p ? p.name : (entry.name || 'TBD');
+        const numDisp = p ? p.num : '—';
+        const yrDisp = p ? p.yr : '';
+        const posDisp = p ? p.pos : '';
+        const phys = p ? `${p.ht} / ${p.wt}` : '';
+        const trait = p ? p.trait : '';
+        const isXfer = p && p.transfer;
+        const onclick = p ? `openModal('${p.id}')` : '';
+        return `<div class="${rowClass}" onclick="${onclick}">
+          ${badge}
+          ${avatarHTML(p,'player-avatar')}
+          <div class="depth-player-info">
+            <div class="depth-player-name">${name}</div>
+            <div class="depth-player-sub"><span>${posDisp}</span> · ${yrDisp} ${isXfer?'<span class="depth-transfer">TR</span>':''}</div>
+          </div>
+          <div class="depth-right">
+            ${trait ? `<span class="depth-trait">${trait}</span>` : ''}
+            ${phys ? `<span class="depth-phys">${phys}</span>` : ''}
+            <span class="depth-num">#${numDisp}</span>
+          </div>
+        </div>`;
+      }).join('');
+    }).join('');
+
+    const battleNoteHTML = grp.battleNote ? `<div class="battle-note"><div class="battle-note-label">Position Battle</div><div class="battle-note-text">${grp.battleNote}</div></div>` : '';
+    const noteHTML = grp.note ? `<div class="group-note"><div class="group-note-text">${grp.note}</div></div>` : '';
+
+    return `<div class="pos-group" id="grp-${grp.key}">
+      <div class="pos-group-header" onclick="toggleGroup('grp-${grp.key}')">
+        <div class="pos-group-title">
+          <span class="pos-abbr-badge">${grp.abbr}</span>
+          ${grp.label}
+        </div>
+        <div class="pos-group-right">
+          ${statusHTML(grp.status)}
+          <span class="collapse-arrow open" id="arrow-${grp.key}">▼</span>
+        </div>
+      </div>
+      <div class="pos-group-body" id="body-${grp.key}">
+        <div class="depth-tiers">
+          ${tierRows}
+        </div>
+        ${noteHTML}
+        ${battleNoteHTML}
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('depth-content').innerHTML = html;
 }
 
-function render(unitFilter, q){
-  const body = document.getElementById('dc-body');
-  let totalMatchingPlayers = 0;
-  let html = '';
-
-  UNITS.forEach(unit=>{
-    if(unitFilter!=='all' && unitFilter!==unit.key) return;
-    const positions = DC.filter(p=>p.unit===unit.key);
-    const visiblePositions = q ? positions.filter(p=>posMatchesQuery(p,q)) : positions;
-
-    const playerCount = positions.reduce((a,p)=>a+p.slots.reduce((b,s)=>b+s.players.length,0),0);
-    totalMatchingPlayers += visiblePositions.reduce((a,p)=>a+p.slots.reduce((b,s)=>b+s.players.filter(pl=>!q||pl.name.toLowerCase().includes(q.toLowerCase())).length,0),0);
-
-    const hiddenClass = visiblePositions.length===0 && q ? 'unit-hidden' : '';
-
-    html += `
-<div class="unit-section ${hiddenClass}" data-unit="${unit.key}">
-  <div class="unit-header-row">
-    <span class="unit-name">${unit.label}</span>
-    <div class="unit-hr"></div>
-    <span class="unit-meta">${positions.length} positions · ${playerCount} players</span>
-  </div>
-  <div class="pos-groups-grid">
-    ${positions.map(p=>renderPosGroup(p,q)).join('')}
-  </div>
-</div>`;
-  });
-
-  body.innerHTML = html || '';
-
-  // No results message
-  const noRes = document.getElementById('dc-no-results');
-  noRes.style.display = totalMatchingPlayers===0 && q ? 'block' : 'none';
-
-  // Result bar
-  const bar = document.getElementById('dc-result-bar');
-  if(q && totalMatchingPlayers>0){
-    bar.style.display = 'block';
-    document.getElementById('dc-result-num').textContent = totalMatchingPlayers;
-    document.getElementById('dc-result-query').textContent = q;
-  } else {
-    bar.style.display = 'none';
-  }
+function toggleGroup(grpId){
+  const body = document.getElementById('body-'+grpId.replace('grp-',''));
+  const arrow = document.getElementById('arrow-'+grpId.replace('grp-',''));
+  body.classList.toggle('closed');
+  arrow.classList.toggle('open');
 }
 
-/* ----------------------------------------------------------------
-   STATS STRIP
----------------------------------------------------------------- */
-function buildStats(){
-  const totalPlayers = DC.reduce((a,p)=>a+p.slots.reduce((b,s)=>b+s.players.length,0),0);
-  const battles = DC.reduce((a,p)=>a+p.slots.filter(s=>s.battle).length,0);
-  const trendingUp = DC.reduce((a,p)=>a+p.slots.reduce((b,s)=>b+s.players.filter(pl=>pl.trend==='up').length,0),0);
-  const featured = DC.reduce((a,p)=>a+p.slots.reduce((b,s)=>b+s.players.filter(pl=>pl.key).length,0),0);
-  const fiveStars = DC.reduce((a,p)=>a+p.slots.reduce((b,s)=>b+s.players.filter(pl=>pl.stars===5).length,0),0);
-
-  document.getElementById('stat-total').textContent = totalPlayers;
-  document.getElementById('stat-groups').textContent = DC.length;
-  document.getElementById('stat-battles').textContent = battles;
-  document.getElementById('stat-trending').textContent = trendingUp;
-  document.getElementById('stat-featured').textContent = featured;
-  document.getElementById('stat-5star').textContent = fiveStars;
-}
-
-/* ----------------------------------------------------------------
-   INTERACTIVE CONTROLS
----------------------------------------------------------------- */
-function toggleGroup(id){
-  const el = document.getElementById(`pg-${id}`);
-  if(el) el.classList.toggle('pg-collapsed');
-}
-
-function toggleAll(collapse){
-  document.querySelectorAll('.pos-group').forEach(g=>{
-    g.classList.toggle('pg-collapsed', collapse);
-  });
-}
-
-// Unit tab clicks
-let currentUnit = 'all';
-document.getElementById('dc-unit-tabs').addEventListener('click', e=>{
-  const btn = e.target.closest('.dc-unit-tab');
-  if(!btn) return;
-  currentUnit = btn.dataset.unit;
-  document.querySelectorAll('.dc-unit-tab').forEach(t=>t.classList.remove('active'));
+function setPhase(phase, btn){
+  currentPhase = phase;
+  document.querySelectorAll('.phase-tab').forEach(t=>t.classList.remove('active'));
   btn.classList.add('active');
-  render(currentUnit, document.getElementById('dc-search').value.trim());
-});
+  renderDepthChart();
+}
 
-// Search
-document.getElementById('dc-search').addEventListener('input', e=>{
-  render(currentUnit, e.target.value.trim());
-});
+/* =========================================================
+   BATTLES STRIP
+   ========================================================= */
+function renderBattles(){
+  const container = document.getElementById('battles-inner');
+  const allGroups = [...DEPTH.offense,...DEPTH.defense,...DEPTH.specialTeams];
+  const battles = allGroups.filter(g=>g.status==='hot'||g.status==='open');
+  const pills = battles.map(b=>{
+    const dotClass = b.status==='hot'?'dot-hot':'dot-open';
+    const phase = DEPTH.offense.includes(b)?'offense':DEPTH.defense.includes(b)?'defense':'specialTeams';
+    return `<div class="battle-pill" onclick="setPhaseAndScroll('${phase}','grp-${b.key}')">
+      <span class="battle-dot ${dotClass}"></span>
+      <span class="battle-pill-label">${b.abbr}</span>
+      <span class="battle-pill-sub">${b.status==='hot'?'Hot Battle':'Open Battle'}</span>
+    </div>`;
+  }).join('');
+  container.innerHTML += pills;
+}
 
-// Clear search on Escape
-document.getElementById('dc-search').addEventListener('keydown', e=>{
-  if(e.key==='Escape'){ e.target.value=''; render(currentUnit,''); }
-});
+function setPhaseAndScroll(phase, grpId){
+  const tabs = document.querySelectorAll('.phase-tab');
+  const idx = {offense:0,defense:1,specialTeams:2}[phase];
+  tabs.forEach(t=>t.classList.remove('active'));
+  tabs[idx].classList.add('active');
+  currentPhase = phase;
+  renderDepthChart();
+  setTimeout(()=>{
+    const el = document.getElementById(grpId);
+    if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+  },50);
+}
 
-/* ----------------------------------------------------------------
+/* =========================================================
+   ROSTER RENDER
+   ========================================================= */
+function renderRoster(){
+  const q = document.getElementById('roster-search').value.toLowerCase();
+  const posMap = {QB:['QB'],RB:['RB'],WR:['WR'],TE:['TE'],OL:['OT','OG','C'],DL:['EDGE','DE','DT','NT'],LB:['LB'],DB:['CB','S'],ST:['K','P']};
+  let filtered = PLAYERS.filter(p=>{
+    const matchQ = (p.name+p.pos+p.yr+p.home).toLowerCase().includes(q);
+    if(rosterFilter==='ALL') return matchQ;
+    if(rosterFilter==='XFER') return matchQ && p.transfer;
+    const allowed = posMap[rosterFilter]||[rosterFilter];
+    return matchQ && allowed.includes(p.pos);
+  });
+
+  if(!filtered.length){
+    document.getElementById('roster-list').innerHTML='<div style="padding:24px;text-align:center;color:var(--muted);font-style:italic;font-size:13px;">No players match.</div>';
+    return;
+  }
+
+  document.getElementById('roster-list').innerHTML = filtered.map(p=>{
+    const initials = p.name.split(' ').map(w=>w[0]).slice(0,2).join('');
+    const url = p.photo ? IMG(p.photo) : null;
+    const avatarInner = url
+      ? `<img src="${url}" alt="${p.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><span class="avatar-initials" style="display:none">${initials}</span>`
+      : `<span class="avatar-initials">${initials}</span>`;
+    return `<div class="roster-entry" onclick="openModal('${p.id}')">
+      <div class="roster-avatar">${avatarInner}</div>
+      <div class="roster-entry-info">
+        <div class="roster-entry-name">${p.name}</div>
+        <div class="roster-entry-sub"><span>${p.pos}</span> · ${p.yr} ${p.transfer?'<span class="r-transfer">TR</span>':''}</div>
+      </div>
+      <div class="roster-entry-right">
+        <span class="r-num">${p.num}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function setRosterFilter(f, btn){
+  rosterFilter = f;
+  document.querySelectorAll('.rf-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderRoster();
+}
+
+/* =========================================================
+   MODAL
+   ========================================================= */
+function openModal(id){
+  const p = playerMap[id];
+  if(!p) return;
+  const url = p.photo ? IMG(p.photo).replace('width=300','width=400').replace('height=360','height=480') : null;
+  const photoHTML = url
+    ? `<img src="${url}" alt="${p.name}" onerror="this.style.display='none';this.nextSibling.style.display='flex'"/><div class="modal-photo-placeholder" style="display:none">${p.name.charAt(0)}</div>`
+    : `<div class="modal-photo-placeholder">${p.name.charAt(0)}</div>`;
+
+  let statsHTML = '';
+  if(p.stats){
+    const {type,...s} = p.stats;
+    let cells = [];
+    if(type==='QB') cells=[{v:s.g,l:'Games'},{v:s.yds,l:'Pass Yds'},{v:s.td,l:'TDs'},{v:s.int,l:'INTs'}];
+    else if(type==='RB') cells=[{v:s.g,l:'Games'},{v:s.yds,l:'Rush Yds'},{v:s.avg,l:'YPC'},{v:s.td,l:'TDs'}];
+    else if(type==='WR') cells=[{v:s.g,l:'Games'},{v:s.rec,l:'Rec'},{v:s.yds,l:'Yards'},{v:s.td,l:'TDs'}];
+    else if(type==='LB'||type==='DL') cells=[{v:s.tkl,l:'Tackles'},{v:s.sack,l:'Sacks'},{v:s.tfl,l:'TFL'},{v:s.ff,l:'FF'}];
+    else if(type==='DB') cells=[{v:s.tkl,l:'Tackles'},{v:s.int,l:'INTs'},{v:s.pbu,l:'PBUs'},{v:s.ff,l:'FF'}];
+    else if(type==='K') cells=[{v:`${s.fgm}/${s.fga}`,l:'FG'},{v:s.long,l:'Long'},{v:s.xpm,l:'XPM'},{v:s.g,l:'Games'}];
+    if(cells.length){
+      statsHTML = `<div class="modal-section"><div class="modal-section-title">2025 Stats</div><div class="modal-stats-row">${cells.map(c=>`<div class="modal-stat"><div class="modal-stat-val">${c.v}</div><div class="modal-stat-label">${c.l}</div></div>`).join('')}</div></div>`;
+    }
+  }
+
+  const recHTML = p.recruit && p.recruit.stars ? `
+    <div class="modal-section">
+      <div class="modal-section-title">Recruiting Profile</div>
+      <div class="modal-grid-2">
+        <div class="modal-field"><div class="modal-field-label">Star Rating</div><div class="modal-field-val"><span class="stars">${'★'.repeat(p.recruit.stars)}</span> ${p.recruit.stars}-Star</div></div>
+        <div class="modal-field"><div class="modal-field-label">Rating</div><div class="modal-field-val orange">${p.recruit.rating}</div></div>
+        ${p.recruit.natl?`<div class="modal-field"><div class="modal-field-label">National</div><div class="modal-field-val">#${p.recruit.natl}</div></div>`:''}
+        ${p.recruit.pos?`<div class="modal-field"><div class="modal-field-label">Pos Rank</div><div class="modal-field-val">#${p.recruit.pos} ${p.pos}</div></div>`:''}
+      </div>
+    </div>` : '';
+
+  const xferHTML = p.transfer ? `<span class="transfer-note">Transfer · ${p.transferFrom}</span>` : '';
+
+  document.getElementById('modal-content').innerHTML = `
+    <button class="modal-close" onclick="document.getElementById('modal').classList.remove('open')">✕ Close</button>
+    <div class="modal-hero">
+      <div class="modal-photo">${photoHTML}</div>
+      <div class="modal-identity">
+        <div>
+          <div class="modal-num">#${p.num} · ${p.pos} · ${p.yr} ${p.transfer?'· TRANSFER':''}</div>
+          <div class="modal-name">${p.name}</div>
+          <div class="modal-pos-yr" style="color:${posColor(p.pos)}">${p.pos} · ${p.yr}</div>
+          ${xferHTML}
+          <div class="modal-vitals" style="margin-top:12px">
+            <div class="modal-vital"><div class="modal-vital-val">${p.ht}</div><div class="modal-vital-label">Height</div></div>
+            <div class="modal-vital"><div class="modal-vital-val">${p.wt}</div><div class="modal-vital-label">Weight</div></div>
+            <div class="modal-vital"><div class="modal-vital-val">#${p.num}</div><div class="modal-vital-label">Jersey</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-section">
+        <div class="modal-section-title">Background</div>
+        <div class="modal-grid-2">
+          <div class="modal-field"><div class="modal-field-label">Hometown</div><div class="modal-field-val">${p.home}</div></div>
+          <div class="modal-field"><div class="modal-field-label">High School</div><div class="modal-field-val">${p.hs||'—'}</div></div>
+          ${p.nil?`<div class="modal-field"><div class="modal-field-label">NIL Value (Est.)</div><div class="modal-field-val orange">${p.nil}</div></div>`:''}
+          ${p.trait?`<div class="modal-field"><div class="modal-field-label">Scouting Tag</div><div class="modal-field-val">${p.trait}</div></div>`:''}
+        </div>
+        ${p.bio?`<div class="modal-bio">${p.bio}</div>`:''}
+      </div>
+      ${recHTML}
+      ${statsHTML}
+      <div class="modal-links">
+        <a class="modal-link primary" href="https://texaslonghorns.com/sports/football/roster" target="_blank">Official UT Profile →</a>
+        ${p.social&&p.social.x?`<a class="modal-link" href="https://x.com/${p.social.x}" target="_blank">𝕏 @${p.social.x}</a>`:''}
+        ${p.social&&p.social.ig?`<a class="modal-link" href="https://instagram.com/${p.social.ig}" target="_blank">Instagram</a>`:''}
+      </div>
+    </div>`;
+  document.getElementById('modal').classList.add('open');
+  document.getElementById('modal').scrollTop = 0;
+}
+
+function closeModal(e){
+  if(e.target===document.getElementById('modal')) document.getElementById('modal').classList.remove('open');
+}
+
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') document.getElementById('modal').classList.remove('open'); });
+
+/* =========================================================
    INIT
----------------------------------------------------------------- */
-document.addEventListener('DOMContentLoaded', ()=>{
-  buildStats();
-  render('all', '');
-});
+   ========================================================= */
+renderDepthChart();
+renderBattles();
+renderRoster();
 </script>
 </body>
 </html>
