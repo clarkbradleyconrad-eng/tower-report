@@ -603,12 +603,137 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
 .footer-ai{display:inline-flex;align-items:center;gap:5px;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);background:var(--orange-lo);border:1px solid rgba(191,87,0,0.2);padding:3px 8px;align-self:flex-end;}
 
 /* ======================================================
+   TOWER SEASON MODEL
+====================================================== */
+.season-model{border-bottom:1px solid var(--border);}
+.season-model-body{display:grid;grid-template-columns:1fr 1fr;}
+.season-projections{padding:32px 48px 40px;border-right:1px solid var(--border);}
+.proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);margin-top:20px;}
+.proj-cell{background:var(--surface);padding:28px 24px;position:relative;overflow:hidden;}
+.proj-cell.primary{border-top:2px solid var(--orange);}
+.proj-num{font-family:'Playfair Display',serif;font-size:52px;font-weight:900;color:var(--orange);line-height:1;margin-bottom:6px;}
+.proj-num.green{color:var(--green);}
+.proj-num.amber{color:var(--amber);}
+.proj-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);}
+.proj-sub{font-size:11px;color:var(--secondary);margin-top:4px;line-height:1.4;}
+.proj-bar-row{margin-top:10px;}
+.proj-bar-bg{height:3px;background:var(--border-mid);}
+.proj-bar-fill{height:100%;background:linear-gradient(90deg,var(--orange),var(--orange-hi));width:0;transition:width 1.6s cubic-bezier(.25,.46,.45,.94);}
+.proj-bar-fill.green{background:linear-gradient(90deg,var(--green),#16a34a);}
+.proj-bar-fill.amber{background:linear-gradient(90deg,var(--amber),#d97706);}
+.proj-range{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:5px;}
+.season-methodology{padding:32px 48px 40px;background:var(--surface);}
+.meth-title{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:16px;}
+.meth-factor{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--border);}
+.meth-factor:last-child{border-bottom:none;}
+.meth-icon{width:28px;height:28px;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;margin-top:1px;}
+.meth-factor-label{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.3px;color:var(--white);}
+.meth-factor-desc{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.5;}
+.meth-signal{display:inline-flex;align-items:center;gap:4px;font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;border:1px solid;}
+.meth-pos{color:var(--green);border-color:rgba(34,197,94,0.3);background:rgba(34,197,94,0.07);}
+.meth-neg{color:var(--red);border-color:rgba(239,68,68,0.3);background:rgba(239,68,68,0.07);}
+.meth-neutral{color:var(--amber);border-color:rgba(245,158,11,0.3);background:rgba(245,158,11,0.07);}
+
+/* ======================================================
+   PATHS TO THE PLAYOFF
+====================================================== */
+.paths-section{border-bottom:1px solid var(--border);padding-bottom:0;}
+.paths-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-top:20px;margin-left:48px;margin-right:48px;margin-bottom:44px;}
+.path-card{background:var(--surface);padding:28px 24px;display:flex;flex-direction:column;gap:14px;}
+.path-card.path-a{border-top:2px solid var(--green);}
+.path-card.path-b{border-top:2px solid var(--amber);}
+.path-card.path-c{border-top:2px solid var(--red);}
+.path-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:800;letter-spacing:3px;text-transform:uppercase;}
+.path-a .path-label{color:var(--green);}
+.path-b .path-label{color:var(--amber);}
+.path-c .path-label{color:var(--red);}
+.path-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--white);line-height:1.2;}
+.path-games{display:flex;flex-direction:column;gap:6px;}
+.path-game{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--secondary);}
+.path-game-icon{width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;flex-shrink:0;font-family:'Barlow Condensed',sans-serif;letter-spacing:0;}
+.path-win-icon{background:rgba(34,197,94,0.15);color:var(--green);}
+.path-loss-icon{background:rgba(239,68,68,0.15);color:var(--red);}
+.path-split-icon{background:rgba(245,158,11,0.15);color:var(--amber);}
+.path-divider{height:1px;background:var(--border);}
+.path-result{display:flex;flex-direction:column;gap:4px;}
+.path-result-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.path-result-val{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:.5px;}
+.path-a .path-result-val{color:var(--green);}
+.path-b .path-result-val{color:var(--amber);}
+.path-c .path-result-val{color:var(--red);}
+.path-prob-row{display:flex;align-items:center;justify-content:space-between;}
+.path-prob-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.path-prob-pct{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;color:var(--orange);}
+.path-note{font-size:11px;color:var(--muted);font-style:italic;line-height:1.6;border-left:2px solid var(--border-mid);padding-left:10px;}
+
+/* ======================================================
+   DEPTH CHART
+====================================================== */
+.depth-section{border-bottom:1px solid var(--border);}
+.depth-body{display:grid;grid-template-columns:1fr 1fr;}
+.depth-col{padding:28px 48px 40px;}
+.depth-col:first-child{border-right:1px solid var(--border);}
+.depth-col-title{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:16px;}
+.depth-group{margin-bottom:22px;}
+.depth-group:last-of-type{margin-bottom:0;}
+.depth-pos-header{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.depth-pos-tag{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--white);background:var(--surface2);border:1px solid var(--border-mid);padding:3px 8px;}
+.depth-pos-note{font-size:11px;color:var(--muted);}
+.depth-row{display:grid;grid-template-columns:32px 1fr auto;gap:10px;align-items:center;padding:8px 12px;margin-bottom:1px;}
+.depth-row.starter{background:rgba(191,87,0,0.06);border-left:2px solid var(--orange);}
+.depth-row.battle{background:rgba(245,158,11,0.05);border-left:2px solid var(--amber);}
+.depth-row.backup{background:var(--surface);border-left:2px solid var(--border-mid);}
+.depth-slot{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
+.depth-row.starter .depth-slot{color:var(--orange);}
+.depth-row.battle .depth-slot{color:var(--amber);}
+.depth-player-name{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:.3px;color:var(--white);}
+.depth-player-meta{font-size:11px;color:var(--muted);margin-top:1px;}
+.depth-badge{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 6px;border:1px solid;flex-shrink:0;white-space:nowrap;}
+.badge-elite{color:var(--orange);border-color:rgba(191,87,0,0.4);background:rgba(191,87,0,0.08);}
+.badge-starter{color:var(--green);border-color:rgba(34,197,94,0.3);background:rgba(34,197,94,0.07);}
+.badge-battle{color:var(--amber);border-color:rgba(245,158,11,0.3);background:rgba(245,158,11,0.07);}
+.badge-watch{color:var(--blue);border-color:rgba(96,165,250,0.3);background:rgba(96,165,250,0.06);}
+.depth-concern{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;background:rgba(239,68,68,0.04);border:1px solid rgba(239,68,68,0.14);margin-top:16px;}
+.depth-concern-icon{font-size:13px;flex-shrink:0;margin-top:1px;}
+.depth-concern-text{font-size:12px;color:var(--secondary);line-height:1.55;}
+.depth-concern-text strong{color:var(--white);}
+
+/* ======================================================
+   TOWER PROJECTIONS
+====================================================== */
+.projections-section{border-bottom:1px solid var(--border);}
+.proj-leaders-grid{display:grid;grid-template-columns:1fr 1fr;}
+.proj-leaders-col{padding:28px 48px 40px;}
+.proj-leaders-col:first-child{border-right:1px solid var(--border);}
+.proj-col-title{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:20px;}
+.proj-category{margin-bottom:22px;}
+.proj-category:last-child{margin-bottom:0;}
+.proj-cat-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding-bottom:8px;border-bottom:1px solid var(--border);margin-bottom:10px;}
+.proj-leader-row{display:flex;align-items:center;gap:12px;padding:7px 0;border-bottom:1px solid var(--border);}
+.proj-leader-row:last-child{border-bottom:none;}
+.proj-leader-rank{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--muted);width:18px;text-align:center;flex-shrink:0;}
+.proj-leader-rank.top{color:var(--orange);}
+.proj-leader-info{flex:1;min-width:0;}
+.proj-leader-name{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--white);letter-spacing:.3px;}
+.proj-leader-pos{font-size:11px;color:var(--muted);margin-top:1px;}
+.proj-leader-stat{text-align:right;flex-shrink:0;}
+.proj-leader-num{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--orange);}
+.proj-leader-unit{font-size:10px;color:var(--muted);}
+.proj-disclaimer{font-size:11px;color:var(--muted);font-style:italic;margin-top:14px;padding-top:12px;border-top:1px solid var(--border);line-height:1.6;}
+
+/* ======================================================
    RESPONSIVE
 ====================================================== */
 @media(max-width:1100px){
   .hero{grid-template-columns:1fr 340px;}
   .intel-grid{grid-template-columns:1fr;}
   .intel-numbers{border-right:none;border-bottom:1px solid var(--border);}
+  .season-model-body{grid-template-columns:1fr;}
+  .season-projections{border-right:none;border-bottom:1px solid var(--border);}
+  .depth-body{grid-template-columns:1fr;}
+  .depth-col:first-child{border-right:none;border-bottom:1px solid var(--border);}
+  .proj-leaders-grid{grid-template-columns:1fr;}
+  .proj-leaders-col:first-child{border-right:none;border-bottom:1px solid var(--border);}
 }
 @media(max-width:860px){
   .masthead{padding:7px 20px;}
@@ -620,11 +745,14 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
   .hero-right,.hero-stories{display:none;}
   .hero-lead{min-height:auto;padding:36px 20px 36px;}
   .hero-stats{flex-wrap:wrap;}
-  .sr,.threads-section,.stories-section,.roadmap-section{padding-left:20px;padding-right:20px;}
-  .stories-grid,.roadmap-grid{grid-template-columns:1fr;}
+  .sr,.threads-section,.stories-section{padding-left:20px;padding-right:20px;}
+  .stories-grid{grid-template-columns:1fr;}
   .intel-numbers,.intel-recruiting{padding:28px 20px 36px;}
-  .how-section{padding-left:20px;padding-right:20px;}
-  .how-grid{grid-template-columns:1fr 1fr;}
+  .paths-grid{grid-template-columns:1fr;margin-left:20px;margin-right:20px;}
+  .season-projections,.season-methodology{padding:24px 20px 32px;}
+  .proj-grid{grid-template-columns:1fr 1fr;}
+  .depth-col{padding:24px 20px 32px;}
+  .proj-leaders-col{padding:24px 20px 32px;}
   .waitlist{padding:60px 20px;}
   footer{grid-template-columns:1fr;padding:28px 20px;gap:24px;}
   .footer-right{text-align:left;}
@@ -675,7 +803,7 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
     <div class="nav-links">
       <a href="index.html" class="nav-link active keep">Home</a>
       <a href="schedule.html" class="nav-link">Schedule</a>
-      <a href="roster.html" class="nav-link" style="display:none">Roster</a>
+      <a href="roster.html" class="nav-link">Roster</a>
       <a href="recruiting.html" class="nav-link">Recruiting</a>
       <a href="portal.html" class="nav-link">Portal</a>
       <a href="stats.html" class="nav-link">Stats</a>
@@ -762,15 +890,15 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
       </div>
 
       <div class="ai-chips">
-        <div class="ai-chips-label">Suggested Questions</div>
-        <div class="ai-chip" onclick="askTower('What is the depth chart at running back for 2026?')">
-          What's the RB depth chart?<span class="ai-chip-arr">→</span>
+        <div class="ai-chips-label">Ask The Tower</div>
+        <div class="ai-chip" onclick="askTower('What are Texas playoff chances in 2026?')">
+          What are Texas's playoff chances?<span class="ai-chip-arr">→</span>
         </div>
-        <div class="ai-chip" onclick="askTower('Break down the Ohio State matchup in Week 2')">
-          Break down the Ohio State game<span class="ai-chip-arr">→</span>
+        <div class="ai-chip" onclick="askTower('What is Texas biggest weakness entering 2026?')">
+          What is Texas's biggest weakness?<span class="ai-chip-arr">→</span>
         </div>
-        <div class="ai-chip" onclick="askTower('Who are the top 2027 recruiting targets for Texas?')">
-          Top 2027 recruiting targets<span class="ai-chip-arr">→</span>
+        <div class="ai-chip" onclick="askTower('Who is most likely to break out in 2026?')">
+          Who is most likely to break out?<span class="ai-chip-arr">→</span>
         </div>
       </div>
 
@@ -806,60 +934,90 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
 
 </section>
 
-<!-- ===================== HOW IT WORKS ===================== -->
-<div class="sr"><span class="sr-label">How Tower Report Works</span><div class="sr-line"></div><span class="sr-meta">Built for Longhorn fans</span></div>
-<div class="how-section">
-  <div class="how-grid">
-    <div class="how-step">
-      <div class="how-step-num">01 — Monitor</div>
-      <span class="how-step-icon">📡</span>
-      <div class="how-step-title">Monitor</div>
-      <div class="how-step-desc">Track recruiting crystal balls, portal filings, NIL deals, press conferences, and live data across all of Texas football — around the clock.</div>
-    </div>
-    <div class="how-step">
-      <div class="how-step-num">02 — Organize</div>
-      <span class="how-step-icon">📊</span>
-      <div class="how-step-title">Organize</div>
-      <div class="how-step-desc">Thousands of daily signals filtered and ranked by importance and source credibility — so nothing that matters slips through.</div>
-    </div>
-    <div class="how-step">
-      <div class="how-step-num">03 — Analyze</div>
-      <span class="how-step-icon">🧠</span>
-      <div class="how-step-title">Analyze</div>
-      <div class="how-step-desc">AI surfaces patterns, trends, and intelligence no single outlet can match — from recruiting momentum to game-day edge.</div>
-    </div>
-    <div class="how-step">
-      <div class="how-step-num">04 — Deliver</div>
-      <span class="how-step-icon">⚡</span>
-      <div class="how-step-title">Deliver</div>
-      <div class="how-step-desc">Fast answers to your questions, daily briefings, and real-time alerts. Every signal, distilled into one answer.</div>
-    </div>
-  </div>
-</div>
+<!-- ===================== TOWER SEASON MODEL ===================== -->
+<div class="sr"><span class="sr-label">Tower Season Model</span><div class="sr-line"></div><span class="sr-meta">2026 Projection · Built on Returning Production, Schedule &amp; Roster Data</span></div>
+<div class="season-model">
+  <div class="season-model-body">
 
-<!-- ===================== FEATURED STORIES ===================== -->
-<div class="sr"><span class="sr-label">Latest Analysis</span><div class="sr-line"></div><span class="sr-meta">Tower Report · AI-Sourced</span></div>
-<div class="stories-section">
-  <div class="stories-grid" id="stories-grid">
-    <!-- populated by JS from briefing.json -->
-    <a href="stories.html" class="story-tile">
-      <div class="st-kicker">Tower Analysis</div>
-      <div class="st-hed">Arch Manning's Moment Has Finally Arrived</div>
-      <div class="st-dek">After two seasons behind Quinn Ewers, Manning enters 2026 as the consensus Heisman favorite. Every indicator points to a special year.</div>
-      <div class="st-cat">Analysis · Quarterback</div>
-    </a>
-    <a href="portal.html" class="story-tile">
-      <div class="st-kicker">Roster Move</div>
-      <div class="st-hed">Coleman Addition Makes Texas WR Room a Problem</div>
-      <div class="st-dek">Cam Coleman's arrival from Auburn gives Texas one of the deepest receiver groups in the SEC. No coordinator has a good answer.</div>
-      <div class="st-cat">Portal · Wide Receiver</div>
-    </a>
-    <a href="players.html" class="story-tile">
-      <div class="st-kicker">Film Room</div>
-      <div class="st-hed">Colin Simmons Is the Best Pass Rusher in College Football</div>
-      <div class="st-dek">11 sacks, 17 TFLs as a sophomore. Simmons is the engine driving Texas's defensive identity — and Bednarik Award buzz is real.</div>
-      <div class="st-cat">Defense · EDGE · Awards Watch</div>
-    </a>
+    <!-- PROJECTIONS -->
+    <div class="season-projections">
+      <div class="proj-grid" id="proj-grid">
+        <div class="proj-cell primary">
+          <div class="proj-num" id="proj-wins">10.2</div>
+          <div class="proj-label">Projected Wins</div>
+          <div class="proj-sub">Most Likely: 10 wins</div>
+          <div class="proj-bar-row">
+            <div class="proj-bar-bg"><div class="proj-bar-fill" data-width="85" style="width:0"></div></div>
+            <div class="proj-range">Range: 8–12 wins · 12-game schedule</div>
+          </div>
+        </div>
+        <div class="proj-cell">
+          <div class="proj-num green" style="font-size:46px" id="proj-cfp">72%</div>
+          <div class="proj-label">CFP Probability</div>
+          <div class="proj-sub">12-team field, multiple SEC bids</div>
+          <div class="proj-bar-row">
+            <div class="proj-bar-bg"><div class="proj-bar-fill green" data-width="72" style="width:0"></div></div>
+          </div>
+        </div>
+        <div class="proj-cell">
+          <div class="proj-num amber" style="font-size:46px" id="proj-sec">24%</div>
+          <div class="proj-label">SEC Championship</div>
+          <div class="proj-sub">Top-2 SEC finish required in Atlanta</div>
+          <div class="proj-bar-row">
+            <div class="proj-bar-bg"><div class="proj-bar-fill amber" data-width="24" style="width:0"></div></div>
+          </div>
+        </div>
+        <div class="proj-cell">
+          <div class="proj-num" style="font-size:46px" id="proj-nc">12%</div>
+          <div class="proj-label">National Championship</div>
+          <div class="proj-sub">Requires elite performance on hardest path</div>
+          <div class="proj-bar-row">
+            <div class="proj-bar-bg"><div class="proj-bar-fill" data-width="12" style="width:0"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- METHODOLOGY -->
+    <div class="season-methodology">
+      <div class="meth-title">Why These Numbers</div>
+
+      <div class="meth-factor">
+        <div class="meth-icon">⚡</div>
+        <div>
+          <div class="meth-factor-label">Returning Production</div>
+          <div class="meth-factor-desc">Arch Manning returns as consensus Heisman favorite (3,472 yds, 29 TD). Colin Simmons anchors a top-5 national defense (11 sacks, 17 TFL).</div>
+          <div style="margin-top:6px"><span class="meth-signal meth-pos">+ Elite Returning</span></div>
+        </div>
+      </div>
+
+      <div class="meth-factor">
+        <div class="meth-icon">🔄</div>
+        <div>
+          <div class="meth-factor-label">Transfer Portal Additions</div>
+          <div class="meth-factor-desc">Cam Coleman (WR, Auburn — 1,247 rec yds) fills the No. 2 WR need immediately. Gives Texas arguably the deepest receiver room in the SEC.</div>
+          <div style="margin-top:6px"><span class="meth-signal meth-pos">+ Strong Addition</span></div>
+        </div>
+      </div>
+
+      <div class="meth-factor">
+        <div class="meth-icon">📅</div>
+        <div>
+          <div class="meth-factor-label">Schedule Difficulty</div>
+          <div class="meth-factor-desc">Ohio State (H W2), @ Tennessee (W4), Oklahoma neutral (W5), @ LSU (W10), @ Texas A&M (W12) — five legitimate loss threats, three on the road.</div>
+          <div style="margin-top:6px"><span class="meth-signal meth-neg">− Hard Schedule</span></div>
+        </div>
+      </div>
+
+      <div class="meth-factor">
+        <div class="meth-icon">🏈</div>
+        <div>
+          <div class="meth-factor-label">Offensive Line Question</div>
+          <div class="meth-factor-desc">Two starting guards must be replaced. OL continuity is the single biggest variable in the win projection range. Arch Manning's ceiling depends on it.</div>
+          <div style="margin-top:6px"><span class="meth-signal meth-neutral">~ Key Variable</span></div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1045,6 +1203,462 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
   </div>
 </section>
 
+<!-- ===================== PATHS TO THE PLAYOFF ===================== -->
+<div class="sr"><span class="sr-label">Paths to the Playoff</span><div class="sr-line"></div><span class="sr-meta">2026 Season Scenarios · How Texas Gets In</span></div>
+<div class="paths-section">
+  <div class="paths-grid">
+
+    <!-- SCENARIO A -->
+    <div class="path-card path-a">
+      <div class="path-label">Scenario A — The Lock</div>
+      <div class="path-title">Win the Marquee Games</div>
+      <div class="path-games">
+        <div class="path-game"><div class="path-game-icon path-win-icon">W</div> Beat Ohio State at DKR (W2)</div>
+        <div class="path-game"><div class="path-game-icon path-win-icon">W</div> Win Red River vs. Oklahoma (W5)</div>
+        <div class="path-game"><div class="path-game-icon path-win-icon">W</div> Survive @ Tennessee (W4)</div>
+        <div class="path-game"><div class="path-game-icon path-split-icon">~</div> Split @ LSU / @ Texas A&M</div>
+      </div>
+      <div class="path-divider"></div>
+      <div class="path-result">
+        <div class="path-result-label">Projected Record</div>
+        <div class="path-result-val">11–1</div>
+      </div>
+      <div class="path-prob-row">
+        <span class="path-prob-label">CFP Outcome</span>
+        <span class="path-prob-pct">Lock · Top-4 Seed</span>
+      </div>
+      <div class="path-note">An 11-1 Texas with wins over Ohio State and Oklahoma is a CFP committee dream. Probably a No. 1 or 2 seed with first-round bye.</div>
+    </div>
+
+    <!-- SCENARIO B -->
+    <div class="path-card path-b">
+      <div class="path-label">Scenario B — The Bubble</div>
+      <div class="path-title">One Marquee Loss</div>
+      <div class="path-games">
+        <div class="path-game"><div class="path-game-icon path-loss-icon">L</div> Lose @ Tennessee or vs Ohio State</div>
+        <div class="path-game"><div class="path-game-icon path-win-icon">W</div> Beat Oklahoma in Dallas</div>
+        <div class="path-game"><div class="path-game-icon path-win-icon">W</div> Win remaining SEC slate</div>
+        <div class="path-game"><div class="path-game-icon path-split-icon">~</div> Resume quality defines seeding</div>
+      </div>
+      <div class="path-divider"></div>
+      <div class="path-result">
+        <div class="path-result-label">Projected Record</div>
+        <div class="path-result-val">10–2</div>
+      </div>
+      <div class="path-prob-row">
+        <span class="path-prob-label">CFP Outcome</span>
+        <span class="path-prob-pct">In — Seed 7–10</span>
+      </div>
+      <div class="path-note">10-2 with a marquee win over Oklahoma still gets Texas in. The committee loves brand names and brutal schedules. Texas's strength of record does the work.</div>
+    </div>
+
+    <!-- SCENARIO C -->
+    <div class="path-card path-c">
+      <div class="path-label">Scenario C — The Crisis</div>
+      <div class="path-title">Two Losses</div>
+      <div class="path-games">
+        <div class="path-game"><div class="path-game-icon path-loss-icon">L</div> Lose Ohio State or @ Tennessee</div>
+        <div class="path-game"><div class="path-game-icon path-loss-icon">L</div> Lose @ LSU or @ Texas A&M</div>
+        <div class="path-game"><div class="path-game-icon path-win-icon">W</div> Beat Oklahoma in Dallas</div>
+        <div class="path-game"><div class="path-game-icon path-split-icon">~</div> SEC Championship becomes critical</div>
+      </div>
+      <div class="path-divider"></div>
+      <div class="path-result">
+        <div class="path-result-label">Projected Record</div>
+        <div class="path-result-val">9–3</div>
+      </div>
+      <div class="path-prob-row">
+        <span class="path-prob-label">CFP Outcome</span>
+        <span class="path-prob-pct">Bubble — Resume Dependent</span>
+      </div>
+      <div class="path-note">9-3 is a dangerous zone. Texas gets in only with elite-quality wins and probably needs a deep SEC Championship run to lock the bid.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===================== FEATURED STORIES ===================== -->
+<div class="sr"><span class="sr-label">Latest Analysis</span><div class="sr-line"></div><span class="sr-meta">Tower Report · AI-Sourced</span></div>
+<div class="stories-section">
+  <div class="stories-grid" id="stories-grid">
+    <a href="stories.html" class="story-tile">
+      <div class="st-kicker">Tower Analysis</div>
+      <div class="st-hed">Arch Manning's Moment Has Finally Arrived</div>
+      <div class="st-dek">After two seasons behind Quinn Ewers, Manning enters 2026 as the consensus Heisman favorite. Every indicator points to a special year.</div>
+      <div class="st-cat">Analysis · Quarterback</div>
+    </a>
+    <a href="portal.html" class="story-tile">
+      <div class="st-kicker">Roster Move</div>
+      <div class="st-hed">Coleman Addition Makes Texas WR Room a Problem</div>
+      <div class="st-dek">Cam Coleman's arrival from Auburn gives Texas one of the deepest receiver groups in the SEC. No coordinator has a good answer.</div>
+      <div class="st-cat">Portal · Wide Receiver</div>
+    </a>
+    <a href="players.html" class="story-tile">
+      <div class="st-kicker">Film Room</div>
+      <div class="st-hed">Colin Simmons Is the Best Pass Rusher in College Football</div>
+      <div class="st-dek">11 sacks, 17 TFLs as a sophomore. Simmons is the engine driving Texas's defensive identity — and Bednarik Award buzz is real.</div>
+      <div class="st-cat">Defense · EDGE · Awards Watch</div>
+    </a>
+  </div>
+</div>
+
+<!-- ===================== PROJECTED DEPTH CHART ===================== -->
+<div class="sr"><span class="sr-label">Projected Depth Chart</span><div class="sr-line"></div><span class="sr-meta">Pre-Fall Camp · Starters, Battles &amp; Concerns</span></div>
+<div class="depth-section">
+  <div class="depth-body">
+
+    <!-- OFFENSE -->
+    <div class="depth-col">
+      <div class="depth-col-title">Offense</div>
+
+      <div class="depth-group">
+        <div class="depth-pos-header">
+          <div class="depth-pos-tag">QB</div>
+          <div class="depth-pos-note">Locked — No Battle</div>
+        </div>
+        <div class="depth-row starter">
+          <div class="depth-slot">1st</div>
+          <div><div class="depth-player-name">Arch Manning</div><div class="depth-player-meta">Jr. · #16 · 3,472 yds · 29 TD · 68.3% completion (2025)</div></div>
+          <div class="depth-badge badge-elite">Heisman</div>
+        </div>
+        <div class="depth-row backup">
+          <div class="depth-slot">2nd</div>
+          <div><div class="depth-player-name">Maalik Murphy</div><div class="depth-player-meta">Jr. · Emergency role · Experienced backup</div></div>
+          <div class="depth-badge badge-watch">Backup</div>
+        </div>
+      </div>
+
+      <div class="depth-group">
+        <div class="depth-pos-header">
+          <div class="depth-pos-tag">RB</div>
+          <div class="depth-pos-note">RB1 Set · RB2 Open</div>
+        </div>
+        <div class="depth-row starter">
+          <div class="depth-slot">1st</div>
+          <div><div class="depth-player-name">Raleek Brown</div><div class="depth-player-meta">Sr. · #0 · Speed/receiving back · Stockton, CA</div></div>
+          <div class="depth-badge badge-starter">Starter</div>
+        </div>
+        <div class="depth-row battle">
+          <div class="depth-slot">2nd</div>
+          <div><div class="depth-player-name">Hollywood Smothers</div><div class="depth-player-meta">Jr. · #2 · Power complement · Charlotte, NC</div></div>
+          <div class="depth-badge badge-battle">Battle</div>
+        </div>
+      </div>
+
+      <div class="depth-group">
+        <div class="depth-pos-header">
+          <div class="depth-pos-tag">WR</div>
+          <div class="depth-pos-note">Elite 1-2 Punch — SEC's Best Room</div>
+        </div>
+        <div class="depth-row starter">
+          <div class="depth-slot">WR1</div>
+          <div><div class="depth-player-name">Ryan Wingo</div><div class="depth-player-meta">Jr. · Boundary receiver · 2025 First Team All-SEC</div></div>
+          <div class="depth-badge badge-elite">All-SEC</div>
+        </div>
+        <div class="depth-row starter">
+          <div class="depth-slot">WR2</div>
+          <div><div class="depth-player-name">Cam Coleman</div><div class="depth-player-meta">Jr. · #4 · Auburn transfer · 1,247 rec yds (2024)</div></div>
+          <div class="depth-badge badge-elite">Transfer</div>
+        </div>
+        <div class="depth-row backup">
+          <div class="depth-slot">Slot</div>
+          <div><div class="depth-player-name">Isaiah Bond</div><div class="depth-player-meta">Sr. · Slot specialist · Speed weapon</div></div>
+          <div class="depth-badge badge-starter">Starter</div>
+        </div>
+      </div>
+
+      <div class="depth-group">
+        <div class="depth-pos-header">
+          <div class="depth-pos-tag">TE</div>
+        </div>
+        <div class="depth-row starter">
+          <div class="depth-slot">1st</div>
+          <div><div class="depth-player-name">Gunnar Helm</div><div class="depth-player-meta">Sr. · Primary receiving TE · Red zone threat</div></div>
+          <div class="depth-badge badge-starter">Starter</div>
+        </div>
+      </div>
+
+      <div class="depth-concern">
+        <div class="depth-concern-icon">⚠</div>
+        <div class="depth-concern-text"><strong>Biggest Concern — Offensive Line:</strong> Two starting guards must be replaced. OL consistency is the primary variable in the season projection range — every win/loss model runs through how well Arch Manning is protected against elite SEC fronts.</div>
+      </div>
+    </div>
+
+    <!-- DEFENSE -->
+    <div class="depth-col">
+      <div class="depth-col-title">Defense</div>
+
+      <div class="depth-group">
+        <div class="depth-pos-header">
+          <div class="depth-pos-tag">EDGE</div>
+          <div class="depth-pos-note">Best Pass Rusher in College Football</div>
+        </div>
+        <div class="depth-row starter">
+          <div class="depth-slot">1st</div>
+          <div><div class="depth-player-name">Colin Simmons</div><div class="depth-player-meta">So. · #11 · 11 sacks · 17 TFL · Duncanville, TX</div></div>
+          <div class="depth-badge badge-elite">Bednarik</div>
+        </div>
+        <div class="depth-row battle">
+          <div class="depth-slot">2nd</div>
+          <div><div class="depth-player-name">Opposite EDGE</div><div class="depth-player-meta">Fall camp competition · Multiple candidates</div></div>
+          <div class="depth-badge badge-battle">Open</div>
+        </div>
+      </div>
+
+      <div class="depth-group">
+        <div class="depth-pos-header">
+          <div class="depth-pos-tag">DT</div>
+        </div>
+        <div class="depth-row starter">
+          <div class="depth-slot">1st</div>
+          <div><div class="depth-player-name">Alfred Collins</div><div class="depth-player-meta">Jr. · 330 lbs · Run-stopping anchor</div></div>
+          <div class="depth-badge badge-starter">Starter</div>
+        </div>
+        <div class="depth-row battle">
+          <div class="depth-slot">2nd</div>
+          <div><div class="depth-player-name">Depth Rotation</div><div class="depth-player-meta">Portal candidate possible · Watch fall camp</div></div>
+          <div class="depth-badge badge-battle">Battle</div>
+        </div>
+      </div>
+
+      <div class="depth-group">
+        <div class="depth-pos-header">
+          <div class="depth-pos-tag">LB</div>
+        </div>
+        <div class="depth-row starter">
+          <div class="depth-slot">MLB</div>
+          <div><div class="depth-player-name">Anthony Hill Jr.</div><div class="depth-player-meta">Jr. · 2025 Butkus Award candidate · All-SEC caliber</div></div>
+          <div class="depth-badge badge-elite">All-SEC</div>
+        </div>
+        <div class="depth-row starter">
+          <div class="depth-slot">WLB</div>
+          <div><div class="depth-player-name">Jaylan Ford</div><div class="depth-player-meta">Sr. · Veteran presence · Coverage linebacker</div></div>
+          <div class="depth-badge badge-starter">Starter</div>
+        </div>
+      </div>
+
+      <div class="depth-group">
+        <div class="depth-pos-header">
+          <div class="depth-pos-tag">DB</div>
+          <div class="depth-pos-note">CB2 is the Key Battle</div>
+        </div>
+        <div class="depth-row starter">
+          <div class="depth-slot">CB1</div>
+          <div><div class="depth-player-name">Jahdae Barron</div><div class="depth-player-meta">Sr. · Thorpe Award candidate · Shutdown corner</div></div>
+          <div class="depth-badge badge-elite">Thorpe</div>
+        </div>
+        <div class="depth-row battle">
+          <div class="depth-slot">CB2</div>
+          <div><div class="depth-player-name">Open Competition</div><div class="depth-player-meta">Most important open spot on the roster entering fall</div></div>
+          <div class="depth-badge badge-battle">Battle</div>
+        </div>
+        <div class="depth-row starter">
+          <div class="depth-slot">S</div>
+          <div><div class="depth-player-name">Michael Taaffe</div><div class="depth-player-meta">Sr. · Defensive QB · Instinct + range</div></div>
+          <div class="depth-badge badge-starter">Starter</div>
+        </div>
+      </div>
+
+      <div class="depth-concern">
+        <div class="depth-concern-icon">⚠</div>
+        <div class="depth-concern-text"><strong>Position Battle to Watch — CB2:</strong> Whoever wins this job plays opposite Jahdae Barron in 7 SEC games against elite wideouts. Ohio State, Tennessee, LSU, and A&M all have receivers capable of exposing a weak CB2. This competition defines the defense's ceiling.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== TOWER PROJECTIONS ===================== -->
+<div class="sr"><span class="sr-label">Tower Projections</span><div class="sr-line"></div><span class="sr-meta">2026 Statistical Leaders · Pre-Season Projections</span></div>
+<div class="projections-section">
+  <div class="proj-leaders-grid">
+
+    <!-- OFFENSE -->
+    <div class="proj-leaders-col">
+      <div class="proj-col-title">Offensive Leaders</div>
+
+      <div class="proj-category">
+        <div class="proj-cat-label">Passing Yards</div>
+        <div class="proj-leader-row">
+          <div class="proj-leader-rank top">1</div>
+          <div class="proj-leader-info">
+            <div class="proj-leader-name">Arch Manning</div>
+            <div class="proj-leader-pos">QB · Jr. · Heisman Frontrunner</div>
+          </div>
+          <div class="proj-leader-stat">
+            <div class="proj-leader-num">3,900+</div>
+            <div class="proj-leader-unit">proj. yards</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="proj-category">
+        <div class="proj-cat-label">Rushing Yards</div>
+        <div class="proj-leader-row">
+          <div class="proj-leader-rank top">1</div>
+          <div class="proj-leader-info">
+            <div class="proj-leader-name">Raleek Brown</div>
+            <div class="proj-leader-pos">RB · Sr. · Speed back</div>
+          </div>
+          <div class="proj-leader-stat">
+            <div class="proj-leader-num">950+</div>
+            <div class="proj-leader-unit">proj. yards</div>
+          </div>
+        </div>
+        <div class="proj-leader-row">
+          <div class="proj-leader-rank">2</div>
+          <div class="proj-leader-info">
+            <div class="proj-leader-name">Arch Manning</div>
+            <div class="proj-leader-pos">QB · Scrambles + designed runs</div>
+          </div>
+          <div class="proj-leader-stat">
+            <div class="proj-leader-num">350+</div>
+            <div class="proj-leader-unit">proj. yards</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="proj-category">
+        <div class="proj-cat-label">Receiving Yards</div>
+        <div class="proj-leader-row">
+          <div class="proj-leader-rank top">1</div>
+          <div class="proj-leader-info">
+            <div class="proj-leader-name">Ryan Wingo</div>
+            <div class="proj-leader-pos">WR · Jr. · WR1 · All-SEC returner</div>
+          </div>
+          <div class="proj-leader-stat">
+            <div class="proj-leader-num">1,150+</div>
+            <div class="proj-leader-unit">proj. yards</div>
+          </div>
+        </div>
+        <div class="proj-leader-row">
+          <div class="proj-leader-rank">2</div>
+          <div class="proj-leader-info">
+            <div class="proj-leader-name">Cam Coleman</div>
+            <div class="proj-leader-pos">WR · Jr. · Auburn transfer · Explosive</div>
+          </div>
+          <div class="proj-leader-stat">
+            <div class="proj-leader-num">1,000+</div>
+            <div class="proj-leader-unit">proj. yards</div>
+          </div>
+        </div>
+        <div class="proj-leader-row">
+          <div class="proj-leader-rank">3</div>
+          <div class="proj-leader-info">
+            <div class="proj-leader-name">Gunnar Helm</div>
+            <div class="proj-leader-pos">TE · Sr. · Red zone + seam threat</div>
+          </div>
+          <div class="proj-leader-stat">
+            <div class="proj-leader-num">650+</div>
+            <div class="proj-leader-unit">proj. yards</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="proj-disclaimer">Projections based on 2025 production, role, schematic fit, and transfer additions. Ranges reflect schedule variability. Not a guarantee — assumptions displayed in Tower Season Model above.</div>
+    </div>
+
+    <!-- DEFENSE -->
+    <div class="proj-leaders-col">
+      <div class="proj-col-title">Defensive Leaders</div>
+
+      <div class="proj-category">
+        <div class="proj-cat-label">Sacks</div>
+        <div class="proj-leader-row">
+          <div class="proj-leader-rank top">1</div>
+          <div class="proj-leader-info">
+            <div class="proj-leader-name">Colin Simmons</div>
+            <div class="proj-leader-pos">EDGE · So. · 11 sacks in 2025 · Bednarik candidate</div>
+          </div>
+          <div class="proj-leader-stat">
+            <div class="proj-leader-num">12–15</div>
+            <div class="proj-leader-unit">proj. sacks</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="proj-category">
+        <div class="proj-cat-label">Tackles For Loss</div>
+        <div class="proj-leader-row">
+          <div class="proj-leader-rank top">1</div>
+          <div class="proj-leader-info">
+            <div class="proj-leader-name">Colin Simmons</div>
+            <div class="proj-leader-pos">EDGE · 17 TFL in 2025 · Year 2 leap expected</div>
+          </div>
+          <div class="proj-leader-stat">
+            <div class="proj-leader-num">16–20</div>
+            <div class="proj-leader-unit">proj. TFL</div>
+          </div>
+        </div>
+        <div class="proj-leader-row">
+          <div class="proj-leader-rank">2</div>
+          <div class="proj-leader-info">
+            <div class="proj-leader-name">Anthony Hill Jr.</div>
+            <div class="proj-leader-pos">LB · Jr. · All-SEC potential</div>
+          </div>
+          <div class="proj-leader-stat">
+            <div class="proj-leader-num">9–12</div>
+            <div class="proj-leader-unit">proj. TFL</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="proj-category">
+        <div class="proj-cat-label">Interceptions</div>
+        <div class="proj-leader-row">
+          <div class="proj-leader-rank top">1</div>
+          <div class="proj-leader-info">
+            <div class="proj-leader-name">Jahdae Barron</div>
+            <div class="proj-leader-pos">CB · Sr. · Thorpe Award candidate</div>
+          </div>
+          <div class="proj-leader-stat">
+            <div class="proj-leader-num">4–6</div>
+            <div class="proj-leader-unit">proj. INTs</div>
+          </div>
+        </div>
+        <div class="proj-leader-row">
+          <div class="proj-leader-rank">2</div>
+          <div class="proj-leader-info">
+            <div class="proj-leader-name">Michael Taaffe</div>
+            <div class="proj-leader-pos">S · Sr. · Defensive quarterback</div>
+          </div>
+          <div class="proj-leader-stat">
+            <div class="proj-leader-num">3–5</div>
+            <div class="proj-leader-unit">proj. INTs</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="proj-category">
+        <div class="proj-cat-label">Team Rankings (Projected National)</div>
+        <div class="proj-leader-row">
+          <div class="proj-leader-rank top">#4</div>
+          <div class="proj-leader-info">
+            <div class="proj-leader-name">Scoring Offense</div>
+            <div class="proj-leader-pos">38.4 ppg projected · Manning + WR depth</div>
+          </div>
+          <div class="proj-leader-stat">
+            <div class="proj-leader-num">National</div>
+            <div class="proj-leader-unit">proj. rank</div>
+          </div>
+        </div>
+        <div class="proj-leader-row">
+          <div class="proj-leader-rank top">#6</div>
+          <div class="proj-leader-info">
+            <div class="proj-leader-name">Scoring Defense</div>
+            <div class="proj-leader-pos">19.8 ppg allowed projected · Simmons + Barron</div>
+          </div>
+          <div class="proj-leader-stat">
+            <div class="proj-leader-num">National</div>
+            <div class="proj-leader-unit">proj. rank</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="proj-disclaimer">Defensive projections based on returning starters, 2025 production, and schematic continuity. CB2 open battle is the largest uncertainty in the defensive projection range.</div>
+    </div>
+  </div>
+</div>
+
 <!-- ===================== HOT ON THE BOARD ===================== -->
 <div class="sr"><span class="sr-label">Hot on the Board</span><div class="sr-line"></div><span class="sr-meta">Community · Fan Intel</span></div>
 <div class="threads-section">
@@ -1197,33 +1811,6 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
   </div>
 </div>
 
-<!-- ===================== ROADMAP ===================== -->
-<div class="sr"><span class="sr-label">The Roadmap</span><div class="sr-line"></div></div>
-<div class="roadmap-section">
-  <div class="roadmap-grid">
-    <div class="rm-cell rm-active">
-      <div class="rm-phase">Phase 1 — Now Building</div>
-      <div class="rm-title">Intelligence Platform</div>
-      <div class="rm-desc">AI Search · Recruiting Tracker · Portal Watch · NIL Intelligence · Daily Briefings</div>
-    </div>
-    <div class="rm-cell">
-      <div class="rm-phase">Phase 2</div>
-      <div class="rm-title">Community Layer</div>
-      <div class="rm-desc">Predictions · Confidence votes · Depth chart debates · Fan sentiment engine</div>
-    </div>
-    <div class="rm-cell">
-      <div class="rm-phase">Phase 3</div>
-      <div class="rm-title">Data Company</div>
-      <div class="rm-desc">The Bloomberg Terminal of Texas sports — recruiting momentum, source accuracy, NIL valuations</div>
-    </div>
-    <div class="rm-cell">
-      <div class="rm-phase">Phase 4+</div>
-      <div class="rm-title">Expand the Empire</div>
-      <div class="rm-desc">Texas A&M · Oklahoma · LSU · Full SEC Intelligence Platform</div>
-    </div>
-  </div>
-</div>
-
 <!-- ===================== WAITLIST ===================== -->
 <section class="waitlist" id="waitlist">
   <div class="wl-bg"></div>
@@ -1342,40 +1929,114 @@ function buildStrip(){
 
 /* ---- AI RESPONSES ---- */
 const aiDB = {
-  depthChart:`<strong>2026 Texas Depth Chart — Skill Positions</strong><br><br>
-    <strong>QB:</strong> Arch Manning (Sr.) · Maalik Murphy (backup)<br>
-    <strong>RB:</strong> CJ Baxter (Sr.) · Quintrevion Wisner (Jr.)<br>
-    <strong>WR1:</strong> Ryan Wingo (Jr.) · Isaiah Bond (Sr.)<br>
-    <strong>WR2:</strong> Cam Coleman (Jr., transfer from Auburn)<br>
-    <strong>TE:</strong> Gunnar Helm (Sr.) · Ja'Tavion Sanders<br><br>
-    <em style="font-size:11px;color:var(--muted)">Spring depth chart — fall camp may shift WR2 and RB2.</em>`,
+  depthChart:`<strong>2026 Texas Depth Chart — Key Positions</strong><br><br>
+    <strong>QB:</strong> Arch Manning (Jr.) — Locked. No battle.<br>
+    <strong>RB:</strong> Raleek Brown (Sr.) starter · Hollywood Smothers (Jr.) RB2 battle<br>
+    <strong>WR1:</strong> Ryan Wingo (Jr.) · All-SEC returner<br>
+    <strong>WR2:</strong> Cam Coleman (Jr.) · Auburn transfer, 1,247 yds<br>
+    <strong>Slot:</strong> Isaiah Bond (Sr.) · Speed weapon<br>
+    <strong>TE:</strong> Gunnar Helm (Sr.) · Red zone anchor<br>
+    <strong>EDGE:</strong> Colin Simmons (So.) — best in CFB<br>
+    <strong>LB:</strong> Anthony Hill Jr. (Jr.) · Jaylan Ford (Sr.)<br>
+    <strong>CB1:</strong> Jahdae Barron (Sr.) — Thorpe candidate<br>
+    <strong>CB2:</strong> Open battle — most important competition of fall camp<br><br>
+    <em style="font-size:11px;color:var(--muted)">Pre-fall camp projections. OL guard positions are the biggest open battles.</em>`,
   ohioState:`<strong>Texas vs. Ohio State — Sep 12, 2026 · DKR</strong><br><br>
-    The biggest home non-conference game in the Sark era. Ohio State returns the core of their 2025 CFP roster. Texas is favored by 3.5 at DKR.<br><br>
-    <strong>Key matchup:</strong> Arch Manning vs. Ohio State's veteran secondary. Texas lost 10–31 in Columbus in 2025 — DKR at night is a different animal.<br><br>
-    <strong>Tower FPI:</strong> Texas 54% win probability · Over/Under 57`,
+    The biggest home non-conference game of the Sark era. Texas is favored by 3.5 at DKR. Ohio State returns the core of their 2025 CFP roster.<br><br>
+    <strong>Key Battle:</strong> Arch Manning vs. Ohio State's veteran secondary — and Colin Simmons vs. their left tackle.<br><br>
+    <strong>Revenge factor:</strong> Texas lost 10–31 in Columbus in 2025. DKR at night with Arch at full strength is a completely different game.<br><br>
+    <strong>Tower Prediction:</strong> Texas 31, Ohio State 24 · Win probability: 54%<br><br>
+    <em style="font-size:11px;color:var(--muted)">O/U 57.0 · Week 2 · Non-Conference</em>`,
   recruiting:`<strong>2027 Recruiting Class — Top Targets</strong><br><br>
-    Texas is prioritizing EDGE, DT, and WR early in the '27 cycle with 3 current commitments at 4★+.<br><br>
+    Texas is prioritizing EDGE, DT, and WR in the '27 cycle with multiple 4★+ commitments already locked in.<br><br>
     <strong>Top uncommitted targets:</strong><br>
     • Jalen Thompson, DT, 5★ (Texas City) — Texas leading per Crystal Ball<br>
     • Marcus Williams, QB, 5★ (Houston) — in-state priority<br>
-    • Tyrone Jefferson, OT, 5★ (Houston) — official visit pending<br><br>
+    • Tyrone Jefferson, OT, 5★ (Houston) — official visit pending<br>
+    • DeShawn Carter, WR, 4★ (Dallas) — visit set<br><br>
+    <strong>Class ranking:</strong> Texas holds the #8 national rank in the 2026 class with 21 commitments.<br><br>
     <em style="font-size:11px;color:var(--muted)">Based on latest 247Sports Crystal Ball data.</em>`,
-  arch:`<strong>Arch Manning — 2026 Heisman Profile</strong><br><br>
-    Manning enters his senior year as consensus Heisman #1. 2025 stats: <strong>3,472 pass yds · 29 TD · 8 INT · 64% completion</strong>.<br><br>
-    <strong>Early Heisman odds:</strong> Manning +250 (co-favorite)<br>
-    <strong>NIL valuation:</strong> $4.2M (On3 estimate, tops among CFB QBs)<br>
-    <strong>2027 NFL Draft:</strong> Consensus #1 overall prospect<br><br>
-    <em style="font-size:11px;color:var(--muted)">All odds current as of preseason.</em>`,
-  default:`Tower Report AI monitors recruiting Crystal Balls, portal filings, NIL moves, coach statements, and live data to surface Longhorn intelligence.<br><br>
-    Try asking about: <strong>depth chart</strong>, <strong>Ohio State game</strong>, <strong>Arch Manning</strong>, or <strong>2027 recruiting</strong>.`
+  arch:`<strong>Arch Manning — 2026 Season Profile</strong><br><br>
+    Manning enters as the consensus Heisman frontrunner. 2025 stats: <strong>3,472 pass yds · 29 TD · 8 INT · 68.3% completion</strong>.<br><br>
+    <strong>Early Heisman odds:</strong> +250 (co-favorite)<br>
+    <strong>NIL valuation:</strong> $4.2M (On3) — tops all CFB QBs<br>
+    <strong>2027 NFL Draft:</strong> Consensus #1 overall prospect<br>
+    <strong>NFL comps:</strong> Peyton Manning · Trevor Lawrence<br><br>
+    <strong>What to watch:</strong> Red-zone efficiency and turnover rate were the two areas to improve from 2025. If he cleans those up, the Heisman race ends early.<br><br>
+    <em style="font-size:11px;color:var(--muted)">All odds current as of preseason. Draft projection pending 2026 performance.</em>`,
+  playoff:`<strong>Texas CFP Probability: 72%</strong><br><br>
+    Texas enters 2026 with a <strong>72% chance</strong> of making the 12-team College Football Playoff — among the top 5 nationally.<br><br>
+    <strong>Why so high?</strong><br>
+    • 12-team field gives 3–4 SEC automatic bids<br>
+    • Returning Arch Manning provides elite QB baseline<br>
+    • Even a 10-2 Texas with marquee wins gets in<br>
+    • Schedule strength works in Texas's favor for at-large<br><br>
+    <strong>The three paths:</strong><br>
+    • <em>11-1</em> → Lock, Top-4 seed<br>
+    • <em>10-2</em> → In, seed 7–10<br>
+    • <em>9-3</em> → Bubble, resume dependent<br><br>
+    <strong>The risk:</strong> @ Tennessee, @ LSU, and @ A&M are where 2-loss seasons are built.<br><br>
+    <em style="font-size:11px;color:var(--muted)">Tower Season Model · Based on schedule, roster, and returning production.</em>`,
+  breakout:`<strong>2026 Breakout Candidates</strong><br><br>
+    <strong>1. Cam Coleman, WR (Auburn Transfer)</strong><br>
+    Highest-upside player on the roster. Produced 1,247 yards at Auburn without an elite QB. Now has Arch Manning. A 1,200+ yard season is the floor of his ceiling.<br><br>
+    <strong>2. Raleek Brown, RB</strong><br>
+    Speed back who's never had a true lead role. With the offense built around Arch's arm, defenses will cheat up — Brown takes the top off rushing lanes. First 1,000-yard season is realistic.<br><br>
+    <strong>3. Anthony Hill Jr., LB</strong><br>
+    Junior year with full defensive command. All-SEC caliber if healthy. Butkus Award is a real conversation by midseason if he plays at his ceiling.<br><br>
+    <em style="font-size:11px;color:var(--muted)">Based on role expansion, returning production, and schematic fit.</em>`,
+  weakness:`<strong>Texas's Biggest Weakness: Offensive Line</strong><br><br>
+    Two starting guards from 2025 must be replaced. The OL is the primary uncertainty in every season projection.<br><br>
+    <strong>Why it matters:</strong><br>
+    • Ohio State, Tennessee, LSU, and A&M all have elite defensive fronts<br>
+    • Arch Manning's mobility buys time, but sustained pressure in hostile environments is a different problem<br>
+    • If OL holds → Texas wins 10+. If it breaks down → they're a 8-4 team.<br><br>
+    <strong>Secondary concern:</strong> CB2 opposite Jahdae Barron is an open competition. Whoever wins that job will face elite SEC receivers in 7 games.<br><br>
+    <em style="font-size:11px;color:var(--muted)">Tower Analysis · Pre-Fall Camp Assessment · June 2026</em>`,
+  dangerous:`<strong>Most Dangerous Games for Texas in 2026</strong><br><br>
+    <strong>#1 — @ Texas A&M (Nov 27, W12)</strong><br>
+    The rivalry game in College Station to close the season. A&M opened as a 3-point favorite. Kyle Field in November is one of the toughest environments in college football.<br><br>
+    <strong>#2 — @ LSU (Nov 14, W10)</strong><br>
+    Tiger Stadium at night is the most hostile venue in the SEC. LSU opened as 1.5-point favorites. Back-to-back road games W10–W12 is the toughest stretch on the schedule.<br><br>
+    <strong>#3 — Ohio State (Sep 12, W2)</strong><br>
+    Home game, but Ohio State has NFL talent across the board. A loss here in Week 2 changes the season narrative overnight.<br><br>
+    <strong>#4 — @ Tennessee (Sep 26, W4)</strong><br>
+    Tennessee opened as a 2.5-point favorite in Knoxville. Road SEC game in the first month.<br><br>
+    <em style="font-size:11px;color:var(--muted)">Based on Vegas lines, venue difficulty, and opponent talent level.</em>`,
+  simmons:`<strong>Colin Simmons — 2026 Defensive Profile</strong><br><br>
+    Simmons posted <strong>11 sacks and 17 TFL</strong> as a freshman/sophomore — the most dominant pass-rushing season by a Texas defender in the modern era.<br><br>
+    <strong>2026 projection:</strong> 12–15 sacks · 16–20 TFL<br>
+    <strong>Awards watch:</strong> Bednarik Award (defensive MVP) · Nagurski Award<br>
+    <strong>NFL Draft:</strong> Projected Top-5 pick in the 2027 draft<br><br>
+    <strong>What makes him special:</strong> Counter moves at the college level — most pass rushers live on one move. Simmons has three. Elite first step. Bends the edge without losing power.<br><br>
+    <em style="font-size:11px;color:var(--muted)">Best pass rusher in college football entering 2026.</em>`,
+  coleman:`<strong>Cam Coleman — Transfer Intel</strong><br><br>
+    Coleman transferred from Auburn after posting <strong>1,247 receiving yards</strong> without a consistently elite quarterback. He enrolled at Texas in January and is immediately projected as the WR2 starter.<br><br>
+    <strong>Why this matters:</strong> The Texas WR room is now potentially the best in the SEC. Ryan Wingo (WR1) + Cam Coleman (WR2) + Isaiah Bond (slot) gives Arch Manning three legitimate No. 1 options.<br><br>
+    <strong>Projection:</strong> 1,000+ receiving yards · Breakout candidate · 2027 NFL Draft: 2nd round<br><br>
+    <em style="font-size:11px;color:var(--muted)">via Inside Texas · Portal Intel</em>`,
+  default:`<strong>Tower Intelligence</strong> monitors roster depth, season projections, game matchups, and recruiting signals to surface the most important Texas football intelligence.<br><br>
+    Try asking about:<br>
+    • <strong>Playoff chances</strong> — Texas's CFP probability<br>
+    • <strong>Biggest weakness</strong> — What could hurt Texas in 2026<br>
+    • <strong>Breakout players</strong> — Who emerges this season<br>
+    • <strong>Dangerous games</strong> — Which matchups scare the model<br>
+    • <strong>Arch Manning</strong> or <strong>Colin Simmons</strong> — Player profiles<br>
+    • <strong>Ohio State game</strong> — Full matchup breakdown`
 };
 
 function getAIResponse(q){
   const lq = q.toLowerCase();
-  if(lq.match(/depth|running back|rb|backs/)) return aiDB.depthChart;
+  if(lq.match(/depth|running back|rb|backs|starter|lineup|who starts/)) return aiDB.depthChart;
   if(lq.match(/ohio|buckeye|week 2|osu/)) return aiDB.ohioState;
-  if(lq.match(/recruit|target|2027|crystal ball/)) return aiDB.recruiting;
+  if(lq.match(/recruit|target|2027|crystal ball|commit/)) return aiDB.recruiting;
   if(lq.match(/arch|manning|heisman|nil/)) return aiDB.arch;
+  if(lq.match(/playoff|cfp|chance|probability|make it|make the/)) return aiDB.playoff;
+  if(lq.match(/break.*out|breakout|emerge|most likely|who.*break|who.*emerge/)) return aiDB.breakout;
+  if(lq.match(/weak|problem|concern|worry|question|issue|hurt|flaw/)) return aiDB.weakness;
+  if(lq.match(/danger|tough|hard|scare|lose|loss|most important|key game|biggest game|hardest/)) return aiDB.dangerous;
+  if(lq.match(/simmons|colin|edge|pass rush|bednarik/)) return aiDB.simmons;
+  if(lq.match(/coleman|cam|auburn|transfer|wr2|wide rec/)) return aiDB.coleman;
   return aiDB.default;
 }
 
@@ -1502,6 +2163,24 @@ function joinWL(){
     });
   },{threshold:0.3});
   io.observe(bar);
+})();
+
+/* ---- PROJECTION BAR ANIMATIONS ---- */
+(function(){
+  const io = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.querySelectorAll('.proj-bar-fill[data-width]').forEach(bar=>{
+          setTimeout(()=>{ bar.style.width = bar.dataset.width + '%'; }, 200);
+        });
+        io.unobserve(e.target);
+      }
+    });
+  },{threshold:0.25});
+  document.addEventListener('DOMContentLoaded',()=>{
+    const grid = document.getElementById('proj-grid');
+    if(grid) io.observe(grid);
+  });
 })();
 
 /* ---- INIT ---- */
