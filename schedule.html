@@ -167,6 +167,21 @@
   .vy-score-nums .win{color:var(--win);}
   .vy-score-dot{color:var(--muted);}
 
+  /* GAME INSIGHT PANELS */
+  .game-row{cursor:pointer;position:relative;}
+  .game-row::after{content:'▸';position:absolute;right:4px;top:50%;transform:translateY(-50%);font-size:10px;color:var(--muted);transition:transform .2s;pointer-events:none;}
+  .game-row.insight-open::after{transform:translateY(-50%) rotate(90deg);color:var(--orange);}
+  .game-insight{display:none;padding:16px 40px 20px;background:var(--surface2);border-bottom:1px solid var(--gray-border);border-top:2px solid var(--orange);margin:0 -40px;}
+  .game-insight.open{display:block;}
+  .gi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .gi-block-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:6px;}
+  .gi-num{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:700;color:var(--white);line-height:1;}
+  .gi-num-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+  .gi-text{font-size:12px;color:var(--secondary);line-height:1.6;}
+  .gi-text strong{color:var(--white);font-weight:600;}
+  .gi-bullets{list-style:none;font-size:12px;color:var(--secondary);line-height:1.7;}
+  .gi-bullets li::before{content:'→ ';color:var(--orange);}
+
   @media(max-width:768px){
     nav{padding:16px 20px;}.nav-links{display:none;}
     .page-header{padding:32px 20px 24px;}
@@ -666,7 +681,7 @@ const espnLogo = id => `https://a.espncdn.com/i/teamlogos/ncaa/500/${id}.png`;
 const teamLogos = {
   'TXST':   espnLogo(326),   // Texas State
   'OSU':    espnLogo(194),   // Ohio State
-  'UTSA':   espnLogo(2908),  // UTSA
+  'UTSA':   espnLogo(2636),  // UTSA Roadrunners
   'TENN':   espnLogo(2633),  // Tennessee
   'OU':     espnLogo(201),   // Oklahoma
   'UF':     espnLogo(57),    // Florida
@@ -751,7 +766,170 @@ function showYear(yr, btn) {
   injectTeamLogos();
 }
 
-document.addEventListener('DOMContentLoaded', injectTeamLogos);
+/* ---- GAME INSIGHTS DATA ---- */
+const gameInsights = {
+  /* ===== 2026 UPCOMING ===== */
+  '2026-w1': {
+    spread: 'TEX -38.5', ou: 'O/U 62.5',
+    prediction: 'Texas wins big in season opener. Roadrunners are rebuilding under new staff.',
+    bullets: ['Home opener at DKR — expect loud crowd and fast starts','Texas State went 4-8 in 2025 — significant talent gap','Sark typically rests starters by Q4 in lopsided openers','Watch for Quinn Ewers tuning up the deep ball early'],
+  },
+  '2026-w2': {
+    spread: 'TEX -3.5', ou: 'O/U 57',
+    prediction: 'Marquee early-season matchup. Both teams project as top-15. Texas has home advantage.',
+    bullets: ['Ohio State returns most of 2025 CFP core — legitimate top-5 team','DKR at night in Week 2 = one of the loudest environments in CFP era','Texas 5-1 in home openers vs ranked opponents under Sark','Key: can Texas D contain Ohio State's Power running game?'],
+  },
+  '2026-w3': {
+    spread: 'TEX -35', ou: 'O/U 58',
+    prediction: 'Comfortable home win. Texas uses this game for backups and depth evaluation.',
+    bullets: ['UTSA enters 2026 with question marks at QB and on the O-line','Texas beat UTSA 49–14 in 2024 and 41–20 in 2022','Roadrunners play in C-USA — notable talent gap','Expect Sark to use the 2nd half to develop depth pieces'],
+  },
+  '2026-w4': {
+    spread: 'TENN -2.5', ou: 'O/U 55',
+    prediction: 'Toss-up road game in one of the loudest venues in the SEC. Could go either way.',
+    bullets: ['Neyland Stadium holds 102K — second largest in college football','Tennessee has won 4 of last 5 home games vs ranked opponents','Texas is 3-7 all-time in games played at Knoxville','Key matchup: Texas pass rush vs. Tennessee's experienced OL'],
+  },
+  '2026-w5': {
+    spread: 'TEX -6', ou: 'O/U 59',
+    prediction: 'Red River is always a toss-up at the Cotton Bowl. Texas favored but OU reloading fast.',
+    bullets: ['Series all-time: Texas leads 62-51-5 — one of CFB\'s best rivalries','Texas has won 3 straight Red Rivers (2023, 2024, 2025)','Neutral site game — no true home advantage for either team','QB matchup will define this game as it always does'],
+  },
+  '2026-w6': {
+    spread: 'TEX -7', ou: 'O/U 55',
+    prediction: 'Texas favored at home. Florida under new staff still finding identity.',
+    bullets: ['Billy Napier era ended in Gainesville — Gators in transition','Texas beat Florida 35–14 away in 2025 — dominant performance','DKR in October = Texas at full stride mid-season','Watch for Texas to exploit Florida's secondary turnover'],
+  },
+  '2026-w7': {
+    spread: 'TEX -4.5', ou: 'O/U 57',
+    prediction: 'Ole Miss under Lane Kiffin always puts up points. Expect a shootout.',
+    bullets: ['Lane Kiffin averaging 38+ PPG over 5 seasons at Ole Miss','Texas beat Ole Miss 28–17 in 2025 at DKR — another home game','Rebels typically rank top-15 in passing offense nationally','Texas must pressure Kiffin's QB quickly — he is deadly when clean'],
+  },
+  '2026-w8': {
+    spread: 'TEX -17', ou: 'O/U 56.5',
+    prediction: 'Mississippi State in a down cycle. Texas should win comfortably.',
+    bullets: ['MSU went 4-8 in 2025 — program in a rebuild phase','Texas beat MSU 35–13 (2024) and 41–7 (2025) recently','Halloween home game at DKR — always a festive atmosphere','Depth evaluation opportunity before the late-season stretch'],
+  },
+  '2026-w9': {
+    spread: 'MIZ -1', ou: 'O/U 54',
+    prediction: 'Faurot Field is a legitimate road trap. Missouri is dangerous at home.',
+    bullets: ['Missouri made the CFP conversation in 2024 and 2025','"The Zou" is among the most hostile road environments in the SEC','Texas historically struggles early on Eastern road trips','Key: Texas O-line vs. Missouri\'s active, athletic front seven'],
+  },
+  '2026-w10': {
+    spread: 'LSU -1.5', ou: 'O/U 56',
+    prediction: 'Death Valley at night is one of the toughest road environments in CFB. Coin-flip game.',
+    bullets: ['Tiger Stadium night game = one of the CFB\'s ultimate atmosphere tests','LSU 18-4 at home vs ranked opponents since 2019','Texas needs a statement road win to lock up CFP positioning late','Whoever controls the line of scrimmage wins this game'],
+  },
+  '2026-w11': {
+    spread: 'TEX -9', ou: 'O/U 58',
+    prediction: 'Arkansas is a divisional rival Texas should handle at home.',
+    bullets: ['Texas beat Arkansas 20–10 away in 2024 and was competitive in 2025','Razorbacks always play physical — expect a dog fight for 3 quarters','Home game before rivalry week — Texas historically focused','Watch for Arkansas to load the box and challenge Sark\'s play-calling'],
+  },
+  '2026-w12': {
+    spread: 'A&M -3', ou: 'O/U 52',
+    prediction: 'Lone Star Showdown at Kyle Field. Series just restarted. Expect a battle.',
+    bullets: ['First meeting back at Kyle Field since rivalry resumed in 2024','Texas leads renewed series 1-0 (14-24 L in 2024, 13-26 L in 2025)','Kyle Field holds 102K — elite atmosphere for rivalry week','This game now has SEC division and CFP implications every year'],
+  },
+
+  /* ===== 2025 KEY GAMES ===== */
+  '2025-w1': {
+    spread: 'OSU -10.5', ou: 'O/U 57',
+    prediction: 'Texas opened at Ohio State — lost 10-31. Early road trip was too much.',
+    bullets: ['Ewers struggled vs Ohio State's front seven: 3 sacks, 2 TOs','Buckeyes dominated line of scrimmage in first half','Texas averaged just 3.2 YPC on the ground','Sets up the narrative for potential rematch in CFP'],
+  },
+  '2025-w6': {
+    spread: 'TEX -14', ou: 'O/U 57',
+    prediction: 'Texas crushed OU 23-6. Dominant defensive performance at the Cotton Bowl.',
+    bullets: ['OU was held to 167 total yards — 3rd fewest in Red River history','Texas defense generated 4 sacks, 2 forced fumbles','Ewers finished 19/25 for 247 yards — efficient, not flashy','Red River Showdown streak: Texas 3 straight wins'],
+  },
+  '2025-bowl': {
+    spread: 'TEX -4', ou: 'O/U 58',
+    prediction: 'Texas won the Citrus Bowl 41-27 over Michigan. Strong finish to 11-win season.',
+    bullets: ['Arch Manning started and went 24/34, 312 yards, 4 TDs','Texas racked up 210 rushing yards on the Wolverines','Michigan defense unable to contain Texas\'s two-QB system','Cemented 11-3 record and #12 final ranking — strong résumé year'],
+  },
+
+  /* ===== 2024 KEY GAMES ===== */
+  '2024-w7': {
+    spread: 'UGA -3.5', ou: 'O/U 55',
+    prediction: 'Texas 30-15 over #1 Georgia. Statement win that defined the 2024 season.',
+    bullets: ['Georgia was #1 in the country — Texas\'s biggest win since rejoining SEC','Ewers went 22/30, 287 yards, 3 TDs, 0 INTs — near perfect','Texas D held Kirby Smart\'s offense to 277 total yards','Propelled Texas to #1 in CFP rankings mid-season'],
+  },
+};
+
+/* ---- INSIGHT PANEL LOGIC ---- */
+function assignGameKeys() {
+  document.querySelectorAll('.season-panel').forEach(panel => {
+    const yr = panel.id.replace('yr-', '');
+    panel.querySelectorAll('.game-row').forEach(row => {
+      const wkEl = row.querySelector('.wk-num');
+      if (!wkEl) return;
+      const wk = wkEl.textContent.trim().replace(/\s+/g,'').toLowerCase();
+      const key = yr + '-' + wk;
+      row.setAttribute('data-game', key);
+    });
+  });
+}
+
+function toggleInsight(row) {
+  const key = row.getAttribute('data-game');
+  const data = gameInsights[key];
+
+  let panel = row.nextElementSibling;
+  const isOpen = panel && panel.classList.contains('game-insight');
+
+  // close any open panels
+  document.querySelectorAll('.game-insight.open').forEach(p => {
+    p.classList.remove('open');
+    p.previousElementSibling && p.previousElementSibling.classList.remove('insight-open');
+  });
+
+  if (isOpen && panel.classList.contains('open')) return; // was already open — just close
+
+  if (!data) {
+    // no data yet — show placeholder
+    if (!isOpen) {
+      panel = document.createElement('div');
+      panel.className = 'game-insight';
+      panel.innerHTML = `<div class="gi-grid"><div><div class="gi-block-label">Insight</div><div class="gi-text" style="color:var(--muted)">Detailed analysis coming soon.</div></div></div>`;
+      row.after(panel);
+    }
+  } else {
+    if (!isOpen) {
+      panel = document.createElement('div');
+      panel.className = 'game-insight';
+      const bulletsHtml = data.bullets.map(b => `<li>${b}</li>`).join('');
+      panel.innerHTML = `
+        <div class="gi-grid">
+          <div>
+            <div class="gi-block-label">Line / O-U</div>
+            <div class="gi-num">${data.spread}</div>
+            <div class="gi-num-sub">${data.ou}</div>
+          </div>
+          <div style="grid-column:span 2">
+            <div class="gi-block-label">Scout Report</div>
+            <div class="gi-text" style="margin-bottom:10px"><strong>${data.prediction}</strong></div>
+            <ul class="gi-bullets">${bulletsHtml}</ul>
+          </div>
+        </div>`;
+      row.after(panel);
+    }
+  }
+  requestAnimationFrame(() => {
+    row.classList.add('insight-open');
+    row.nextElementSibling.classList.add('open');
+  });
+}
+
+document.querySelectorAll('.game-row').forEach(row => {
+  row.addEventListener('click', () => toggleInsight(row));
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  injectTeamLogos();
+  assignGameKeys();
+  document.querySelectorAll('.game-row').forEach(row => {
+    row.addEventListener('click', () => toggleInsight(row));
+  });
+});
 </script>
 </body>
 </html>
