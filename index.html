@@ -76,6 +76,15 @@ nav{position:sticky;top:0;z-index:200;background:rgba(8,8,8,0.97);backdrop-filte
 .ticker-text{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.95);}
 .ticker-pill{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.5px;color:rgba(0,0,0,0.55);background:rgba(255,255,255,0.22);padding:1px 6px;border-radius:2px;}
 @keyframes scroll-ticker{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+@keyframes heroFadeUp{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
+@keyframes heroFadeIn{from{opacity:0;}to{opacity:1;}}
+@keyframes aiPulse{0%,100%{box-shadow:0 0 0 0 rgba(191,87,0,0.45);}50%{box-shadow:0 0 0 7px rgba(191,87,0,0);}}
+.h-anim-1{animation:heroFadeUp .7s cubic-bezier(.25,.46,.45,.94) both;}
+.h-anim-2{animation:heroFadeUp .7s .12s cubic-bezier(.25,.46,.45,.94) both;}
+.h-anim-3{animation:heroFadeUp .7s .24s cubic-bezier(.25,.46,.45,.94) both;}
+.h-anim-4{animation:heroFadeUp .7s .34s cubic-bezier(.25,.46,.45,.94) both;}
+.h-anim-5{animation:heroFadeIn .8s .5s both;}
+.h-anim-r{animation:heroFadeIn .9s .2s both;}
 
 /* ======================================================
    HERO
