@@ -144,6 +144,22 @@ body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);
 .cal-event{font-size:13px;font-weight:500;color:var(--white);}
 .cal-type{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:3px 8px;border:1px solid var(--border);white-space:nowrap;}
 
+/* 2027 COMMIT TABLE */
+.commit-table-wrap{overflow-x:auto;background:var(--surface);border:1px solid var(--border-mid);margin-bottom:48px;}
+.commit-table{width:100%;border-collapse:collapse;}
+.commit-table thead tr{border-bottom:1px solid var(--border-strong);}
+.commit-table th{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:14px 20px;text-align:left;}
+.commit-table tbody tr{border-bottom:1px solid var(--border);transition:background .15s;}
+.commit-table tbody tr:last-child{border-bottom:none;}
+.commit-table tbody tr:hover{background:var(--surface2);}
+.commit-table td{padding:16px 20px;font-size:13px;color:var(--white2);}
+.ct-name{font-size:14px;font-weight:600;color:var(--white);}
+.ct-pos{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--orange);}
+.ct-stars{color:var(--amber);font-size:12px;letter-spacing:1px;}
+.ct-score{font-size:12px;color:var(--secondary);}
+.ct-date{color:var(--muted);}
+.commit-table-footer{font-size:11px;color:var(--muted);text-align:center;padding:12px;border-top:1px solid var(--border);}
+
 /* FOOTER */
 footer{padding:28px 48px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);}
 .footer-logo{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;letter-spacing:3px;color:var(--muted);}
@@ -167,7 +183,7 @@ footer{padding:28px 48px;display:flex;align-items:center;justify-content:space-b
   <h1 class="page-title">Recruiting</h1>
   <div class="page-meta">
     <p class="page-sub">2026 Signed Class · 2027 Active Recruiting · AI Research Summaries · Position Needs</p>
-    <div class="page-updated">Last Updated: June 2, 2026</div>
+    <div class="page-updated">Last Updated: June 3, 2026</div>
   </div>
 </div>
 
@@ -185,7 +201,7 @@ footer{padding:28px 48px;display:flex;align-items:center;justify-content:space-b
   <div class="class-stats">
     <div class="cs-cell"><div class="cs-num">21</div><div class="cs-label">2026 Signed</div></div>
     <div class="cs-cell"><div class="cs-num orange">#8</div><div class="cs-label">2026 National</div></div>
-    <div class="cs-cell"><div class="cs-num">1</div><div class="cs-label">2027 Committed</div></div>
+    <div class="cs-cell"><div class="cs-num orange">6</div><div class="cs-label">2027 Committed</div></div>
     <div class="cs-cell"><div class="cs-num">7</div><div class="cs-label">2027 Targets</div></div>
     <div class="cs-cell"><div class="cs-num orange">Jun–Aug</div><div class="cs-label">Visit Season</div></div>
   </div>
@@ -349,466 +365,78 @@ footer{padding:28px 48px;display:flex;align-items:center;justify-content:space-b
   </div>
 
   <!-- ========================================
-       2027 CLASS — ACTIVE RECRUITING
+       2027 CLASS — COMMITS
   ======================================== -->
   <div class="sec-head">
-    <div class="sec-title">2027 Recruiting Class — Active</div>
-    <div class="sec-meta">Early Signing Period: Dec 17–19, 2026</div>
+    <div class="sec-title">2027 Commits — 6 Total</div>
+    <div class="sec-meta">Last updated: June 3, 2026 · Early Signing Period: Dec 17–19, 2026</div>
   </div>
 
-  <div class="recruit-grid">
-
-    <!-- ── MARCUS WIMBUSH — COMMITTED ── -->
-    <div class="recruit-card is-committed">
-      <div class="recruit-header">
-        <div class="rh-pos">
-          <div class="rh-pos-tag">DT</div>
-          <div class="rh-class">'27</div>
-        </div>
-        <div class="rh-main">
-          <div class="rh-name">Marcus Wimbush</div>
-          <div class="rh-attrs">
-            <span class="rh-stars">★★★★</span>
-            <span class="rh-rank">#55 Overall · #4 DT</span>
-            <span class="rh-home">Austin, Texas</span>
-            <span class="rh-hw">6-3 / 295</span>
-          </div>
-          <div class="rh-badges">
-            <span class="badge badge-committed">Committed</span>
-            <span class="trend trend-stable">— Stable</span>
-          </div>
-        </div>
-        <div class="rh-right">
-          <div class="rh-trend-label">Trend</div>
-          <span class="trend trend-stable" style="font-size:22px;">—</span>
-          <div class="rh-updated">Updated Jun 2</div>
-        </div>
-      </div>
-      <div class="recruit-body">
-        <div class="tower-summary">
-          <div class="tower-summary-label">Tower Research Summary</div>
-          <div class="tower-summary-text">
-            Marcus Wimbush publicly committed to Texas, making him the first named commit of the 2027 class per public recruiting reports. As an Austin-area defensive tackle, Wimbush represents the type of in-state interior lineman Texas has prioritized early in recruiting cycles. Multiple programs — including several from the SEC — had reported interest before his public commitment, per 247Sports and On3 coverage. No decommitment signals have appeared in public reporting as of this update. His commitment anchors Texas's interior defensive line need for 2027 and gives the class its first building block.
-          </div>
-        </div>
-        <div class="detail-cols">
-          <div class="detail-col">
-            <div class="detail-col-label">Why Texas</div>
-            <div class="detail-col-text">Austin native, fits the interior DL body type the staff targets early. Texas has a genuine depth need at defensive tackle heading into 2027 and recruited Wimbush as a priority, per public reporting.</div>
-          </div>
-          <div class="detail-col">
-            <div class="detail-col-label">Main Competition</div>
-            <div class="detail-col-text">Multiple SEC programs had reported interest before his commitment, per 247Sports and On3. Specific schools not confirmed via public sources at this time.</div>
-          </div>
-        </div>
-        <div class="detail-update">
-          <div class="detail-update-label">Latest Public Update</div>
-          <div class="detail-update-text">Commitment stands as publicly reported. No decommitment or reopening signals have appeared in public coverage.</div>
-        </div>
-        <div class="sources-row">
-          <span class="sources-label">Sources:</span>
-          <span class="source-chip">247Sports</span>
-          <span class="source-chip">On3</span>
-          <span class="source-chip">Rivals</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── BRASHARD SMITH — TRENDING TEXAS ── -->
-    <div class="recruit-card is-trending">
-      <div class="recruit-header">
-        <div class="rh-pos">
-          <div class="rh-pos-tag">RB</div>
-          <div class="rh-class">'27</div>
-        </div>
-        <div class="rh-main">
-          <div class="rh-name">Brashard Smith</div>
-          <div class="rh-attrs">
-            <span class="rh-stars">★★★★</span>
-            <span class="rh-rank">#28 Overall · #3 RB</span>
-            <span class="rh-home">Katy, Texas</span>
-            <span class="rh-hw">5-11 / 190</span>
-          </div>
-          <div class="rh-badges">
-            <span class="badge badge-trending">Trending Texas</span>
-            <span class="trend trend-up">↑ Trending Up</span>
-          </div>
-        </div>
-        <div class="rh-right">
-          <div class="rh-trend-label">Trend</div>
-          <span class="trend trend-up" style="font-size:22px;">↑</span>
-          <div class="rh-updated">Updated Jun 2</div>
-        </div>
-      </div>
-      <div class="recruit-body">
-        <div class="tower-summary">
-          <div class="tower-summary-label">Tower Research Summary</div>
-          <div class="tower-summary-text">
-            Brashard Smith is a 4-star running back from Katy who ranks among the top backs in the 2027 class nationally. Public recruiting coverage from 247Sports and On3 has noted significant Texas momentum in this recruitment, with multiple reports placing the Longhorns as a frontrunner. The Katy area has strong historical ties to Texas recruiting, and Smith fits the featured back profile Texas has targeted under the current staff. Alabama and LSU are publicly cited in recruiting coverage as the programs applying the most pressure. No formal decision timeline has been shared publicly, and this trend assessment is based on public signals only — not insider information.
-          </div>
-        </div>
-        <div class="detail-cols">
-          <div class="detail-col">
-            <div class="detail-col-label">Why Texas</div>
-            <div class="detail-col-text">Top-end Katy-area running back fits a key 2027 need. Texas has recruited the Houston suburbs heavily and Smith's profile — downhill runner with pass-game ability — matches the staff's featured back prototype.</div>
-          </div>
-          <div class="detail-col">
-            <div class="detail-col-label">Main Competition</div>
-            <div class="detail-col-text">Alabama and LSU are the programs most frequently cited alongside Texas in public recruiting coverage. Both have strong recent running back pipelines and are expected to push late.</div>
-          </div>
-        </div>
-        <div class="detail-update">
-          <div class="detail-update-label">Latest Public Update</div>
-          <div class="detail-update-text">Multiple recruiting services have noted Texas momentum as of recent public reporting. No decision date has been announced publicly.</div>
-        </div>
-        <div class="sources-row">
-          <span class="sources-label">Sources:</span>
-          <span class="source-chip">247Sports</span>
-          <span class="source-chip">On3</span>
-          <span class="source-chip">Rivals</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── MALACHI NELSON JR. — TARGET ── -->
-    <div class="recruit-card is-target">
-      <div class="recruit-header">
-        <div class="rh-pos">
-          <div class="rh-pos-tag">QB</div>
-          <div class="rh-class">'27</div>
-        </div>
-        <div class="rh-main">
-          <div class="rh-name">Malachi Nelson Jr.</div>
-          <div class="rh-attrs">
-            <span class="rh-stars">★★★★★</span>
-            <span class="rh-rank">#3 Overall · #1 QB</span>
-            <span class="rh-home">Denton, Texas</span>
-            <span class="rh-hw">6-4 / 205</span>
-          </div>
-          <div class="rh-badges">
-            <span class="badge badge-target">Target</span>
-            <span class="trend trend-stable">— Stable</span>
-          </div>
-        </div>
-        <div class="rh-right">
-          <div class="rh-trend-label">Trend</div>
-          <span class="trend trend-stable" style="font-size:22px;">—</span>
-          <div class="rh-updated">Updated Jun 2</div>
-        </div>
-      </div>
-      <div class="recruit-body">
-        <div class="tower-summary">
-          <div class="tower-summary-label">Tower Research Summary</div>
-          <div class="tower-summary-text">
-            A 5-star quarterback prospect from the DFW area, Nelson carries natural geographic ties to Texas and is publicly listed among the programs pursuing him in recruiting coverage. Texas has a legitimate 2027 need at quarterback, which creates a clear motivation for the staff's early involvement. This recruitment is at an early stage — multiple high-profile programs are publicly listed as involved, and no clear leader has emerged in public reporting. A 5-star DFW quarterback choosing Texas would rank among the most significant individual recruiting wins in the 2027 class nationally. All information here reflects public sources only; no specific visit or decision details have been confirmed publicly.
-          </div>
-        </div>
-        <div class="detail-cols">
-          <div class="detail-col">
-            <div class="detail-col-label">Why Texas</div>
-            <div class="detail-col-text">DFW geographic tie, elite prospect Texas targets at the position early. Staff's history of developing quarterbacks and SEC-level competition are the primary selling points in public coverage.</div>
-          </div>
-          <div class="detail-col">
-            <div class="detail-col-label">Main Competition</div>
-            <div class="detail-col-text">Multiple national programs are publicly listed as pursuing Nelson. No single leader has been confirmed in public reporting at this time.</div>
-          </div>
-        </div>
-        <div class="detail-update">
-          <div class="detail-update-label">Latest Public Update</div>
-          <div class="detail-update-text">Recruitment is in early stages. No major movement reported publicly. Texas remains actively involved per public recruiting services.</div>
-        </div>
-        <div class="sources-row">
-          <span class="sources-label">Sources:</span>
-          <span class="source-chip">247Sports</span>
-          <span class="source-chip">On3</span>
-          <span class="source-chip">Rivals</span>
-          <span class="source-chip">ESPN Recruiting</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── JAYLEN MBAKWE — TARGET ── -->
-    <div class="recruit-card is-target">
-      <div class="recruit-header">
-        <div class="rh-pos">
-          <div class="rh-pos-tag">WR</div>
-          <div class="rh-class">'27</div>
-        </div>
-        <div class="rh-main">
-          <div class="rh-name">Jaylen Mbakwe</div>
-          <div class="rh-attrs">
-            <span class="rh-stars">★★★★★</span>
-            <span class="rh-rank">#7 Overall · #1 WR</span>
-            <span class="rh-home">Houston, Texas</span>
-            <span class="rh-hw">6-2 / 185</span>
-          </div>
-          <div class="rh-badges">
-            <span class="badge badge-target">Target</span>
-            <span class="trend trend-stable">— Stable</span>
-          </div>
-        </div>
-        <div class="rh-right">
-          <div class="rh-trend-label">Trend</div>
-          <span class="trend trend-stable" style="font-size:22px;">—</span>
-          <div class="rh-updated">Updated Jun 2</div>
-        </div>
-      </div>
-      <div class="recruit-body">
-        <div class="tower-summary">
-          <div class="tower-summary-label">Tower Research Summary</div>
-          <div class="tower-summary-text">
-            A 5-star wide receiver from Houston, Mbakwe represents the kind of elite in-state skill prospect Texas must win to compete at the top of the SEC. Texas has wide receiver as a stated priority in the 2027 class, and the Longhorns are publicly listed among the programs pursuing Mbakwe in recruiting coverage. The Houston market has produced multiple Texas commits in recent cycles, giving the staff established relationships in the area. Public competition includes SEC programs that have built strong recent pipelines at the position. No decision timeline or specific visit details have been publicly confirmed.
-          </div>
-        </div>
-        <div class="detail-cols">
-          <div class="detail-col">
-            <div class="detail-col-label">Why Texas</div>
-            <div class="detail-col-text">Top-rated in-state receiver in a class where Texas has identified WR as a high priority. Houston is a core recruiting territory for the staff, and passing game development has been a visible selling point in public recruiting coverage.</div>
-          </div>
-          <div class="detail-col">
-            <div class="detail-col-label">Main Competition</div>
-            <div class="detail-col-text">Multiple SEC programs are publicly listed as competing for Mbakwe. Specific leaders have not been confirmed in public reporting at this time.</div>
-          </div>
-        </div>
-        <div class="detail-update">
-          <div class="detail-update-label">Latest Public Update</div>
-          <div class="detail-update-text">Texas is publicly active in this recruitment. No commitment timeline or visit announcements have been confirmed publicly.</div>
-        </div>
-        <div class="sources-row">
-          <span class="sources-label">Sources:</span>
-          <span class="source-chip">247Sports</span>
-          <span class="source-chip">On3</span>
-          <span class="source-chip">Rivals</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── DEVIN SANCHEZ — TARGET ── -->
-    <div class="recruit-card is-target">
-      <div class="recruit-header">
-        <div class="rh-pos">
-          <div class="rh-pos-tag">CB</div>
-          <div class="rh-class">'27</div>
-        </div>
-        <div class="rh-main">
-          <div class="rh-name">Devin Sanchez</div>
-          <div class="rh-attrs">
-            <span class="rh-stars">★★★★★</span>
-            <span class="rh-rank">#11 Overall · #1 CB</span>
-            <span class="rh-home">Houston, Texas</span>
-            <span class="rh-hw">6-2 / 175</span>
-          </div>
-          <div class="rh-badges">
-            <span class="badge badge-target">Target</span>
-            <span class="trend trend-stable">— Stable</span>
-          </div>
-        </div>
-        <div class="rh-right">
-          <div class="rh-trend-label">Trend</div>
-          <span class="trend trend-stable" style="font-size:22px;">—</span>
-          <div class="rh-updated">Updated Jun 2</div>
-        </div>
-      </div>
-      <div class="recruit-body">
-        <div class="tower-summary">
-          <div class="tower-summary-label">Tower Research Summary</div>
-          <div class="tower-summary-text">
-            Devin Sanchez is a top-rated cornerback from Houston with a national offer list, and Texas is publicly reported as among the programs pursuing him. Cornerback ranks as one of Texas's highest-priority positions in the 2027 class given depth and departure projections. The staff has consistently recruited the Houston area at corner with recent success, lending credibility to their standing in this recruitment. Multiple SEC programs with strong recent CB pipelines are listed as the primary competition in public coverage. Sanchez's recruitment is broad and competitive — no leader has been publicly identified at this stage.
-          </div>
-        </div>
-        <div class="detail-cols">
-          <div class="detail-col">
-            <div class="detail-col-label">Why Texas</div>
-            <div class="detail-col-text">Corner is a top-priority position need in 2027, and Sanchez is one of the best in the country at the position. Houston ties and a history of developing DBs are Texas's primary arguments in public coverage.</div>
-          </div>
-          <div class="detail-col">
-            <div class="detail-col-label">Main Competition</div>
-            <div class="detail-col-text">Multiple SEC programs are publicly in the mix for Sanchez. No specific leader has been reported publicly. Ohio State and Georgia have been mentioned alongside Texas in public recruiting coverage.</div>
-          </div>
-        </div>
-        <div class="detail-update">
-          <div class="detail-update-label">Latest Public Update</div>
-          <div class="detail-update-text">Recruitment is in progress with no public decision timeline announced. Texas is active per public recruiting services.</div>
-        </div>
-        <div class="sources-row">
-          <span class="sources-label">Sources:</span>
-          <span class="source-chip">247Sports</span>
-          <span class="source-chip">On3</span>
-          <span class="source-chip">Rivals</span>
-          <span class="source-chip">ESPN Recruiting</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── ANTHONY JONES JR. — TARGET ── -->
-    <div class="recruit-card is-target">
-      <div class="recruit-header">
-        <div class="rh-pos">
-          <div class="rh-pos-tag">OT</div>
-          <div class="rh-class">'27</div>
-        </div>
-        <div class="rh-main">
-          <div class="rh-name">Anthony Jones Jr.</div>
-          <div class="rh-attrs">
-            <span class="rh-stars">★★★★</span>
-            <span class="rh-rank">#32 Overall · #4 OT</span>
-            <span class="rh-home">Cedar Hill, Texas</span>
-            <span class="rh-hw">6-6 / 295</span>
-          </div>
-          <div class="rh-badges">
-            <span class="badge badge-target">Target</span>
-            <span class="trend trend-stable">— Stable</span>
-          </div>
-        </div>
-        <div class="rh-right">
-          <div class="rh-trend-label">Trend</div>
-          <span class="trend trend-stable" style="font-size:22px;">—</span>
-          <div class="rh-updated">Updated Jun 2</div>
-        </div>
-      </div>
-      <div class="recruit-body">
-        <div class="tower-summary">
-          <div class="tower-summary-label">Tower Research Summary</div>
-          <div class="tower-summary-text">
-            Anthony Jones Jr. is a 4-star offensive tackle from Cedar Hill — within driving distance of Austin — who ranks among the better in-state offensive linemen in the 2027 class. Texas has offensive tackle as a high-priority position need going into 2027, and the staff has placed heavy emphasis on keeping in-state O-linemen home in recent cycles. Public recruiting reports list Texas as among the programs most actively involved in Jones's recruitment. Competition includes other Big 12 and SEC programs per public coverage. No decision timeline has been publicly announced, and this is an early-stage recruitment.
-          </div>
-        </div>
-        <div class="detail-cols">
-          <div class="detail-col">
-            <div class="detail-col-label">Why Texas</div>
-            <div class="detail-col-text">DFW-area offensive tackle fitting Texas's size prototype. Offensive line is a stated priority for 2027 and keeping in-state prospects home has been a staff focus. Geographic proximity is a significant factor.</div>
-          </div>
-          <div class="detail-col">
-            <div class="detail-col-label">Main Competition</div>
-            <div class="detail-col-text">Big 12 and SEC programs are publicly listed as competitors. Oklahoma and Texas A&M are frequently mentioned in public coverage for DFW-area offensive linemen.</div>
-          </div>
-        </div>
-        <div class="detail-update">
-          <div class="detail-update-label">Latest Public Update</div>
-          <div class="detail-update-text">No decision timeline announced. Texas is publicly active in this recruitment per multiple recruiting services.</div>
-        </div>
-        <div class="sources-row">
-          <span class="sources-label">Sources:</span>
-          <span class="source-chip">247Sports</span>
-          <span class="source-chip">On3</span>
-          <span class="source-chip">Rivals</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── CALEB CARMOUCHE — TARGET ── -->
-    <div class="recruit-card is-target">
-      <div class="recruit-header">
-        <div class="rh-pos">
-          <div class="rh-pos-tag">S</div>
-          <div class="rh-class">'27</div>
-        </div>
-        <div class="rh-main">
-          <div class="rh-name">Caleb Carmouche</div>
-          <div class="rh-attrs">
-            <span class="rh-stars">★★★★</span>
-            <span class="rh-rank">#41 Overall · #3 S</span>
-            <span class="rh-home">New Orleans, La.</span>
-            <span class="rh-hw">6-1 / 195</span>
-          </div>
-          <div class="rh-badges">
-            <span class="badge badge-target">Target</span>
-            <span class="trend trend-stable">— Stable</span>
-          </div>
-        </div>
-        <div class="rh-right">
-          <div class="rh-trend-label">Trend</div>
-          <span class="trend trend-stable" style="font-size:22px;">—</span>
-          <div class="rh-updated">Updated Jun 2</div>
-        </div>
-      </div>
-      <div class="recruit-body">
-        <div class="tower-summary">
-          <div class="tower-summary-label">Tower Research Summary</div>
-          <div class="tower-summary-text">
-            Caleb Carmouche is a safety prospect from New Orleans, a market Texas has recruited successfully in recent years. The Longhorns are publicly listed among the programs with active interest per recruiting coverage. Texas's ability to compete in Louisiana against in-state programs has been an ongoing story, and Carmouche's recruitment is an important test case. LSU is the expected frontrunner given the in-state connection, and Texas faces clear geographic disadvantage in this recruitment. However, Texas has recently signed Louisiana-area defensive backs, showing the staff's reach into the market. No decision details have been confirmed publicly.
-          </div>
-        </div>
-        <div class="detail-cols">
-          <div class="detail-col">
-            <div class="detail-col-label">Why Texas</div>
-            <div class="detail-col-text">Safety is a position need in 2027 and Texas has recruited the New Orleans market successfully in recent cycles. The staff's track record of DB development is the primary argument in public coverage.</div>
-          </div>
-          <div class="detail-col">
-            <div class="detail-col-label">Main Competition</div>
-            <div class="detail-col-text">LSU has a significant geographic advantage as the in-state program. Alabama is also publicly listed as involved. Texas is competing against home-state pull, which is a real factor in this recruitment.</div>
-          </div>
-        </div>
-        <div class="detail-update">
-          <div class="detail-update-label">Latest Public Update</div>
-          <div class="detail-update-text">Texas is listed as involved in public coverage, but LSU's in-state edge is frequently noted. No decision timeline confirmed publicly.</div>
-        </div>
-        <div class="sources-row">
-          <span class="sources-label">Sources:</span>
-          <span class="source-chip">247Sports</span>
-          <span class="source-chip">On3</span>
-          <span class="source-chip">Rivals</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── ELIJAH GRIFFIN — MONITORING ── -->
-    <div class="recruit-card is-monitoring">
-      <div class="recruit-header">
-        <div class="rh-pos">
-          <div class="rh-pos-tag">EDGE</div>
-          <div class="rh-class">'27</div>
-        </div>
-        <div class="rh-main">
-          <div class="rh-name">Elijah Griffin</div>
-          <div class="rh-attrs">
-            <span class="rh-stars">★★★★★</span>
-            <span class="rh-rank">#14 Overall · #2 EDGE</span>
-            <span class="rh-home">Georgia</span>
-            <span class="rh-hw">6-5 / 240</span>
-          </div>
-          <div class="rh-badges">
-            <span class="badge badge-monitoring">Monitoring</span>
-            <span class="trend trend-stable">— Stable</span>
-          </div>
-        </div>
-        <div class="rh-right">
-          <div class="rh-trend-label">Trend</div>
-          <span class="trend trend-stable" style="font-size:22px;">—</span>
-          <div class="rh-updated">Updated Jun 2</div>
-        </div>
-      </div>
-      <div class="recruit-body">
-        <div class="tower-summary">
-          <div class="tower-summary-label">Tower Research Summary</div>
-          <div class="tower-summary-text">
-            Elijah Griffin is a 5-star edge rusher from Georgia — a state where Texas faces significant competition from in-region SEC programs. Texas's reported interest places the Longhorns in a national field pursuing Griffin, though no strong public signals specifically favoring Texas have emerged in coverage. Georgia, Georgia Tech, and other SEC programs are the schools most cited in public reporting given Griffin's geographic location. This recruitment is listed as Monitoring because public information confirming Texas's standing in the race is limited. Landing Griffin would represent a significant out-of-region recruiting win for the 2027 class if Texas ultimately earns a serious look.
-          </div>
-        </div>
-        <div class="detail-cols">
-          <div class="detail-col">
-            <div class="detail-col-label">Why Texas</div>
-            <div class="detail-col-text">Edge rusher is a top position priority in 2027 and Griffin is one of the best nationally. Texas's SEC membership and facilities are the primary draws cited in public coverage, though geographic distance is a challenge.</div>
-          </div>
-          <div class="detail-col">
-            <div class="detail-col-label">Main Competition</div>
-            <div class="detail-col-text">Georgia programs have the geographic advantage. Alabama, Georgia, and Ohio State are the programs most commonly cited in public coverage for top-end edge rushers from the Southeast.</div>
-          </div>
-        </div>
-        <div class="detail-update">
-          <div class="detail-update-label">Latest Public Update</div>
-          <div class="detail-update-text">Texas is monitoring this recruitment. No strong public signals of Texas leading have emerged. Categorized Monitoring — not enough public information to assess Texas's standing with confidence.</div>
-        </div>
-        <div class="sources-row">
-          <span class="sources-label">Sources:</span>
-          <span class="source-chip">247Sports</span>
-          <span class="source-chip">On3</span>
-          <span class="source-chip">ESPN Recruiting</span>
-        </div>
-      </div>
-    </div>
-
-  </div><!-- /recruit-grid -->
+  <div class="commit-table-wrap">
+    <table class="commit-table">
+      <thead>
+        <tr>
+          <th>Player</th>
+          <th>Pos</th>
+          <th>Ht / Wt</th>
+          <th>Rating</th>
+          <th>School</th>
+          <th>Commit Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="ct-name">Easton Royal</td>
+          <td class="ct-pos">WR</td>
+          <td>6'0 / 205</td>
+          <td><span class="ct-stars">★★★★★</span> <span class="ct-score">(97.33)</span></td>
+          <td>Brother Martin (New Orleans, LA)</td>
+          <td class="ct-date">Nov 29, 2025</td>
+        </tr>
+        <tr>
+          <td class="ct-name">Cameron Hall</td>
+          <td class="ct-pos">DE</td>
+          <td>6'3 / 230</td>
+          <td><span class="ct-stars">★★★★</span> <span class="ct-score">(~89)</span></td>
+          <td>Mansfield Summit (Arlington, TX)</td>
+          <td class="ct-date">Jan 28, 2026</td>
+        </tr>
+        <tr>
+          <td class="ct-name">Derwin Fields</td>
+          <td class="ct-pos">EDGE</td>
+          <td>6'3 / 230</td>
+          <td><span class="ct-stars">★★★★</span> <span class="ct-score">(~88)</span></td>
+          <td>Brookhaven (Brookhaven, MS)</td>
+          <td class="ct-date">Apr 18, 2026</td>
+        </tr>
+        <tr>
+          <td class="ct-name">Noah Roberts</td>
+          <td class="ct-pos">RB</td>
+          <td>5'11 / 205</td>
+          <td><span class="ct-stars">★★★★</span> <span class="ct-score">(~87)</span></td>
+          <td>Basha (Chandler, AZ)</td>
+          <td class="ct-date">May 1, 2026</td>
+        </tr>
+        <tr>
+          <td class="ct-name">Brock Williams</td>
+          <td class="ct-pos">TE</td>
+          <td>6'5 / 215</td>
+          <td><span class="ct-stars">★★★★</span> <span class="ct-score">(~90)</span></td>
+          <td>Libertyville (Libertyville, IL)</td>
+          <td class="ct-date">May 15, 2026</td>
+        </tr>
+        <tr>
+          <td class="ct-name">Jackson Cook</td>
+          <td class="ct-pos">OL</td>
+          <td>6'3 / 290</td>
+          <td><span class="ct-stars">★★★★</span> <span class="ct-score">(~86)</span></td>
+          <td>Westlake (Austin, TX)</td>
+          <td class="ct-date">Mar 2026</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="commit-table-footer">Sources: 247Sports · On3 · ESPN · Updates done manually via GitHub Desktop</p>
+  </div>
 
   <!-- ========================================
        2027 POSITION NEEDS
