@@ -1051,6 +1051,11 @@ document.querySelectorAll('.t-tab').forEach(tab=>{
 });
 
 /* ---- WAITLIST ---- */
+window.addEventListener('pageshow', () => {
+  document.getElementById('wl-success').style.display = 'none';
+  document.getElementById('wl-form') && (document.getElementById('wl-form').style.display = '');
+});
+
 function joinWL(){
   const inp = document.getElementById('wl-email');
   if(!inp.value || !inp.value.includes('@')){
