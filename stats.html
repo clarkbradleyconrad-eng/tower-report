@@ -1060,6 +1060,7 @@ function buildHistory(){
 ============================================================ */
 document.addEventListener('DOMContentLoaded',()=>{
   initTab('overview');
+  initTab('players');
   if(window.loadPlayers){
     window.loadPlayers().then(function(){window.linkPlayerNames&&window.linkPlayerNames('.tab-content');});
   }
