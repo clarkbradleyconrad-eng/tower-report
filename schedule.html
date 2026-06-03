@@ -127,7 +127,25 @@ nav{position:sticky;top:0;z-index:200;background:rgba(8,8,8,0.97);backdrop-filte
 .gc-diff-dot.on{background:var(--red);}
 .gc-diff-dot.off{background:var(--surface3);border:1px solid var(--border-strong);}
 .gc-spread{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.5px;color:var(--orange);}
+.gc-odds-line{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:.3px;color:var(--muted);}
 .gc-toggle{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:4px;}
+/* Odds snapshot in expansion */
+.gd-odds{display:grid;grid-template-columns:repeat(4,1fr) auto;gap:1px;background:var(--border);margin-bottom:1px;}
+.gd-odds-cell{background:var(--surface2);padding:11px 16px;}
+.gd-odds-val{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;color:var(--white);letter-spacing:.3px;line-height:1;margin-bottom:4px;}
+.gd-odds-val.ov{color:var(--orange);}
+.gd-odds-label{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.gd-odds-updated{background:var(--surface2);display:flex;flex-direction:column;align-items:flex-end;justify-content:center;padding:11px 14px;gap:3px;white-space:nowrap;}
+.gd-odds-updated-label{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);}
+.gd-odds-updated-val{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:.5px;color:var(--secondary);}
+/* Disclaimer */
+.odds-disclaimer{padding:10px 20px;border-top:1px solid var(--border);display:flex;align-items:center;gap:6px;background:var(--surface);}
+.odds-disclaimer-icon{font-size:10px;color:var(--muted);flex-shrink:0;}
+.odds-disclaimer-text{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:.5px;color:var(--muted);}
+@media(max-width:860px){
+  .gd-odds{grid-template-columns:1fr 1fr;}
+  .gd-odds-updated{grid-column:1/-1;flex-direction:row;justify-content:flex-start;gap:6px;}
+}
 .gc-toggle-arrow{transition:transform .22s;}
 .gc-expanded .gc-toggle-arrow{transform:rotate(180deg);}
 /* Game Detail Panel */
@@ -435,6 +453,10 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
 
 <div class="schedule-wrap">
   <div class="schedule-list" id="schedule-list"></div>
+  <div class="odds-disclaimer">
+    <span class="odds-disclaimer-icon">ℹ</span>
+    <span class="odds-disclaimer-text">Odds are for informational purposes only, may change, and do not constitute betting advice.</span>
+  </div>
 </div>
 
 <!-- ====================================================
@@ -1060,6 +1082,39 @@ const GAMES = [
 ];
 
 /* ============================================================
+   ODDS DATA
+   Replace these values with live data as needed.
+   ml = American moneyline from Texas's perspective.
+   Positive = underdog, negative = favorite.
+============================================================ */
+const ODDS = {
+  w1:  { spread:'TEX −38.5', ou:'62.5',  ml:-5000, updated:'Jun 3, 2026' },
+  w2:  { spread:'TEX −3.5',  ou:'57.0',  ml:-115,  updated:'Jun 3, 2026' },
+  w3:  { spread:'TEX −35',   ou:'58.0',  ml:-3000, updated:'Jun 3, 2026' },
+  w4:  { spread:'TN −2.5',   ou:'55.0',  ml:+165,  updated:'Jun 3, 2026' },
+  w5:  { spread:'TEX −6',    ou:'59.0',  ml:-165,  updated:'Jun 3, 2026' },
+  w6:  { spread:'TEX −7',    ou:'55.0',  ml:-215,  updated:'Jun 3, 2026' },
+  w7:  { spread:'TEX −4.5',  ou:'57.0',  ml:-150,  updated:'Jun 3, 2026' },
+  w8:  { spread:'TEX −17',   ou:'56.5',  ml:-750,  updated:'Jun 3, 2026' },
+  w9:  { spread:'MIZ −1',    ou:'54.0',  ml:+110,  updated:'Jun 3, 2026' },
+  w10: { spread:'LSU −1.5',  ou:'56.0',  ml:+120,  updated:'Jun 3, 2026' },
+  w11: { spread:'TEX −9',    ou:'58.0',  ml:-260,  updated:'Jun 3, 2026' },
+  w12: { spread:'A&M −3',    ou:'52.0',  ml:+130,  updated:'Jun 3, 2026' },
+};
+
+/* ---- helpers ---- */
+function americanToImplied(ml) {
+  const raw = ml < 0
+    ? (-ml) / (-ml + 100) * 100
+    : 100 / (ml + 100) * 100;
+  return raw.toFixed(1) + '%';
+}
+
+function formatML(ml) {
+  return ml > 0 ? '+' + ml : String(ml);
+}
+
+/* ============================================================
    RENDER SCHEDULE
 ============================================================ */
 const TAG_META = {
@@ -1092,6 +1147,10 @@ function probColor(p) {
 
 function renderGame(g) {
   const tm = TYPE_META[g.type];
+  const o = ODDS[g.id] || {};
+  const ml = o.ml != null ? o.ml : null;
+  const mlStr = ml != null ? formatML(ml) : '—';
+  const impliedStr = ml != null ? americanToImplied(ml) : '—';
   const tagHTML = g.tags.map(t => {
     const m = TAG_META[t];
     return m ? `<span class="gc-tag ${m.cls}">${m.label}</span>` : '';
@@ -1121,21 +1180,43 @@ function renderGame(g) {
         <div class="gc-prob-bar"><div class="gc-prob-fill" style="width:${g.winProb}%"></div></div>
       </div>
       <div class="gc-diff" title="Difficulty">${diffDots(g.difficulty)}</div>
-      <div class="gc-spread">${g.spread}</div>
+      <div class="gc-spread">${o.spread || g.spread}</div>
+      <div class="gc-odds-line">ML ${mlStr} · O/U ${o.ou || g.ou}</div>
       <div class="gc-toggle"><span class="gc-toggle-arrow">▾</span></div>
     </div>
   </div>
   <div class="game-detail">
     <div class="gd-inner">
+      <div class="gd-odds">
+        <div class="gd-odds-cell">
+          <div class="gd-odds-val ov">${o.spread || g.spread}</div>
+          <div class="gd-odds-label">Spread</div>
+        </div>
+        <div class="gd-odds-cell">
+          <div class="gd-odds-val">O/U ${o.ou || g.ou}</div>
+          <div class="gd-odds-label">Over / Under</div>
+        </div>
+        <div class="gd-odds-cell">
+          <div class="gd-odds-val">${mlStr}</div>
+          <div class="gd-odds-label">Moneyline (TEX)</div>
+        </div>
+        <div class="gd-odds-cell">
+          <div class="gd-odds-val">${impliedStr}</div>
+          <div class="gd-odds-label">Implied Win %</div>
+        </div>
+        <div class="gd-odds-updated">
+          <span class="gd-odds-updated-label">Updated</span>
+          <span class="gd-odds-updated-val">${o.updated || '—'}</span>
+        </div>
+      </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);margin-bottom:1px;">
         <div style="background:var(--surface);padding:14px 18px;">
           <div class="gd-pred-label">Tower Prediction</div>
           <div class="gd-pred-score">${g.prediction}</div>
         </div>
         <div style="background:var(--surface);padding:14px 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-          <div class="gd-pred-pill">Win Prob: ${g.winProb}%</div>
-          <div class="gd-pred-pill">${g.spread}</div>
-          <div class="gd-pred-pill">O/U ${g.ou}</div>
+          <div class="gd-pred-pill">Model Win Prob: ${g.winProb}%</div>
+          <div class="gd-pred-pill">Implied: ${impliedStr}</div>
         </div>
       </div>
       <div class="gd-grid">
