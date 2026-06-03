@@ -3,7 +3,6 @@ const NAV_PAGES = [
   { label: 'Season Hub',  href: 'schedule.html' },
   { label: 'Depth Chart', href: 'depth-chart.html' },
   { label: 'Recruiting',  href: 'recruiting.html' },
-  { label: 'Portal',      href: 'portal.html' },
   { label: 'Stories',     href: 'stories.html' },
   { label: 'Players',     href: 'players.html' },
   { label: 'History',     href: 'history.html' },
