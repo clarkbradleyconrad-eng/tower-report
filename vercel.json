@@ -8,7 +8,7 @@
   "crons": [
     {
       "path": "/api/odds?cron=1",
-      "schedule": "0 */6 * * *",
+      "schedule": "0 */6 * * *"
     }
   ],
   "headers": [
