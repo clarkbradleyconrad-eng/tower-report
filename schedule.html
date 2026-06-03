@@ -146,26 +146,51 @@
   .footer-logo span{color:var(--orange);}
   .footer-text{font-size:12px;color:var(--muted);}
 
-  /* VY HERO BANNER */
-  .vy-banner{position:relative;height:420px;overflow:hidden;border-bottom:1px solid var(--gray-border);background:linear-gradient(135deg,#260a00 0%,#140400 45%,#080808 100%);}
-  .vy-banner-img{width:100%;height:100%;object-fit:cover;object-position:center 20%;display:block;}
-  .vy-banner-overlay{position:absolute;inset:0;background:linear-gradient(to right,rgba(8,8,8,0.92) 40%,rgba(8,8,8,0.3) 100%),linear-gradient(to top,rgba(8,8,8,0.7) 0%,transparent 50%);}
-  .vy-banner-content{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:0 40px;max-width:600px;}
-  .vy-banner-eyebrow{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:10px;}
-  .vy-banner-title{font-family:'Playfair Display',serif;font-size:clamp(38px,6vw,76px);font-weight:900;line-height:0.95;letter-spacing:-2px;color:var(--white);margin-bottom:12px;}
-  .vy-banner-title .o{color:var(--orange);}
-  .vy-banner-sub{font-size:13px;color:#aaa;line-height:1.6;margin-bottom:20px;max-width:400px;}
-  .vy-banner-stats{display:flex;gap:24px;margin-bottom:24px;}
-  .vy-stat{text-align:left;}
-  .vy-stat-num{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:700;color:var(--orange);line-height:1;}
-  .vy-stat-label{font-size:9px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-top:1px;}
-  .vy-banner-btn{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--white);background:var(--orange);padding:10px 20px;border:none;cursor:pointer;text-decoration:none;transition:opacity .2s;align-self:flex-start;}
-  .vy-banner-btn:hover{opacity:.85;}
-  .vy-banner-score{position:absolute;right:40px;bottom:32px;text-align:right;}
-  .vy-score-game{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
-  .vy-score-nums{font-family:'Barlow Condensed',sans-serif;font-size:52px;font-weight:700;line-height:1;color:var(--white);}
-  .vy-score-nums .win{color:var(--win);}
-  .vy-score-dot{color:var(--muted);}
+  /* GAME OF THE DAY */
+  .gotd{border-bottom:1px solid var(--gray-border);}
+  .gotd-header{display:flex;align-items:center;justify-content:space-between;padding:13px 40px;border-bottom:1px solid var(--gray-border);background:rgba(0,0,0,0.3);}
+  .gotd-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--orange);display:flex;align-items:center;gap:10px;}
+  .gotd-eyebrow::before{content:'';width:3px;height:14px;background:var(--orange);}
+  .gotd-counter{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1px;color:var(--muted);}
+  .gotd-controls{display:flex;gap:6px;}
+  .gotd-ctrl-btn{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;padding:5px 16px;background:transparent;border:1px solid var(--gray-border);color:var(--muted);cursor:pointer;transition:all .15s;}
+  .gotd-ctrl-btn:hover{color:var(--white);border-color:rgba(255,255,255,0.2);}
+  .gotd-card{display:grid;grid-template-columns:360px 1fr;position:relative;overflow:hidden;min-height:310px;}
+  .gotd-splash{position:absolute;inset:0;pointer-events:none;transition:background .5s;}
+  .gotd-visual{padding:30px 36px;position:relative;border-right:1px solid var(--gray-border);display:flex;flex-direction:column;gap:14px;background:rgba(0,0,0,0.25);z-index:1;}
+  .gotd-context{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--orange);}
+  .gotd-matchup{display:flex;align-items:center;justify-content:space-between;}
+  .gotd-team{display:flex;flex-direction:column;align-items:center;gap:7px;flex:1;}
+  .gotd-logo{width:76px;height:76px;object-fit:contain;filter:brightness(1.1) drop-shadow(0 4px 12px rgba(0,0,0,0.5));}
+  .gotd-abbr{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--secondary);}
+  .gotd-vs-col{text-align:center;}
+  .gotd-score-num{font-family:'Barlow Condensed',sans-serif;font-size:46px;font-weight:800;line-height:1;letter-spacing:-1px;color:var(--white);}
+  .gotd-score-num .w{color:var(--win);}
+  .gotd-score-num .sep{color:var(--muted);font-weight:400;font-size:28px;margin:0 3px;}
+  .gotd-badge{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 8px;margin-top:5px;}
+  .gotd-badge.win{background:rgba(34,197,94,0.1);color:var(--win);border:1px solid rgba(34,197,94,0.22);}
+  .gotd-badge.loss{background:rgba(239,68,68,0.08);color:#ef4444;border:1px solid rgba(239,68,68,0.18);}
+  .gotd-meta{font-size:11px;color:var(--muted);line-height:1.85;}
+  .gotd-meta strong{color:var(--secondary);font-weight:600;}
+  .gotd-info{padding:30px 36px;display:flex;flex-direction:column;gap:12px;position:relative;z-index:1;}
+  .gotd-title{font-family:'Playfair Display',serif;font-size:clamp(20px,2.2vw,30px);font-weight:900;letter-spacing:-1px;color:var(--white);line-height:1.1;}
+  .gotd-ai-tag{display:inline-flex;align-items:center;gap:7px;font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);}
+  .gotd-ai-tag span{background:var(--orange);color:#fff;padding:1px 5px;font-size:8px;}
+  .gotd-overview{font-size:13px;line-height:1.78;color:var(--secondary);}
+  .gotd-moments{list-style:none;}
+  .gotd-moments li{font-size:12px;color:var(--secondary);padding:5px 0;border-bottom:1px solid var(--gray-border);display:flex;gap:9px;line-height:1.5;}
+  .gotd-moments li:last-child{border-bottom:none;}
+  .gotd-moments li::before{content:'→';color:var(--orange);flex-shrink:0;}
+  .gotd-stats{display:flex;gap:1px;background:var(--gray-border);}
+  .gotd-stat{flex:1;background:rgba(24,24,24,0.9);padding:10px;text-align:center;}
+  .gotd-stat-val{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--white);line-height:1;}
+  .gotd-stat-lbl{font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-top:2px;}
+  .gotd-actions{display:flex;gap:8px;margin-top:2px;}
+  .gotd-act{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:8px 18px;cursor:pointer;transition:all .2s;border:none;text-decoration:none;display:inline-flex;align-items:center;gap:5px;}
+  .gotd-act.pri{background:var(--orange);color:#fff;}
+  .gotd-act.pri:hover{opacity:.85;}
+  .gotd-act.ghost{background:transparent;color:var(--secondary);border:1px solid var(--gray-border);}
+  .gotd-act.ghost:hover{color:var(--white);border-color:rgba(255,255,255,0.2);}
 
   /* GAME INSIGHT PANELS */
   .game-row{cursor:pointer;position:relative;}

@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Colin Simmons Named EA Sports College Football 26 Cover Athlete | Tower Report</title>
+<meta name="description" content="Texas EDGE rusher Colin Simmons — SEC's leading pass rusher in 2025 — has been named the cover athlete for EA Sports College Football 26. The recognition is deserved. The story is just getting started."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet"/>
+<script src="nav.js" defer></script>
+<style>
+:root{
+  --orange:#BF5700;--black:#080808;--white:#F5F0E8;
+  --surface:#111;--surface2:#181818;--surface3:#202020;
+  --border:rgba(255,255,255,0.07);--border-strong:rgba(255,255,255,0.13);
+  --muted:#6B6560;--secondary:#A09890;
+  --green:#22c55e;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);}
+
+/* ─── HERO ─── */
+.article-hero{
+  position:relative;min-height:560px;
+  background:#020404;overflow:hidden;
+  display:flex;align-items:flex-end;
+}
+.hero-bg-main{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 65% 75% at 15% 60%,rgba(191,87,0,0.22) 0%,transparent 60%),
+    radial-gradient(ellipse 50% 60% at 85% 40%,rgba(34,197,94,0.08) 0%,transparent 55%);
+  animation:bgBreath 14s ease-in-out infinite;
+}
+.hero-logo-large{
+  position:absolute;right:-2%;top:50%;transform:translateY(-50%);
+  width:56vw;height:56vw;max-width:640px;max-height:640px;
+  background:url('https://a.espncdn.com/i/teamlogos/ncaa/500/251.png') center/contain no-repeat;
+  opacity:0.1;
+  animation:logoBreath 16s ease-in-out infinite;
+}
+.hero-ea-badge-bg{
+  position:absolute;top:0;right:0;bottom:0;width:38%;
+  background:linear-gradient(to left,rgba(34,197,94,0.05) 0%,transparent 100%);
+}
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,0.018) 1px,transparent 1px);
+  background-size:52px 52px;
+}
+.hero-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom,transparent 0%,rgba(2,4,4,0.55) 38%,rgba(2,4,4,0.94) 75%,#020404 100%);
+}
+.hero-edge-l{position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,transparent 5%,var(--orange) 30%,var(--orange) 70%,transparent 95%);}
+.hero-edge-top{
+  position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--orange) 30%,var(--green) 50%,var(--orange) 70%,transparent);
+  animation:edgePulse 5s ease-in-out infinite;
+}
+
+.hero-ea-chip{
+  position:absolute;top:48px;right:48px;z-index:20;
+  background:rgba(4,8,4,0.92);backdrop-filter:blur(12px);
+  border:1px solid rgba(34,197,94,0.3);border-top:2px solid var(--green);
+  padding:16px 22px;text-align:center;
+}
+.eac-game{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--green);margin-bottom:6px;}
+.eac-title{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;color:var(--white);line-height:1;margin-bottom:4px;}
+.eac-sub{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);}
+
+.hero-breaking{
+  position:absolute;top:48px;left:52px;z-index:20;
+  display:flex;align-items:center;gap:8px;
+}
+.breaking-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:blinkDot 1.5s ease-in-out infinite;}
+.breaking-text{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--green);}
+
+.hero-content{position:relative;z-index:15;padding:0 52px 48px;max-width:880px;}
+.hero-breadcrumb{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:18px;}
+.hero-breadcrumb a{color:var(--muted);text-decoration:none;}
+.hero-breadcrumb a:hover{color:var(--white);}
+.hero-breadcrumb .sep{color:rgba(107,101,96,0.4);margin:0 7px;}
+.hero-breadcrumb .cur{color:var(--orange);}
+.hero-kicker{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--green);margin-bottom:10px;}
+.hero-eye{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:rgba(245,240,232,0.32);margin-bottom:10px;}
+.hero-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(40px,6.5vw,78px);font-weight:900;
+  line-height:0.93;letter-spacing:-2.5px;color:var(--white);margin-bottom:16px;
+}
+.hero-title .g{color:var(--green);}
+.hero-title .o{color:var(--orange);}
+.hero-deck{font-size:17px;line-height:1.58;color:rgba(245,240,232,0.6);font-style:italic;margin-bottom:20px;max-width:640px;}
+.hero-meta{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.meta-dot{width:3px;height:3px;border-radius:50%;background:var(--muted);flex-shrink:0;}
+
+@keyframes logoBreath{0%,100%{opacity:0.08;}50%{opacity:0.13;}}
+@keyframes bgBreath{0%,100%{opacity:0.7;}50%{opacity:1;}}
+@keyframes edgePulse{0%,100%{opacity:0.3;}50%{opacity:1;}}
+@keyframes blinkDot{0%,100%{opacity:1;}50%{opacity:0.2;}}
+
+/* ─── LAYOUT ─── */
+.article-outer{max-width:1160px;margin:0 auto;padding:44px 52px 90px;display:grid;grid-template-columns:1fr 296px;gap:60px;}
+
+/* AI SUMMARY */
+.ai-summary{background:var(--surface);border:1px solid rgba(34,197,94,0.18);border-left:3px solid var(--green);padding:22px 26px;margin-bottom:34px;}
+.ais-top{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.ais-lbl{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);}
+.ais-badge{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);color:var(--green);}
+.ais-body{font-size:14px;line-height:1.78;color:var(--secondary);font-style:italic;margin-bottom:16px;}
+.ais-pts{display:flex;flex-direction:column;gap:9px;}
+.ais-pt{font-size:13px;color:var(--white);line-height:1.45;padding-left:20px;position:relative;}
+.ais-pt::before{content:'→';position:absolute;left:0;color:var(--orange);font-family:'Barlow Condensed',sans-serif;font-weight:700;}
+
+/* ARTICLE TEXT */
+.article-body{font-size:16.5px;line-height:1.84;color:#BEB9B2;}
+.article-body p{margin-bottom:24px;}
+.article-body strong{color:var(--white);}
+.article-body em{color:rgba(245,240,232,0.8);}
+.section-lbl{display:block;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);padding-top:30px;margin-top:36px;margin-bottom:16px;border-top:1px solid var(--border);}
+.pull-quote{border-left:3px solid var(--orange);padding:18px 24px;background:var(--surface);margin:28px 0;}
+.pq-text{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--white);line-height:1.3;font-style:italic;margin-bottom:10px;}
+.pq-attr{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);}
+.stat-banner{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin:28px 0;}
+.sb-cell{background:var(--surface);padding:16px;text-align:center;}
+.sb-num{font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:700;color:var(--orange);line-height:1;}
+.sb-lbl{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:4px;}
+.bottom-line{background:rgba(191,87,0,0.05);border:1px solid rgba(191,87,0,0.18);border-top:3px solid var(--orange);padding:24px 26px;margin-top:38px;}
+.bl-lbl{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:14px;}
+.bl-text{font-size:15px;line-height:1.78;color:var(--white);}
+.hookem{font-size:24px;margin-top:14px;display:block;}
+.article-footer-bar{display:flex;align-items:center;gap:12px;margin-top:32px;padding-top:20px;border-top:1px solid var(--border);font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);flex-wrap:wrap;}
+.afb-tag{padding:2px 8px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-size:10px;}
+
+/* SIDEBAR */
+.sidebar-sticky{position:sticky;top:82px;display:flex;flex-direction:column;gap:20px;}
+.side-box{background:var(--surface);border:1px solid var(--border);}
+.side-hd{padding:12px 16px;border-bottom:1px solid var(--border);background:var(--surface2);}
+.side-hd-title{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.side-hd-name{font-size:13px;font-weight:700;color:var(--white);margin-top:3px;}
+.srow{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1px solid var(--border);}
+.srow:last-child{border-bottom:none;}
+.srow-lbl{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
+.srow-val{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;color:var(--orange);}
+.srow-val.sm{font-size:12px;color:var(--white);text-align:right;font-family:'Barlow',sans-serif;font-weight:600;}
+.srow-val.g{color:var(--green);font-size:13px;}
+.srow.accent{background:rgba(191,87,0,0.04);}
+.qitem{padding:14px 16px;border-bottom:1px solid var(--border);}
+.qitem:last-child{border-bottom:none;}
+.qitem-text{font-size:13px;font-style:italic;color:var(--white);line-height:1.5;margin-bottom:7px;}
+.qitem-src{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--orange);}
+.rel-item{padding:14px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;}
+.rel-item:hover{background:var(--surface2);}
+.rel-item:last-child{border-bottom:none;}
+.rel-kicker{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:5px;}
+.rel-hed{font-size:13px;font-weight:600;color:var(--white);line-height:1.35;}
+.prev-cover{background:var(--surface);border:1px solid var(--border);}
+.pc-hd{padding:12px 16px;border-bottom:1px solid var(--border);background:var(--surface2);font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.pc-item{padding:10px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.pc-item:last-child{border-bottom:none;}
+.pc-name{font-size:12px;color:var(--white);font-weight:600;}
+.pc-school{font-family:'Barlow Condensed',sans-serif;font-size:10px;color:var(--muted);margin-top:1px;}
+.pc-game{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;color:var(--orange);}
+
+footer{padding:28px 52px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);}
+.footer-logo{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;letter-spacing:3px;color:var(--muted);}
+.footer-logo span{color:var(--orange);}
+.footer-text{font-size:12px;color:var(--muted);}
+
+@media(max-width:900px){
+  .article-outer{grid-template-columns:1fr;padding:24px 20px 60px;gap:32px;}
+  .hero-content{padding:0 20px 36px;}
+  .hero-ea-chip{display:none;}
+  .hero-breaking{left:20px;}
+  .article-sidebar{display:none;}
+  .stat-banner{grid-template-columns:1fr 1fr;}
+  footer{flex-direction:column;gap:8px;padding:20px;}
+}
+</style>
+</head>
+<body>
+
+<div class="article-hero">
+  <div class="hero-bg-main"></div>
+  <div class="hero-logo-large"></div>
+  <div class="hero-ea-badge-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-edge-l"></div>
+  <div class="hero-edge-top"></div>
+
+  <div class="hero-breaking">
+    <div class="breaking-dot"></div>
+    <div class="breaking-text">Breaking News</div>
+  </div>
+
+  <div class="hero-ea-chip">
+    <div class="eac-game">EA Sports</div>
+    <div class="eac-title">CF 26</div>
+    <div class="eac-sub">Cover Athlete</div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-breadcrumb">
+      <a href="index.html">Tower Report</a>
+      <span class="sep">/</span>
+      <a href="stories.html">Stories</a>
+      <span class="sep">/</span>
+      <span class="cur">Breaking · Defense</span>
+    </div>
+    <div class="hero-kicker">🟢 Breaking · EA Sports · June 2, 2026</div>
+    <div class="hero-eye">Colin Simmons · Texas Longhorns EDGE</div>
+    <h1 class="hero-title">EA <span class="g">CF26</span><br><span class="o">COVER.</span></h1>
+    <p class="hero-deck">Colin Simmons — SEC's leading pass rusher, 12 sacks in 2025, unfinished business with Ohio State — is on the cover of EA Sports College Football 26. The recognition is deserved. The story is just getting started.</p>
+    <div class="hero-meta">
+      <span>Tower Report Staff</span>
+      <span class="meta-dot"></span>
+      <span>June 2, 2026</span>
+      <span class="meta-dot"></span>
+      <span>6 min read</span>
+      <span class="meta-dot"></span>
+      <span style="color:var(--green);">Breaking</span>
+    </div>
+  </div>
+</div>
+
+<div class="article-outer">
+  <div>
+
+    <div class="ai-summary">
+      <div class="ais-top">
+        <span class="ais-lbl">🔱 Tower Report Intelligence</span>
+        <span class="ais-badge">Breaking Summary</span>
+      </div>
+      <p class="ais-body">EA Sports has named Texas EDGE rusher Colin Simmons the cover athlete for College Football 26 — the second installment in the revived series after CF25 brought the franchise back in 2024. The selection validates what anyone watching the SEC already knew: Simmons is the most dominant defensive player in college football. For Texas, it's more than a recognition. It's a brand signal. The Longhorns have the face of the most popular college football game in the country wearing burnt orange — and he's got a September 12 date circled that the entire nation will be watching.</p>
+      <div class="ais-pts">
+        <div class="ais-pt">Simmons led the SEC with 12 sacks in 2025 — the stats that put him on EA's radar</div>
+        <div class="ais-pt">First Texas defensive player on the EA College Football cover in the revived series era</div>
+        <div class="ais-pt">The cover drops nationally before the Ohio State rematch — pressure, expectations, and hype all at peak</div>
+        <div class="ais-pt">Simmons's response: focused entirely on the national championship, not individual hardware</div>
+      </div>
+    </div>
+
+    <div class="article-body">
+
+      <p>When EA Sports brought college football back from the dead in 2024, the question wasn't whether the game would sell. It was who would define it.</p>
+
+      <p>For EA Sports College Football 26, the answer is Colin Simmons.</p>
+
+      <p>The Texas defensive end — the most disruptive pass rusher in the SEC, the leader in sacks, the man who has Ohio State circled on his calendar — has been named the cover athlete for CF26. It is a recognition that places him among the most visible players in the country heading into the 2026 season. And Simmons, characteristically, is treating it as secondary to the only thing he actually wants.</p>
+
+      <div class="pull-quote">
+        <div class="pq-text">"National championship, dog, the national championship. All the individual rewards will come with it, but I just want to win. Win, win, win."</div>
+        <div class="pq-attr">Colin Simmons — on individual recognition</div>
+      </div>
+
+      <p>That quote, delivered before the EA announcement, tells you everything you need to know about how Simmons is approaching this moment. The cover is real. The recognition is real. The business he has to take care of is realer.</p>
+
+      <span class="section-lbl">Why He Earned It</span>
+
+      <p>EA Sports College Football 26 could have gone in a dozen directions. Quarterbacks are the obvious choice — they move units, drive narratives, generate the kind of casual fan excitement that sells games. Offensive playmakers get the attention. Skill position stars fill the highlight reels that drive social engagement.</p>
+
+      <p>EA picked a defensive end. From Texas. Because the numbers left them no other choice.</p>
+
+      <div class="stat-banner">
+        <div class="sb-cell"><div class="sb-num">12</div><div class="sb-lbl">Sacks · SEC #1</div></div>
+        <div class="sb-cell"><div class="sb-num">15.5</div><div class="sb-lbl">Tackles for Loss</div></div>
+        <div class="sb-cell"><div class="sb-num">15</div><div class="sb-lbl">QB Hurries</div></div>
+      </div>
+
+      <p>Twelve sacks. Fifteen and a half tackles for loss. Forty-three total tackles. Fifteen quarterback hurries. Three forced fumbles. Two pass breakups. Those are the numbers of a player who, had he declared for the draft, would have been a top-ten pick. Instead he came back to Texas for one reason: <strong>unfinished business.</strong></p>
+
+      <p>That combination — elite production, elite profile, elite narrative heading into 2026 — made him the obvious choice for a game that needs a face. EA got the right one.</p>
+
+      <span class="section-lbl">What It Means for Texas</span>
+
+      <p>This isn't just a player honor. This is a brand moment for the program.</p>
+
+      <p>When millions of college football fans boot up EA Sports College Football 26 this summer, the first thing they'll see is a Texas Longhorns defensive end. Burnt orange. The Longhorn shield. Colin Simmons. That kind of national visibility — the kind you can't buy, can't recruit, can't manufacture — is what program-building looks like in 2026.</p>
+
+      <p>For Steve Sarkisian's recruiting pitch, the timing is extraordinary. The summer before the season is when the 2027 class is forming impressions. When the nation's top defensive prospects are loading up EA and playing as Simmons — seeing that number, seeing that Texas logo — the conversation changes. The program isn't just winning games. It's becoming a cultural force.</p>
+
+      <p>Texas has had moments like this before. Vince Young. Ricky Williams. Mack Brown's dynasty era. But in the social media age, in the NIL era, in the EA Sports revival era? This is what the modern version looks like. And right now it looks like Colin Simmons in burnt orange on the cover of the most anticipated college football video game release of the year.</p>
+
+      <span class="section-lbl">The Cover Curse Question</span>
+
+      <p>Every major video game cover comes with the same question, and serious fans are already asking it: is there a College Football cover curse?</p>
+
+      <p>The Madden Curse has enough documented coincidences to fuel conspiracy theories. Does CF26 carry the same weight? Probably not — the Madden Curse's legend was built over decades of a franchise that ran continuously. EA College Football is two games old. There's no data set.</p>
+
+      <p>But here's the honest football answer: Colin Simmons doesn't need to worry about a curse. He needs to worry about offensive tackles, slide protection, and getting to the Ohio State quarterback on September 12. That's the only metric that matters this fall. Not the cover. Not the awards. Not the individual recognition. He's told you as much himself.</p>
+
+      <span class="section-lbl">The September 12 Context</span>
+
+      <p>Here's what makes the cover timing particularly charged: EA Sports College Football 26 drops before the 2026 season. Before Texas opens with Texas State on September 5. Before, most importantly, <strong>Ohio State comes to Austin on September 12.</strong></p>
+
+      <p>Simmons had two tackles and zero sacks in that Columbus opener last year. He's been carrying that since November. He's told anyone willing to listen that he's coming, that there's business to take care of, that the nervousness and jitters of a season opener are gone.</p>
+
+      <p>Now the nation knows his name before he steps on the field. Now every Ohio State offensive lineman has been playing as him or against him all summer. Now the whole country has context for what September 12 means.</p>
+
+      <p>EA Sports didn't just put Simmons on the cover. They put a countdown clock on one of the biggest games of the 2026 college football season.</p>
+
+      <div class="bottom-line">
+        <div class="bl-lbl">Bottom Line</div>
+        <div class="bl-text">Colin Simmons is the EA Sports College Football 26 cover athlete because he is the most dominant defensive player in college football. He earned it with 12 sacks. He earned it with the bounce-back season. He earned it with the kind of presence that makes offensive coordinators lose sleep.<br><br>But if you ask him, he'll say the cover is secondary. He's got a national championship to win and a score to settle in September.<br><br>Ohio State, your move.</div>
+        <span class="hookem">Hook 'em. 🤘</span>
+      </div>
+
+      <div class="article-footer-bar">
+        <span>Tower Report</span>
+        <span class="meta-dot"></span>
+        <span>@towerreportai</span>
+        <span class="meta-dot"></span>
+        <span class="afb-tag">Breaking</span>
+        <span class="afb-tag">Colin Simmons</span>
+        <span class="afb-tag">EA CF26</span>
+        <span class="afb-tag">Defense</span>
+        <span class="afb-tag">EDGE</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="article-sidebar">
+    <div class="sidebar-sticky">
+
+      <div class="side-box">
+        <div class="side-hd">
+          <div class="side-hd-title">2025 Season Stats</div>
+          <div class="side-hd-name">Colin Simmons · EDGE</div>
+        </div>
+        <div class="srow accent"><div class="srow-lbl">Sacks</div><div class="srow-val">12</div></div>
+        <div class="srow"><div class="srow-lbl">SEC Rank</div><div class="srow-val g">#1 in SEC</div></div>
+        <div class="srow"><div class="srow-lbl">TFL</div><div class="srow-val">15.5</div></div>
+        <div class="srow"><div class="srow-lbl">Tackles</div><div class="srow-val">43</div></div>
+        <div class="srow"><div class="srow-lbl">QB Hurries</div><div class="srow-val">15</div></div>
+        <div class="srow"><div class="srow-lbl">Forced Fum.</div><div class="srow-val">3</div></div>
+        <div class="srow accent"><div class="srow-lbl">vs Ohio St. '25</div><div class="srow-val sm">0 sacks · 2 tackles<br><span style="color:var(--orange);font-size:11px;">↑ Unfinished business</span></div></div>
+      </div>
+
+      <div class="prev-cover">
+        <div class="pc-hd">EA CF Cover Athletes</div>
+        <div class="pc-item"><div><div class="pc-name">Colin Simmons</div><div class="pc-school">Texas · EDGE</div></div><div class="pc-game">CF 26</div></div>
+        <div class="pc-item" style="opacity:0.6;"><div><div class="pc-name">CF25 Cover</div><div class="pc-school">Multiple Athletes</div></div><div class="pc-game">CF 25</div></div>
+      </div>
+
+      <div class="side-box">
+        <div class="side-hd"><div class="side-hd-title">In His Own Words</div></div>
+        <div class="qitem">
+          <div class="qitem-text">"National championship, dog. All the individual rewards will come with it, but I just want to win."</div>
+          <div class="qitem-src">Sports Illustrated</div>
+        </div>
+        <div class="qitem">
+          <div class="qitem-text">"We're coming. There's business to be taken care of."</div>
+          <div class="qitem-src">Eleven Warriors · on Ohio State</div>
+        </div>
+        <div class="qitem">
+          <div class="qitem-text">"I'm just glad that they chose a quarterback that I'm ready to sack."</div>
+          <div class="qitem-src">Yahoo Sports</div>
+        </div>
+      </div>
+
+      <div class="side-box">
+        <div class="side-hd"><div class="side-hd-title">Read More</div></div>
+        <div class="rel-item" onclick="location.href='story-simmons-osu-2026.html'">
+          <div class="rel-kicker">Defense · Rematch</div>
+          <div class="rel-hed">"We're Coming." Simmons Sends a Message to Ohio State</div>
+        </div>
+        <div class="rel-item" onclick="location.href='story-arch-manning-2026.html'">
+          <div class="rel-kicker">Feature · QB</div>
+          <div class="rel-hed">Year One: What Arch Manning's First Full Season Actually Means</div>
+        </div>
+        <div class="rel-item" onclick="location.href='stories.html'">
+          <div class="rel-kicker">Analysis · Season</div>
+          <div class="rel-hed">Texas 2026: The Full Season Preview</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">TOWER<span>REPORT</span></div>
+  <div class="footer-text">The Tower Never Sleeps. © 2026 · @towerreportai</div>
+</footer>
+
+</body>
+</html>
