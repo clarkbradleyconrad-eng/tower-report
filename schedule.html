@@ -15,7 +15,60 @@
     --muted:#6B6560;--secondary:#A09890;--win:#22c55e;--loss:#ef4444;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);}
+  html{background:var(--black);}
+  body{font-family:'Barlow',sans-serif;background:none;color:var(--white);}
+
+  /* ── DYNAMIC BACKGROUND ── */
+  .page-bg{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;}
+  .bg-longhorn{
+    position:absolute;right:-4%;top:50%;transform:translateY(-50%);
+    width:64vw;height:64vw;
+    background:url('https://a.espncdn.com/i/teamlogos/ncaa/500/251.png') center/contain no-repeat;
+    opacity:0.055;
+    animation:logoBreath 18s ease-in-out infinite;
+  }
+  .bg-glow-top{
+    position:absolute;top:-30%;left:50%;transform:translateX(-50%);
+    width:120%;height:70vh;
+    background:radial-gradient(ellipse 55% 55% at 50% 0%,rgba(191,87,0,0.16) 0%,transparent 65%);
+    animation:glowPulse 11s ease-in-out infinite;
+  }
+  .bg-glow-side{
+    position:absolute;top:30%;right:-12%;
+    width:52vw;height:52vw;
+    background:radial-gradient(circle,rgba(191,87,0,0.09) 0%,transparent 58%);
+    animation:glowPulse 15s ease-in-out infinite 5s;
+  }
+  .bg-glow-bot{
+    position:absolute;bottom:-20%;left:20%;
+    width:40vw;height:40vw;
+    background:radial-gradient(circle,rgba(191,87,0,0.07) 0%,transparent 60%);
+    animation:glowPulse 13s ease-in-out infinite 2s;
+  }
+  .bg-grid{
+    position:absolute;inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);
+    background-size:54px 54px;
+  }
+  .bg-edge-top{
+    position:absolute;top:0;left:0;right:0;height:1px;
+    background:linear-gradient(90deg,transparent 0%,rgba(191,87,0,0.5) 30%,rgba(191,87,0,0.8) 50%,rgba(191,87,0,0.5) 70%,transparent 100%);
+    animation:edgePulse 6s ease-in-out infinite;
+  }
+  @keyframes logoBreath{
+    0%,100%{opacity:0.04;transform:translateY(-50%) scale(1);}
+    50%{opacity:0.07;transform:translateY(-50%) scale(1.02);}
+  }
+  @keyframes glowPulse{
+    0%,100%{opacity:0.6;}
+    50%{opacity:1;}
+  }
+  @keyframes edgePulse{
+    0%,100%{opacity:0.4;}
+    50%{opacity:1;}
+  }
 
   nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:18px 40px;border-bottom:1px solid var(--gray-border);background:rgba(8,8,8,0.95);backdrop-filter:blur(12px);}
   .nav-logo{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--white);text-decoration:none;}
@@ -94,7 +147,7 @@
   .footer-text{font-size:12px;color:var(--muted);}
 
   /* VY HERO BANNER */
-  .vy-banner{position:relative;height:420px;overflow:hidden;border-bottom:1px solid var(--gray-border);}
+  .vy-banner{position:relative;height:420px;overflow:hidden;border-bottom:1px solid var(--gray-border);background:linear-gradient(135deg,#260a00 0%,#140400 45%,#080808 100%);}
   .vy-banner-img{width:100%;height:100%;object-fit:cover;object-position:center 20%;display:block;}
   .vy-banner-overlay{position:absolute;inset:0;background:linear-gradient(to right,rgba(8,8,8,0.92) 40%,rgba(8,8,8,0.3) 100%),linear-gradient(to top,rgba(8,8,8,0.7) 0%,transparent 50%);}
   .vy-banner-content{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:0 40px;max-width:600px;}
@@ -132,6 +185,15 @@
 </style>
 </head>
 <body>
+
+<div class="page-bg">
+  <div class="bg-glow-top"></div>
+  <div class="bg-longhorn"></div>
+  <div class="bg-glow-side"></div>
+  <div class="bg-glow-bot"></div>
+  <div class="bg-grid"></div>
+  <div class="bg-edge-top"></div>
+</div>
 
 <nav>
   <a class="nav-logo" href="index.html">TOWER<span>REPORT</span></a>

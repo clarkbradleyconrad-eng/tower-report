@@ -282,32 +282,10 @@ footer{padding:28px 48px;display:flex;align-items:center;justify-content:space-b
     <div class="briefing-col">
       <div class="briefing-header">
         <div class="briefing-title">Morning Briefing</div>
-        <div class="briefing-date">Monday, June 2, 2026</div>
+        <div class="briefing-date" id="briefing-date-stories">Loading…</div>
       </div>
-      <div class="briefing-item">
-        <div class="bi-category">Recruiting</div>
-        <div class="bi-text">5-star WR Jaylen Mbakwe posted unofficial visit photo from DKR on Saturday. Texas now considered the leader per two sources.</div>
-        <div class="bi-source">On3 · Inside Texas</div>
-      </div>
-      <div class="briefing-item">
-        <div class="bi-category">Roster</div>
-        <div class="bi-text">Cam Coleman was seen working out with Arch Manning in Austin over the weekend. Chemistry early, which bodes well for fall camp.</div>
-        <div class="bi-source">X · Reports</div>
-      </div>
-      <div class="briefing-item">
-        <div class="bi-category">Portal Watch</div>
-        <div class="bi-text">OT Deondre Jackson (Ole Miss) listed Texas in his top 3. Official visit expected within two weeks per source.</div>
-        <div class="bi-source">247Sports · On3</div>
-      </div>
-      <div class="briefing-item">
-        <div class="bi-category">Program</div>
-        <div class="bi-text">Texas opens fall camp August 1. Coach Sarkisian confirmed no changes to staff heading into 2026 season.</div>
-        <div class="bi-source">TexasSports.com</div>
-      </div>
-      <div class="briefing-item">
-        <div class="bi-category">NIL</div>
-        <div class="bi-text">Arch Manning reportedly secured two new endorsement deals this week totaling an estimated $800K. NIL value now approaching $4.5M.</div>
-        <div class="bi-source">On3 NIL · Reports</div>
+      <div id="briefing-items-stories">
+        <div class="briefing-item"><div class="bi-text" style="color:var(--muted);font-style:italic;">Loading today's intel…</div></div>
       </div>
     </div>
   </div>
@@ -358,6 +336,26 @@ document.querySelectorAll('.cat-btn').forEach(btn => {
     btn.classList.add('active');
   });
 });
+
+async function loadStoriesBriefing(){
+  try{
+    const res=await fetch('./data/briefing.json?v='+Date.now());
+    const data=await res.json();
+    if(data.briefing&&data.briefing.length){
+      document.getElementById('briefing-items-stories').innerHTML=data.briefing.map(item=>`
+        <div class="briefing-item">
+          <div class="bi-category">${item.category}</div>
+          <div class="bi-text">${item.text}</div>
+          <div class="bi-source">${item.source}</div>
+        </div>`).join('');
+    }
+    if(data.lastUpdated){
+      const d=new Date(data.lastUpdated);
+      document.getElementById('briefing-date-stories').textContent=d.toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+    }
+  }catch(e){}
+}
+loadStoriesBriefing();
 </script>
 </body>
 </html>

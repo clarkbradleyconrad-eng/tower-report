@@ -42,14 +42,6 @@ nav{position:sticky;top:0;z-index:100;background:rgba(8,8,8,0.97);backdrop-filte
 .ticker-odds{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;color:rgba(255,255,255,0.8);margin-left:4px;padding-left:8px;border-left:1px solid rgba(255,255,255,0.3);}
 @keyframes ticker{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}}
 
-/* QUICK NAV */
-.quick-nav{display:flex;gap:1px;background:var(--border);border-bottom:1px solid var(--border);}
-.quick-btn{flex:1;display:flex;align-items:center;gap:12px;padding:16px 24px;background:var(--surface);text-decoration:none;transition:background .15s;border:none;}
-.quick-btn:hover{background:var(--surface2);}
-.quick-btn-icon{font-size:20px;flex-shrink:0;}
-.quick-btn-title{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--white);}
-.quick-btn-sub{font-size:11px;color:var(--muted);margin-top:1px;}
-
 /* HERO */
 .hero{display:grid;grid-template-columns:1fr 380px;min-height:82vh;border-bottom:1px solid var(--border);position:relative;}
 .hero-main{padding:52px 48px 48px;display:flex;flex-direction:column;justify-content:space-between;border-right:1px solid var(--border);}
@@ -157,9 +149,7 @@ footer{padding:28px 48px;display:grid;grid-template-columns:1fr auto 1fr;align-i
   .masthead{padding:9px 20px;}.masthead-date,.masthead-social{display:none;}
   .nav-inner{padding:0 20px;}
   .nav-link.hm{display:none;}
-  .quick-nav{flex-wrap:wrap;}
-  .quick-btn{flex:calc(50% - 1px);}
-  .hero{grid-template-columns:1fr;min-height:auto;}
+.hero{grid-template-columns:1fr;min-height:auto;}
   .hero-main{padding:36px 20px 40px;border-right:none;}
   .hero-sidebar{display:none;}
   .sr{padding:24px 20px 0;}
@@ -283,33 +273,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
-<div class="quick-nav">
-  <a href="schedule.html" class="quick-btn">
-    <span class="quick-btn-icon">📅</span>
-    <div><div class="quick-btn-title">Schedule</div><div class="quick-btn-sub">2026 Season + Full History</div></div>
-  </a>
-  <a href="roster.html" class="quick-btn">
-    <span class="quick-btn-icon">👥</span>
-    <div><div class="quick-btn-title">Roster</div><div class="quick-btn-sub">102 Players · Live Updated</div></div>
-  </a>
-  <a href="recruiting.html" class="quick-btn">
-    <span class="quick-btn-icon">🎯</span>
-    <div><div class="quick-btn-title">Recruiting</div><div class="quick-btn-sub">2026 Class · 2027 Targets</div></div>
-  </a>
-  <a href="portal.html" class="quick-btn">
-    <span class="quick-btn-icon">🔄</span>
-    <div><div class="quick-btn-title">Transfer Portal</div><div class="quick-btn-sub">11 In · 8 Out · Impact Analysis</div></div>
-  </a>
-  <a href="stories.html" class="quick-btn">
-    <span class="quick-btn-icon">📰</span>
-    <div><div class="quick-btn-title">Stories</div><div class="quick-btn-sub">Analysis · Film Room · Intel</div></div>
-  </a>
-  <a href="players.html" class="quick-btn">
-    <span class="quick-btn-icon">⭐</span>
-    <div><div class="quick-btn-title">Players</div><div class="quick-btn-sub">Profiles · Stats · NFL Watch</div></div>
-  </a>
-</div>
-
 <section class="hero">
   <div class="hero-main">
     <div>
@@ -338,25 +301,19 @@ document.addEventListener('DOMContentLoaded', () => {
   <div class="hero-sidebar" id="intelligence">
     <div class="sidebar-header">
       <div class="sidebar-title">Longhorn Intelligence</div>
-      <div class="live-badge"><span class="live-dot"></span> Preview</div>
+      <div class="live-badge"><span class="live-dot"></span> Live</div>
     </div>
-    <div class="intel-tabs">
-      <button class="intel-tab active" onclick="showIntel(0,this)">Recruiting</button>
-      <button class="intel-tab" onclick="showIntel(1,this)">Portal</button>
-      <button class="intel-tab" onclick="showIntel(2,this)">NIL</button>
+    <div id="briefing-list" style="padding:4px 0;">
+      <div class="intel-answer" style="padding:14px 18px;color:var(--muted);font-style:italic;">Loading today's briefing…</div>
     </div>
-    <div id="intel-content">
-      <div class="intel-query"><strong>Q —</strong> Which recruit is most likely to commit next?</div>
-      <div class="intel-answer">Based on 47 signals across X, insider reports, and official visit activity — <strong>DE Malik Bryant (5★, Houston)</strong> is trending toward Texas. Unofficial visit confirmed last Friday. Insider confidence: <strong>78%</strong>.</div>
-      <div class="intel-sources"><span class="intel-tag">On3</span><span class="intel-tag">247Sports</span><span class="intel-tag">X Trends</span><span class="intel-tag">Inside Texas</span><span class="intel-tag">+3 more</span></div>
-    </div>
+    <div id="briefing-updated" style="padding:6px 18px 12px;font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);border-top:1px solid var(--border);margin-top:4px;"></div>
     <div class="sidebar-nav">
       <a href="schedule.html" class="sidebar-nav-link">
         <div class="snl-left"><span class="snl-icon">📅</span><div><div class="snl-title">2026 Schedule</div><div class="snl-sub">Full season + 10-year history</div></div></div>
         <span class="snl-arrow">→</span>
       </a>
       <a href="roster.html" class="sidebar-nav-link">
-        <div class="snl-left"><span class="snl-icon">👥</span><div><div class="snl-title">Roster</div><div class="snl-sub">2025 players & positions</div></div></div>
+        <div class="snl-left"><span class="snl-icon">👥</span><div><div class="snl-title">Roster</div><div class="snl-sub">2026 players & positions</div></div></div>
         <span class="snl-arrow">→</span>
       </a>
       <a href="history.html" class="sidebar-nav-link">
@@ -464,17 +421,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <script>
 document.getElementById('mdate').textContent = new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-const intels=[
-  {q:"Which recruit is most likely to commit next?",a:"Based on 47 signals across X, insider reports, and official visit activity — <strong>DE Malik Bryant (5★, Houston)</strong> is trending toward Texas. Unofficial visit confirmed last Friday. Insider confidence: <strong>78%</strong>.",tags:["On3","247Sports","X Trends","Inside Texas","+3 more"]},
-  {q:"Who entered the portal that fits Texas's needs?",a:"<strong>OT Marcus Webb (6'6\", Alabama)</strong> entered the portal Monday. Immediate need fit — Texas loses two starters after spring. Sarkisian staff has made contact per two sources. Grade: <strong>High priority.</strong>",tags:["Portal Tracker","On3","X","Inside Texas"]},
-  {q:"What's the biggest NIL deal on the roster?",a:"<strong>Arch Manning</strong> leads at an estimated <strong>$4.2M NIL valuation</strong>. Three new deals confirmed this week with Texas-based brands. Roster NIL spend up 18% from last season.",tags:["On3 NIL","Opendorse","X","Reports"]}
-];
-function showIntel(i,btn){
-  document.querySelectorAll('.intel-tab').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  const d=intels[i];
-  document.getElementById('intel-content').innerHTML=`<div class="intel-query"><strong>Q —</strong> ${d.q}</div><div class="intel-answer">${d.a}</div><div class="intel-sources">${d.tags.map(t=>`<span class="intel-tag">${t}</span>`).join('')}</div>`;
+async function loadBriefing(){
+  try{
+    const res=await fetch('./data/briefing.json?v='+Date.now());
+    const data=await res.json();
+    const list=document.getElementById('briefing-list');
+    const upd=document.getElementById('briefing-updated');
+    if(data.briefing&&data.briefing.length){
+      list.innerHTML=data.briefing.map(item=>`
+        <div style="padding:12px 18px;border-bottom:1px solid var(--border);">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:5px;">${item.category}</div>
+          <div style="font-size:13px;line-height:1.6;color:var(--secondary);">${item.text}</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-top:5px;">via ${item.source}</div>
+        </div>`).join('');
+    }
+    if(data.lastUpdated){
+      const d=new Date(data.lastUpdated);
+      upd.textContent='Updated '+d.toLocaleDateString('en-US',{month:'short',day:'numeric'})+' · '+d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+    }
+  }catch(e){
+    document.getElementById('briefing-list').innerHTML='<div style="padding:14px 18px;color:var(--muted);font-style:italic;font-size:13px;">Briefing updating…</div>';
+  }
 }
+loadBriefing();
 function joinWL(){
   const input=document.getElementById('wl-email');
   if(!input.value||!input.value.includes('@')){input.style.outline='1px solid #ef4444';setTimeout(()=>input.style.outline='',1500);return;}
