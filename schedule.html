@@ -218,9 +218,8 @@
     .game-row:hover{margin:0;padding:14px 0;}
     .wk-num,.g-venue,.g-tv{display:none;}
     footer{padding:20px;flex-direction:column;gap:8px;}
-    .vy-banner{height:280px;}
-    .vy-banner-content{padding:0 20px;}
-    .vy-banner-score{display:none;}
+    .gotd-card{grid-template-columns:1fr;}
+    .gotd-visual{border-right:none;border-bottom:1px solid var(--gray-border);}
   }
 </style>
 </head>
@@ -243,6 +242,7 @@
     <a href="roster.html">Roster</a>
     <a href="recruiting.html">Recruiting</a>
     <a href="portal.html">Portal</a>
+    <a href="stats.html">Stats</a>
     <a href="stories.html">Stories</a>
     <a href="players.html">Players</a>
     <a href="history.html">History</a>
@@ -256,25 +256,21 @@
   <div class="page-sub">2016–2026 · Steve Sarkisian (2021–present) · Tom Herman (2017–2020) · Charlie Strong (2014–2016)</div>
 </div>
 
-<!-- VY NATTY BANNER -->
-<div class="vy-banner">
-  <img class="vy-banner-img" src="img/vy-usc-natty.jpg" alt="Vince Young scores winning TD vs USC — 2006 Rose Bowl National Championship"/>
-  <div class="vy-banner-overlay"></div>
-  <div class="vy-banner-content">
-    <div class="vy-banner-eyebrow">January 4, 2006 · Rose Bowl · Pasadena, CA</div>
-    <div class="vy-banner-title">THE <span class="o">RUN.</span></div>
-    <div class="vy-banner-sub">Vince Young scrambles left, dives for the pylon with 19 seconds left. Texas 41, USC 38. The greatest college football game ever played.</div>
-    <div class="vy-banner-stats">
-      <div class="vy-stat"><div class="vy-stat-num">200</div><div class="vy-stat-label">Rush Yds</div></div>
-      <div class="vy-stat"><div class="vy-stat-num">267</div><div class="vy-stat-label">Pass Yds</div></div>
-      <div class="vy-stat"><div class="vy-stat-num">3</div><div class="vy-stat-label">TDs</div></div>
-      <div class="vy-stat"><div class="vy-stat-num">13–0</div><div class="vy-stat-label">Final Record</div></div>
+<!-- GAME OF THE DAY -->
+<div class="gotd" id="gotd-section">
+  <div class="gotd-header">
+    <div style="display:flex;align-items:center;gap:16px;">
+      <div class="gotd-eyebrow">Texas Game of the Day</div>
+      <div class="gotd-counter" id="gotd-counter"></div>
     </div>
-    <button class="vy-banner-btn" onclick="showYear('2005', null); document.querySelector('.year-tabs').scrollIntoView({behavior:'smooth'})">View 2005 Season →</button>
+    <div class="gotd-controls">
+      <button class="gotd-ctrl-btn" onclick="cycleGame(-1)">◀ Prev</button>
+      <button class="gotd-ctrl-btn" onclick="cycleGame(1)">Next ▶</button>
+    </div>
   </div>
-  <div class="vy-banner-score">
-    <div class="vy-score-game">2005 National Championship</div>
-    <div class="vy-score-nums"><span class="win">41</span><span class="vy-score-dot"> – </span>38</div>
+  <div class="gotd-card" id="gotd-card">
+    <div class="gotd-splash" id="gotd-splash"></div>
+    <div style="padding:40px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;letter-spacing:2px;font-size:12px;text-transform:uppercase;">Loading…</div>
   </div>
 </div>
 
@@ -702,6 +698,80 @@
 </footer>
 
 <script>
+/* ── GAME OF THE DAY ─────────────────────────────────── */
+const GOTD_GAMES = [
+  {title:"THE RUN",date:"January 4, 2006",venue:"Rose Bowl · Pasadena, CA",context:"BCS National Championship",texas:41,opp:38,oppAbbr:"USC",oppLogo:"https://a.espncdn.com/i/teamlogos/ncaa/500/30.png",oppColor:"rgba(153,0,0,0.12)",result:"W",yearTab:"2005",overview:"Trailing 38–33 with 2:09 left, Vince Young orchestrated one of the greatest drives in college football history. With 19 seconds remaining he scrambled left, extended the ball toward the pylon, and crossed the goal line. Young finished with 267 passing yards, 200 rushing yards, and 3 TDs — a performance that cemented his Heisman legacy and delivered Texas its fourth national championship.",moments:["VY scrambles left, scores with 0:19 on the clock","200 rush yards + 267 pass yards in a single game","4th national title in Texas Longhorns history"],stats:[{v:"200",l:"Rush Yds"},{v:"267",l:"Pass Yds"},{v:"3",l:"TDs"},{v:"13–0",l:"Final Record"}]},
+  {title:"GAME OF THE CENTURY",date:"December 6, 1969",venue:"Razorback Stadium · Fayetteville, AR",context:"#1 Texas vs #2 Arkansas",texas:15,opp:14,oppAbbr:"ARK",oppLogo:"https://a.espncdn.com/i/teamlogos/ncaa/500/8.png",oppColor:"rgba(157,34,53,0.12)",result:"W",yearTab:"2016",overview:"President Nixon attended and presented the 'national championship trophy' on the field. Trailing 14–8 in the fourth quarter, James Street hit Randy Peschel on a 44-yard pass on fourth down to set up the go-ahead score. Texas won 15–14 and claimed the national title. Darrell Royal called it the biggest game of his career.",moments:["Nixon in attendance, presents trophy on the field","Street's 4th-down, 44-yard strike to Peschel","Darrell Royal's program clinches the national title"],stats:[{v:"15–14",l:"Final"},{v:"#1 vs #2",l:"Matchup"},{v:"Nixon",l:"Attended"},{v:"1969",l:"Natl Title"}]},
+  {title:"VY PUTS OU AWAY",date:"October 8, 2005",venue:"Cotton Bowl Stadium · Dallas, TX",context:"Red River Rivalry — #4 Texas vs #5 Oklahoma",texas:45,opp:12,oppAbbr:"OU",oppLogo:"https://a.espncdn.com/i/teamlogos/ncaa/500/201.png",oppColor:"rgba(132,22,23,0.12)",result:"W",yearTab:"2005",overview:"Vince Young dismantled the #5 Sooners, completing 14 of 21 passes for 241 yards and two TDs while adding 79 rushing yards. The 45–12 final was Texas's largest margin in the rivalry since 1996 and served as the proving ground for VY's Heisman campaign — setting the Longhorns on their collision course with USC at the Rose Bowl.",moments:["VY: 241 pass yards + 79 rush yards vs #5 Oklahoma","Largest Red River margin since 1996","Launched Vince Young's Heisman campaign"],stats:[{v:"241",l:"VY Pass"},{v:"79",l:"VY Rush"},{v:"#4",l:"TX Rank"},{v:"45–12",l:"Final"}]},
+  {title:"THE RETURN",date:"September 10, 2022",venue:"Bryant-Denny Stadium · Tuscaloosa, AL",context:"Sark Returns — Texas at #1 Alabama",texas:20,opp:19,oppAbbr:"ALA",oppLogo:"https://a.espncdn.com/i/teamlogos/ncaa/500/333.png",oppColor:"rgba(158,27,50,0.12)",result:"W",yearTab:"2022",overview:"Steve Sarkisian returned to Tuscaloosa — where he once served as Saban's offensive coordinator — and stunned the world. Bijan Robinson ran for 113 yards, Quinn Ewers threw for 134 before an injury, with Hudson Card stepping in to close it out. Cameron Dicker hit the walk-off field goal as time expired, ending Alabama's 15-game home winning streak.",moments:["Bijan Robinson: 113 yards at Bryant-Denny Stadium","Cameron Dicker walk-off FG with 0:00 on the clock","Ended Alabama's 15-game home winning streak"],stats:[{v:"113",l:"Bijan Rush"},{v:"0:00",l:"FG Time"},{v:"#1",l:"Bama Rank"},{v:"20–19",l:"Final"}]},
+  {title:"THE STRIP",date:"December 5, 2009",venue:"Arrowhead Stadium · Kansas City, MO",context:"Big 12 Championship — #2 Texas vs Nebraska",texas:13,opp:12,oppAbbr:"NEB",oppLogo:"https://a.espncdn.com/i/teamlogos/ncaa/500/158.png",oppColor:"rgba(228,28,56,0.12)",result:"W",yearTab:"2016",overview:"Nebraska's Ndamukong Suh strip-sacked Colt McCoy with time running out, yet Texas still survived. The Huskers had taken a 12–10 lead before Hunter Lawrence hit a 46-yard field goal at the buzzer to send Texas to the national championship game. Despite the sack, Colt's poise and Lawrence's leg punched the Longhorns' ticket to the Rose Bowl.",moments:["Ndamukong Suh strip-sack of Colt McCoy late in 4th","Hunter Lawrence 46-yard FG as time expired","Sent Texas to the BCS National Championship"],stats:[{v:"46 Yds",l:"FG Dist."},{v:"0:00",l:"Time Left"},{v:"255",l:"Colt Yds"},{v:"13–12",l:"Final"}]},
+  {title:"YOUNG IN OVERTIME",date:"January 1, 2005",venue:"Rose Bowl · Pasadena, CA",context:"Rose Bowl — Texas vs Michigan",texas:38,opp:37,oppAbbr:"MICH",oppLogo:"https://a.espncdn.com/i/teamlogos/ncaa/500/130.png",oppColor:"rgba(0,39,76,0.14)",result:"W",yearTab:"2005",overview:"A year before his legendary national championship, Vince Young announced himself to the football world in this Rose Bowl thriller. Young racked up 372 total yards as Texas overcame a 33–25 deficit in the fourth quarter. Selvin Young's 20-yard TD run in overtime sealed the 38–37 win — a preview of VY's refusal to lose on the biggest stages.",moments:["372 total yards from sophomore Vince Young","Overcame an 8-point 4th-quarter deficit","Selvin Young OT TD run closes it out"],stats:[{v:"372",l:"VY Total"},{v:"192",l:"VY Rush"},{v:"OT",l:"Result"},{v:"38–37",l:"Final"}]},
+  {title:"COLT COUNTRY",date:"October 11, 2008",venue:"Cotton Bowl Stadium · Dallas, TX",context:"Red River Rivalry — #1 Oklahoma vs #5 Texas",texas:45,opp:35,oppAbbr:"OU",oppLogo:"https://a.espncdn.com/i/teamlogos/ncaa/500/201.png",oppColor:"rgba(132,22,23,0.12)",result:"W",yearTab:"2016",overview:"Colt McCoy threw for 277 yards and two touchdowns as Texas upended the #1-ranked Sooners. Jordan Shipley hauled in 9 catches for 136 yards. Bradford and Oklahoma had no answer for McCoy's precision — this win was the catalyst for Colt's Heisman campaign and signaled that the McCoy era would be something special in Austin.",moments:["McCoy: 277 passing yards vs the #1 team in America","Jordan Shipley: 9 catches, 136 yards","Launched Colt McCoy's Heisman campaign"],stats:[{v:"277",l:"Colt Pass"},{v:"136",l:"Shipley"},{v:"#1",l:"OU Rank"},{v:"45–35",l:"Final"}]},
+  {title:"ROYAL'S DYNASTY",date:"January 1, 1970",venue:"Cotton Bowl · Dallas, TX",context:"Cotton Bowl — #1 Texas vs Notre Dame",texas:21,opp:17,oppAbbr:"ND",oppLogo:"https://a.espncdn.com/i/teamlogos/ncaa/500/87.png",oppColor:"rgba(12,35,64,0.14)",result:"W",yearTab:"2016",overview:"Darrell Royal's Longhorns capped a perfect 11–0 season with a 21–17 Cotton Bowl victory over Notre Dame, clinching the 1969 national championship. The wishbone offense was unstoppable all year. This was Royal's third national title — a dynasty at its absolute peak.",moments:["Capped a perfect 11–0 national championship season","Darrell Royal's wishbone offense dominant all year","Third national title for Darrell Royal at Texas"],stats:[{v:"11–0",l:"Record"},{v:"1969",l:"Natl Title"},{v:"Royal",l:"Coach"},{v:"21–17",l:"Final"}]},
+  {title:"SARK'S STATEMENT",date:"October 7, 2023",venue:"Cotton Bowl Stadium · Dallas, TX",context:"Red River Rivalry — #3 Texas vs #12 Oklahoma",texas:34,opp:30,oppAbbr:"OU",oppLogo:"https://a.espncdn.com/i/teamlogos/ncaa/500/201.png",oppColor:"rgba(132,22,23,0.12)",result:"W",yearTab:"2023",overview:"Quinn Ewers threw for 300 yards and two touchdowns as #3 Texas held off #12 Oklahoma in a back-and-forth Red River showdown. Jonathon Brooks ran for 139 yards and a crucial fourth-quarter score. Texas trailed late but rallied for the 34–30 victory — the program's fourth straight Red River win.",moments:["Quinn Ewers: 300 passing yards in the Cotton Bowl","Jonathon Brooks: 139 rush yards + 4th-quarter TD","4th straight Red River Rivalry win for Texas"],stats:[{v:"300",l:"Ewers Pass"},{v:"139",l:"Brooks Rush"},{v:"#3",l:"TX Rank"},{v:"34–30",l:"Final"}]},
+  {title:"CFP BREAKTHROUGH",date:"December 21, 2024",venue:"DKR-Texas Memorial Stadium · Austin, TX",context:"CFP First Round — #5 Texas vs #12 Clemson",texas:38,opp:31,oppAbbr:"CLEM",oppLogo:"https://a.espncdn.com/i/teamlogos/ncaa/500/228.png",oppColor:"rgba(245,102,0,0.10)",result:"W",yearTab:"2024",overview:"In Texas's first-ever home CFP game, the Longhorns delivered. Quinn Ewers connected on 23 of 34 passes for 285 yards, and Quintrevion Wisner broke through for 119 yards on the ground. The 38–31 victory advanced Texas to the quarterfinals of the expanded 12-team playoff — a milestone moment in program history.",moments:["First CFP home playoff game in Texas history","Quinn Ewers: 285 passing yards, efficient all night","Wisner: 119 rushing yards to seal the win"],stats:[{v:"285",l:"Ewers Pass"},{v:"119",l:"Wisner Rush"},{v:"CFP R1",l:"Round"},{v:"38–31",l:"Final"}]}
+];
+
+let gotdIndex = 0;
+
+function initGOTD() {
+  const d = new Date();
+  gotdIndex = (d.getFullYear() * 10000 + (d.getMonth()+1) * 100 + d.getDate()) % GOTD_GAMES.length;
+  renderGOTD();
+}
+
+function cycleGame(dir) {
+  gotdIndex = (gotdIndex + dir + GOTD_GAMES.length) % GOTD_GAMES.length;
+  renderGOTD();
+}
+
+function renderGOTD() {
+  const g = GOTD_GAMES[gotdIndex];
+  const card = document.getElementById('gotd-card');
+  const counter = document.getElementById('gotd-counter');
+  if (counter) counter.textContent = `${gotdIndex+1} of ${GOTD_GAMES.length}`;
+  const txScore = g.result==='W'
+    ? `<span class="w">${g.texas}</span><span class="sep"> – </span>${g.opp}`
+    : `${g.texas}<span class="sep"> – </span><span class="w">${g.opp}</span>`;
+  const statsHTML = g.stats.map(s=>`<div class="gotd-stat"><div class="gotd-stat-val">${s.v}</div><div class="gotd-stat-lbl">${s.l}</div></div>`).join('');
+  const momentsHTML = g.moments.map(m=>`<li>${m}</li>`).join('');
+  const yearBtnSel = `document.querySelector('.year-tabs button[onclick*=\\'${g.yearTab}\\']')`;
+  card.innerHTML = `
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 65% 90% at 25% 50%,${g.oppColor} 0%,transparent 68%);pointer-events:none;"></div>
+    <div class="gotd-visual">
+      <div class="gotd-context">${g.context}</div>
+      <div class="gotd-matchup">
+        <div class="gotd-team">
+          <img class="gotd-logo" src="https://a.espncdn.com/i/teamlogos/ncaa/500/251.png" alt="Texas"/>
+          <div class="gotd-abbr">TEXAS</div>
+        </div>
+        <div class="gotd-vs-col">
+          <div class="gotd-score-num">${txScore}</div>
+          <span class="gotd-badge ${g.result==='W'?'win':'loss'}">${g.result==='W'?'Texas Win':'Texas Loss'}</span>
+        </div>
+        <div class="gotd-team">
+          <img class="gotd-logo" src="${g.oppLogo}" alt="${g.oppAbbr}" onerror="this.style.opacity='.3'"/>
+          <div class="gotd-abbr">${g.oppAbbr}</div>
+        </div>
+      </div>
+      <div class="gotd-meta"><strong>${g.date}</strong><br/>${g.venue}</div>
+      <div class="gotd-stats">${statsHTML}</div>
+    </div>
+    <div class="gotd-info">
+      <div class="gotd-title">${g.title}</div>
+      <div class="gotd-ai-tag"><span>AI</span> Game Overview</div>
+      <div class="gotd-overview">${g.overview}</div>
+      <ul class="gotd-moments">${momentsHTML}</ul>
+      <div class="gotd-actions">
+        <button class="gotd-act pri" onclick="const b=${yearBtnSel};if(b){showYear('${g.yearTab}',b);document.querySelector('.year-tabs').scrollIntoView({behavior:'smooth'});}">View ${g.yearTab} Season →</button>
+        <button class="gotd-act ghost" onclick="cycleGame(1)">Next Game ▶</button>
+      </div>
+    </div>`;
+}
+
+document.addEventListener('DOMContentLoaded', initGOTD);
+/* ── END GAME OF THE DAY ─────────────────────────────── */
+
 const espnLogo = id => `https://a.espncdn.com/i/teamlogos/ncaa/500/${id}.png`;
 const teamLogos = {
   'TXST':   espnLogo(326),   // Texas State
