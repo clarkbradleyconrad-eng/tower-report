@@ -1,7 +1,6 @@
 {
   "instructions": "Drop any URL you want turned into a Tower Report article. Add optional notes to guide the angle. The system processes this every morning and writes a full article.",
-  "queue": [
-  ],
+  "queue": [],
   "processed": [],
   "examples": [
     {
@@ -10,7 +9,7 @@
     },
     {
       "url": "https://www.espn.com/college-football/story/some-story",
-      "notes": "Portal report — compare to what Texas lost last year"
+      "notes": "Portal report \u2014 compare to what Texas lost last year"
     }
   ]
 }
