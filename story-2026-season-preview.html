@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet"/>
 <script src="nav.js" defer></script>
+<script src="player-profile.js" defer></script>
 <style>
 :root{--orange:#BF5700;--black:#080808;--white:#F5F0E8;--surface:#111;--surface2:#181818;--surface3:#202020;--border:rgba(255,255,255,0.07);--border-strong:rgba(255,255,255,0.13);--muted:#6B6560;--secondary:#A09890;--win:#22c55e;--loss:#ef4444;}
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -227,5 +228,6 @@ footer{padding:28px 52px;display:flex;align-items:center;justify-content:space-b
   <div class="footer-logo">TOWER<span>REPORT</span></div>
   <div class="footer-text">The Tower Never Sleeps. © 2026 · @towerreportai</div>
 </footer>
+<script>if(window.loadPlayers)window.loadPlayers().then(function(){window.linkPlayerNames&&window.linkPlayerNames(".content-wrap,.article-body,main,section");});</script>
 </body>
 </html>
