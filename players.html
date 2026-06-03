@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet"/>
 <script src="nav.js" defer></script>
+<script src="player-profile.js" defer></script>
 <style>
 :root{--orange:#BF5700;--black:#080808;--surface:#111;--surface2:#181818;--surface3:#202020;--border:rgba(255,255,255,0.07);--border-strong:rgba(255,255,255,0.12);--white:#F5F0E8;--muted:#6B6560;--secondary:#A09890;}
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -121,327 +122,16 @@ footer{padding:28px 48px;display:flex;align-items:center;justify-content:space-b
 
 <div class="content-wrap">
 
-  <div class="player-index">
-    <a class="pi-btn active" href="roster.html">Full Roster →</a>
+  <div class="player-index" id="player-index">
+    <a class="pi-btn" href="roster.html">Full Roster →</a>
     <span class="pi-btn active" style="background:var(--orange);border-color:var(--orange);color:#fff;cursor:default;">Key Players</span>
     <a class="pi-btn" href="#offense">Offense</a>
     <a class="pi-btn" href="#defense">Defense</a>
     <a class="pi-btn" href="#nfl">NFL Watch</a>
   </div>
 
-  <!-- ARCH MANNING HERO -->
-  <div class="player-hero">
-    <div class="ph-number">
-      <div class="ph-num-bg">16</div>
-      <div style="text-align:center;position:relative;z-index:1;">
-        <div class="ph-num-display">#16</div>
-        <div class="ph-pos-label">Quarterback</div>
-      </div>
-    </div>
-    <div class="ph-info">
-      <div>
-        <div class="ph-name">Arch Manning</div>
-        <div class="ph-pos-yr">QB · Junior · New Orleans, La.</div>
-        <div class="ph-vitals">
-          <div class="ph-vital"><div class="ph-vital-val">6'4"</div><div class="ph-vital-label">Height</div></div>
-          <div class="ph-vital"><div class="ph-vital-val">235</div><div class="ph-vital-label">Weight</div></div>
-          <div class="ph-vital"><div class="ph-vital-val">★★★★★</div><div class="ph-vital-label">Recruit Stars</div></div>
-          <div class="ph-vital"><div class="ph-vital-val">#1</div><div class="ph-vital-label">Class of 2023</div></div>
-          <div class="ph-vital"><div class="ph-vital-val">~$4.2M</div><div class="ph-vital-label">NIL Value</div></div>
-        </div>
-        <p class="ph-bio">The most anticipated quarterback in college football history entered 2025 as the full-time starter and validated every expectation. The nephew of Peyton and Eli, Arch combines elite arm talent with football intelligence far beyond his years. In Sarkisian's Air Raid system, he has the potential to become the most efficient passer in Texas history. The 2026 season is his Heisman campaign.</p>
-      </div>
-      <div>
-        <div class="ph-stats">
-          <div class="phs-cell"><div class="phs-val">3,472</div><div class="phs-label">Pass Yds</div></div>
-          <div class="phs-cell"><div class="phs-val">29</div><div class="phs-label">TDs</div></div>
-          <div class="phs-cell"><div class="phs-val">8</div><div class="phs-label">INTs</div></div>
-          <div class="phs-cell"><div class="phs-val">68.4%</div><div class="phs-label">Comp %</div></div>
-        </div>
-        <div class="ph-tags">
-          <span class="ph-tag hot">Heisman Candidate</span>
-          <span class="ph-tag hot">NFL Round 1</span>
-          <span class="ph-tag">2025 Stats</span>
-          <span class="ph-tag">Air Raid</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- OFFENSE PLAYERS -->
-  <div class="sec-head" id="offense" style="margin-top:32px;">
-    <div class="sec-title">Offensive Players to Watch</div>
-    <a href="stats.html#tab-players" style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);text-decoration:none;">Full Stat Leaders →</a>
-  </div>
-  <div class="players-grid">
-
-    <div class="player-card" id="pc-coleman" onclick="toggleCard('coleman')">
-      <div class="pc-top">
-        <div class="pc-num">8</div>
-        <div style="flex:1;">
-          <div class="pc-name">Cam Coleman</div>
-          <div class="pc-pos-yr">WR · Jr. · Auburn Transfer</div>
-        </div>
-        <span class="pc-chevron">▸</span>
-      </div>
-      <div class="pc-body">
-        <div class="pc-bio">5-star recruit who became the most coveted transfer in the 2026 portal cycle. Elite speed (4.36 40), contested catch ability, and route running that already reads like an NFL receiver.</div>
-        <div class="pc-stats">
-          <div class="pcs-cell"><div class="pcs-val">54</div><div class="pcs-label">Rec</div></div>
-          <div class="pcs-cell"><div class="pcs-val">891</div><div class="pcs-label">Yards</div></div>
-          <div class="pcs-cell"><div class="pcs-val">8</div><div class="pcs-label">TDs</div></div>
-        </div>
-      </div>
-      <div class="pc-tags">
-        <span class="pc-tag orange">Portal — Auburn</span>
-        <span class="pc-tag">★★★★★</span>
-        <span class="pc-tag">WR1</span>
-      </div>
-      <div class="pc-expand" id="expand-coleman">
-        <div class="pce-label">2025 Full Line</div>
-        <div class="pce-text"><strong>54 rec · 891 yds · 16.5 avg · 8 TD · Long 74</strong> — Led all SEC WRs in yards per reception. Averaged 68.5 yards per game.</div>
-        <div class="pce-label">2026 Projection</div>
-        <div class="pce-text"><strong>90+ rec · 1,200+ yds · 10+ TD</strong> projected. Top-3 WR in the SEC. First-round NFL grade entering 2026.</div>
-        <div class="pce-label">Scout Notes</div>
-        <div class="pce-text">4.36 speed at 6'3". Draws double coverage every other snap. His presence creates single coverage for Wingo on the other side — a nightmare for opposing coordinators.</div>
-        <div class="pce-links">
-          <a href="stats.html" class="pce-link primary">Full Stats →</a>
-          <a href="portal.html" class="pce-link">Portal Profile →</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="player-card" id="pc-brown" onclick="toggleCard('brown')">
-      <div class="pc-top">
-        <div class="pc-num">0</div>
-        <div style="flex:1;">
-          <div class="pc-name">Raleek Brown</div>
-          <div class="pc-pos-yr">RB · Sr. · Okla. State Transfer</div>
-        </div>
-        <span class="pc-chevron">▸</span>
-      </div>
-      <div class="pc-body">
-        <div class="pc-bio">Oklahoma State's all-time rushing leader arrives as Texas's most proven back in years. Elite acceleration, home-run speed, and underrated pass-protection instincts.</div>
-        <div class="pc-stats">
-          <div class="pcs-cell"><div class="pcs-val">1,312</div><div class="pcs-label">Rush Yds</div></div>
-          <div class="pcs-cell"><div class="pcs-val">6.1</div><div class="pcs-label">YPC</div></div>
-          <div class="pcs-cell"><div class="pcs-val">12</div><div class="pcs-label">TDs</div></div>
-        </div>
-      </div>
-      <div class="pc-tags">
-        <span class="pc-tag orange">Portal — Okla. State</span>
-        <span class="pc-tag">RB1</span>
-        <span class="pc-tag">2025 Stats</span>
-      </div>
-      <div class="pc-expand" id="expand-brown">
-        <div class="pce-label">2025 Full Line</div>
-        <div class="pce-text"><strong>214 car · 1,312 yds · 6.1 YPC · 12 TD · Long 72</strong> — Big-12 Offensive Player of the Year at Oklahoma State. Top-5 rusher in the transfer portal cycle.</div>
-        <div class="pce-label">2026 Projection</div>
-        <div class="pce-text"><strong>220+ car · 1,400+ yds · 13+ TD</strong> projected. Doak Walker Award candidate. Could be the best running back in the SEC.</div>
-        <div class="pce-label">Scout Notes</div>
-        <div class="pce-text">4.36 speed at 205 lbs. Exceptional vision — makes one cut and is gone. Better receiver out of the backfield than his stats show. Elite pass-pro instincts for a back his age.</div>
-        <div class="pce-links">
-          <a href="stats.html" class="pce-link primary">Full Stats →</a>
-          <a href="portal.html" class="pce-link">Portal Profile →</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="player-card" id="pc-wingo" onclick="toggleCard('wingo')">
-      <div class="pc-top">
-        <div class="pc-num">1</div>
-        <div style="flex:1;">
-          <div class="pc-name">Ryan Wingo</div>
-          <div class="pc-pos-yr">WR · Jr. · St. Louis, Mo.</div>
-        </div>
-        <span class="pc-chevron">▸</span>
-      </div>
-      <div class="pc-body">
-        <div class="pc-bio">One of the fastest players in college football. Forces safeties to declare early and creates massive space for Coleman. His presence alone elevates the entire receiving corps.</div>
-        <div class="pc-stats">
-          <div class="pcs-cell"><div class="pcs-val">38</div><div class="pcs-label">Rec</div></div>
-          <div class="pcs-cell"><div class="pcs-val">624</div><div class="pcs-label">Yards</div></div>
-          <div class="pcs-cell"><div class="pcs-val">6</div><div class="pcs-label">TDs</div></div>
-        </div>
-      </div>
-      <div class="pc-tags">
-        <span class="pc-tag">4.28 Speed</span>
-        <span class="pc-tag">WR2</span>
-        <span class="pc-tag">Deep Threat</span>
-      </div>
-      <div class="pc-expand" id="expand-wingo">
-        <div class="pce-label">2025 Full Line</div>
-        <div class="pce-text"><strong>38 rec · 624 yds · 16.4 avg · 6 TD · Long 67</strong> — 6 touchdowns of 30+ yards. Led the SEC in yards per catch among receivers with 25+ receptions.</div>
-        <div class="pce-label">2026 Projection</div>
-        <div class="pce-text"><strong>65+ rec · 950+ yds · 8+ TD</strong> projected. With Coleman drawing double coverage, Wingo will see more single coverage than ever.</div>
-        <div class="pce-label">Scout Notes</div>
-        <div class="pce-text">4.28 verified 40 time. Runs crisp routes for a speed receiver. His ability to take the top off the defense on every snap is what makes Sarkisian's system unstoppable on early downs.</div>
-        <div class="pce-links">
-          <a href="stats.html" class="pce-link primary">Full Stats →</a>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- DEFENSE PLAYERS -->
-  <div class="sec-head" id="defense">
-    <div class="sec-title">Defensive Players to Watch</div>
-    <a href="stats.html" style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);text-decoration:none;">Defense Leaders →</a>
-  </div>
-  <div class="players-grid">
-
-    <div class="player-card" id="pc-simmons" onclick="toggleCard('simmons')">
-      <div class="pc-top">
-        <div class="pc-num">1</div>
-        <div style="flex:1;">
-          <div class="pc-name">Colin Simmons</div>
-          <div class="pc-pos-yr">EDGE/DL · Jr. · Dallas, Texas</div>
-        </div>
-        <span class="pc-chevron">▸</span>
-      </div>
-      <div class="pc-body">
-        <div class="pc-bio">Texas's most important defensive player since the Mack Brown era. Athleticism, hand technique, and motor of a top-10 NFL pick. Bednarik Award favorite. When healthy, he's unblockable.</div>
-        <div class="pc-stats">
-          <div class="pcs-cell"><div class="pcs-val">11</div><div class="pcs-label">Sacks</div></div>
-          <div class="pcs-cell"><div class="pcs-val">17</div><div class="pcs-label">TFLs</div></div>
-          <div class="pcs-cell"><div class="pcs-val">6</div><div class="pcs-label">FF/Hits</div></div>
-        </div>
-      </div>
-      <div class="pc-tags">
-        <span class="pc-tag orange">NFL Round 1</span>
-        <span class="pc-tag orange">Bednarik Watch</span>
-        <span class="pc-tag">2025 Stats</span>
-      </div>
-      <div class="pc-expand" id="expand-simmons">
-        <div class="pce-label">2025 Full Line</div>
-        <div class="pce-text"><strong>52 tackles · 31 solo · 17 TFL · 11 sacks · 3 FF · 97.2 PFF pass-rush grade</strong> — Highest pass-rush grade in the entire nation.</div>
-        <div class="pce-label">2026 Projection</div>
-        <div class="pce-text"><strong>14+ sacks · 20+ TFLs</strong> projected. Bednarik Award frontrunner. Consensus top-5 NFL Draft pick for 2027. Will be the most-schemed-against defender in the SEC.</div>
-        <div class="pce-label">Scout Notes</div>
-        <div class="pce-text">6'4", 255 lbs with 4.55 speed. Elite first-step quickness. Punch-and-rip technique is NFL-ready today. Commands double teams on 43% of pass-rush snaps — highest in the conference.</div>
-        <div class="pce-links">
-          <a href="stats.html" class="pce-link primary">Full Stats →</a>
-          <a href="stats.html" class="pce-link">Defensive Leaders →</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="player-card" id="pc-williams" onclick="toggleCard('williams')">
-      <div class="pc-top">
-        <div class="pc-num">2</div>
-        <div style="flex:1;">
-          <div class="pc-name">Derek Williams Jr.</div>
-          <div class="pc-pos-yr">CB · Jr. · Penn State Transfer</div>
-        </div>
-        <span class="pc-chevron">▸</span>
-      </div>
-      <div class="pc-body">
-        <div class="pc-bio">The portal addition that solidifies the secondary. Big Ten All-Conference 2025. Press-man specialist who locks down one side of the field and elevates everyone around him.</div>
-        <div class="pc-stats">
-          <div class="pcs-cell"><div class="pcs-val">11</div><div class="pcs-label">PBUs</div></div>
-          <div class="pcs-cell"><div class="pcs-val">4</div><div class="pcs-label">INTs</div></div>
-          <div class="pcs-cell"><div class="pcs-val">42</div><div class="pcs-label">Tackles</div></div>
-        </div>
-      </div>
-      <div class="pc-tags">
-        <span class="pc-tag orange">Portal — Penn State</span>
-        <span class="pc-tag">CB1</span>
-        <span class="pc-tag">NFL Watch</span>
-      </div>
-      <div class="pc-expand" id="expand-williams">
-        <div class="pce-label">2025 Full Line</div>
-        <div class="pce-text"><strong>42 tackles · 31 solo · 11 PBU · 4 INT · 58% completion allowed</strong> — Opponents targeted him 48 times. Allowed only 28 completions. 84.2 PFF coverage grade.</div>
-        <div class="pce-label">2026 Projection</div>
-        <div class="pce-text"><strong>12+ PBUs · 5+ INTs</strong> projected. First-round NFL grade. Will see the opposing team's WR1 every game — no exceptions.</div>
-        <div class="pce-label">Scout Notes</div>
-        <div class="pce-text">6'1", 195 lbs. Ideal press-man measurables. Elite ball skills in contested situations. His INT on the final drive vs. LSU in 2025 was the play of the Texas season.</div>
-        <div class="pce-links">
-          <a href="stats.html" class="pce-link primary">Full Stats →</a>
-          <a href="portal.html" class="pce-link">Portal Profile →</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="player-card" id="pc-vasek" onclick="toggleCard('vasek')">
-      <div class="pc-top">
-        <div class="pc-num">92</div>
-        <div style="flex:1;">
-          <div class="pc-name">Colton Vasek</div>
-          <div class="pc-pos-yr">DL · Jr. · Austin, Texas</div>
-        </div>
-        <span class="pc-chevron">▸</span>
-      </div>
-      <div class="pc-body">
-        <div class="pc-bio">The unsung anchor of the defensive line. Controls the interior, demands double teams, frees Simmons. Quietly one of the best DTs in the SEC and drawing NFL attention.</div>
-        <div class="pc-stats">
-          <div class="pcs-cell"><div class="pcs-val">6</div><div class="pcs-label">Sacks</div></div>
-          <div class="pcs-cell"><div class="pcs-val">11</div><div class="pcs-label">TFLs</div></div>
-          <div class="pcs-cell"><div class="pcs-val">48</div><div class="pcs-label">Tackles</div></div>
-        </div>
-      </div>
-      <div class="pc-tags">
-        <span class="pc-tag">DT1</span>
-        <span class="pc-tag">Interior Anchor</span>
-        <span class="pc-tag">2025 Stats</span>
-      </div>
-      <div class="pc-expand" id="expand-vasek">
-        <div class="pce-label">2025 Full Line</div>
-        <div class="pce-text"><strong>48 tackles · 29 solo · 11 TFL · 6 sacks · 87.4 PFF run-stop grade</strong> — Texas allowed just 2.8 yards per carry when Vasek lined up inside. Elite interior grade.</div>
-        <div class="pce-label">2026 Projection</div>
-        <div class="pce-text"><strong>8+ sacks · 14+ TFLs</strong> projected. NFL teams are paying attention. With Simmons drawing attention outside, Vasek will benefit from more 1-on-1 situations inside.</div>
-        <div class="pce-label">Scout Notes</div>
-        <div class="pce-text">6'4", 300 lbs. Explosive off the ball. Hand technique is his calling card — inside counter and swim moves generate consistent pressure against guards and centers.</div>
-        <div class="pce-links">
-          <a href="stats.html" class="pce-link primary">Full Stats →</a>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- NFL DRAFT TRACKER -->
-  <div class="sec-head" id="nfl">
-    <div class="sec-title">2027 NFL Draft Watch</div>
-  </div>
-  <div class="nfl-grid">
-    <div class="nfl-card">
-      <div class="nfl-name">Arch Manning</div>
-      <div class="nfl-pos">QB</div>
-      <div class="nfl-grade-wrap">
-        <div class="nfl-grade-label">Draft Grade</div>
-        <div class="nfl-grade-bar"><div class="nfl-grade-fill" style="width:88%"></div></div>
-      </div>
-      <div class="nfl-draft">Projected: Round 1 · Top 10</div>
-    </div>
-    <div class="nfl-card">
-      <div class="nfl-name">Colin Simmons</div>
-      <div class="nfl-pos">EDGE</div>
-      <div class="nfl-grade-wrap">
-        <div class="nfl-grade-label">Draft Grade</div>
-        <div class="nfl-grade-bar"><div class="nfl-grade-fill" style="width:93%"></div></div>
-      </div>
-      <div class="nfl-draft">Projected: Round 1 · Top 5</div>
-    </div>
-    <div class="nfl-card">
-      <div class="nfl-name">Cam Coleman</div>
-      <div class="nfl-pos">WR</div>
-      <div class="nfl-grade-wrap">
-        <div class="nfl-grade-label">Draft Grade</div>
-        <div class="nfl-grade-bar"><div class="nfl-grade-fill" style="width:78%"></div></div>
-      </div>
-      <div class="nfl-draft">Projected: Round 1 · 15–25</div>
-    </div>
-    <div class="nfl-card">
-      <div class="nfl-name">Derek Williams Jr.</div>
-      <div class="nfl-pos">CB</div>
-      <div class="nfl-grade-wrap">
-        <div class="nfl-grade-label">Draft Grade</div>
-        <div class="nfl-grade-bar"><div class="nfl-grade-fill" style="width:72%"></div></div>
-      </div>
-      <div class="nfl-draft">Projected: Round 1–2</div>
-    </div>
-  </div>
+  <div id="players-loading" style="padding:60px;text-align:center;color:#6B6560;font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;">Loading players...</div>
+  <div id="players-main" style="display:none;"></div>
 
 </div>
 
@@ -450,20 +140,211 @@ footer{padding:28px 48px;display:flex;align-items:center;justify-content:space-b
   <div class="footer-text">The Tower Never Sleeps. © 2026</div>
 </footer>
 <script>
-const CARDS = ['coleman','brown','wingo','simmons','williams','vasek'];
-function toggleCard(id){
-  const card = document.getElementById('pc-'+id);
-  const panel = document.getElementById('expand-'+id);
-  const isOpen = panel.classList.contains('open');
-  // close all
-  CARDS.forEach(c=>{
-    document.getElementById('pc-'+c)?.classList.remove('open');
-    document.getElementById('expand-'+c)?.classList.remove('open');
+function posColor(pos){
+  const m={QB:'#E8620A',RB:'#4ade80',WR:'#60a5fa',TE:'#a78bfa',OT:'#f472b6',OG:'#f472b6',C:'#f472b6',OL:'#f472b6',DE:'#fb923c',DT:'#fb923c',EDGE:'#fb923c',LB:'#facc15',CB:'#34d399',DB:'#34d399',S:'#34d399'};
+  return m[pos]||'#BF5700';
+}
+
+function statCells(p){
+  const s=p.stats;
+  if(!s||!s.displayStats) return '';
+  return s.displayStats.slice(0,3).map(d=>`<div class="pcs-cell"><div class="pcs-val">${d.season}</div><div class="pcs-label">${d.label}</div></div>`).join('');
+}
+
+function recruitTag(p){
+  const r=p.recruiting||{};
+  if(r.transferFrom) return `<span class="pc-tag orange">Portal — ${r.transferFrom}</span>`;
+  if(r.stars) return `<span class="pc-tag">${'★'.repeat(r.stars)} · #${r.nationalRank||'—'} Overall</span>`;
+  return '';
+}
+
+function heroHTML(p){
+  const ds=p.stats&&p.stats.displayStats||[];
+  const statsHTML=ds.map(d=>`<div class="phs-cell"><div class="phs-val">${d.season}</div><div class="phs-label">${d.label}</div></div>`).join('');
+  const awards=(p.rankings&&p.rankings.awards)||[];
+  const draft=p.draft||{};
+  const allTags=[
+    ...awards.map(a=>`<span class="ph-tag hot">${a}</span>`),
+    draft.roundProjection?`<span class="ph-tag hot">${draft.roundProjection}</span>`:'',
+    `<span class="ph-tag">2025 Stats</span>`
+  ].join('');
+  const nil=p.nil||{};
+  return `
+  <div class="player-hero" style="cursor:pointer" onclick="openPlayerProfile('${p.slug}')" title="Click for full profile">
+    <div class="ph-number">
+      <div class="ph-num-bg">${p.number}</div>
+      <div style="text-align:center;position:relative;z-index:1;">
+        <div class="ph-num-display">#${p.number}</div>
+        <div class="ph-pos-label">${p.position}</div>
+      </div>
+    </div>
+    <div class="ph-info">
+      <div>
+        <div class="ph-name">${p.name}</div>
+        <div class="ph-pos-yr" style="color:${posColor(p.position)}">${p.position} · ${p.year} · ${p.hometown}</div>
+        <div class="ph-vitals">
+          <div class="ph-vital"><div class="ph-vital-val">${p.height||'—'}</div><div class="ph-vital-label">Height</div></div>
+          <div class="ph-vital"><div class="ph-vital-val">${p.weight||'—'}</div><div class="ph-vital-label">Weight</div></div>
+          ${p.recruiting&&p.recruiting.stars?`<div class="ph-vital"><div class="ph-vital-val" style="color:#BF5700">${'★'.repeat(p.recruiting.stars)}</div><div class="ph-vital-label">Stars</div></div>`:''}
+          ${p.recruiting&&p.recruiting.nationalRank?`<div class="ph-vital"><div class="ph-vital-val">#${p.recruiting.nationalRank}</div><div class="ph-vital-label">Class of ${p.recruiting.classYear}</div></div>`:''}
+          ${nil.value?`<div class="ph-vital"><div class="ph-vital-val" style="color:#4ade80">${nil.value}</div><div class="ph-vital-label">NIL Value</div></div>`:''}
+        </div>
+        <p class="ph-bio">${p.bio||''}</p>
+      </div>
+      <div>
+        ${statsHTML?`<div class="ph-stats">${statsHTML}</div>`:''}
+        <div class="ph-tags">${allTags}</div>
+        <div style="margin-top:12px;">
+          <button onclick="event.stopPropagation();openPlayerProfile('${p.slug}')" style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:8px 18px;background:#BF5700;border:none;color:#fff;cursor:pointer;">★ Full Deep Profile →</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function cardHTML(p){
+  const s=p.stats||{};
+  const ds=s.displayStats||[];
+  const st=ds.slice(0,3);
+  const draft=p.draft||{};
+  const awards=(p.rankings&&p.rankings.awards)||[];
+  const rec=p.recruiting||{};
+  const extraLabel=(()=>{
+    if(s.type==='passing') return `${ds[0]?ds[0].season:''} yds · ${ds[1]?ds[1].season:''} TD · ${ds[2]?ds[2].season:''} INT`;
+    if(s.type==='rushing') return `${ds[0]?ds[0].season:''} yds · ${ds[2]?ds[2].season:''} avg · ${ds[1]?ds[1].season:''} TD`;
+    if(s.type==='receiving') return `${ds[0]?ds[0].season:''} rec · ${ds[1]?ds[1].season:''} yds · ${ds[2]?ds[2].season:''} TD`;
+    if(s.type==='defense') return `${ds[0]?ds[0].season:''} ${ds[0]?ds[0].label:''} · ${ds[1]?ds[1].season:''} ${ds[1]?ds[1].label:''}`;
+    if(s.type==='oline') return `${ds[0]?ds[0].season:''} games · ${ds[2]?ds[2].season:''} sacks allowed`;
+    return '';
+  })();
+  const scoutPts=(p.scout&&p.scout.strengths&&p.scout.strengths[0])||'';
+  return `
+  <div class="player-card" id="pc-${p.slug}" onclick="toggleCard('${p.slug}')">
+    <div class="pc-top">
+      <div class="pc-num" style="color:${posColor(p.position)}">${p.number}</div>
+      <div style="flex:1;">
+        <div class="pc-name">${p.name}</div>
+        <div class="pc-pos-yr">${p.position} · ${p.year} · ${rec.transferFrom?rec.transferFrom+' Transfer':p.hometown}</div>
+      </div>
+      <span class="pc-chevron">▸</span>
+    </div>
+    <div class="pc-body">
+      <div class="pc-bio">${p.bio?p.bio.slice(0,160)+'...':''}</div>
+      <div class="pc-stats">
+        ${st.map(d=>`<div class="pcs-cell"><div class="pcs-val">${d.season}</div><div class="pcs-label">${d.label}</div></div>`).join('')}
+      </div>
+    </div>
+    <div class="pc-tags">
+      ${recruitTag(p)}
+      ${draft.roundProjection?`<span class="pc-tag orange">${draft.roundProjection}</span>`:''}
+      ${awards[0]?`<span class="pc-tag">${awards[0]}</span>`:''}
+    </div>
+    <div class="pc-expand" id="expand-${p.slug}">
+      <div class="pce-label">2025 Season</div>
+      <div class="pce-text"><strong>${extraLabel}</strong></div>
+      ${scoutPts?`<div class="pce-label">Top Scout Strength</div><div class="pce-text">${scoutPts}</div>`:''}
+      ${draft.notes?`<div class="pce-label">NFL Outlook</div><div class="pce-text">${draft.notes}</div>`:''}
+      <div class="pce-links">
+        <button class="pce-link primary" onclick="event.stopPropagation();openPlayerProfile('${p.slug}')">★ Full Profile →</button>
+        <a href="stats.html" class="pce-link">Stats →</a>
+        ${p.links&&p.links.utBio?`<a href="${p.links.utBio}" class="pce-link" target="_blank" rel="noopener">UT Bio →</a>`:''}
+        ${p.links&&p.links.youtube?`<a href="${p.links.youtube}" class="pce-link" target="_blank" rel="noopener">▶ Highlights</a>`:''}
+      </div>
+    </div>
+  </div>`;
+}
+
+function nflCardHTML(p){
+  const d=p.draft||{};
+  const grade=Math.min(100,Math.max(0,d.grade||0));
+  return `
+  <div class="nfl-card" style="cursor:pointer" onclick="openPlayerProfile('${p.slug}')">
+    <div class="nfl-name">${p.name}</div>
+    <div class="nfl-pos" style="color:${posColor(p.position)}">${p.position}</div>
+    <div class="nfl-grade-wrap">
+      <div class="nfl-grade-label">Draft Grade · ${grade}</div>
+      <div class="nfl-grade-bar"><div class="nfl-grade-fill" style="width:${grade}%"></div></div>
+    </div>
+    <div class="nfl-draft">${d.roundProjection||'—'}</div>
+    ${d.eligible?`<div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;color:#6B6560;margin-top:4px;letter-spacing:1px;text-transform:uppercase;">${d.eligible} Draft Eligible</div>`:''}
+  </div>`;
+}
+
+let _openCards=[];
+function toggleCard(slug){
+  _openCards.forEach(s=>{
+    document.getElementById('pc-'+s)?.classList.remove('open');
+    document.getElementById('expand-'+s)?.classList.remove('open');
   });
-  if(!isOpen){
+  const card=document.getElementById('pc-'+slug);
+  const panel=document.getElementById('expand-'+slug);
+  if(!card||!panel) return;
+  const wasOpen=_openCards.includes(slug);
+  _openCards=[];
+  if(!wasOpen){
     card.classList.add('open');
     panel.classList.add('open');
+    _openCards=[slug];
   }
+}
+
+const OFFENSE_POS=['QB','RB','WR','TE','OT','OG','C','OL'];
+const DEFENSE_POS=['DE','DT','EDGE','LB','CB','DB','S'];
+
+function buildPage(players){
+  const hero=players.find(p=>p.position==='QB')||players[0];
+  const offense=players.filter(p=>p.slug!==hero.slug&&OFFENSE_POS.includes(p.position));
+  const defense=players.filter(p=>DEFENSE_POS.includes(p.position));
+  const nflWatch=players.filter(p=>p.draft&&p.draft.grade>=68).sort((a,b)=>b.draft.grade-a.draft.grade);
+
+  // Populate player-index quick links
+  const idx=document.getElementById('player-index');
+  if(idx){
+    const existing=Array.from(idx.querySelectorAll('.pi-btn'));
+    const lastFixed=existing.slice(0,5);
+    const extras=players.map(p=>`<button class="pi-btn" onclick="openPlayerProfile('${p.slug}')">${p.name.split(' ').pop()}</button>`).join('');
+    idx.insertAdjacentHTML('beforeend',extras);
+  }
+
+  document.getElementById('players-main').innerHTML=`
+    ${heroHTML(hero)}
+    <div class="sec-head" id="offense" style="margin-top:32px;">
+      <div class="sec-title">Offensive Players to Watch</div>
+      <a href="stats.html" style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#BF5700;text-decoration:none;">Full Stat Leaders →</a>
+    </div>
+    <div class="players-grid">${offense.map(cardHTML).join('')}</div>
+    <div class="sec-head" id="defense">
+      <div class="sec-title">Defensive Players to Watch</div>
+      <a href="stats.html" style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#BF5700;text-decoration:none;">Defense Leaders →</a>
+    </div>
+    <div class="players-grid">${defense.map(cardHTML).join('')}</div>
+    <div class="sec-head" id="nfl">
+      <div class="sec-title">NFL Draft Watch · ${nflWatch[0]&&nflWatch[0].draft&&nflWatch[0].draft.eligible?nflWatch[0].draft.eligible:2027} Draft</div>
+    </div>
+    <div class="nfl-grid">${nflWatch.map(nflCardHTML).join('')}</div>
+  `;
+}
+
+function initPlayers(){
+  if(window.loadPlayers){
+    window.loadPlayers().then(function(players){
+      document.getElementById('players-loading').style.display='none';
+      document.getElementById('players-main').style.display='block';
+      buildPage(players);
+    });
+  } else {
+    fetch('./data/players.json').then(r=>r.json()).then(data=>{
+      document.getElementById('players-loading').style.display='none';
+      document.getElementById('players-main').style.display='block';
+      buildPage(data.players);
+    });
+  }
+}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',initPlayers);
+} else {
+  initPlayers();
 }
 </script>
 </body>
