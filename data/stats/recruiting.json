@@ -1,0 +1,55 @@
+{
+  "lastUpdated": "2026-06-03",
+  "classes": [
+    {
+      "year": 2026,
+      "rank": { "national": 8, "sec": 2, "big12": null },
+      "commits": 21,
+      "avgStars": 3.9,
+      "on3Score": 92.1,
+      "fiveStars": 0,
+      "fourStars": 6,
+      "threeStars": 15,
+      "topRecruits": [
+        { "name": "Cam Coleman", "pos": "WR", "stars": 5, "hometown": "Oxford, AL", "type": "Transfer" },
+        { "name": "Dia Bell", "pos": "QB", "stars": 4, "hometown": "Southlake, TX" },
+        { "name": "Colin Simmons", "pos": "EDGE", "stars": 5, "hometown": "Duncanville, TX", "note": "Returning starter" }
+      ]
+    },
+    {
+      "year": 2025,
+      "rank": { "national": 5, "sec": 3 },
+      "commits": 23,
+      "avgStars": 4.1,
+      "fiveStars": 2,
+      "fourStars": 12,
+      "threeStars": 9
+    },
+    {
+      "year": 2024,
+      "rank": { "national": 3, "sec": 2 },
+      "commits": 25,
+      "avgStars": 4.2,
+      "fiveStars": 3,
+      "fourStars": 14,
+      "threeStars": 8
+    },
+    {
+      "year": 2023,
+      "rank": { "national": 1, "sec": 1 },
+      "commits": 28,
+      "avgStars": 4.4,
+      "fiveStars": 5,
+      "fourStars": 16,
+      "threeStars": 7,
+      "note": "Arch Manning (#1 overall) headlined this class"
+    }
+  ],
+  "allTimeTopRecruits": [
+    { "name": "Arch Manning", "year": 2023, "pos": "QB", "stars": 5, "ranking": "#1 overall" },
+    { "name": "Vince Young",  "year": 2002, "pos": "QB", "stars": 5, "ranking": "#1 dual-threat QB" },
+    { "name": "Ricky Williams","year": 1995,"pos": "RB", "stars": 5 },
+    { "name": "Earl Thomas",  "year": 2008, "pos": "S",  "stars": 5 },
+    { "name": "Bijan Robinson","year": 2020,"pos": "RB", "stars": 5 }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "instructions": "Drop any URL you want turned into a Tower Report article. Add optional notes to guide the angle. The system processes this every morning and writes a full article.",
+  "queue": [
+  ],
+  "processed": [],
+  "examples": [
+    {
+      "url": "https://on3.com/teams/texas-longhorns/football/news/some-article/",
+      "notes": "Focus on the recruiting angle and what it means for the 2027 class"
+    },
+    {
+      "url": "https://www.espn.com/college-football/story/some-story",
+      "notes": "Portal report — compare to what Texas lost last year"
+    }
+  ]
+}

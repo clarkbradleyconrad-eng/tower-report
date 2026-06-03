@@ -147,6 +147,8 @@ nav{position:sticky;top:0;z-index:200;background:rgba(8,8,8,0.97);backdrop-filte
 .hs-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
 .hs-val{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700;color:var(--white);letter-spacing:.5px;}
 .hs-val.orange{color:var(--orange);}
+a.hero-stat:hover{background:var(--surface2);}
+a.hero-stat:hover .hs-label{color:var(--orange);}
 
 /* --- Hero Story Grid (bottom of left col) --- */
 .hero-stories{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);}
@@ -342,6 +344,8 @@ nav{position:sticky;top:0;z-index:200;background:rgba(8,8,8,0.97);backdrop-filte
 .num-big{font-family:'Playfair Display',serif;font-size:50px;font-weight:900;color:var(--orange);line-height:1;margin-bottom:5px;}
 .num-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
 .num-sub{font-size:11px;color:var(--secondary);margin-top:3px;}
+a.num-cell:hover{background:var(--surface2);}
+a.num-cell:hover .num-big{color:var(--orange-hi);}
 .intel-recruiting{padding:32px 48px 44px;background:var(--surface);}
 .rec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
 .rec-title{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);}
@@ -487,6 +491,7 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
       <a href="roster.html" class="nav-link">Roster</a>
       <a href="recruiting.html" class="nav-link">Recruiting</a>
       <a href="portal.html" class="nav-link">Portal</a>
+      <a href="stats.html" class="nav-link">Stats</a>
       <a href="stories.html" class="nav-link">Stories</a>
       <a href="players.html" class="nav-link">Players</a>
       <a href="history.html" class="nav-link">History</a>
@@ -524,11 +529,11 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
         </div>
       </div>
       <div class="hero-stats">
-        <div class="hero-stat"><div class="hs-label">Sark Record</div><div class="hs-val orange">48–20</div></div>
-        <div class="hero-stat"><div class="hs-label">All-Time Wins</div><div class="hs-val">972</div></div>
-        <div class="hero-stat"><div class="hs-label">Natl. Titles</div><div class="hs-val">4</div></div>
-        <div class="hero-stat"><div class="hs-label">Active NFL</div><div class="hs-val">51</div></div>
-        <div class="hero-stat"><div class="hs-label">2026 Opener</div><div class="hs-val">Sep 5</div></div>
+        <a href="stats.html" class="hero-stat" style="text-decoration:none;cursor:pointer;" title="View Stats & Projections"><div class="hs-label">Sark Record</div><div class="hs-val orange">48–20</div></a>
+        <a href="history.html" class="hero-stat" style="text-decoration:none;cursor:pointer;" title="Program History"><div class="hs-label">All-Time Wins</div><div class="hs-val">972</div></a>
+        <a href="history.html" class="hero-stat" style="text-decoration:none;cursor:pointer;" title="National Championships"><div class="hs-label">Natl. Titles</div><div class="hs-val">4</div></a>
+        <a href="players.html" class="hero-stat" style="text-decoration:none;cursor:pointer;" title="Player Profiles"><div class="hs-label">Active NFL</div><div class="hs-val">51</div></a>
+        <a href="schedule.html" class="hero-stat" style="text-decoration:none;cursor:pointer;" title="2026 Schedule"><div class="hs-label">2026 Opener</div><div class="hs-val">Sep 5</div></a>
       </div>
     </div>
     <!-- 2×2 story grid -->
@@ -732,26 +737,26 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
 <div class="intel-grid">
   <div class="intel-numbers">
     <div class="numbers-grid">
-      <div class="num-cell">
+      <a href="history.html" class="num-cell" style="text-decoration:none;display:block;">
         <div class="num-big">972</div>
         <div class="num-label">All-Time Wins</div>
-        <div class="num-sub">5th most in FBS history</div>
-      </div>
-      <div class="num-cell">
+        <div class="num-sub">5th most in FBS history ↗</div>
+      </a>
+      <a href="history.html" class="num-cell" style="text-decoration:none;display:block;">
         <div class="num-big">4</div>
         <div class="num-label">National Titles</div>
-        <div class="num-sub">1963 · 1969 · 1970 · 2005</div>
-      </div>
-      <div class="num-cell">
+        <div class="num-sub">1963 · 1969 · 1970 · 2005 ↗</div>
+      </a>
+      <a href="stats.html" class="num-cell" style="text-decoration:none;display:block;">
         <div class="num-big">48–20</div>
         <div class="num-label">Sark Record</div>
-        <div class="num-sub">2021–2025 · CFP Semifinal</div>
-      </div>
-      <div class="num-cell">
+        <div class="num-sub">2021–2025 · View projections ↗</div>
+      </a>
+      <a href="players.html" class="num-cell" style="text-decoration:none;display:block;">
         <div class="num-big">51</div>
         <div class="num-label">Active NFL Players</div>
-        <div class="num-sub">381 drafted all-time</div>
-      </div>
+        <div class="num-sub">381 drafted all-time ↗</div>
+      </a>
     </div>
   </div>
   <div class="intel-recruiting">

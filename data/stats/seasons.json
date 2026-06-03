@@ -1,0 +1,66 @@
+{
+  "lastUpdated": "2026-06-03",
+  "seasons": [
+    {
+      "year": 2026, "wins": null, "losses": null, "confRecord": null,
+      "apFinalRank": null, "bowl": "TBD", "bowlResult": null,
+      "coach": "Steve Sarkisian", "conference": "SEC", "status": "upcoming"
+    },
+    {
+      "year": 2025, "wins": 13, "losses": 3, "confRecord": "7-2",
+      "apFinalRank": 4, "bowl": "Cotton Bowl", "bowlResult": "W",
+      "coach": "Steve Sarkisian", "conference": "SEC", "status": "final"
+    },
+    {
+      "year": 2024, "wins": 13, "losses": 3, "confRecord": "7-2",
+      "apFinalRank": 5, "bowl": "Peach Bowl CFP", "bowlResult": "L",
+      "coach": "Steve Sarkisian", "conference": "SEC", "status": "final"
+    },
+    {
+      "year": 2023, "wins": 12, "losses": 2, "confRecord": "8-1",
+      "apFinalRank": 7, "bowl": "Sugar Bowl CFP", "bowlResult": "L",
+      "coach": "Steve Sarkisian", "conference": "Big 12", "status": "final"
+    },
+    {
+      "year": 2022, "wins": 8, "losses": 5, "confRecord": "5-4",
+      "apFinalRank": null, "bowl": "Alamo Bowl", "bowlResult": "W",
+      "coach": "Steve Sarkisian", "conference": "Big 12", "status": "final"
+    },
+    {
+      "year": 2021, "wins": 5, "losses": 7, "confRecord": "3-6",
+      "apFinalRank": null, "bowl": null, "bowlResult": null,
+      "coach": "Steve Sarkisian", "conference": "Big 12", "status": "final"
+    },
+    {
+      "year": 2020, "wins": 7, "losses": 3, "confRecord": "5-3",
+      "apFinalRank": 9, "bowl": "Sugar Bowl", "bowlResult": "L",
+      "coach": "Tom Herman", "conference": "Big 12", "status": "final"
+    },
+    {
+      "year": 2019, "wins": 8, "losses": 5, "confRecord": "4-5",
+      "apFinalRank": null, "bowl": "Alamo Bowl", "bowlResult": "L",
+      "coach": "Tom Herman", "conference": "Big 12", "status": "final"
+    },
+    {
+      "year": 2018, "wins": 10, "losses": 4, "confRecord": "6-3",
+      "apFinalRank": 19, "bowl": "Sugar Bowl", "bowlResult": "W",
+      "coach": "Tom Herman", "conference": "Big 12", "status": "final"
+    },
+    {
+      "year": 2017, "wins": 7, "losses": 6, "confRecord": "4-5",
+      "apFinalRank": null, "bowl": "Texas Bowl", "bowlResult": "W",
+      "coach": "Tom Herman", "conference": "Big 12", "status": "final"
+    },
+    {
+      "year": 2016, "wins": 5, "losses": 7, "confRecord": "3-6",
+      "apFinalRank": null, "bowl": null, "bowlResult": null,
+      "coach": "Charlie Strong", "conference": "Big 12", "status": "final"
+    },
+    {
+      "year": 2005, "wins": 13, "losses": 0, "confRecord": "8-0",
+      "apFinalRank": 1, "bowl": "Rose Bowl (BCS National Championship)", "bowlResult": "W",
+      "coach": "Mack Brown", "conference": "Big 12", "status": "final",
+      "note": "National Champions — Vince Young 30 pts vs USC"
+    }
+  ]
+}

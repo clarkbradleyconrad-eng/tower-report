@@ -4,6 +4,7 @@ const NAV_PAGES = [
   { label: 'Roster',     href: 'roster.html' },
   { label: 'Recruiting', href: 'recruiting.html' },
   { label: 'Portal',     href: 'portal.html' },
+  { label: 'Stats',      href: 'stats.html' },
   { label: 'Stories',    href: 'stories.html' },
   { label: 'Players',    href: 'players.html' },
   { label: 'History',    href: 'history.html' },

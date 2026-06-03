@@ -1,0 +1,80 @@
+{
+  "lastUpdated": "2026-06-03",
+  "program": {
+    "name": "Texas Longhorns",
+    "conference": "SEC",
+    "founded": 1893,
+    "stadium": "Darrell K Royal–Texas Memorial Stadium",
+    "capacity": 100119,
+    "headCoach": "Steve Sarkisian",
+    "allTimeRecord": { "wins": 972, "losses": 397, "ties": 33 },
+    "winPct": 0.705,
+    "nationalTitles": 4,
+    "nationalTitleYears": [1963, 1969, 1970, 2005],
+    "conferenceChampionships": 34,
+    "heismanWinners": [
+      { "name": "Earl Campbell", "year": 1977, "position": "RB", "number": 20 },
+      { "name": "Ricky Williams", "year": 1998, "position": "RB", "number": 34 }
+    ],
+    "retiredNumbers": [
+      { "number": 10, "player": "Vince Young" },
+      { "number": 12, "player": "Colt McCoy" },
+      { "number": 20, "player": "Earl Campbell" },
+      { "number": 22, "player": "Bobby Layne" },
+      { "number": 34, "player": "Ricky Williams" },
+      { "number": 60, "player": "Tommy Nobis" }
+    ],
+    "activeNFLPlayers": 51,
+    "allTimeDraftPicks": 381
+  },
+  "allTimeLeaders": {
+    "passing": {
+      "yards": { "name": "Colt McCoy", "value": 13253, "years": "2006-2009" },
+      "touchdowns": { "name": "Colt McCoy", "value": 112, "years": "2006-2009" },
+      "completions": { "name": "Colt McCoy", "value": 1157, "years": "2006-2009" }
+    },
+    "rushing": {
+      "yards": { "name": "Ricky Williams", "value": 6279, "years": "1995-1998" },
+      "touchdowns": { "name": "Ricky Williams", "value": 75, "years": "1995-1998" }
+    },
+    "receiving": {
+      "yards": { "name": "Jordan Shipley", "value": 2325, "years": "2006-2009" },
+      "receptions": { "name": "Jordan Shipley", "value": 248, "years": "2006-2009" }
+    },
+    "defense": {
+      "sacks": { "name": "Brian Orakpo", "value": 17.5, "years": "2005-2008" },
+      "interceptions": { "name": "Nathan Vasher", "value": 17, "years": "2000-2003" }
+    }
+  },
+  "rivalries": {
+    "oklahoma": {
+      "name": "Red River Rivalry",
+      "allTimeRecord": { "texas": 62, "opponent": 51, "ties": 6 },
+      "lastGame": { "year": 2025, "score": "Texas 34, Oklahoma 27", "result": "W" }
+    },
+    "texasAM": {
+      "name": "Lone Star Showdown",
+      "allTimeRecord": { "texas": 76, "opponent": 37, "ties": 5 },
+      "note": "Series paused — not currently scheduled"
+    },
+    "baylor": {
+      "name": "Battle of the Brazos",
+      "allTimeRecord": { "texas": 79, "opponent": 29, "ties": 1 }
+    },
+    "tcu": {
+      "allTimeRecord": { "texas": 72, "opponent": 32, "ties": 1 }
+    },
+    "texasTech": {
+      "allTimeRecord": { "texas": 64, "opponent": 22, "ties": 1 }
+    }
+  },
+  "coachingHistory": [
+    { "name": "Steve Sarkisian", "years": "2021–present", "record": "48-20", "winPct": 0.706 },
+    { "name": "Tom Herman",      "years": "2017–2020",    "record": "32-18", "winPct": 0.640 },
+    { "name": "Mack Brown",      "years": "1998–2013",    "record": "158-48", "winPct": 0.767 },
+    { "name": "John Mackovic",   "years": "1992–1997",    "record": "41-28-2", "winPct": 0.592 },
+    { "name": "David McWilliams","years": "1987–1991",    "record": "31-26", "winPct": 0.544 },
+    { "name": "Fred Akers",      "years": "1977–1986",    "record": "86-31-2", "winPct": 0.732 },
+    { "name": "Darrell Royal",   "years": "1957–1976",    "record": "167-47-5", "winPct": 0.774 }
+  ]
+}

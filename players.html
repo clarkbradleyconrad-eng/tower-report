@@ -57,7 +57,7 @@ body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);
 .players-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-bottom:40px;}
 .player-card{background:var(--surface);padding:0;overflow:hidden;cursor:pointer;transition:background .15s;}
 .player-card:hover{background:var(--surface2);}
-.pc-top{padding:20px 20px 16px;display:flex;align-items:center;gap:16px;border-bottom:1px solid var(--border);}
+.pc-top{padding:20px 20px 16px;display:flex;align-items:center;gap:16px;border-bottom:1px solid var(--border);cursor:pointer;}
 .pc-num{font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:700;color:var(--orange);min-width:44px;}
 .pc-name{font-size:15px;font-weight:600;color:var(--white);margin-bottom:3px;}
 .pc-pos-yr{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);}
@@ -70,6 +70,21 @@ body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);
 .pc-tags{display:flex;gap:4px;flex-wrap:wrap;padding:12px 20px;border-top:1px solid var(--border);}
 .pc-tag{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 6px;background:var(--surface3);border:1px solid var(--border);color:var(--muted);}
 .pc-tag.orange{background:rgba(191,87,0,0.1);border-color:rgba(191,87,0,0.25);color:var(--orange);}
+
+/* EXPAND PANEL */
+.pc-expand{display:none;border-top:2px solid var(--orange);background:var(--surface2);padding:16px 20px 20px;}
+.pc-expand.open{display:block;}
+.pce-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:6px;margin-top:12px;}
+.pce-label:first-child{margin-top:0;}
+.pce-text{font-size:12px;line-height:1.65;color:var(--secondary);}
+.pce-text strong{color:var(--white);}
+.pce-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
+.pce-link{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:6px 12px;border:1px solid var(--border-strong);color:var(--secondary);text-decoration:none;transition:all .15s;}
+.pce-link:hover{color:var(--white);border-color:var(--white);}
+.pce-link.primary{background:var(--orange);border-color:var(--orange);color:#fff;}
+.pce-link.primary:hover{background:transparent;color:var(--orange);}
+.pc-chevron{margin-left:auto;font-size:11px;color:var(--muted);transition:transform .2s;display:inline-block;}
+.player-card.open .pc-chevron{transform:rotate(90deg);color:var(--orange);}
 
 /* NFL TRACKER */
 .nfl-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);margin-bottom:40px;}
@@ -156,19 +171,21 @@ footer{padding:28px 48px;display:flex;align-items:center;justify-content:space-b
   <!-- OFFENSE PLAYERS -->
   <div class="sec-head" id="offense" style="margin-top:32px;">
     <div class="sec-title">Offensive Players to Watch</div>
+    <a href="stats.html#tab-players" style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);text-decoration:none;">Full Stat Leaders →</a>
   </div>
   <div class="players-grid">
 
-    <div class="player-card">
+    <div class="player-card" id="pc-coleman" onclick="toggleCard('coleman')">
       <div class="pc-top">
         <div class="pc-num">8</div>
-        <div>
+        <div style="flex:1;">
           <div class="pc-name">Cam Coleman</div>
           <div class="pc-pos-yr">WR · Jr. · Auburn Transfer</div>
         </div>
+        <span class="pc-chevron">▸</span>
       </div>
       <div class="pc-body">
-        <div class="pc-bio">5-star recruit who became the most coveted transfer in the 2026 portal cycle. Elite speed (4.36 40), contested catch ability, and route running that already reads like an NFL receiver. The addition that changes Texas's offensive ceiling.</div>
+        <div class="pc-bio">5-star recruit who became the most coveted transfer in the 2026 portal cycle. Elite speed (4.36 40), contested catch ability, and route running that already reads like an NFL receiver.</div>
         <div class="pc-stats">
           <div class="pcs-cell"><div class="pcs-val">54</div><div class="pcs-label">Rec</div></div>
           <div class="pcs-cell"><div class="pcs-val">891</div><div class="pcs-label">Yards</div></div>
@@ -180,21 +197,34 @@ footer{padding:28px 48px;display:flex;align-items:center;justify-content:space-b
         <span class="pc-tag">★★★★★</span>
         <span class="pc-tag">WR1</span>
       </div>
+      <div class="pc-expand" id="expand-coleman">
+        <div class="pce-label">2025 Full Line</div>
+        <div class="pce-text"><strong>54 rec · 891 yds · 16.5 avg · 8 TD · Long 74</strong> — Led all SEC WRs in yards per reception. Averaged 68.5 yards per game.</div>
+        <div class="pce-label">2026 Projection</div>
+        <div class="pce-text"><strong>90+ rec · 1,200+ yds · 10+ TD</strong> projected. Top-3 WR in the SEC. First-round NFL grade entering 2026.</div>
+        <div class="pce-label">Scout Notes</div>
+        <div class="pce-text">4.36 speed at 6'3". Draws double coverage every other snap. His presence creates single coverage for Wingo on the other side — a nightmare for opposing coordinators.</div>
+        <div class="pce-links">
+          <a href="stats.html" class="pce-link primary">Full Stats →</a>
+          <a href="portal.html" class="pce-link">Portal Profile →</a>
+        </div>
+      </div>
     </div>
 
-    <div class="player-card">
+    <div class="player-card" id="pc-brown" onclick="toggleCard('brown')">
       <div class="pc-top">
         <div class="pc-num">0</div>
-        <div>
+        <div style="flex:1;">
           <div class="pc-name">Raleek Brown</div>
           <div class="pc-pos-yr">RB · Sr. · Okla. State Transfer</div>
         </div>
+        <span class="pc-chevron">▸</span>
       </div>
       <div class="pc-body">
-        <div class="pc-bio">Oklahoma State's all-time rushing leader arrives as Texas's most proven back in years. Elite acceleration, home-run speed, and underrated pass-protection instincts. He gives Sarkisian a true featured back for the first time.</div>
+        <div class="pc-bio">Oklahoma State's all-time rushing leader arrives as Texas's most proven back in years. Elite acceleration, home-run speed, and underrated pass-protection instincts.</div>
         <div class="pc-stats">
           <div class="pcs-cell"><div class="pcs-val">1,312</div><div class="pcs-label">Rush Yds</div></div>
-          <div class="pcs-cell"><div class="pcs-val">6.2</div><div class="pcs-label">YPC</div></div>
+          <div class="pcs-cell"><div class="pcs-val">6.1</div><div class="pcs-label">YPC</div></div>
           <div class="pcs-cell"><div class="pcs-val">12</div><div class="pcs-label">TDs</div></div>
         </div>
       </div>
@@ -203,18 +233,31 @@ footer{padding:28px 48px;display:flex;align-items:center;justify-content:space-b
         <span class="pc-tag">RB1</span>
         <span class="pc-tag">2025 Stats</span>
       </div>
+      <div class="pc-expand" id="expand-brown">
+        <div class="pce-label">2025 Full Line</div>
+        <div class="pce-text"><strong>214 car · 1,312 yds · 6.1 YPC · 12 TD · Long 72</strong> — Big-12 Offensive Player of the Year at Oklahoma State. Top-5 rusher in the transfer portal cycle.</div>
+        <div class="pce-label">2026 Projection</div>
+        <div class="pce-text"><strong>220+ car · 1,400+ yds · 13+ TD</strong> projected. Doak Walker Award candidate. Could be the best running back in the SEC.</div>
+        <div class="pce-label">Scout Notes</div>
+        <div class="pce-text">4.36 speed at 205 lbs. Exceptional vision — makes one cut and is gone. Better receiver out of the backfield than his stats show. Elite pass-pro instincts for a back his age.</div>
+        <div class="pce-links">
+          <a href="stats.html" class="pce-link primary">Full Stats →</a>
+          <a href="portal.html" class="pce-link">Portal Profile →</a>
+        </div>
+      </div>
     </div>
 
-    <div class="player-card">
+    <div class="player-card" id="pc-wingo" onclick="toggleCard('wingo')">
       <div class="pc-top">
         <div class="pc-num">1</div>
-        <div>
+        <div style="flex:1;">
           <div class="pc-name">Ryan Wingo</div>
           <div class="pc-pos-yr">WR · Jr. · St. Louis, Mo.</div>
         </div>
+        <span class="pc-chevron">▸</span>
       </div>
       <div class="pc-body">
-        <div class="pc-bio">One of the fastest players in college football. Wingo is a vertical threat who forces safeties to declare early, opening underneath routes for the entire offense. His presence alone creates space for Coleman on the other side.</div>
+        <div class="pc-bio">One of the fastest players in college football. Forces safeties to declare early and creates massive space for Coleman. His presence alone elevates the entire receiving corps.</div>
         <div class="pc-stats">
           <div class="pcs-cell"><div class="pcs-val">38</div><div class="pcs-label">Rec</div></div>
           <div class="pcs-cell"><div class="pcs-val">624</div><div class="pcs-label">Yards</div></div>
@@ -226,6 +269,17 @@ footer{padding:28px 48px;display:flex;align-items:center;justify-content:space-b
         <span class="pc-tag">WR2</span>
         <span class="pc-tag">Deep Threat</span>
       </div>
+      <div class="pc-expand" id="expand-wingo">
+        <div class="pce-label">2025 Full Line</div>
+        <div class="pce-text"><strong>38 rec · 624 yds · 16.4 avg · 6 TD · Long 67</strong> — 6 touchdowns of 30+ yards. Led the SEC in yards per catch among receivers with 25+ receptions.</div>
+        <div class="pce-label">2026 Projection</div>
+        <div class="pce-text"><strong>65+ rec · 950+ yds · 8+ TD</strong> projected. With Coleman drawing double coverage, Wingo will see more single coverage than ever.</div>
+        <div class="pce-label">Scout Notes</div>
+        <div class="pce-text">4.28 verified 40 time. Runs crisp routes for a speed receiver. His ability to take the top off the defense on every snap is what makes Sarkisian's system unstoppable on early downs.</div>
+        <div class="pce-links">
+          <a href="stats.html" class="pce-link primary">Full Stats →</a>
+        </div>
+      </div>
     </div>
 
   </div>
@@ -233,23 +287,25 @@ footer{padding:28px 48px;display:flex;align-items:center;justify-content:space-b
   <!-- DEFENSE PLAYERS -->
   <div class="sec-head" id="defense">
     <div class="sec-title">Defensive Players to Watch</div>
+    <a href="stats.html" style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);text-decoration:none;">Defense Leaders →</a>
   </div>
   <div class="players-grid">
 
-    <div class="player-card">
+    <div class="player-card" id="pc-simmons" onclick="toggleCard('simmons')">
       <div class="pc-top">
         <div class="pc-num">1</div>
-        <div>
+        <div style="flex:1;">
           <div class="pc-name">Colin Simmons</div>
           <div class="pc-pos-yr">EDGE/DL · Jr. · Dallas, Texas</div>
         </div>
+        <span class="pc-chevron">▸</span>
       </div>
       <div class="pc-body">
-        <div class="pc-bio">Texas's most important defensive player since the Mack Brown era. Simmons has the athleticism, hand technique, and motor of a top-10 NFL pick. Preseason Bednarik Award favorite heading into 2026. When healthy, he's unblockable.</div>
+        <div class="pc-bio">Texas's most important defensive player since the Mack Brown era. Athleticism, hand technique, and motor of a top-10 NFL pick. Bednarik Award favorite. When healthy, he's unblockable.</div>
         <div class="pc-stats">
           <div class="pcs-cell"><div class="pcs-val">11</div><div class="pcs-label">Sacks</div></div>
           <div class="pcs-cell"><div class="pcs-val">17</div><div class="pcs-label">TFLs</div></div>
-          <div class="pcs-cell"><div class="pcs-val">6</div><div class="pcs-label">FF/QB Hits</div></div>
+          <div class="pcs-cell"><div class="pcs-val">6</div><div class="pcs-label">FF/Hits</div></div>
         </div>
       </div>
       <div class="pc-tags">
@@ -257,18 +313,31 @@ footer{padding:28px 48px;display:flex;align-items:center;justify-content:space-b
         <span class="pc-tag orange">Bednarik Watch</span>
         <span class="pc-tag">2025 Stats</span>
       </div>
+      <div class="pc-expand" id="expand-simmons">
+        <div class="pce-label">2025 Full Line</div>
+        <div class="pce-text"><strong>52 tackles · 31 solo · 17 TFL · 11 sacks · 3 FF · 97.2 PFF pass-rush grade</strong> — Highest pass-rush grade in the entire nation.</div>
+        <div class="pce-label">2026 Projection</div>
+        <div class="pce-text"><strong>14+ sacks · 20+ TFLs</strong> projected. Bednarik Award frontrunner. Consensus top-5 NFL Draft pick for 2027. Will be the most-schemed-against defender in the SEC.</div>
+        <div class="pce-label">Scout Notes</div>
+        <div class="pce-text">6'4", 255 lbs with 4.55 speed. Elite first-step quickness. Punch-and-rip technique is NFL-ready today. Commands double teams on 43% of pass-rush snaps — highest in the conference.</div>
+        <div class="pce-links">
+          <a href="stats.html" class="pce-link primary">Full Stats →</a>
+          <a href="stats.html" class="pce-link">Defensive Leaders →</a>
+        </div>
+      </div>
     </div>
 
-    <div class="player-card">
+    <div class="player-card" id="pc-williams" onclick="toggleCard('williams')">
       <div class="pc-top">
         <div class="pc-num">2</div>
-        <div>
+        <div style="flex:1;">
           <div class="pc-name">Derek Williams Jr.</div>
           <div class="pc-pos-yr">CB · Jr. · Penn State Transfer</div>
         </div>
+        <span class="pc-chevron">▸</span>
       </div>
       <div class="pc-body">
-        <div class="pc-bio">The portal addition that solidifies the entire secondary. Big Ten All-Conference in 2025, Williams brings the physical, press-man coverage that the SEC demands. Locks down one half of the field and elevates everyone around him.</div>
+        <div class="pc-bio">The portal addition that solidifies the secondary. Big Ten All-Conference 2025. Press-man specialist who locks down one side of the field and elevates everyone around him.</div>
         <div class="pc-stats">
           <div class="pcs-cell"><div class="pcs-val">11</div><div class="pcs-label">PBUs</div></div>
           <div class="pcs-cell"><div class="pcs-val">4</div><div class="pcs-label">INTs</div></div>
@@ -280,18 +349,31 @@ footer{padding:28px 48px;display:flex;align-items:center;justify-content:space-b
         <span class="pc-tag">CB1</span>
         <span class="pc-tag">NFL Watch</span>
       </div>
+      <div class="pc-expand" id="expand-williams">
+        <div class="pce-label">2025 Full Line</div>
+        <div class="pce-text"><strong>42 tackles · 31 solo · 11 PBU · 4 INT · 58% completion allowed</strong> — Opponents targeted him 48 times. Allowed only 28 completions. 84.2 PFF coverage grade.</div>
+        <div class="pce-label">2026 Projection</div>
+        <div class="pce-text"><strong>12+ PBUs · 5+ INTs</strong> projected. First-round NFL grade. Will see the opposing team's WR1 every game — no exceptions.</div>
+        <div class="pce-label">Scout Notes</div>
+        <div class="pce-text">6'1", 195 lbs. Ideal press-man measurables. Elite ball skills in contested situations. His INT on the final drive vs. LSU in 2025 was the play of the Texas season.</div>
+        <div class="pce-links">
+          <a href="stats.html" class="pce-link primary">Full Stats →</a>
+          <a href="portal.html" class="pce-link">Portal Profile →</a>
+        </div>
+      </div>
     </div>
 
-    <div class="player-card">
+    <div class="player-card" id="pc-vasek" onclick="toggleCard('vasek')">
       <div class="pc-top">
         <div class="pc-num">92</div>
-        <div>
+        <div style="flex:1;">
           <div class="pc-name">Colton Vasek</div>
           <div class="pc-pos-yr">DL · Jr. · Austin, Texas</div>
         </div>
+        <span class="pc-chevron">▸</span>
       </div>
       <div class="pc-body">
-        <div class="pc-bio">The unsung anchor of Texas's defensive line. Vasek controls the interior, freeing Simmons to attack from the edge. His ability to demand double teams is what makes the entire defense function. Quietly one of the best DTs in the SEC.</div>
+        <div class="pc-bio">The unsung anchor of the defensive line. Controls the interior, demands double teams, frees Simmons. Quietly one of the best DTs in the SEC and drawing NFL attention.</div>
         <div class="pc-stats">
           <div class="pcs-cell"><div class="pcs-val">6</div><div class="pcs-label">Sacks</div></div>
           <div class="pcs-cell"><div class="pcs-val">11</div><div class="pcs-label">TFLs</div></div>
@@ -302,6 +384,17 @@ footer{padding:28px 48px;display:flex;align-items:center;justify-content:space-b
         <span class="pc-tag">DT1</span>
         <span class="pc-tag">Interior Anchor</span>
         <span class="pc-tag">2025 Stats</span>
+      </div>
+      <div class="pc-expand" id="expand-vasek">
+        <div class="pce-label">2025 Full Line</div>
+        <div class="pce-text"><strong>48 tackles · 29 solo · 11 TFL · 6 sacks · 87.4 PFF run-stop grade</strong> — Texas allowed just 2.8 yards per carry when Vasek lined up inside. Elite interior grade.</div>
+        <div class="pce-label">2026 Projection</div>
+        <div class="pce-text"><strong>8+ sacks · 14+ TFLs</strong> projected. NFL teams are paying attention. With Simmons drawing attention outside, Vasek will benefit from more 1-on-1 situations inside.</div>
+        <div class="pce-label">Scout Notes</div>
+        <div class="pce-text">6'4", 300 lbs. Explosive off the ball. Hand technique is his calling card — inside counter and swim moves generate consistent pressure against guards and centers.</div>
+        <div class="pce-links">
+          <a href="stats.html" class="pce-link primary">Full Stats →</a>
+        </div>
       </div>
     </div>
 
@@ -356,5 +449,22 @@ footer{padding:28px 48px;display:flex;align-items:center;justify-content:space-b
   <div class="footer-logo">TOWER<span>REPORT</span></div>
   <div class="footer-text">The Tower Never Sleeps. © 2026</div>
 </footer>
+<script>
+const CARDS = ['coleman','brown','wingo','simmons','williams','vasek'];
+function toggleCard(id){
+  const card = document.getElementById('pc-'+id);
+  const panel = document.getElementById('expand-'+id);
+  const isOpen = panel.classList.contains('open');
+  // close all
+  CARDS.forEach(c=>{
+    document.getElementById('pc-'+c)?.classList.remove('open');
+    document.getElementById('expand-'+c)?.classList.remove('open');
+  });
+  if(!isOpen){
+    card.classList.add('open');
+    panel.classList.add('open');
+  }
+}
+</script>
 </body>
 </html>

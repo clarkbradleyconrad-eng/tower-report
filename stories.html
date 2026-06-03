@@ -126,136 +126,16 @@ footer{padding:28px 48px;display:flex;align-items:center;justify-content:space-b
     <button class="cat-btn">Morning Briefing</button>
   </div>
 
-  <!-- FEATURED -->
-  <div class="featured">
-    <div class="featured-main" style="cursor:pointer;" onclick="location.href='story-simmons-osu-2026.html'">
-      <div>
-        <div class="story-kicker">Defense · Analysis · June 2, 2026</div>
-        <h2 class="featured-headline">"We're Coming." — Colin Simmons Sends a Message to Ohio State</h2>
-        <p class="featured-deck">SEC-leading 12 sacks. Zero against Ohio State in 2025. The rematch comes to DKR on September 12 — and Simmons has had that date circled since Columbus. He's telling you straight up. Ohio State should hear this one.</p>
-        <div class="story-meta">
-          <span>Tower Report Staff</span>
-          <span class="story-meta-dot"></span>
-          <span>June 2, 2026</span>
-          <span class="story-meta-dot"></span>
-          <span>7 min read</span>
-          <span class="story-meta-dot"></span>
-          <span style="color:#BF5700;">Defense</span>
-        </div>
-      </div>
-      <div>
-        <a href="story-simmons-osu-2026.html" class="read-btn">Read Full Story →</a>
-      </div>
-    </div>
-    <div class="featured-sidebar">
-      <div class="featured-sidebar-story">
-        <div>
-          <div class="fs-kicker">Feature · QB</div>
-          <div class="fs-headline">Arch Manning's Moment Has Finally Arrived</div>
-        </div>
-        <div class="fs-meta">June 2, 2026 · 8 min</div>
-      </div>
-      <div class="featured-sidebar-story">
-        <div>
-          <div class="fs-kicker">Breaking · Defense</div>
-          <div class="fs-headline">Colin Simmons Named Preseason Bednarik Award Favorite</div>
-        </div>
-        <div class="fs-meta">June 1, 2026 · 3 min</div>
-      </div>
-      <div class="featured-sidebar-story">
-        <div>
-          <div class="fs-kicker">Analysis · Schedule</div>
-          <div class="fs-headline">Three Games That Will Define Texas's 2026 Season</div>
-        </div>
-        <div class="fs-meta">May 30, 2026 · 6 min</div>
-      </div>
-    </div>
-  </div>
+  <!-- FEATURED — loaded from data/stories.json -->
+  <div id="featured-wrap"></div>
 
-  <!-- LATEST STORIES -->
+  <!-- LATEST STORIES — loaded from data/stories.json -->
   <div class="sec-head" style="margin-top:32px;">
     <div class="sec-title">Latest Stories</div>
-    <div class="sec-meta">Updated Daily</div>
+    <div class="sec-meta" id="stories-updated">Updated Daily</div>
   </div>
-
-  <div class="stories-grid">
-    <div class="story-card" onclick="location.href='story-simmons-osu-2026.html'" style="border-top:2px solid var(--orange);cursor:pointer;">
-      <div class="sc-kicker" style="display:flex;align-items:center;gap:8px;">Defense · Analysis <span style="font-size:9px;padding:1px 6px;background:rgba(191,87,0,0.15);border:1px solid rgba(191,87,0,0.3);color:var(--orange);">NEW</span></div>
-      <div class="sc-headline">"We're Coming." — Simmons Has Ohio State's Rematch Circled</div>
-      <div class="sc-deck">12 SEC-leading sacks in 2025. Zero against Ohio State in the opener. September 12 comes to Austin. He's made his intentions clear — the Buckeyes should take it seriously.</div>
-      <div class="sc-meta">
-        <span>June 2, 2026</span>
-        <span>·</span>
-        <span class="sc-tag">Defense</span>
-        <span class="sc-tag">Rematch</span>
-      </div>
-    </div>
-    <div class="story-card">
-      <div class="sc-kicker">Analysis · Offense</div>
-      <div class="sc-headline">The Cam Coleman Effect: What His Arrival Changes About Everything</div>
-      <div class="sc-deck">He was the most electrifying recruit Auburn landed in a generation. Now he's in Austin. We break down exactly how Sarkisian's offense transforms with a true WR1 on the field.</div>
-      <div class="sc-meta">
-        <span>June 1, 2026</span>
-        <span>·</span>
-        <span class="sc-tag">Offense</span>
-        <span class="sc-tag">WR</span>
-      </div>
-    </div>
-    <div class="story-card">
-      <div class="sc-kicker">Film Room · Defense</div>
-      <div class="sc-headline">Colin Simmons's Pass Rush: A Technical Breakdown</div>
-      <div class="sc-deck">We pulled every pass rush snap from 2025. What we found: Simmons isn't just athletic — his hand fighting, bend, and counters are already NFL-ready. The Bednarik race starts here.</div>
-      <div class="sc-meta">
-        <span>May 30, 2026</span>
-        <span>·</span>
-        <span class="sc-tag">Film Room</span>
-        <span class="sc-tag">Defense</span>
-      </div>
-    </div>
-    <div class="story-card">
-      <div class="sc-kicker">Analysis · Schedule</div>
-      <div class="sc-headline">Three Games That Define Texas's 2026 Season</div>
-      <div class="sc-deck">Ohio State Week 2. Tennessee Week 4. Texas A&M on Thanksgiving. We model the scenarios: what happens to Texas's playoff odds if they win all three? Lose any one?</div>
-      <div class="sc-meta">
-        <span>May 29, 2026</span>
-        <span>·</span>
-        <span class="sc-tag">Schedule</span>
-        <span class="sc-tag">Analysis</span>
-      </div>
-    </div>
-    <div class="story-card">
-      <div class="sc-kicker">Recruiting Intel</div>
-      <div class="sc-headline">2027 Priority Board: The 10 Targets Texas Must Land</div>
-      <div class="sc-deck">Sarkisian's staff has been methodical in 2027 targeting. We rank the ten most critical commitments — who's close, who's a stretch, and which one changes everything if Texas wins.</div>
-      <div class="sc-meta">
-        <span>May 28, 2026</span>
-        <span>·</span>
-        <span class="sc-tag">Recruiting</span>
-        <span class="sc-tag">2027</span>
-      </div>
-    </div>
-    <div class="story-card">
-      <div class="sc-kicker">Analysis · Portal</div>
-      <div class="sc-headline">How the Transfer Portal Rebuilt Texas's Roster — And What It Cost</div>
-      <div class="sc-deck">Eleven incoming transfers. Eight departures. The math adds up to more than bodies — it reflects Sarkisian's philosophy shift. A deep look at who won and who the Horns let walk.</div>
-      <div class="sc-meta">
-        <span>May 27, 2026</span>
-        <span>·</span>
-        <span class="sc-tag">Portal</span>
-        <span class="sc-tag">Roster</span>
-      </div>
-    </div>
-    <div class="story-card">
-      <div class="sc-kicker">Player Profile</div>
-      <div class="sc-headline">The Raleek Brown No One Is Talking About</div>
-      <div class="sc-deck">Everyone knows he's fast. But Oklahoma State's all-time great rusher brings something more valuable to Austin: leadership, pass protection, and an edge that makes the whole backfield better.</div>
-      <div class="sc-meta">
-        <span>May 26, 2026</span>
-        <span>·</span>
-        <span class="sc-tag">Profile</span>
-        <span class="sc-tag">RB</span>
-      </div>
-    </div>
+  <div class="stories-grid" id="stories-grid">
+    <div style="padding:40px;color:var(--muted);font-style:italic;font-size:13px;">Loading stories…</div>
   </div>
 
   <!-- ANALYSIS + MORNING BRIEFING -->
@@ -350,6 +230,7 @@ document.querySelectorAll('.cat-btn').forEach(btn => {
   });
 });
 
+// ── Load briefing ──────────────────────────────────────────────────────────
 async function loadStoriesBriefing(){
   try{
     const res=await fetch('./data/briefing.json?v='+Date.now());
@@ -368,7 +249,100 @@ async function loadStoriesBriefing(){
     }
   }catch(e){}
 }
+
+// ── Load stories from stories.json ────────────────────────────────────────
+function readTime(body){ return Math.max(2, Math.ceil((body||'').split(' ').length / 200)) + ' min read'; }
+
+function openStory(s){
+  // Build a full-page overlay to show the story
+  const overlay=document.createElement('div');
+  overlay.style.cssText='position:fixed;inset:0;background:#080808;z-index:900;overflow-y:auto;padding:60px 0 80px;';
+  overlay.innerHTML=`
+    <div style="max-width:720px;margin:0 auto;padding:0 32px;">
+      <button onclick="this.closest('div[style]').remove()" style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#6B6560;background:#111;border:1px solid rgba(255,255,255,0.07);padding:8px 16px;cursor:pointer;margin-bottom:40px;">← Back to Stories</button>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#BF5700;margin-bottom:16px;">${s.kicker||s.category}</div>
+      <h1 style="font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,48px);font-weight:900;line-height:1.05;letter-spacing:-1.5px;color:#F5F0E8;margin-bottom:20px;">${s.headline}</h1>
+      <p style="font-size:16px;line-height:1.7;color:#A09890;font-style:italic;margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,0.07);">${s.summary}</p>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#6B6560;margin-bottom:36px;">Tower Report · ${s.date} · ${readTime(s.body)}</div>
+      <div style="font-size:15px;line-height:1.85;color:#D4CFC8;">${(s.body||'').split('\n').map(p=>p.trim()).filter(Boolean).map(p=>`<p style="margin-bottom:20px;">${p}</p>`).join('')}</div>
+      ${s.takeaways&&s.takeaways.length?`
+      <div style="margin-top:40px;padding:24px;background:#111;border-left:3px solid #BF5700;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#BF5700;margin-bottom:14px;">Key Takeaways</div>
+        ${s.takeaways.map(t=>`<div style="font-size:13px;color:#F5F0E8;margin-bottom:8px;padding-left:12px;border-left:1px solid rgba(255,255,255,0.1);">• ${t}</div>`).join('')}
+      </div>`:''}
+    </div>`;
+  document.body.appendChild(overlay);
+  overlay.scrollTop=0;
+}
+
+async function loadStories(){
+  try{
+    const res=await fetch('./data/stories.json?v='+Date.now());
+    const data=await res.json();
+    const stories=data.stories||[];
+    if(!stories.length) return;
+
+    // Featured (first story)
+    const f=stories[0];
+    const sidebar=stories.slice(1,4);
+    document.getElementById('featured-wrap').innerHTML=`
+      <div class="featured">
+        <div class="featured-main" style="cursor:pointer;" onclick="openStory(window.__stories[0])">
+          <div>
+            <div class="story-kicker">${f.kicker||f.category} · ${f.date}</div>
+            <h2 class="featured-headline">${f.headline}</h2>
+            <p class="featured-deck">${f.summary}</p>
+            <div class="story-meta">
+              <span>Tower Report</span>
+              <span class="story-meta-dot"></span>
+              <span>${f.date}</span>
+              <span class="story-meta-dot"></span>
+              <span>${readTime(f.body)}</span>
+              <span class="story-meta-dot"></span>
+              <span style="color:#BF5700;">${f.category}</span>
+            </div>
+          </div>
+          <div><button class="read-btn" onclick="event.stopPropagation();openStory(window.__stories[0])">Read Full Story →</button></div>
+        </div>
+        <div class="featured-sidebar">
+          ${sidebar.map((s,i)=>`
+          <div class="featured-sidebar-story" onclick="openStory(window.__stories[${i+1}])">
+            <div>
+              <div class="fs-kicker">${s.kicker||s.category}</div>
+              <div class="fs-headline">${s.headline}</div>
+            </div>
+            <div class="fs-meta">${s.date} · ${readTime(s.body)}</div>
+          </div>`).join('')}
+        </div>
+      </div>`;
+
+    // Story grid (next 6)
+    const grid=stories.slice(1,7);
+    document.getElementById('stories-grid').innerHTML=grid.map((s,i)=>`
+      <div class="story-card" onclick="openStory(window.__stories[${i+1}])" ${i===0?'style="border-top:2px solid var(--orange)"':''}>
+        <div class="sc-kicker">${s.kicker||s.category}${i===0?' <span style="font-size:9px;padding:1px 6px;background:rgba(191,87,0,0.15);border:1px solid rgba(191,87,0,0.3);color:#BF5700;">NEW</span>':''}</div>
+        <div class="sc-headline">${s.headline}</div>
+        <div class="sc-deck">${s.summary}</div>
+        <div class="sc-meta">
+          <span>${s.date}</span><span>·</span>
+          ${(s.tags||[s.category]).slice(0,2).map(t=>`<span class="sc-tag">${t}</span>`).join('')}
+        </div>
+      </div>`).join('');
+
+    // Store globally for click handlers
+    window.__stories=stories;
+
+    if(data.lastUpdated){
+      const d=new Date(data.lastUpdated);
+      document.getElementById('stories-updated').textContent='Updated '+d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    }
+  }catch(e){
+    console.warn('Could not load stories.json',e);
+  }
+}
+
 loadStoriesBriefing();
+loadStories();
 </script>
 </body>
 </html>
