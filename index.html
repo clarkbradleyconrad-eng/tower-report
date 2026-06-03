@@ -381,6 +381,17 @@ a.num-cell:hover .num-big{color:var(--orange-hi);}
 .rm-desc{font-size:12px;line-height:1.6;color:var(--muted);}
 
 /* ======================================================
+   HOW IT WORKS
+====================================================== */
+.how-section{padding:0 48px 52px;border-bottom:1px solid var(--border);}
+.how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);margin-top:20px;}
+.how-step{background:var(--surface);padding:30px 24px 36px;position:relative;}
+.how-step-num{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:14px;}
+.how-step-icon{font-size:26px;line-height:1;display:block;margin-bottom:14px;}
+.how-step-title{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--white);margin-bottom:10px;}
+.how-step-desc{font-size:13px;line-height:1.68;color:var(--secondary);}
+
+/* ======================================================
    WAITLIST
 ====================================================== */
 .waitlist{padding:88px 48px;text-align:center;position:relative;overflow:hidden;background:var(--surface);border-bottom:1px solid var(--border);}
@@ -439,6 +450,8 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
   .sr,.threads-section,.stories-section,.roadmap-section{padding-left:20px;padding-right:20px;}
   .stories-grid,.roadmap-grid{grid-template-columns:1fr;}
   .intel-numbers,.intel-recruiting{padding:28px 20px 36px;}
+  .how-section{padding-left:20px;padding-right:20px;}
+  .how-grid{grid-template-columns:1fr 1fr;}
   .waitlist{padding:60px 20px;}
   footer{grid-template-columns:1fr;padding:28px 20px;gap:24px;}
   .footer-right{text-align:left;}
@@ -619,6 +632,37 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
   </div>
 
 </section>
+
+<!-- ===================== HOW IT WORKS ===================== -->
+<div class="sr"><span class="sr-label">How Tower Report Works</span><div class="sr-line"></div><span class="sr-meta">Built for Longhorn fans</span></div>
+<div class="how-section">
+  <div class="how-grid">
+    <div class="how-step">
+      <div class="how-step-num">01 — Monitor</div>
+      <span class="how-step-icon">📡</span>
+      <div class="how-step-title">Monitor</div>
+      <div class="how-step-desc">Track recruiting crystal balls, portal filings, NIL deals, press conferences, and live data across all of Texas football — around the clock.</div>
+    </div>
+    <div class="how-step">
+      <div class="how-step-num">02 — Organize</div>
+      <span class="how-step-icon">📊</span>
+      <div class="how-step-title">Organize</div>
+      <div class="how-step-desc">Thousands of daily signals filtered and ranked by importance and source credibility — so nothing that matters slips through.</div>
+    </div>
+    <div class="how-step">
+      <div class="how-step-num">03 — Analyze</div>
+      <span class="how-step-icon">🧠</span>
+      <div class="how-step-title">Analyze</div>
+      <div class="how-step-desc">AI surfaces patterns, trends, and intelligence no single outlet can match — from recruiting momentum to game-day edge.</div>
+    </div>
+    <div class="how-step">
+      <div class="how-step-num">04 — Deliver</div>
+      <span class="how-step-icon">⚡</span>
+      <div class="how-step-title">Deliver</div>
+      <div class="how-step-desc">Fast answers to your questions, daily briefings, and real-time alerts. Every signal, distilled into one answer.</div>
+    </div>
+  </div>
+</div>
 
 <!-- ===================== FEATURED STORIES ===================== -->
 <div class="sr"><span class="sr-label">Latest Analysis</span><div class="sr-line"></div><span class="sr-meta">Tower Report · AI-Sourced</span></div>
