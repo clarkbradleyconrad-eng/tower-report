@@ -3,460 +3,1065 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Tower Report — Longhorn Intelligence</title>
-<meta name="description" content="AI-powered Texas Longhorn sports intelligence. The Tower Never Sleeps."/>
+<title>Tower Report — Longhorn Intelligence Platform</title>
+<meta name="description" content="AI-powered Texas Longhorn football intelligence. Recruiting, roster, schedule, analysis. The Tower Never Sleeps."/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
-:root{--orange:#BF5700;--black:#080808;--surface:#111;--surface2:#181818;--surface3:#202020;--border:rgba(255,255,255,0.07);--border-strong:rgba(255,255,255,0.12);--white:#F5F0E8;--muted:#6B6560;--secondary:#A09890;}
-*{box-sizing:border-box;margin:0;padding:0;}
+/* ======================================================
+   DESIGN TOKENS
+====================================================== */
+:root{
+  --orange:#BF5700;--orange-hi:#CF6210;--orange-lo:rgba(191,87,0,0.1);--orange-glow:rgba(191,87,0,0.06);
+  --black:#080808;--surface:#0F0F0F;--surface2:#151515;--surface3:#1C1C1C;--surface4:#232323;
+  --border:rgba(255,255,255,0.055);--border-mid:rgba(255,255,255,0.10);--border-strong:rgba(255,255,255,0.16);
+  --white:#F0EBE1;--white2:#C4BCB0;--muted:#5A5450;--secondary:#948C82;
+  --green:#22c55e;--amber:#f59e0b;--red:#ef4444;--blue:#60a5fa;--purple:#c084fc;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
-body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);overflow-x:hidden;}
+body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);overflow-x:hidden;line-height:1.5;}
 
-/* MASTHEAD */
-.masthead{display:flex;justify-content:space-between;align-items:center;padding:9px 48px;border-bottom:1px solid var(--border);background:var(--black);}
+/* ======================================================
+   MASTHEAD
+====================================================== */
+.masthead{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:7px 48px;border-bottom:1px solid var(--border);background:var(--black);
+}
+.masthead-left{display:flex;align-items:center;gap:16px;}
 .masthead-date{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
-.masthead-tagline{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--orange);font-weight:600;}
-.masthead-social{display:flex;gap:16px;}
-.masthead-social a{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s;}
-.masthead-social a:hover{color:var(--orange);}
+.m-sep{width:1px;height:11px;background:var(--border-mid);}
+.masthead-pulse{
+  display:flex;align-items:center;gap:5px;
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);
+}
+.pulse-dot{width:5px;height:5px;border-radius:50%;background:var(--orange);animation:blink 2s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+.masthead-center{
+  font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:5px;
+  text-transform:uppercase;color:var(--white2);font-weight:600;
+  position:absolute;left:50%;transform:translateX(-50%);
+}
+.masthead-right{display:flex;gap:18px;align-items:center;}
+.ms-link{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s;}
+.ms-link:hover{color:var(--orange);}
 
-/* NAV */
-nav{position:sticky;top:0;z-index:100;background:rgba(8,8,8,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
-.nav-inner{display:flex;justify-content:space-between;align-items:center;padding:0 48px;max-width:1400px;margin:0 auto;}
-.nav-logo{display:flex;align-items:center;text-decoration:none;padding:14px 0;}
-.nav-links{display:flex;gap:0;align-items:center;}
-.nav-link{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:20px 16px;border-bottom:2px solid transparent;transition:all .2s;}
+/* ======================================================
+   NAV
+====================================================== */
+nav{position:sticky;top:0;z-index:200;background:rgba(8,8,8,0.97);backdrop-filter:blur(24px);border-bottom:1px solid var(--border-mid);}
+.nav-inner{display:flex;justify-content:space-between;align-items:center;padding:0 48px;max-width:1600px;margin:0 auto;}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;padding:11px 0;}
+.nav-logo-text{display:flex;flex-direction:column;line-height:1;}
+.nav-logo-top{font-family:'Barlow Condensed',sans-serif;font-size:21px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--white);}
+.nav-logo-sub{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:var(--orange);}
+.nav-links{display:flex;align-items:center;}
+.nav-link{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:18px 13px;border-bottom:2px solid transparent;transition:all .2s;}
 .nav-link:hover,.nav-link.active{color:var(--white);border-bottom-color:var(--orange);}
-.nav-cta{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;background:var(--orange);color:#fff;text-decoration:none;padding:9px 20px;margin-left:12px;border:1px solid var(--orange);transition:all .2s;}
+.nav-cta{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;background:var(--orange);color:#fff;text-decoration:none;padding:9px 20px;margin-left:16px;border:1px solid var(--orange);transition:all .2s;}
 .nav-cta:hover{background:transparent;color:var(--orange);}
 
-/* TICKER */
-.ticker{background:var(--orange);padding:10px 0;overflow:hidden;border-bottom:1px solid rgba(0,0,0,0.2);}
-.ticker-track{display:flex;gap:0;animation:ticker 90s linear infinite;white-space:nowrap;width:max-content;}
-.ticker-item{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.9);padding:0 32px;border-right:1px solid rgba(255,255,255,0.25);}
-.ticker-game{display:flex;align-items:center;gap:12px;padding:0 20px;border-right:1px solid rgba(255,255,255,0.25);min-width:fit-content;}
-.ticker-logo{width:24px;height:24px;object-fit:contain;filter:brightness(1.2);background:rgba(0,0,0,0.2);border-radius:2px;padding:2px;}
-.ticker-matchup{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;white-space:nowrap;}
-.ticker-odds{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;color:rgba(255,255,255,0.8);margin-left:4px;padding-left:8px;border-left:1px solid rgba(255,255,255,0.3);}
-@keyframes ticker{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}}
+/* ======================================================
+   TICKER
+====================================================== */
+.ticker{background:var(--orange);padding:0;overflow:hidden;border-bottom:2px solid rgba(0,0,0,0.15);position:relative;height:34px;display:flex;align-items:center;}
+.ticker-label{flex-shrink:0;padding:0 14px;background:rgba(0,0,0,0.25);font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.85);height:100%;display:flex;align-items:center;z-index:2;}
+.ticker-viewport{flex:1;overflow:hidden;height:100%;}
+.ticker-track{display:flex;animation:scroll-ticker 70s linear infinite;white-space:nowrap;width:max-content;height:100%;align-items:center;}
+.ticker-game{display:flex;align-items:center;gap:9px;padding:0 20px;border-right:1px solid rgba(255,255,255,0.2);min-width:fit-content;}
+.ticker-logo{width:20px;height:20px;object-fit:contain;filter:brightness(1.3);}
+.ticker-text{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.95);}
+.ticker-pill{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.5px;color:rgba(0,0,0,0.55);background:rgba(255,255,255,0.22);padding:1px 6px;border-radius:2px;}
+@keyframes scroll-ticker{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
 
-/* HERO */
-.hero{display:grid;grid-template-columns:1fr 380px;min-height:82vh;border-bottom:1px solid var(--border);position:relative;}
-.hero-main{padding:52px 48px 48px;display:flex;flex-direction:column;justify-content:space-between;border-right:1px solid var(--border);position:relative;overflow:hidden;}
-.hero-main::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 80% 40%,rgba(191,87,0,0.08) 0%,transparent 70%);pointer-events:none;}
-.hero-emblem{position:absolute;right:-30px;top:50%;transform:translateY(-55%);width:460px;height:460px;pointer-events:none;z-index:0;}
-.hero-emblem img{width:100%;height:100%;object-fit:contain;opacity:0.07;filter:brightness(2) sepia(1) saturate(3) hue-rotate(350deg);}
-.hero-content{position:relative;z-index:1;}
-.hero-kicker{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:18px;display:flex;align-items:center;gap:10px;}
-.hero-kicker::before{content:'';width:24px;height:1px;background:var(--orange);}
-.hero-headline{font-family:'Playfair Display',serif;font-size:clamp(48px,5.5vw,82px);font-weight:900;line-height:0.92;letter-spacing:-2px;color:var(--white);margin-bottom:24px;}
-.hero-headline .orange{color:var(--orange);}
-.hero-deck{font-size:16px;line-height:1.7;color:var(--secondary);max-width:520px;margin-bottom:36px;font-style:italic;}
-.hero-actions{display:flex;gap:10px;flex-wrap:wrap;}
-.btn-primary{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;background:var(--orange);color:#fff;text-decoration:none;padding:12px 24px;border:1px solid var(--orange);transition:all .2s;cursor:pointer;}
-.btn-primary:hover{background:transparent;color:var(--orange);}
-.btn-secondary{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;background:transparent;color:var(--white);text-decoration:none;padding:12px 24px;border:1px solid var(--border-strong);transition:all .2s;}
-.btn-secondary:hover{border-color:var(--white);}
-.hero-bottom{display:flex;gap:28px;padding-top:40px;border-top:1px solid var(--border);margin-top:40px;flex-wrap:wrap;position:relative;z-index:1;}
-.hero-stat-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
-.hero-stat-val{font-size:14px;font-weight:600;color:var(--white);}
-.hero-divider{width:1px;background:var(--border);}
+/* ======================================================
+   HERO
+====================================================== */
+.hero{display:grid;grid-template-columns:1fr 390px;min-height:82vh;border-bottom:1px solid var(--border);}
+.hero-left{display:flex;flex-direction:column;border-right:1px solid var(--border);}
 
-/* SIDEBAR */
-.hero-sidebar{background:var(--surface);display:flex;flex-direction:column;}
-.sidebar-header{padding:18px 22px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
-.sidebar-title{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);}
-.live-badge{display:flex;align-items:center;gap:5px;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#4ade80;}
-.live-dot{width:5px;height:5px;border-radius:50%;background:#4ade80;animation:pulse 2s ease-in-out infinite;}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
-.intel-tabs{display:flex;border-bottom:1px solid var(--border);}
-.intel-tab{flex:1;padding:10px 6px;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;background:none;border-top:none;border-left:none;border-right:none;}
-.intel-tab:hover{color:var(--white);}
-.intel-tab.active{color:var(--orange);border-bottom-color:var(--orange);}
-.intel-query{margin:14px 18px 10px;padding:10px 12px;background:var(--surface2);border:1px solid var(--border);font-size:13px;color:var(--secondary);font-style:italic;}
-.intel-query strong{color:var(--white);font-style:normal;font-weight:600;}
-.intel-answer{margin:0 18px;font-size:13px;line-height:1.65;color:var(--secondary);padding-bottom:12px;border-bottom:1px solid var(--border);}
-.intel-answer strong{color:var(--white);font-weight:600;}
-.intel-sources{display:flex;gap:5px;flex-wrap:wrap;padding:10px 18px;}
-.intel-tag{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;background:var(--surface3);border:1px solid var(--border);color:var(--muted);}
-.sidebar-nav{margin-top:auto;border-top:1px solid var(--border);}
-.sidebar-nav-link{display:flex;align-items:center;justify-content:space-between;padding:13px 18px;border-bottom:1px solid var(--border);text-decoration:none;transition:background .15s;}
-.sidebar-nav-link:last-child{border-bottom:none;}
-.sidebar-nav-link:hover{background:var(--surface2);}
-.snl-left{display:flex;align-items:center;gap:10px;}
-.snl-icon{font-size:15px;}
-.snl-title{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--white);}
-.snl-sub{font-size:11px;color:var(--muted);margin-top:1px;}
-.snl-arrow{font-size:13px;color:var(--muted);}
+/* --- Hero Lead (top of left col) --- */
+.hero-lead{
+  flex:1;padding:48px 48px 40px;
+  background:var(--surface);
+  position:relative;overflow:hidden;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  min-height:400px;
+}
+.hero-lead::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 70% 50% at 80% 10%,rgba(191,87,0,0.10) 0%,transparent 60%),
+    radial-gradient(ellipse 40% 70% at 0% 90%,rgba(191,87,0,0.06) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-lead::after{
+  content:'';position:absolute;inset:0;
+  background-image:repeating-linear-gradient(0deg,transparent,transparent 31px,rgba(255,255,255,0.012) 31px,rgba(255,255,255,0.012) 32px);
+  pointer-events:none;
+}
+.hero-longhorn{
+  position:absolute;right:-60px;top:-30px;
+  width:480px;height:480px;
+  opacity:.04;filter:sepia(1) saturate(6) hue-rotate(5deg) brightness(2);
+  pointer-events:none;z-index:0;
+}
+.hero-inner{position:relative;z-index:1;}
+.hero-eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:22px;}
+.live-pill{
+  display:flex;align-items:center;gap:5px;
+  font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--green);background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);padding:3px 8px;
+}
+.live-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:blink 2s ease-in-out infinite;}
+.hero-kicker{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);}
+.hero-hed{
+  font-family:'Playfair Display',serif;font-size:clamp(46px,5.2vw,80px);
+  font-weight:900;line-height:.92;letter-spacing:-2.5px;color:var(--white);margin-bottom:18px;
+}
+.hero-hed em{font-style:italic;color:var(--orange);}
+.hero-dek{font-size:15px;line-height:1.72;color:var(--secondary);max-width:540px;margin-bottom:28px;}
+.hero-btns{display:flex;gap:8px;flex-wrap:wrap;}
+.btn-primary{
+  font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  background:var(--orange);color:#fff;text-decoration:none;padding:12px 22px;
+  border:1px solid var(--orange);transition:all .2s;display:inline-block;cursor:pointer;
+}
+.btn-primary:hover{background:var(--orange-hi);}
+.btn-ghost{
+  font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  background:transparent;color:var(--white2);text-decoration:none;padding:12px 22px;
+  border:1px solid var(--border-mid);transition:all .2s;display:inline-block;
+}
+.btn-ghost:hover{border-color:var(--white2);color:var(--white);}
 
-/* SECTION RULE */
-.sr{display:flex;align-items:center;gap:16px;padding:32px 48px 0;margin-bottom:24px;}
+/* --- Hero Stats Bar --- */
+.hero-stats{
+  display:flex;gap:0;border-top:1px solid var(--border);margin-top:36px;padding-top:0;
+  position:relative;z-index:1;
+}
+.hero-stat{padding:18px 22px;border-right:1px solid var(--border);}
+.hero-stat:last-child{border-right:none;}
+.hs-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
+.hs-val{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700;color:var(--white);letter-spacing:.5px;}
+.hs-val.orange{color:var(--orange);}
+
+/* --- Hero Story Grid (bottom of left col) --- */
+.hero-stories{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);}
+.story-card{background:var(--black);padding:18px 22px;text-decoration:none;display:block;transition:background .15s;border-bottom:none;}
+.story-card:hover{background:var(--surface);}
+.sc-tag{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:6px;}
+.sc-hed{font-family:'Playfair Display',serif;font-size:14px;font-weight:700;line-height:1.25;color:var(--white);margin-bottom:5px;}
+.sc-meta{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
+
+/* ======================================================
+   HERO RIGHT PANEL
+====================================================== */
+.hero-right{background:var(--surface);display:flex;flex-direction:column;}
+
+/* AI Panel */
+.ai-panel{flex:1;display:flex;flex-direction:column;border-bottom:1px solid var(--border);min-height:0;}
+.ai-head{
+  padding:14px 20px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.ai-head-left{display:flex;align-items:center;gap:9px;}
+.ai-icon-box{
+  width:22px;height:22px;background:var(--orange);display:flex;align-items:center;justify-content:center;
+  font-size:11px;flex-shrink:0;
+}
+.ai-title{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--white);}
+.ai-badge{
+  font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--orange);background:var(--orange-lo);border:1px solid rgba(191,87,0,0.22);padding:2px 7px;
+}
+.ai-chips{padding:12px 20px 10px;border-bottom:1px solid var(--border);}
+.ai-chips-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:7px;}
+.ai-chip{
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:12px;color:var(--secondary);padding:8px 11px;
+  background:var(--surface2);border:1px solid var(--border);
+  cursor:pointer;transition:all .15s;margin-bottom:5px;
+}
+.ai-chip:last-child{margin-bottom:0;}
+.ai-chip:hover{background:var(--surface3);border-color:var(--border-mid);color:var(--white);}
+.ai-chip-arr{font-size:10px;color:var(--muted);flex-shrink:0;}
+.ai-body{flex:1;padding:12px 20px;overflow:hidden;display:flex;flex-direction:column;}
+.ai-body-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:8px;}
+.ai-body-text{font-size:12px;line-height:1.65;color:var(--secondary);overflow-y:auto;flex:1;}
+.ai-body-text strong{color:var(--white);}
+.ai-footer{
+  display:flex;gap:8px;padding:10px 14px;background:var(--surface2);border-top:1px solid var(--border);
+}
+.ai-input{
+  flex:1;background:var(--surface3);border:1px solid var(--border-mid);
+  color:var(--white);font-family:'Barlow',sans-serif;font-size:13px;padding:9px 12px;outline:none;transition:border-color .2s;
+}
+.ai-input:focus{border-color:var(--orange);}
+.ai-input::placeholder{color:var(--muted);}
+.ai-send{
+  background:var(--orange);border:none;color:#fff;padding:9px 14px;cursor:pointer;
+  font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  transition:background .2s;flex-shrink:0;
+}
+.ai-send:hover{background:var(--orange-hi);}
+
+/* Briefing Panel */
+.briefing-panel{background:var(--surface);}
+.briefing-head{padding:13px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.briefing-title{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);}
+.briefing-live{display:flex;align-items:center;gap:5px;}
+.briefing-live-text{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);}
+#briefing-list{}
+.briefing-item{padding:11px 20px;border-bottom:1px solid var(--border);}
+.briefing-item:last-child{border-bottom:none;}
+.bi-cat{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:4px;}
+.bi-text{font-size:12px;line-height:1.55;color:var(--secondary);}
+.bi-src{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-top:4px;}
+.briefing-footer-ts{padding:7px 20px;font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);}
+
+/* ======================================================
+   SECTION RULES
+====================================================== */
+.sr{display:flex;align-items:center;gap:16px;padding:28px 48px 0;margin-bottom:0;}
 .sr-label{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);white-space:nowrap;}
 .sr-line{flex:1;height:1px;background:var(--border);}
+.sr-meta{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);white-space:nowrap;}
 
-/* CARDS */
-.cards-section{padding:0 48px 48px;border-bottom:1px solid var(--border);}
-.cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);}
-.card{background:var(--surface);padding:24px;transition:background .2s;text-decoration:none;display:block;}
-.card:hover{background:var(--surface2);}
-.card-kicker{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:10px;}
-.card-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;line-height:1.2;color:var(--white);margin-bottom:8px;}
-.card-desc{font-size:13px;line-height:1.6;color:var(--muted);}
-.card-meta{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:14px;display:flex;align-items:center;gap:6px;}
-.card-meta::before{content:'';width:16px;height:1px;background:var(--border-strong);}
+/* ======================================================
+   STORIES STRIP (3-col editorial below hero)
+====================================================== */
+.stories-section{padding:0 48px 48px;border-bottom:1px solid var(--border);}
+.stories-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-top:20px;}
+.story-tile{background:var(--surface);padding:24px;text-decoration:none;display:flex;flex-direction:column;gap:10px;transition:background .15s;}
+.story-tile:hover{background:var(--surface2);}
+.st-kicker{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);}
+.st-hed{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;line-height:1.2;color:var(--white);}
+.st-dek{font-size:13px;line-height:1.6;color:var(--muted);}
+.st-cat{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:auto;padding-top:6px;border-top:1px solid var(--border);}
 
-/* PROGRAM SNAPSHOT */
-.snapshot{padding:0 48px 48px;border-bottom:1px solid var(--border);}
-.snapshot-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);}
-.snap-cell{background:var(--surface);padding:24px 20px;text-align:center;}
-.snap-num{font-family:'Playfair Display',serif;font-size:36px;font-weight:900;color:var(--orange);line-height:1;margin-bottom:6px;}
-.snap-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
-.snap-sub{font-size:11px;color:var(--secondary);margin-top:3px;}
+/* ======================================================
+   THREADS (MESSAGE BOARD)
+====================================================== */
+.threads-section{padding:0 48px 44px;border-bottom:1px solid var(--border);}
+.threads-toolbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 0 0;border-bottom:1px solid var(--border);
+}
+.t-tabs{display:flex;gap:0;}
+.t-tab{
+  font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--muted);cursor:pointer;padding:10px 14px 12px;border-bottom:2px solid transparent;
+  background:none;border-top:none;border-left:none;border-right:none;transition:all .15s;
+}
+.t-tab:hover{color:var(--white);}
+.t-tab.active{color:var(--orange);border-bottom-color:var(--orange);}
+.thread-row{
+  display:grid;grid-template-columns:44px 1fr auto;gap:14px;align-items:center;
+  padding:14px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;
+}
+.thread-row:hover{background:var(--surface);margin:0 -48px;padding:14px 48px;}
+.thread-row:last-child{border-bottom:none;}
+.thread-avatar{
+  width:44px;height:44px;background:var(--surface2);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;
+}
+.thread-hot .thread-avatar{background:rgba(191,87,0,0.1);border-color:rgba(191,87,0,0.25);}
+.thread-body{min-width:0;}
+.thread-tags{display:flex;align-items:center;gap:6px;margin-bottom:5px;flex-wrap:wrap;}
+.t-tag{
+  font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  padding:2px 7px;border:1px solid;
+}
+.t-recruiting{color:var(--blue);border-color:rgba(96,165,250,0.3);background:rgba(96,165,250,0.06);}
+.t-portal{color:var(--amber);border-color:rgba(245,158,11,0.3);background:rgba(245,158,11,0.06);}
+.t-gameday{color:var(--green);border-color:rgba(34,197,94,0.3);background:rgba(34,197,94,0.06);}
+.t-nil{color:var(--purple);border-color:rgba(192,132,252,0.3);background:rgba(192,132,252,0.06);}
+.t-general{color:var(--muted);border-color:var(--border);background:var(--surface2);}
+.t-hot{color:var(--orange);border-color:rgba(191,87,0,0.35);background:rgba(191,87,0,0.08);}
+.thread-title{
+  font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;letter-spacing:.3px;
+  color:var(--white);line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.thread-meta{
+  font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1px;text-transform:uppercase;
+  color:var(--muted);display:flex;align-items:center;gap:8px;margin-top:4px;
+}
+.t-sep{color:var(--border-mid);}
+.thread-count{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0;}
+.tc-num{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:700;color:var(--white);line-height:1;}
+.tc-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);}
+.tc-views{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
 
-/* ROADMAP */
-.roadmap{padding:0 48px 60px;border-bottom:1px solid var(--border);}
-.roadmap-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);}
-.roadmap-cell{background:var(--surface);padding:22px 20px;}
-.roadmap-cell.active{border-top:2px solid var(--orange);}
-.roadmap-phase{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
-.roadmap-cell.active .roadmap-phase{color:var(--orange);}
-.roadmap-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--white);margin-bottom:8px;line-height:1.2;}
-.roadmap-desc{font-size:12px;line-height:1.6;color:var(--muted);}
-.roadmap-cell:not(.active) .roadmap-title{color:var(--muted);}
+/* ======================================================
+   2026 SEASON STRIP
+====================================================== */
+.season-section{border-bottom:1px solid var(--border);padding-bottom:0;}
+.season-strip-wrap{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
+.season-strip-wrap::-webkit-scrollbar{display:none;}
+.season-strip{
+  display:flex;gap:1px;background:var(--border);
+  width:max-content;min-width:100%;
+  margin-top:20px;
+}
+.gc{
+  background:var(--surface);padding:18px 16px 20px;min-width:130px;
+  display:flex;flex-direction:column;align-items:center;text-align:center;gap:7px;
+  text-decoration:none;transition:background .15s;flex-shrink:0;
+}
+.gc:hover{background:var(--surface2);}
+.gc.home{border-top:2px solid var(--orange);}
+.gc.road{border-top:2px solid var(--muted);}
+.gc.neutral{border-top:2px solid var(--purple);}
+.gc.rivalry{border-top:2px solid #e879f9;}
+.gc-wk{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.gc-logo{width:44px;height:44px;object-fit:contain;}
+.gc-opp{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.5px;color:var(--white);line-height:1.2;}
+.gc-date{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1px;color:var(--muted);}
+.gc-spread{
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;
+  color:var(--orange);background:var(--orange-lo);padding:2px 7px;letter-spacing:.5px;
+}
+.gc-venue-tag{
+  font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;
+  text-transform:uppercase;padding:2px 6px;border:1px solid;
+}
+.gc-venue-h{color:var(--orange);border-color:rgba(191,87,0,0.3);}
+.gc-venue-a{color:var(--muted);border-color:var(--border);}
+.gc-venue-n{color:var(--purple);border-color:rgba(192,132,252,0.3);}
 
-/* WAITLIST */
-.waitlist-section{padding:80px 48px;text-align:center;position:relative;overflow:hidden;border-bottom:1px solid var(--border);}
-.waitlist-bg{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Playfair Display',serif;font-size:clamp(100px,16vw,180px);font-weight:900;color:rgba(191,87,0,0.04);letter-spacing:-5px;pointer-events:none;white-space:nowrap;line-height:1;}
-.waitlist-kicker{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:14px;position:relative;}
-.waitlist-headline{font-family:'Playfair Display',serif;font-size:clamp(36px,5vw,68px);font-weight:900;line-height:1;letter-spacing:-2px;margin-bottom:12px;position:relative;}
-.waitlist-sub{font-size:15px;color:var(--secondary);font-style:italic;margin-bottom:32px;position:relative;}
-.waitlist-form{display:flex;gap:0;max-width:400px;margin:0 auto 14px;position:relative;border:1px solid var(--border-strong);}
-.waitlist-form input{flex:1;padding:14px 16px;font-size:14px;font-family:'Barlow',sans-serif;background:var(--surface);border:none;color:var(--white);}
-.waitlist-form input:focus{outline:none;}
-.waitlist-form input::placeholder{color:var(--muted);}
-.waitlist-submit{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;background:var(--orange);color:#fff;border:none;padding:14px 22px;cursor:pointer;white-space:nowrap;transition:background .2s;}
-.waitlist-submit:hover{background:#D4620A;}
-.waitlist-success{display:none;font-size:14px;color:#4ade80;font-weight:600;margin-bottom:14px;position:relative;}
-.waitlist-social{display:flex;justify-content:center;gap:24px;position:relative;margin-top:14px;}
-.waitlist-social a{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s;}
-.waitlist-social a:hover{color:var(--orange);}
+/* ======================================================
+   PROGRAM INTELLIGENCE (2-col)
+====================================================== */
+.intel-grid{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--border);}
+.intel-numbers{padding:32px 48px 44px;border-right:1px solid var(--border);}
+.numbers-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);margin-top:20px;}
+.num-cell{background:var(--surface);padding:26px 22px;}
+.num-big{font-family:'Playfair Display',serif;font-size:50px;font-weight:900;color:var(--orange);line-height:1;margin-bottom:5px;}
+.num-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.num-sub{font-size:11px;color:var(--secondary);margin-top:3px;}
+.intel-recruiting{padding:32px 48px 44px;background:var(--surface);}
+.rec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.rec-title{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);}
+.rec-link{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);text-decoration:none;transition:opacity .2s;}
+.rec-link:hover{opacity:.75;}
+.target{display:grid;grid-template-columns:32px 1fr auto auto;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--border);}
+.target:last-child{border-bottom:none;}
+.tgt-rank{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--muted);text-align:center;}
+.tgt-name{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--white);letter-spacing:.3px;line-height:1.15;}
+.tgt-info{font-size:11px;color:var(--muted);margin-top:2px;}
+.tgt-stars{color:var(--amber);font-size:13px;font-weight:700;}
+.tgt-status{
+  font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  padding:3px 7px;border:1px solid;
+}
+.ts-hot{color:var(--orange);border-color:rgba(191,87,0,0.4);background:rgba(191,87,0,0.08);}
+.ts-leader{color:var(--green);border-color:rgba(34,197,94,0.4);background:rgba(34,197,94,0.07);}
+.ts-visit{color:var(--blue);border-color:rgba(96,165,250,0.4);background:rgba(96,165,250,0.07);}
+.ts-offer{color:var(--muted);border-color:var(--border-mid);background:var(--surface2);}
 
-footer{padding:28px 48px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:24px;}
-.footer-left{font-size:12px;color:var(--muted);font-style:italic;}
-.footer-center{text-align:center;}
-.footer-right{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-align:right;}
-.footer-divider{width:100%;height:1px;background:var(--border);}
+/* ======================================================
+   ROADMAP STRIP
+====================================================== */
+.roadmap-section{border-bottom:1px solid var(--border);padding:0 48px 44px;}
+.roadmap-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);margin-top:20px;}
+.rm-cell{background:var(--surface);padding:22px 20px;}
+.rm-cell.rm-active{border-top:2px solid var(--orange);}
+.rm-phase{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.rm-active .rm-phase{color:var(--orange);}
+.rm-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--white);margin-bottom:8px;line-height:1.2;}
+.rm-cell:not(.rm-active) .rm-title{color:var(--muted);}
+.rm-desc{font-size:12px;line-height:1.6;color:var(--muted);}
 
-@media(max-width:900px){
-  .masthead{padding:9px 20px;}.masthead-date,.masthead-social{display:none;}
+/* ======================================================
+   WAITLIST
+====================================================== */
+.waitlist{padding:88px 48px;text-align:center;position:relative;overflow:hidden;background:var(--surface);border-bottom:1px solid var(--border);}
+.wl-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 50% 50%,rgba(191,87,0,0.07) 0%,transparent 70%);pointer-events:none;}
+.wl-ghost{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-family:'Playfair Display',serif;font-size:clamp(100px,18vw,200px);font-weight:900;
+  color:rgba(191,87,0,0.035);letter-spacing:-10px;pointer-events:none;white-space:nowrap;line-height:1;user-select:none;
+}
+.wl-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--orange);margin-bottom:16px;position:relative;}
+.wl-hed{font-family:'Playfair Display',serif;font-size:clamp(40px,6vw,82px);font-weight:900;line-height:.9;letter-spacing:-3px;color:var(--white);margin-bottom:16px;position:relative;}
+.wl-sub{font-size:15px;color:var(--secondary);font-style:italic;margin-bottom:36px;position:relative;}
+.wl-form{display:flex;gap:0;max-width:420px;margin:0 auto 14px;position:relative;border:1px solid var(--border-strong);}
+.wl-email{flex:1;padding:15px 18px;font-size:14px;font-family:'Barlow',sans-serif;background:var(--black);border:none;color:var(--white);outline:none;}
+.wl-email::placeholder{color:var(--muted);}
+.wl-btn{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;background:var(--orange);color:#fff;border:none;padding:15px 22px;cursor:pointer;white-space:nowrap;transition:background .2s;}
+.wl-btn:hover{background:var(--orange-hi);}
+.wl-success{display:none;font-size:14px;color:var(--green);font-weight:600;margin-bottom:16px;position:relative;}
+.wl-social{display:flex;justify-content:center;gap:28px;position:relative;margin-top:16px;}
+.wl-social a{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s;}
+.wl-social a:hover{color:var(--orange);}
+
+/* ======================================================
+   FOOTER
+====================================================== */
+footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-template-columns:1fr auto 1fr;gap:40px;align-items:start;}
+.footer-brand-name{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--white2);margin-bottom:6px;}
+.footer-brand-name span{color:var(--orange);}
+.footer-tagline{font-size:12px;color:var(--muted);font-style:italic;}
+.footer-links{display:flex;gap:36px;}
+.footer-col-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.f-link{display:block;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--white2);text-decoration:none;line-height:2.1;transition:color .2s;}
+.f-link:hover{color:var(--orange);}
+.footer-right{text-align:right;display:flex;flex-direction:column;gap:8px;}
+.footer-copy{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);}
+.footer-ai{display:inline-flex;align-items:center;gap:5px;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);background:var(--orange-lo);border:1px solid rgba(191,87,0,0.2);padding:3px 8px;align-self:flex-end;}
+
+/* ======================================================
+   RESPONSIVE
+====================================================== */
+@media(max-width:1100px){
+  .hero{grid-template-columns:1fr 340px;}
+  .intel-grid{grid-template-columns:1fr;}
+  .intel-numbers{border-right:none;border-bottom:1px solid var(--border);}
+}
+@media(max-width:860px){
+  .masthead{padding:7px 20px;}
+  .masthead-center,.masthead-pulse,.m-sep{display:none;}
   .nav-inner{padding:0 20px;}
-  .nav-link.hm{display:none;}
-.hero{grid-template-columns:1fr;min-height:auto;}
-  .hero-main{padding:36px 20px 40px;border-right:none;}
-  .hero-sidebar{display:none;}
-  .sr{padding:24px 20px 0;}
-  .cards-section,.snapshot,.roadmap{padding-left:20px;padding-right:20px;}
-  .cards-grid,.roadmap-grid{grid-template-columns:1fr;}
-  .snapshot-grid{grid-template-columns:repeat(2,1fr);}
-  .waitlist-section{padding:56px 20px;}
-  footer{grid-template-columns:1fr;text-align:center;padding:20px;gap:10px;}
-  .footer-right{text-align:center;}
+  .nav-link{display:none;}
+  .nav-link.keep{display:flex;}
+  .hero{grid-template-columns:1fr;}
+  .hero-right,.hero-stories{display:none;}
+  .hero-lead{min-height:auto;padding:36px 20px 36px;}
+  .hero-stats{flex-wrap:wrap;}
+  .sr,.threads-section,.stories-section,.roadmap-section{padding-left:20px;padding-right:20px;}
+  .stories-grid,.roadmap-grid{grid-template-columns:1fr;}
+  .intel-numbers,.intel-recruiting{padding:28px 20px 36px;}
+  .waitlist{padding:60px 20px;}
+  footer{grid-template-columns:1fr;padding:28px 20px;gap:24px;}
+  .footer-right{text-align:left;}
+  .footer-ai{align-self:flex-start;}
 }
 </style>
 </head>
 <body>
 
+<!-- ===================== MASTHEAD ===================== -->
 <div class="masthead">
-  <div class="masthead-date" id="mdate"></div>
-  <div class="masthead-tagline">The Tower Never Sleeps</div>
-  <div class="masthead-social">
-    <a href="https://x.com/towerreportai" target="_blank">X / @towerreportai</a>
-    <a href="https://instagram.com/towerreport" target="_blank">IG / @towerreport</a>
+  <div class="masthead-left">
+    <div class="masthead-date" id="mdate"></div>
+    <div class="m-sep"></div>
+    <div class="masthead-pulse">
+      <span class="pulse-dot"></span>
+      <span>2026 Season T-Minus <span id="days-count">—</span> Days</span>
+    </div>
+  </div>
+  <div class="masthead-center">The Tower Never Sleeps</div>
+  <div class="masthead-right">
+    <a href="https://x.com/towerreportai" target="_blank" class="ms-link">𝕏 @towerreportai</a>
+    <a href="https://instagram.com/towerreport" target="_blank" class="ms-link">Instagram</a>
   </div>
 </div>
 
+<!-- ===================== NAV ===================== -->
 <nav>
   <div class="nav-inner">
     <a href="index.html" class="nav-logo">
-      <svg viewBox="0 0 180 44" width="180" height="44" fill="none">
-        <g transform="translate(0,2)">
-          <rect x="14" y="28" width="12" height="10" fill="#BF5700" opacity="0.9"/>
-          <rect x="15.5" y="18" width="9" height="11" fill="#BF5700"/>
-          <rect x="17" y="10" width="6" height="9" fill="#BF5700"/>
-          <circle cx="20" cy="13.5" r="2.2" fill="#080808" stroke="#BF5700" stroke-width="0.5"/>
-          <line x1="20" y1="10" x2="20" y2="5" stroke="#BF5700" stroke-width="1.5"/>
-          <circle cx="20" cy="4.5" r="1" fill="#E8620A"/>
-          <line x1="26" y1="15" x2="32" y2="12" stroke="#BF5700" stroke-width="0.8" opacity="0.7"/>
-          <circle cx="32.5" cy="11.5" r="1.2" fill="#BF5700" opacity="0.7"/>
-          <line x1="14" y1="15" x2="8" y2="12" stroke="#BF5700" stroke-width="0.8" opacity="0.7"/>
-          <circle cx="7.5" cy="11.5" r="1.2" fill="#BF5700" opacity="0.7"/>
-        </g>
-        <text x="44" y="20" font-family="'Barlow Condensed',sans-serif" font-weight="700" font-size="20" letter-spacing="3" fill="#F5F0E8">TOWER</text>
-        <text x="44" y="38" font-family="'Barlow Condensed',sans-serif" font-weight="600" font-size="14" letter-spacing="5" fill="#BF5700">REPORT</text>
+      <svg viewBox="0 0 34 42" width="28" height="34" fill="none" aria-hidden="true">
+        <rect x="10" y="28" width="14" height="12" fill="#BF5700" opacity=".9"/>
+        <rect x="12" y="17" width="10" height="12" fill="#BF5700"/>
+        <rect x="14" y="7" width="6" height="11" fill="#BF5700"/>
+        <circle cx="17" cy="10" r="2.5" fill="#080808" stroke="#BF5700" stroke-width=".6"/>
+        <line x1="17" y1="7" x2="17" y2="2" stroke="#BF5700" stroke-width="1.5"/>
+        <circle cx="17" cy="1.5" r="1.3" fill="#E8620A"/>
+        <line x1="24" y1="13" x2="29" y2="10" stroke="#BF5700" stroke-width=".8" opacity=".6"/>
+        <circle cx="30" cy="9.5" r="1.1" fill="#BF5700" opacity=".6"/>
+        <line x1="10" y1="13" x2="5" y2="10" stroke="#BF5700" stroke-width=".8" opacity=".6"/>
+        <circle cx="4" cy="9.5" r="1.1" fill="#BF5700" opacity=".6"/>
       </svg>
+      <div class="nav-logo-text">
+        <span class="nav-logo-top">TOWER</span>
+        <span class="nav-logo-sub">REPORT</span>
+      </div>
     </a>
     <div class="nav-links">
-      <a href="index.html" class="nav-link active">Home</a>
-      <a href="schedule.html" class="nav-link hm">Schedule</a>
-      <a href="roster.html" class="nav-link hm">Roster</a>
-      <a href="recruiting.html" class="nav-link hm">Recruiting</a>
-      <a href="portal.html" class="nav-link hm">Portal</a>
-      <a href="stories.html" class="nav-link hm">Stories</a>
-      <a href="players.html" class="nav-link hm">Players</a>
-      <a href="history.html" class="nav-link hm">History</a>
+      <a href="index.html" class="nav-link active keep">Home</a>
+      <a href="schedule.html" class="nav-link">Schedule</a>
+      <a href="roster.html" class="nav-link">Roster</a>
+      <a href="recruiting.html" class="nav-link">Recruiting</a>
+      <a href="portal.html" class="nav-link">Portal</a>
+      <a href="stories.html" class="nav-link">Stories</a>
+      <a href="players.html" class="nav-link">Players</a>
+      <a href="history.html" class="nav-link">History</a>
       <a href="#waitlist" class="nav-cta">Join Waitlist</a>
     </div>
   </div>
 </nav>
 
-<div class="ticker" id="schedule-ticker">
-  <div class="ticker-track" id="ticker-track">
-    <!-- Will be populated by JavaScript -->
+<!-- ===================== TICKER ===================== -->
+<div class="ticker">
+  <div class="ticker-label">2026 Schedule</div>
+  <div class="ticker-viewport">
+    <div class="ticker-track" id="ticker-track"></div>
   </div>
 </div>
 
-<script>
-const games2026 = [
-  { team: 'Texas State', logo: 'https://a.espncdn.com/i/teamlogos/ncaa/500/326.png', date: 'Sep 5', opponent: 'vs Texas State', odds: 'TX -40' },
-  { team: 'Ohio State', logo: 'https://a.espncdn.com/i/teamlogos/ncaa/500/194.png', date: 'Sep 12', opponent: 'vs Ohio State', odds: 'OSU -3' },
-  { team: 'UTSA', logo: 'https://a.espncdn.com/i/teamlogos/ncaa/500/2636.png', date: 'Sep 19', opponent: 'vs UTSA', odds: 'TX -30' },
-  { team: 'Tennessee', logo: 'https://a.espncdn.com/i/teamlogos/ncaa/500/2633.png', date: 'Sep 26', opponent: '@ Tennessee', odds: 'TN -2' },
-  { team: 'Oklahoma', logo: 'https://a.espncdn.com/i/teamlogos/ncaa/500/201.png', date: 'Oct 10', opponent: 'vs Oklahoma', odds: 'TX -3' },
-  { team: 'Florida', logo: 'https://a.espncdn.com/i/teamlogos/ncaa/500/57.png', date: 'Oct 17', opponent: 'vs Florida', odds: 'TX -7' },
-  { team: 'Ole Miss', logo: 'https://a.espncdn.com/i/teamlogos/ncaa/500/145.png', date: 'Oct 24', opponent: 'vs Ole Miss', odds: 'TX -8' },
-  { team: 'Miss State', logo: 'https://a.espncdn.com/i/teamlogos/ncaa/500/344.png', date: 'Oct 31', opponent: 'vs Miss State', odds: 'TX -14' },
-  { team: 'Missouri', logo: 'https://a.espncdn.com/i/teamlogos/ncaa/500/142.png', date: 'Nov 7', opponent: '@ Missouri', odds: 'TX -5' },
-  { team: 'LSU', logo: 'https://a.espncdn.com/i/teamlogos/ncaa/500/99.png', date: 'Nov 14', opponent: '@ LSU', odds: 'LSU -1' },
-  { team: 'Arkansas', logo: 'https://a.espncdn.com/i/teamlogos/ncaa/500/8.png', date: 'Nov 21', opponent: 'vs Arkansas', odds: 'TX -4' },
-  { team: 'Texas A&M', logo: 'https://a.espncdn.com/i/teamlogos/ncaa/500/245.png', date: 'Nov 27', opponent: '@ A&M', odds: 'A&M -2' },
-];
-
-function buildTickerTrack() {
-  const track = document.getElementById('ticker-track');
-  track.innerHTML = '';
-  
-  // Add games twice for seamless loop
-  for (let i = 0; i < 2; i++) {
-    games2026.forEach(game => {
-      const gameEl = document.createElement('div');
-      gameEl.className = 'ticker-game';
-      gameEl.innerHTML = `
-        <img src="${game.logo}" alt="${game.team}" class="ticker-logo" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22%3E%3Crect fill=%22%23333%22 width=%2224%22 height=%2224%22/%3E%3Ctext x=%2212%22 y=%2218%22 text-anchor=%22middle%22 font-size=%228%22 fill=%22%23aaa%22%3E${game.team.substr(0,2)}%3C/text%3E%3C/svg%3E'"/>
-        <span class="ticker-matchup">${game.opponent} · ${game.date}</span>
-        <span class="ticker-odds">${game.odds}</span>
-      `;
-      track.appendChild(gameEl);
-    });
-  }
-}
-
-// Load odds from ESPN or Kalshi (example with mock data + API ready)
-async function updateOdds() {
-  try {
-    // Try to fetch from ESPN odds endpoint
-    const response = await fetch('https://site.api.espn.com/apis/site/v2/sports/football/college-football/teams/25', { 
-      headers: { 'Accept': 'application/json' }
-    }).catch(() => null);
-    
-    if (response && response.ok) {
-      const data = await response.json();
-      // Parse if available
-    }
-  } catch (e) {
-    console.log('Live odds update: using template data');
-  }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  buildTickerTrack();
-  updateOdds();
-  // Update odds every 5 minutes
-  setInterval(updateOdds, 300000);
-});
-</script>
-
+<!-- ===================== HERO ===================== -->
 <section class="hero">
-  <div class="hero-main">
-    <div class="hero-emblem">
-      <img src="https://a.espncdn.com/i/teamlogos/ncaa/500/251.png" alt=""/>
-    </div>
-    <div class="hero-content">
-      <div class="hero-kicker">Longhorn Intelligence Platform</div>
-      <h1 class="hero-headline">Every Signal.<br><span class="orange">One Answer.</span></h1>
-      <p class="hero-deck">Tower Report monitors every recruiting update, portal move, NIL deal, podcast, press conference, and X trend — then turns thousands of daily signals into the intelligence Texas fans actually need.</p>
-      <div class="hero-actions">
-        <a href="#waitlist" class="btn-primary">Get Early Access →</a>
-        <a href="schedule.html" class="btn-secondary">2026 Schedule</a>
-        <a href="history.html" class="btn-secondary">Program History</a>
+
+  <!-- LEFT COLUMN -->
+  <div class="hero-left">
+    <div class="hero-lead">
+      <img class="hero-longhorn" src="https://a.espncdn.com/i/teamlogos/ncaa/500/251.png" alt="" aria-hidden="true"/>
+      <div class="hero-inner">
+        <div class="hero-eyebrow">
+          <div class="live-pill"><span class="live-dot"></span> Live Intel</div>
+          <span class="hero-kicker">Longhorn Intelligence Platform</span>
+        </div>
+        <h1 class="hero-hed">Every Signal.<br><em>One Answer.</em></h1>
+        <p class="hero-dek">Tower Report monitors recruiting crystal balls, portal filings, NIL deals, press conferences, and live data — then turns thousands of signals into the intelligence Texas fans actually need.</p>
+        <div class="hero-btns">
+          <a href="#waitlist" class="btn-primary">Get Early Access →</a>
+          <a href="schedule.html" class="btn-ghost">2026 Schedule</a>
+          <a href="history.html" class="btn-ghost">Program History</a>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="hs-label">Sark Record</div><div class="hs-val orange">48–20</div></div>
+        <div class="hero-stat"><div class="hs-label">All-Time Wins</div><div class="hs-val">972</div></div>
+        <div class="hero-stat"><div class="hs-label">Natl. Titles</div><div class="hs-val">4</div></div>
+        <div class="hero-stat"><div class="hs-label">Active NFL</div><div class="hs-val">51</div></div>
+        <div class="hero-stat"><div class="hs-label">2026 Opener</div><div class="hs-val">Sep 5</div></div>
       </div>
     </div>
-    <div class="hero-bottom">
-      <div><div class="hero-stat-label">Founded</div><div class="hero-stat-val">1893</div></div>
-      <div class="hero-divider"></div>
-      <div><div class="hero-stat-label">All-Time Record</div><div class="hero-stat-val">972–397–33</div></div>
-      <div class="hero-divider"></div>
-      <div><div class="hero-stat-label">National Titles</div><div class="hero-stat-val" style="color:var(--orange);">4</div></div>
-      <div class="hero-divider"></div>
-      <div><div class="hero-stat-label">Active NFL</div><div class="hero-stat-val">51 Players</div></div>
-      <div class="hero-divider"></div>
-      <div><div class="hero-stat-label">Head Coach</div><div class="hero-stat-val">Sarkisian 48–20</div></div>
+    <!-- 2×2 story grid -->
+    <div class="hero-stories">
+      <a href="schedule.html" class="story-card">
+        <div class="sc-tag">🏈 2026 Schedule</div>
+        <div class="sc-hed">Season Opens Sep 5 — Ohio State Home in Week 2</div>
+        <div class="sc-meta">12 Games · SEC Regular Season · Nov 27 @ A&M</div>
+      </a>
+      <a href="recruiting.html" class="story-card">
+        <div class="sc-tag">⚡ Recruiting</div>
+        <div class="sc-hed">2027 Class Taking Shape — Texas Leads on 3 Five-Stars</div>
+        <div class="sc-meta">247Sports Board · Portal Watch · NIL Tracker</div>
+      </a>
+      <a href="roster.html" class="story-card">
+        <div class="sc-tag">👥 Roster</div>
+        <div class="sc-hed">Arch Manning Headlines Senior Year at Quarterback</div>
+        <div class="sc-meta">Full Roster · Depth Chart · 2026 Projections</div>
+      </a>
+      <a href="history.html" class="story-card">
+        <div class="sc-tag">🏆 History</div>
+        <div class="sc-hed">972 Wins, 4 Titles, The Greatest Game Ever Played</div>
+        <div class="sc-meta">1893–2025 · VY · Ricky Williams · Mack Brown</div>
+      </a>
     </div>
   </div>
 
-  <div class="hero-sidebar" id="intelligence">
-    <div class="sidebar-header">
-      <div class="sidebar-title">Longhorn Intelligence</div>
-      <div class="live-badge"><span class="live-dot"></span> Live</div>
+  <!-- RIGHT COLUMN -->
+  <div class="hero-right">
+
+    <!-- AI PANEL -->
+    <div class="ai-panel">
+      <div class="ai-head">
+        <div class="ai-head-left">
+          <div class="ai-icon-box">⚡</div>
+          <span class="ai-title">Ask The Tower</span>
+        </div>
+        <div class="ai-badge">AI Powered</div>
+      </div>
+
+      <div class="ai-chips">
+        <div class="ai-chips-label">Suggested Questions</div>
+        <div class="ai-chip" onclick="askTower('What is the depth chart at running back for 2026?')">
+          What's the RB depth chart?<span class="ai-chip-arr">→</span>
+        </div>
+        <div class="ai-chip" onclick="askTower('Break down the Ohio State matchup in Week 2')">
+          Break down the Ohio State game<span class="ai-chip-arr">→</span>
+        </div>
+        <div class="ai-chip" onclick="askTower('Who are the top 2027 recruiting targets for Texas?')">
+          Top 2027 recruiting targets<span class="ai-chip-arr">→</span>
+        </div>
+      </div>
+
+      <div class="ai-body">
+        <div class="ai-body-label" id="ai-label">Tower Intel</div>
+        <div class="ai-body-text" id="ai-text">
+          Tower Report AI monitors recruiting Crystal Balls, portal filings, depth chart changes, practice reports, coach statements, and beat writer signals — then surfaces what actually matters to Longhorn fans.<br><br>
+          Ask a question or tap a suggestion to see it in action.
+        </div>
+      </div>
+
+      <div class="ai-footer">
+        <input class="ai-input" id="ai-input" type="text" placeholder="Ask about Texas football…" onkeydown="if(event.key==='Enter')submitAsk()"/>
+        <button class="ai-send" onclick="submitAsk()">Ask →</button>
+      </div>
     </div>
-    <div id="briefing-list" style="padding:4px 0;">
-      <div class="intel-answer" style="padding:14px 18px;color:var(--muted);font-style:italic;">Loading today's briefing…</div>
-    </div>
-    <div id="briefing-updated" style="padding:6px 18px 12px;font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);border-top:1px solid var(--border);margin-top:4px;"></div>
-    <div class="sidebar-nav">
-      <a href="schedule.html" class="sidebar-nav-link">
-        <div class="snl-left"><span class="snl-icon">📅</span><div><div class="snl-title">2026 Schedule</div><div class="snl-sub">Full season + 10-year history</div></div></div>
-        <span class="snl-arrow">→</span>
-      </a>
-      <a href="roster.html" class="sidebar-nav-link">
-        <div class="snl-left"><span class="snl-icon">👥</span><div><div class="snl-title">Roster</div><div class="snl-sub">2026 players & positions</div></div></div>
-        <span class="snl-arrow">→</span>
-      </a>
-      <a href="history.html" class="sidebar-nav-link">
-        <div class="snl-left"><span class="snl-icon">🏆</span><div><div class="snl-title">Program History</div><div class="snl-sub">Championships, Heismans & legacy</div></div></div>
-        <span class="snl-arrow">→</span>
-      </a>
-      <a href="#waitlist" class="sidebar-nav-link">
-        <div class="snl-left"><span class="snl-icon">🔔</span><div><div class="snl-title">Join Waitlist</div><div class="snl-sub">Get early access at launch</div></div></div>
-        <span class="snl-arrow">→</span>
-      </a>
+
+    <!-- BRIEFING PANEL -->
+    <div class="briefing-panel">
+      <div class="briefing-head">
+        <span class="briefing-title">Today's Briefing</span>
+        <div class="briefing-live">
+          <span class="live-dot"></span>
+          <span class="briefing-live-text">Live</span>
+        </div>
+      </div>
+      <div id="briefing-list">
+        <div class="briefing-item" style="color:var(--muted);font-style:italic;font-size:12px;">Loading today's intel…</div>
+      </div>
+      <div class="briefing-footer-ts" id="briefing-updated"></div>
     </div>
   </div>
+
 </section>
 
-<!-- PROGRAM SNAPSHOT -->
+<!-- ===================== FEATURED STORIES ===================== -->
+<div class="sr"><span class="sr-label">Latest Analysis</span><div class="sr-line"></div><span class="sr-meta">Tower Report · AI-Sourced</span></div>
+<div class="stories-section">
+  <div class="stories-grid" id="stories-grid">
+    <!-- populated by JS from briefing.json -->
+    <a href="stories.html" class="story-tile">
+      <div class="st-kicker">Tower Analysis</div>
+      <div class="st-hed">Arch Manning's Moment Has Finally Arrived</div>
+      <div class="st-dek">After two seasons behind Quinn Ewers, Manning enters 2026 as the consensus Heisman favorite. Every indicator points to a special year.</div>
+      <div class="st-cat">Analysis · Quarterback</div>
+    </a>
+    <a href="portal.html" class="story-tile">
+      <div class="st-kicker">Roster Move</div>
+      <div class="st-hed">Coleman Addition Makes Texas WR Room a Problem</div>
+      <div class="st-dek">Cam Coleman's arrival from Auburn gives Texas one of the deepest receiver groups in the SEC. No coordinator has a good answer.</div>
+      <div class="st-cat">Portal · Wide Receiver</div>
+    </a>
+    <a href="players.html" class="story-tile">
+      <div class="st-kicker">Film Room</div>
+      <div class="st-hed">Colin Simmons Is the Best Pass Rusher in College Football</div>
+      <div class="st-dek">11 sacks, 17 TFLs as a sophomore. Simmons is the engine driving Texas's defensive identity — and Bednarik Award buzz is real.</div>
+      <div class="st-cat">Defense · EDGE · Awards Watch</div>
+    </a>
+  </div>
+</div>
+
+<!-- ===================== HOT ON THE BOARD ===================== -->
+<div class="sr"><span class="sr-label">Hot on the Board</span><div class="sr-line"></div><span class="sr-meta">Community · Fan Intel</span></div>
+<div class="threads-section">
+  <div class="threads-toolbar">
+    <div class="t-tabs">
+      <button class="t-tab active" data-filter="all">🔥 Hot</button>
+      <button class="t-tab" data-filter="recruiting">Recruiting</button>
+      <button class="t-tab" data-filter="portal">Portal</button>
+      <button class="t-tab" data-filter="gameday">Game Day</button>
+      <button class="t-tab" data-filter="nil">NIL</button>
+    </div>
+  </div>
+
+  <div id="threads-list">
+
+    <div class="thread-row thread-hot" data-cats="all recruiting">
+      <div class="thread-avatar">🔥</div>
+      <div class="thread-body">
+        <div class="thread-tags"><span class="t-tag t-hot">🔥 Hot</span><span class="t-tag t-recruiting">Recruiting</span></div>
+        <div class="thread-title">Crystal Ball moving hard orange on top 5-star WR target — sources say Texas is the clear leader</div>
+        <div class="thread-meta"><span>LonghornMaven</span><span class="t-sep">·</span><span>2h ago</span><span class="t-sep">·</span><span>2027 Class · WR Board</span></div>
+      </div>
+      <div class="thread-count"><div class="tc-num">247</div><div class="tc-label">replies</div><div class="tc-views">12.4k views</div></div>
+    </div>
+
+    <div class="thread-row" data-cats="all portal">
+      <div class="thread-avatar">🔄</div>
+      <div class="thread-body">
+        <div class="thread-tags"><span class="t-tag t-portal">Portal</span></div>
+        <div class="thread-title">Oklahoma DT enters portal — sources confirm Texas and Georgia both in play, decision expected by Friday</div>
+        <div class="thread-meta"><span>BurntOrangeNation</span><span class="t-sep">·</span><span>4h ago</span><span class="t-sep">·</span><span>D-Line Depth · Portal</span></div>
+      </div>
+      <div class="thread-count"><div class="tc-num">89</div><div class="tc-label">replies</div><div class="tc-views">3.2k views</div></div>
+    </div>
+
+    <div class="thread-row thread-hot" data-cats="all gameday">
+      <div class="thread-avatar">🏈</div>
+      <div class="thread-body">
+        <div class="thread-tags"><span class="t-tag t-hot">🔥 Hot</span><span class="t-tag t-gameday">Game Day</span></div>
+        <div class="thread-title">Ohio State Week 2 at DKR — what does our defense need to do to control their O-line and stop the run?</div>
+        <div class="thread-meta"><span>HookEmAnalytics</span><span class="t-sep">·</span><span>6h ago</span><span class="t-sep">·</span><span>Week 2 Preview · Defense</span></div>
+      </div>
+      <div class="thread-count"><div class="tc-num">156</div><div class="tc-label">replies</div><div class="tc-views">5.8k views</div></div>
+    </div>
+
+    <div class="thread-row" data-cats="all gameday">
+      <div class="thread-avatar">🎯</div>
+      <div class="thread-body">
+        <div class="thread-tags"><span class="t-tag t-gameday">Game Day</span></div>
+        <div class="thread-title">Arch Manning Heisman odds opened at +250 — is 2026 the year he runs away with it and cements his legacy?</div>
+        <div class="thread-meta"><span>TowerReport_AI</span><span class="t-sep">·</span><span>8h ago</span><span class="t-sep">·</span><span>Heisman · NFL Draft · Arch</span></div>
+      </div>
+      <div class="thread-count"><div class="tc-num">198</div><div class="tc-label">replies</div><div class="tc-views">8.7k views</div></div>
+    </div>
+
+    <div class="thread-row" data-cats="all nil">
+      <div class="thread-avatar">💰</div>
+      <div class="thread-body">
+        <div class="thread-tags"><span class="t-tag t-nil">NIL</span></div>
+        <div class="thread-title">Longhorn Collective reportedly offering record deal to lock in top 2027 priority — $4M+ structure per sources</div>
+        <div class="thread-meta"><span>InsideTexasFB</span><span class="t-sep">·</span><span>12h ago</span><span class="t-sep">·</span><span>NIL · 2027 Class</span></div>
+      </div>
+      <div class="thread-count"><div class="tc-num">44</div><div class="tc-label">replies</div><div class="tc-views">1.9k views</div></div>
+    </div>
+
+    <div class="thread-row" data-cats="all recruiting">
+      <div class="thread-avatar">📊</div>
+      <div class="thread-body">
+        <div class="thread-tags"><span class="t-tag t-recruiting">Recruiting</span></div>
+        <div class="thread-title">2027 class early board — priority positions and which Texas high schools Sark's staff is hitting hardest</div>
+        <div class="thread-meta"><span>TXRecruitingHub</span><span class="t-sep">·</span><span>1d ago</span><span class="t-sep">·</span><span>2027 Class · State Recruiting</span></div>
+      </div>
+      <div class="thread-count"><div class="tc-num">67</div><div class="tc-label">replies</div><div class="tc-views">2.1k views</div></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===================== 2026 SEASON STRIP ===================== -->
+<div class="sr"><span class="sr-label">2026 Season Schedule</span><div class="sr-line"></div><span class="sr-meta">Opens Sep 5 · 12 Regular Season Games</span></div>
+<div class="season-section">
+  <div class="season-strip-wrap" style="padding:0 48px;">
+    <div class="season-strip" id="season-strip"></div>
+  </div>
+  <div style="padding:0 48px 44px;"></div>
+</div>
+
+<!-- ===================== PROGRAM INTELLIGENCE ===================== -->
 <div class="sr"><span class="sr-label">Program at a Glance</span><div class="sr-line"></div></div>
-<div class="snapshot">
-  <div class="snapshot-grid">
-    <div class="snap-cell"><div class="snap-num">972</div><div class="snap-label">All-Time Wins</div><div class="snap-sub">5th most in FBS history</div></div>
-    <div class="snap-cell"><div class="snap-num">4</div><div class="snap-label">National Titles</div><div class="snap-sub">1963 · 1969 · 1970 · 2005</div></div>
-    <div class="snap-cell"><div class="snap-num">34</div><div class="snap-label">Conference Titles</div><div class="snap-sub">SWC · Big 12 · TIAA</div></div>
-    <div class="snap-cell"><div class="snap-num">51</div><div class="snap-label">Active NFL Players</div><div class="snap-sub">381 drafted all-time</div></div>
+<div class="intel-grid">
+  <div class="intel-numbers">
+    <div class="numbers-grid">
+      <div class="num-cell">
+        <div class="num-big">972</div>
+        <div class="num-label">All-Time Wins</div>
+        <div class="num-sub">5th most in FBS history</div>
+      </div>
+      <div class="num-cell">
+        <div class="num-big">4</div>
+        <div class="num-label">National Titles</div>
+        <div class="num-sub">1963 · 1969 · 1970 · 2005</div>
+      </div>
+      <div class="num-cell">
+        <div class="num-big">48–20</div>
+        <div class="num-label">Sark Record</div>
+        <div class="num-sub">2021–2025 · CFP Semifinal</div>
+      </div>
+      <div class="num-cell">
+        <div class="num-big">51</div>
+        <div class="num-label">Active NFL Players</div>
+        <div class="num-sub">381 drafted all-time</div>
+      </div>
+    </div>
+  </div>
+  <div class="intel-recruiting">
+    <div class="rec-head">
+      <div class="rec-title">2027 Recruiting Radar</div>
+      <a href="recruiting.html" class="rec-link">Full Board →</a>
+    </div>
+    <div class="target">
+      <div class="tgt-rank">1</div>
+      <div><div class="tgt-name">Jalen Thompson</div><div class="tgt-info">DT · Texas City, TX · 2027</div></div>
+      <div class="tgt-stars">5★</div>
+      <div class="tgt-status ts-hot">🔥 Hot</div>
+    </div>
+    <div class="target">
+      <div class="tgt-rank">2</div>
+      <div><div class="tgt-name">Marcus Williams</div><div class="tgt-info">QB · Houston, TX · 2027</div></div>
+      <div class="tgt-stars">5★</div>
+      <div class="tgt-status ts-leader">Leader</div>
+    </div>
+    <div class="target">
+      <div class="tgt-rank">3</div>
+      <div><div class="tgt-name">DeShawn Carter</div><div class="tgt-info">WR · Dallas, TX · 2027</div></div>
+      <div class="tgt-stars">4★</div>
+      <div class="tgt-status ts-visit">Visit Set</div>
+    </div>
+    <div class="target">
+      <div class="tgt-rank">4</div>
+      <div><div class="tgt-name">Tyrone Jefferson</div><div class="tgt-info">OT · Houston, TX · 2027</div></div>
+      <div class="tgt-stars">5★</div>
+      <div class="tgt-status ts-hot">🔥 Hot</div>
+    </div>
+    <div class="target">
+      <div class="tgt-rank">5</div>
+      <div><div class="tgt-name">C.J. Banks</div><div class="tgt-info">LB · Austin, TX · 2027</div></div>
+      <div class="tgt-stars">4★</div>
+      <div class="tgt-status ts-offer">Offer Out</div>
+    </div>
   </div>
 </div>
 
-<!-- FEATURES -->
-<div class="sr"><span class="sr-label">What We're Building</span><div class="sr-line"></div></div>
-<div class="cards-section">
-  <div class="cards-grid">
-    <div class="card">
-      <div class="card-kicker">Core Product</div>
-      <div class="card-title">Longhorn Intelligence Search</div>
-      <div class="card-desc">Ask anything about Texas football and get an answer grounded in real, current data — not stale AI training data.</div>
-      <div class="card-meta">Phase 1 · 2026</div>
-    </div>
-    <div class="card">
-      <div class="card-kicker">Live Tracking</div>
-      <div class="card-title">Recruiting & Portal Board</div>
-      <div class="card-desc">Every target tracked with commit probability scores, visit logs, and trend alerts. Portal entries with instant depth-chart impact.</div>
-      <div class="card-meta">Phase 1 · 2026</div>
-    </div>
-    <div class="card">
-      <div class="card-kicker">Daily Intelligence</div>
-      <div class="card-title">Morning Briefing</div>
-      <div class="card-desc">Every morning: what happened overnight, what actually matters, and what to watch. Podcast summaries and X trends included.</div>
-      <div class="card-meta">Phase 1 · 2026</div>
-    </div>
-  </div>
-</div>
-
-<!-- ROADMAP -->
+<!-- ===================== ROADMAP ===================== -->
 <div class="sr"><span class="sr-label">The Roadmap</span><div class="sr-line"></div></div>
-<div class="roadmap">
+<div class="roadmap-section">
   <div class="roadmap-grid">
-    <div class="roadmap-cell active">
-      <div class="roadmap-phase">Phase 1 — Now</div>
-      <div class="roadmap-title">Intelligence Platform</div>
-      <div class="roadmap-desc">AI Search · Recruiting Tracker · Portal Watch · NIL · Daily Briefings · Podcast Intelligence</div>
+    <div class="rm-cell rm-active">
+      <div class="rm-phase">Phase 1 — Now Building</div>
+      <div class="rm-title">Intelligence Platform</div>
+      <div class="rm-desc">AI Search · Recruiting Tracker · Portal Watch · NIL Intelligence · Daily Briefings</div>
     </div>
-    <div class="roadmap-cell">
-      <div class="roadmap-phase">Phase 2</div>
-      <div class="roadmap-title">Community Layer</div>
-      <div class="roadmap-desc">Predictions · Confidence votes · Depth chart debates · Fan sentiment engine</div>
+    <div class="rm-cell">
+      <div class="rm-phase">Phase 2</div>
+      <div class="rm-title">Community Layer</div>
+      <div class="rm-desc">Predictions · Confidence votes · Depth chart debates · Fan sentiment engine</div>
     </div>
-    <div class="roadmap-cell">
-      <div class="roadmap-phase">Phase 3</div>
-      <div class="roadmap-title">Data Company</div>
-      <div class="roadmap-desc">Bloomberg Terminal of Texas sports. Recruiting momentum, source accuracy, NIL valuations.</div>
+    <div class="rm-cell">
+      <div class="rm-phase">Phase 3</div>
+      <div class="rm-title">Data Company</div>
+      <div class="rm-desc">The Bloomberg Terminal of Texas sports — recruiting momentum, source accuracy, NIL valuations</div>
     </div>
-    <div class="roadmap-cell">
-      <div class="roadmap-phase">Phase 4+</div>
-      <div class="roadmap-title">Expand the Empire</div>
-      <div class="roadmap-desc">Texas A&M · Oklahoma · LSU · SEC Intelligence · College Football Intelligence</div>
+    <div class="rm-cell">
+      <div class="rm-phase">Phase 4+</div>
+      <div class="rm-title">Expand the Empire</div>
+      <div class="rm-desc">Texas A&M · Oklahoma · LSU · Full SEC Intelligence Platform</div>
     </div>
   </div>
 </div>
 
-<section class="waitlist-section" id="waitlist">
-  <div class="waitlist-bg">TOWER</div>
-  <div class="waitlist-kicker">Early Access</div>
-  <h2 class="waitlist-headline">Be First In.</h2>
-  <p class="waitlist-sub">Tower Report is in development. Join the list and get notified at launch.</p>
-  <div class="waitlist-success" id="wl-success">✓ You're on the list. Hook 'em. 🤘</div>
-  <div class="waitlist-form">
-    <input type="email" id="wl-email" placeholder="your@email.com"/>
-    <button class="waitlist-submit" onclick="joinWL()">Join Waitlist</button>
+<!-- ===================== WAITLIST ===================== -->
+<section class="waitlist" id="waitlist">
+  <div class="wl-bg"></div>
+  <div class="wl-ghost">TOWER</div>
+  <div class="wl-eyebrow">Early Access</div>
+  <h2 class="wl-hed">Be First In.</h2>
+  <p class="wl-sub">Tower Report is in development. Join the list and get notified at launch.</p>
+  <div class="wl-success" id="wl-success">✓ You're on the list. Hook 'em.</div>
+  <div class="wl-form">
+    <input type="email" id="wl-email" class="wl-email" placeholder="your@email.com"/>
+    <button class="wl-btn" onclick="joinWL()">Join Waitlist</button>
   </div>
-  <div class="waitlist-social">
+  <div class="wl-social">
     <a href="https://x.com/towerreportai" target="_blank">𝕏 @towerreportai</a>
     <a href="https://instagram.com/towerreport" target="_blank">Instagram @towerreport</a>
   </div>
 </section>
 
-<div class="footer-divider"></div>
+<!-- ===================== FOOTER ===================== -->
 <footer>
-  <div class="footer-left">AI-Powered · Human Trusted · Longhorn Focused</div>
-  <div class="footer-center">
-    <svg viewBox="0 0 120 28" width="100" height="24" fill="none">
-      <text x="0" y="16" font-family="'Barlow Condensed',sans-serif" font-weight="700" font-size="14" letter-spacing="2" fill="#F5F0E8">TOWER</text>
-      <text x="0" y="27" font-family="'Barlow Condensed',sans-serif" font-weight="600" font-size="9" letter-spacing="4" fill="#BF5700">REPORT</text>
-    </svg>
+  <div>
+    <div class="footer-brand-name">TOWER<span>REPORT</span></div>
+    <div class="footer-tagline">AI-Powered · Human Trusted · Longhorn Focused</div>
   </div>
-  <div class="footer-right">© 2026 Tower Report · Austin, Texas</div>
+  <div class="footer-links">
+    <div class="footer-col">
+      <div class="footer-col-label">Platform</div>
+      <a href="schedule.html" class="f-link">Schedule</a>
+      <a href="roster.html" class="f-link">Roster</a>
+      <a href="recruiting.html" class="f-link">Recruiting</a>
+      <a href="portal.html" class="f-link">Portal</a>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-label">Content</div>
+      <a href="stories.html" class="f-link">Stories</a>
+      <a href="players.html" class="f-link">Players</a>
+      <a href="history.html" class="f-link">History</a>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-label">Follow</div>
+      <a href="https://x.com/towerreportai" target="_blank" class="f-link">𝕏 Twitter</a>
+      <a href="https://instagram.com/towerreport" target="_blank" class="f-link">Instagram</a>
+      <a href="#waitlist" class="f-link">Join Waitlist</a>
+    </div>
+  </div>
+  <div class="footer-right">
+    <div class="footer-copy">© 2026 Tower Report · Austin, Texas</div>
+    <div class="footer-copy">The Tower Never Sleeps.</div>
+    <div class="footer-ai">⚡ AI Powered Platform</div>
+  </div>
 </footer>
 
+<!-- ===================== SCRIPTS ===================== -->
 <script>
-document.getElementById('mdate').textContent = new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+/* ---- DATE / COUNTDOWN ---- */
+(function(){
+  const now = new Date();
+  document.getElementById('mdate').textContent = now.toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const opener = new Date('2026-09-05');
+  const days = Math.ceil((opener - now) / 86400000);
+  const el = document.getElementById('days-count');
+  if(el) el.textContent = days > 0 ? days : 0;
+})();
+
+/* ---- SCHEDULE DATA ---- */
+const schedule2026 = [
+  { wk:'W1',  opp:'Texas State', short:'Texas State', logo:'https://a.espncdn.com/i/teamlogos/ncaa/500/326.png',  date:'Sep 5',  venue:'home',    odds:'TX −38.5' },
+  { wk:'W2',  opp:'Ohio State',  short:'Ohio State',  logo:'https://a.espncdn.com/i/teamlogos/ncaa/500/194.png',  date:'Sep 12', venue:'home',    odds:'TX −3.5'  },
+  { wk:'W3',  opp:'UTSA',        short:'UTSA',        logo:'https://a.espncdn.com/i/teamlogos/ncaa/500/2636.png', date:'Sep 19', venue:'home',    odds:'TX −35'   },
+  { wk:'W4',  opp:'@ Tennessee', short:'Tennessee',   logo:'https://a.espncdn.com/i/teamlogos/ncaa/500/2633.png', date:'Sep 26', venue:'road',    odds:'TN −2.5'  },
+  { wk:'W5',  opp:'Oklahoma',    short:'Oklahoma',    logo:'https://a.espncdn.com/i/teamlogos/ncaa/500/201.png',  date:'Oct 10', venue:'neutral', odds:'TX −6'    },
+  { wk:'W6',  opp:'Florida',     short:'Florida',     logo:'https://a.espncdn.com/i/teamlogos/ncaa/500/57.png',   date:'Oct 17', venue:'home',    odds:'TX −7'    },
+  { wk:'W7',  opp:'Ole Miss',    short:'Ole Miss',    logo:'https://a.espncdn.com/i/teamlogos/ncaa/500/145.png',  date:'Oct 24', venue:'home',    odds:'TX −4.5'  },
+  { wk:'W8',  opp:'Miss State',  short:'Miss State',  logo:'https://a.espncdn.com/i/teamlogos/ncaa/500/344.png',  date:'Oct 31', venue:'home',    odds:'TX −17'   },
+  { wk:'W9',  opp:'@ Missouri',  short:'Missouri',    logo:'https://a.espncdn.com/i/teamlogos/ncaa/500/142.png',  date:'Nov 7',  venue:'road',    odds:'MIZ −1'   },
+  { wk:'W10', opp:'@ LSU',       short:'LSU',         logo:'https://a.espncdn.com/i/teamlogos/ncaa/500/99.png',   date:'Nov 14', venue:'road',    odds:'LSU −1.5' },
+  { wk:'W11', opp:'Arkansas',    short:'Arkansas',    logo:'https://a.espncdn.com/i/teamlogos/ncaa/500/8.png',    date:'Nov 21', venue:'home',    odds:'TX −9'    },
+  { wk:'W12', opp:'@ Texas A&M', short:'Texas A&M',   logo:'https://a.espncdn.com/i/teamlogos/ncaa/500/245.png', date:'Nov 27', venue:'rivalry', odds:'A&M −3'   },
+];
+
+/* ---- BUILD TICKER ---- */
+function buildTicker(){
+  const track = document.getElementById('ticker-track');
+  if(!track) return;
+  track.innerHTML = '';
+  for(let i=0;i<2;i++){
+    schedule2026.forEach(g=>{
+      const el = document.createElement('div');
+      el.className = 'ticker-game';
+      el.innerHTML=`<img src="${g.logo}" class="ticker-logo" alt="" onerror="this.style.display='none'"/>
+        <span class="ticker-text">${g.opp} · ${g.date}</span>
+        <span class="ticker-pill">${g.odds}</span>`;
+      track.appendChild(el);
+    });
+  }
+}
+
+/* ---- BUILD SEASON STRIP ---- */
+function buildStrip(){
+  const strip = document.getElementById('season-strip');
+  if(!strip) return;
+  strip.innerHTML='';
+  schedule2026.forEach(g=>{
+    const el = document.createElement('a');
+    el.href = 'schedule.html';
+    el.className = `gc ${g.venue}`;
+    el.innerHTML=`<div class="gc-wk">${g.wk}</div>
+      <img class="gc-logo" src="${g.logo}" alt="${g.short}" onerror="this.parentNode.querySelector('.gc-logo').remove()"/>
+      <div class="gc-opp">${g.short}</div>
+      <div class="gc-date">${g.date}</div>
+      <div class="gc-venue-tag ${g.venue==='home'?'gc-venue-h':g.venue==='road'?'gc-venue-a':'gc-venue-n'}">${g.venue==='home'?'Home':g.venue==='road'?'Away':'Neutral'}</div>
+      <div class="gc-spread">${g.odds}</div>`;
+    strip.appendChild(el);
+  });
+}
+
+/* ---- AI RESPONSES ---- */
+const aiDB = {
+  depthChart:`<strong>2026 Texas Depth Chart — Skill Positions</strong><br><br>
+    <strong>QB:</strong> Arch Manning (Sr.) · Maalik Murphy (backup)<br>
+    <strong>RB:</strong> CJ Baxter (Sr.) · Quintrevion Wisner (Jr.)<br>
+    <strong>WR1:</strong> Ryan Wingo (Jr.) · Isaiah Bond (Sr.)<br>
+    <strong>WR2:</strong> Cam Coleman (Jr., transfer from Auburn)<br>
+    <strong>TE:</strong> Gunnar Helm (Sr.) · Ja'Tavion Sanders<br><br>
+    <em style="font-size:11px;color:var(--muted)">Spring depth chart — fall camp may shift WR2 and RB2.</em>`,
+  ohioState:`<strong>Texas vs. Ohio State — Sep 12, 2026 · DKR</strong><br><br>
+    The biggest home non-conference game in the Sark era. Ohio State returns the core of their 2025 CFP roster. Texas is favored by 3.5 at DKR.<br><br>
+    <strong>Key matchup:</strong> Arch Manning vs. Ohio State's veteran secondary. Texas lost 10–31 in Columbus in 2025 — DKR at night is a different animal.<br><br>
+    <strong>Tower FPI:</strong> Texas 54% win probability · Over/Under 57`,
+  recruiting:`<strong>2027 Recruiting Class — Top Targets</strong><br><br>
+    Texas is prioritizing EDGE, DT, and WR early in the '27 cycle with 3 current commitments at 4★+.<br><br>
+    <strong>Top uncommitted targets:</strong><br>
+    • Jalen Thompson, DT, 5★ (Texas City) — Texas leading per Crystal Ball<br>
+    • Marcus Williams, QB, 5★ (Houston) — in-state priority<br>
+    • Tyrone Jefferson, OT, 5★ (Houston) — official visit pending<br><br>
+    <em style="font-size:11px;color:var(--muted)">Based on latest 247Sports Crystal Ball data.</em>`,
+  arch:`<strong>Arch Manning — 2026 Heisman Profile</strong><br><br>
+    Manning enters his senior year as consensus Heisman #1. 2025 stats: <strong>3,472 pass yds · 29 TD · 8 INT · 64% completion</strong>.<br><br>
+    <strong>Early Heisman odds:</strong> Manning +250 (co-favorite)<br>
+    <strong>NIL valuation:</strong> $4.2M (On3 estimate, tops among CFB QBs)<br>
+    <strong>2027 NFL Draft:</strong> Consensus #1 overall prospect<br><br>
+    <em style="font-size:11px;color:var(--muted)">All odds current as of preseason.</em>`,
+  default:`Tower Report AI monitors recruiting Crystal Balls, portal filings, NIL moves, coach statements, and live data to surface Longhorn intelligence.<br><br>
+    Try asking about: <strong>depth chart</strong>, <strong>Ohio State game</strong>, <strong>Arch Manning</strong>, or <strong>2027 recruiting</strong>.`
+};
+
+function getAIResponse(q){
+  const lq = q.toLowerCase();
+  if(lq.match(/depth|running back|rb|backs/)) return aiDB.depthChart;
+  if(lq.match(/ohio|buckeye|week 2|osu/)) return aiDB.ohioState;
+  if(lq.match(/recruit|target|2027|crystal ball/)) return aiDB.recruiting;
+  if(lq.match(/arch|manning|heisman|nil/)) return aiDB.arch;
+  return aiDB.default;
+}
+
+function askTower(q){
+  document.getElementById('ai-input').value = q;
+  submitAsk();
+}
+
+function submitAsk(){
+  const inp = document.getElementById('ai-input');
+  const q = inp.value.trim();
+  if(!q) return;
+  const textEl = document.getElementById('ai-text');
+  const labelEl = document.getElementById('ai-label');
+  textEl.innerHTML = '<span style="color:var(--muted);font-style:italic;">Analyzing…</span>';
+  labelEl.textContent = 'Thinking…';
+  setTimeout(()=>{
+    textEl.innerHTML = getAIResponse(q);
+    labelEl.textContent = 'Tower Intel';
+    inp.value = '';
+  }, 520);
+}
+
+/* ---- BRIEFING LOADER ---- */
 async function loadBriefing(){
   try{
-    const res=await fetch('./data/briefing.json?v='+Date.now());
-    const data=await res.json();
-    const list=document.getElementById('briefing-list');
-    const upd=document.getElementById('briefing-updated');
-    if(data.briefing&&data.briefing.length){
-      list.innerHTML=data.briefing.map(item=>`
-        <div style="padding:12px 18px;border-bottom:1px solid var(--border);">
-          <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:5px;">${item.category}</div>
-          <div style="font-size:13px;line-height:1.6;color:var(--secondary);">${item.text}</div>
-          <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-top:5px;">via ${item.source}</div>
+    const res = await fetch('./data/briefing.json?v='+Date.now());
+    const data = await res.json();
+    const list = document.getElementById('briefing-list');
+    const upd = document.getElementById('briefing-updated');
+    if(data.briefing && data.briefing.length){
+      list.innerHTML = data.briefing.slice(0,4).map(item=>`
+        <div class="briefing-item">
+          <div class="bi-cat">${item.category}</div>
+          <div class="bi-text">${item.text}</div>
+          <div class="bi-src">via ${item.source}</div>
         </div>`).join('');
     }
     if(data.lastUpdated){
-      const d=new Date(data.lastUpdated);
-      upd.textContent='Updated '+d.toLocaleDateString('en-US',{month:'short',day:'numeric'})+' · '+d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+      const d = new Date(data.lastUpdated);
+      upd.textContent = 'Updated ' + d.toLocaleDateString('en-US',{month:'short',day:'numeric'}) + ' · ' + d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+    }
+    /* also populate stories if available */
+    if(data.stories && data.stories.length){
+      const grid = document.getElementById('stories-grid');
+      if(grid){
+        grid.innerHTML = data.stories.map(s=>`
+          <a href="stories.html" class="story-tile">
+            <div class="st-kicker">${s.kicker||s.category}</div>
+            <div class="st-hed">${s.headline}</div>
+            <div class="st-dek">${s.summary}</div>
+            <div class="st-cat">${s.category}</div>
+          </a>`).join('');
+      }
     }
   }catch(e){
-    document.getElementById('briefing-list').innerHTML='<div style="padding:14px 18px;color:var(--muted);font-style:italic;font-size:13px;">Briefing updating…</div>';
+    document.getElementById('briefing-list').innerHTML=`<div class="briefing-item" style="color:var(--muted);font-style:italic;font-size:12px;">Briefing updating…</div>`;
   }
 }
-loadBriefing();
+
+/* ---- THREAD TABS ---- */
+document.querySelectorAll('.t-tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.t-tab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    const filter = tab.dataset.filter;
+    document.querySelectorAll('.thread-row').forEach(row=>{
+      const cats = (row.dataset.cats||'all');
+      row.style.display = (filter==='all' || cats.includes(filter)) ? '' : 'none';
+    });
+  });
+});
+
+/* ---- WAITLIST ---- */
 function joinWL(){
-  const input=document.getElementById('wl-email');
-  if(!input.value||!input.value.includes('@')){input.style.outline='1px solid #ef4444';setTimeout(()=>input.style.outline='',1500);return;}
-  input.value='';
+  const inp = document.getElementById('wl-email');
+  if(!inp.value || !inp.value.includes('@')){
+    inp.style.outline='1px solid var(--red)';
+    setTimeout(()=>inp.style.outline='',1500);
+    return;
+  }
+  inp.value='';
   document.getElementById('wl-success').style.display='block';
 }
+
+/* ---- INIT ---- */
+document.addEventListener('DOMContentLoaded',()=>{
+  buildTicker();
+  buildStrip();
+  loadBriefing();
+});
 </script>
 </body>
 </html>

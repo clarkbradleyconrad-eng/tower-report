@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Year One: What Arch Manning's First Full Season As Starter Actually Means | Tower Report</title>
+<meta name="description" content="The most hyped quarterback recruit in the history of college football has been patient. Now it's his team, his offense, his season. After spring practice, those inside the program are not worried."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet"/>
+<script src="nav.js" defer></script>
+<style>
+:root{
+  --orange:#BF5700;--black:#080808;--white:#F5F0E8;
+  --surface:#111;--surface2:#181818;--surface3:#202020;
+  --border:rgba(255,255,255,0.07);--border-strong:rgba(255,255,255,0.13);
+  --muted:#6B6560;--secondary:#A09890;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);}
+
+/* ─── HERO ─── */
+.article-hero{
+  position:relative;min-height:560px;
+  background:#040404;overflow:hidden;
+  display:flex;align-items:flex-end;
+}
+.hero-glow-1{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 80% at 60% 40%,rgba(191,87,0,0.18) 0%,transparent 65%);
+  animation:glowBreath 16s ease-in-out infinite;
+}
+.hero-glow-2{
+  position:absolute;bottom:-10%;right:10%;
+  width:50vw;height:50vw;
+  background:radial-gradient(circle,rgba(191,87,0,0.09) 0%,transparent 60%);
+  animation:glowBreath 11s ease-in-out infinite 4s;
+}
+.hero-logo{
+  position:absolute;right:-3%;top:50%;transform:translateY(-50%);
+  width:58vw;height:58vw;max-width:640px;max-height:640px;
+  background:url('https://a.espncdn.com/i/teamlogos/ncaa/500/251.png') center/contain no-repeat;
+  opacity:0.09;
+  animation:logoBreath 18s ease-in-out infinite;
+}
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.016) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,0.016) 1px,transparent 1px);
+  background-size:52px 52px;
+}
+.hero-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom,rgba(4,4,4,0.2) 0%,rgba(4,4,4,0.5) 35%,rgba(4,4,4,0.92) 72%,#040404 100%);
+}
+.hero-edge{
+  position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(to bottom,transparent 5%,var(--orange) 30%,var(--orange) 70%,transparent 95%);
+}
+.hero-top-line{
+  position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(191,87,0,0.7) 45%,rgba(191,87,0,1) 50%,rgba(191,87,0,0.7) 55%,transparent);
+  animation:edgePulse 8s ease-in-out infinite;
+}
+.hero-label-chip{
+  position:absolute;top:48px;right:48px;z-index:20;
+  background:rgba(6,6,6,0.9);backdrop-filter:blur(12px);
+  border:1px solid var(--border-strong);border-left:3px solid var(--orange);
+  padding:14px 20px;
+}
+.hlc-over{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+.hlc-main{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:var(--orange);line-height:1;margin-bottom:4px;}
+.hlc-sub{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
+
+.hero-content{
+  position:relative;z-index:15;
+  padding:0 52px 48px;max-width:880px;
+}
+.hero-breadcrumb{
+  font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;
+  letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:18px;
+}
+.hero-breadcrumb a{color:var(--muted);text-decoration:none;transition:color .15s;}
+.hero-breadcrumb a:hover{color:var(--white);}
+.hero-breadcrumb .sep{color:rgba(107,101,96,0.4);margin:0 7px;}
+.hero-breadcrumb .cur{color:var(--orange);}
+.hero-kicker{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:10px;}
+.hero-eye{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:rgba(245,240,232,0.32);margin-bottom:10px;}
+.hero-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(42px,6.5vw,80px);font-weight:900;
+  line-height:0.93;letter-spacing:-2.5px;color:var(--white);margin-bottom:16px;
+}
+.hero-title .accent{color:var(--orange);}
+.hero-deck{font-size:17px;line-height:1.58;color:rgba(245,240,232,0.6);font-style:italic;margin-bottom:20px;max-width:620px;}
+.hero-meta{
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;
+  letter-spacing:1px;text-transform:uppercase;color:var(--muted);
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+}
+.meta-dot{width:3px;height:3px;border-radius:50%;background:var(--muted);flex-shrink:0;}
+
+@keyframes logoBreath{0%,100%{opacity:0.07;}50%{opacity:0.12;}}
+@keyframes glowBreath{0%,100%{opacity:0.65;}50%{opacity:1;}}
+@keyframes edgePulse{0%,100%{opacity:0.25;}50%{opacity:1;}}
+
+/* ─── ARTICLE LAYOUT ─── */
+.article-outer{max-width:1160px;margin:0 auto;padding:44px 52px 90px;display:grid;grid-template-columns:1fr 296px;gap:60px;}
+
+/* AI SUMMARY */
+.ai-summary{background:var(--surface);border:1px solid rgba(191,87,0,0.22);border-left:3px solid var(--orange);padding:22px 26px;margin-bottom:34px;}
+.ais-top{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.ais-lbl{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);}
+.ais-badge{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;background:rgba(191,87,0,0.1);border:1px solid rgba(191,87,0,0.22);color:var(--orange);}
+.ais-body{font-size:14px;line-height:1.78;color:var(--secondary);font-style:italic;margin-bottom:16px;}
+.ais-pts{display:flex;flex-direction:column;gap:9px;}
+.ais-pt{font-size:13px;color:var(--white);line-height:1.45;padding-left:20px;position:relative;}
+.ais-pt::before{content:'→';position:absolute;left:0;color:var(--orange);font-family:'Barlow Condensed',sans-serif;font-weight:700;}
+
+/* ARTICLE TEXT */
+.article-body{font-size:16.5px;line-height:1.84;color:#BEB9B2;}
+.article-body p{margin-bottom:24px;}
+.article-body strong{color:var(--white);}
+.article-body em{color:rgba(245,240,232,0.8);}
+.section-lbl{display:block;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);padding-top:30px;margin-top:36px;margin-bottom:16px;border-top:1px solid var(--border);}
+.pull-quote{border-left:3px solid var(--orange);padding:18px 24px;background:var(--surface);margin:28px 0;}
+.pq-text{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--white);line-height:1.3;font-style:italic;margin-bottom:10px;}
+.pq-attr{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);}
+.five-things{margin:24px 0;display:flex;flex-direction:column;gap:14px;}
+.ft-item{display:flex;gap:14px;align-items:flex-start;}
+.ft-num{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;color:var(--orange);line-height:1;flex-shrink:0;min-width:24px;}
+.ft-text{font-size:15px;line-height:1.65;color:#BEB9B2;}
+.ft-text strong{color:var(--white);}
+.bottom-line{background:rgba(191,87,0,0.05);border:1px solid rgba(191,87,0,0.18);border-top:3px solid var(--orange);padding:24px 26px;margin-top:38px;}
+.bl-lbl{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:14px;}
+.bl-text{font-size:15px;line-height:1.78;color:var(--white);}
+.hookem{font-size:24px;margin-top:14px;display:block;}
+.article-footer-bar{display:flex;align-items:center;gap:12px;margin-top:32px;padding-top:20px;border-top:1px solid var(--border);font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);flex-wrap:wrap;}
+.afb-tag{padding:2px 8px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-size:10px;}
+
+/* SIDEBAR */
+.sidebar-sticky{position:sticky;top:82px;display:flex;flex-direction:column;gap:20px;}
+.side-box{background:var(--surface);border:1px solid var(--border);}
+.side-hd{padding:12px 16px;border-bottom:1px solid var(--border);background:var(--surface2);}
+.side-hd-title{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.side-hd-name{font-size:13px;font-weight:700;color:var(--white);margin-top:3px;}
+
+/* bio row */
+.bio-row{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1px solid var(--border);}
+.bio-row:last-child{border-bottom:none;}
+.bio-lbl{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
+.bio-val{font-size:13px;font-weight:600;color:var(--white);text-align:right;}
+.bio-val.orange{color:var(--orange);}
+
+/* weapons */
+.weapon-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);}
+.weapon-item:last-child{border-bottom:none;}
+.weapon-logo{width:32px;height:32px;object-fit:contain;flex-shrink:0;}
+.weapon-info{}
+.weapon-name{font-size:13px;font-weight:700;color:var(--white);}
+.weapon-pos{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--orange);margin-top:2px;}
+.weapon-note{font-size:12px;color:var(--muted);margin-top:1px;}
+
+/* schedule key games */
+.key-game{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.key-game:last-child{border-bottom:none;}
+.kg-info{}
+.kg-opp{font-size:13px;font-weight:600;color:var(--white);}
+.kg-meta{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-top:2px;}
+.kg-badge{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;background:rgba(191,87,0,0.12);border:1px solid rgba(191,87,0,0.25);color:var(--orange);}
+
+/* related */
+.rel-item{padding:14px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;}
+.rel-item:hover{background:var(--surface2);}
+.rel-item:last-child{border-bottom:none;}
+.rel-kicker{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:5px;}
+.rel-hed{font-size:13px;font-weight:600;color:var(--white);line-height:1.35;}
+
+footer{padding:28px 52px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);}
+.footer-logo{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;letter-spacing:3px;color:var(--muted);}
+.footer-logo span{color:var(--orange);}
+.footer-text{font-size:12px;color:var(--muted);}
+
+@media(max-width:900px){
+  .article-outer{grid-template-columns:1fr;padding:24px 20px 60px;gap:32px;}
+  .hero-content{padding:0 20px 36px;}
+  .hero-label-chip{display:none;}
+  .article-sidebar{display:none;}
+  footer{flex-direction:column;gap:8px;padding:20px;}
+}
+</style>
+</head>
+<body>
+
+<div class="article-hero">
+  <div class="hero-glow-1"></div>
+  <div class="hero-glow-2"></div>
+  <div class="hero-logo"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-edge"></div>
+  <div class="hero-top-line"></div>
+
+  <div class="hero-label-chip">
+    <div class="hlc-over">2026 Opener</div>
+    <div class="hlc-main">YEAR ONE</div>
+    <div class="hlc-sub">Arch Manning · QB1</div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-breadcrumb">
+      <a href="index.html">Tower Report</a>
+      <span class="sep">/</span>
+      <a href="stories.html">Stories</a>
+      <span class="sep">/</span>
+      <span class="cur">Feature · QB</span>
+    </div>
+    <div class="hero-kicker">🔱 Feature · Quarterback · June 2, 2026</div>
+    <div class="hero-eye">Arch Manning · Texas Longhorns</div>
+    <h1 class="hero-title">YEAR <span class="accent">ONE.</span></h1>
+    <p class="hero-deck">What Arch Manning's first full season as starter actually means — for him, for this program, and for a fan base that's been waiting three years for this moment.</p>
+    <div class="hero-meta">
+      <span>Tower Report Staff</span>
+      <span class="meta-dot"></span>
+      <span>June 2, 2026</span>
+      <span class="meta-dot"></span>
+      <span>9 min read</span>
+      <span class="meta-dot"></span>
+      <span style="color:var(--orange);">Feature</span>
+    </div>
+  </div>
+</div>
+
+<div class="article-outer">
+  <div>
+
+    <div class="ai-summary">
+      <div class="ais-top">
+        <span class="ais-lbl">🔱 Tower Report Intelligence</span>
+        <span class="ais-badge">AI Summary</span>
+      </div>
+      <p class="ais-body">Three years of patience ends now. Arch Manning — the most recruited quarterback in the history of college football — enters 2026 as the unquestioned starter in Austin. Spring practice produced more optimism than anxiety inside the program: his decision speed is dramatically improved, he's commanding the huddle with authority, and Steve Sarkisian has built a tailored offense around his specific skill set. The weapons around him are as good as any in the SEC. The one legitimate concern is the offensive line. But the people inside that building aren't worried about Arch Manning.</p>
+      <div class="ais-pts">
+        <div class="ais-pt">Spring tape showed marked improvement in decision speed and deep ball velocity — both key development benchmarks</div>
+        <div class="ais-pt">Cam Coleman, Raleek Brown, and a deep TE room give Manning elite weapons at every level of the field</div>
+        <div class="ais-pt">OL interior remains the one unresolved question — center depth is thin, young starters are untested at SEC speed</div>
+        <div class="ais-pt">2026 is not just about Manning — it's the proving ground for whether this program can reach its stated ceiling</div>
+      </div>
+    </div>
+
+    <div class="article-body">
+
+      <p>The weight of this moment has been building for three years.</p>
+
+      <p>Since the day a 17-year-old from New Orleans walked into Darrell K Royal–Texas Memorial Stadium and chose burnt orange over every program in the country, the question has never been <em>if</em> Arch Manning would lead this team. It's always been <em>when.</em></p>
+
+      <p>That when is now. June 2026. Twelve weeks from kickoff. And for the first time in the Sarkisian era, the identity of this offense isn't complicated. It's <strong>Arch Manning</strong> — the highest-rated quarterback recruit in the modern era of recruiting analytics, finally unleashed, finally the unquestioned starter, finally standing in front of 100,000+ fans in burnt orange with everything in his hands.</p>
+
+      <p>No more waiting. No more questions about timelines and development plans. The program committed to this moment when they committed to him. Now it's time to find out what it actually looks like.</p>
+
+      <span class="section-lbl">The Education</span>
+
+      <p>Texas fans have been impatient. That's understandable. You recruit the most hyped player in the history of college football, and patience becomes a four-letter word. But the development Arch Manning underwent behind the scenes has left the Texas staff more confident about him now than they were when he arrived.</p>
+
+      <p>Sources inside the program consistently point to two specific areas where Arch grew faster than anyone projected: <strong>pre-snap reads</strong> and <strong>pocket management</strong>. The Manning family football IQ is legendary — you don't produce Archie, Peyton, and Eli without something in the DNA. But watching your uncle's highlights doesn't automatically translate to processing SEC defensive schemes in real time. What does translate is the obsessive preparation, the film study, the refusal to be satisfied with a play you already completed.</p>
+
+      <p>Two full years inside Sarkisian's system — absorbing protections, identifying coverages, understanding down-and-distance tendencies at the college level — built something the recruiting rankings couldn't quantify. Experience. Calm. The ability to know what's coming before it comes.</p>
+
+      <div class="pull-quote">
+        <div class="pq-text">"He sees things at a different level. The game slows down for him in ways it doesn't for most guys who haven't played."</div>
+        <div class="pq-attr">Texas Offensive Staff Member — Spring 2026</div>
+      </div>
+
+      <span class="section-lbl">What Spring Showed</span>
+
+      <p>Five observations from spring practice that serious fans should know heading into August:</p>
+
+      <div class="five-things">
+        <div class="ft-item">
+          <div class="ft-num">01</div>
+          <div class="ft-text"><strong>Velocity on the deep ball is elite.</strong> Everyone knew the arm was special when he signed. But the velocity improvement from Year 1 to now is notable. The ball gets there on time, on a line — and receivers are adjusting to a ball that arrives faster than they're used to.</div>
+        </div>
+        <div class="ft-item">
+          <div class="ft-num">02</div>
+          <div class="ft-text"><strong>Decision speed has dramatically improved.</strong> In his early reps, Manning occasionally held the ball too long while reading coverages. This spring, those delays are largely gone. He's processing, distributing, and moving on from mistakes with the efficiency you need at this level.</div>
+        </div>
+        <div class="ft-item">
+          <div class="ft-num">03</div>
+          <div class="ft-text"><strong>He owns the huddle.</strong> Harder to quantify, but universally noted: Arch Manning walks into that huddle and commands it. Coleman, Brown, the tight ends — they're playing faster with him in charge. Leadership at quarterback is contagious. It's showing.</div>
+        </div>
+        <div class="ft-item">
+          <div class="ft-num">04</div>
+          <div class="ft-text"><strong>Sarkisian has built a QB run package specifically for him.</strong> This isn't scramble-drill improvisation — it's designed runs, keepers, and zone-read principles tailored to Manning's athleticism. He moved the sticks with his legs consistently in 11-on-11 work this spring.</div>
+        </div>
+        <div class="ft-item">
+          <div class="ft-num">05</div>
+          <div class="ft-text"><strong>Composure under pressure is real.</strong> The defense ran heavy blitz packages in scrimmages — zero coverage, overload pressures, all of it. Manning wasn't perfect. No young starter is. But he wasn't rattled. He climbed the pocket, delivered on time, and reset after mistakes with a maturity that surprised even some of the coaches.</div>
+        </div>
+      </div>
+
+      <span class="section-lbl">The Weapons Around Him</span>
+
+      <p>This is where it gets genuinely exciting. What's surrounding Arch Manning in 2026 might be the best skill position group Sarkisian has had since arriving at Texas.</p>
+
+      <p><strong>Cam Coleman</strong> changed everything the moment he entered the portal from Auburn. He isn't just another addition to the receiver room — he's a true WR1, the kind of boundary receiver who changes the coverage math for every defense. Coleman's combination of size, burst, and contested-catch ability gives Manning a legitimate outside threat Texas has been missing. Cover him with a corner and Coleman wins. Double him and something else opens.</p>
+
+      <p><strong>Raleek Brown</strong> at running back brings experience, toughness, and elite YAC ability that opens up play-action. His pass protection is advanced for his age — and that matters enormously for a young quarterback's confidence and pocket time. A running back who can keep his quarterback clean is a luxury. Texas has one.</p>
+
+      <p>The tight end room is underrated. The slot group is experienced and reliable. For the first time, Manning has everything a franchise quarterback needs around him.</p>
+
+      <span class="section-lbl">The One Concern</span>
+
+      <p>Here's the honest part that serious fans need to acknowledge: the offensive line is the biggest question mark standing between Arch Manning and the ceiling everyone imagines.</p>
+
+      <p>Texas lost multiple starters on the interior from 2025. The replacements are talented — highly recruited, highly projected — but they are unproven at SEC speed. The center position in particular remains a genuine concern heading into camp. And the September schedule gets difficult fast: Texas State in Week 1, then <strong>Ohio State in Week 2 in Austin</strong>. If that OL isn't ready, none of the rest of it matters as much as it should.</p>
+
+      <p>The staff is working the portal and the board. This will be addressed. But as of June, the interior is the one area where projection exceeds evidence.</p>
+
+      <span class="section-lbl">What Year 1 Actually Means</span>
+
+      <p>Here's the uncomfortable truth that serious Texas fans need to hear: Arch Manning's Year 1 as starter isn't just about what <em>he</em> does. It's about what this <em>program</em> does.</p>
+
+      <p>Texas has been close. CFP Semifinal in 2024. Eleven wins in 2025. Sugar Bowl winner in 2018. But "close" is not the standard this program set for itself — Mack Brown won national championships. Vince Young's run through 2005 is the measuring stick. This program does not grade on a curve, and the fan base knows it.</p>
+
+      <p>Manning coming out of 2026 with 30+ touchdowns, a double-digit win season, and a legitimate CFP run doesn't just validate him. It changes the recruiting pitch for the next five years. It changes the conversation around Sarkisian. It changes whether Texas remains the destination for elite quarterbacks — and elite everything — going forward.</p>
+
+      <p>This is the year that confirms the trajectory, or complicates it.</p>
+
+      <div class="bottom-line">
+        <div class="bl-lbl">Bottom Line</div>
+        <div class="bl-text">Arch Manning has been ready. The spring said so. The people inside that building say so. The weapons around him say so. The pedigree said so before he ever took a snap.<br><br>Now comes the part where he shows the rest of the country. No more projections. No more potential. Just him, the stadium, and what he does with it.<br><br>Everything Texas fans have been waiting for starts in twelve weeks.</div>
+        <span class="hookem">Hook 'em. 🤘</span>
+      </div>
+
+      <div class="article-footer-bar">
+        <span>Tower Report</span>
+        <span class="meta-dot"></span>
+        <span>@towerreportai</span>
+        <span class="meta-dot"></span>
+        <span class="afb-tag">Feature</span>
+        <span class="afb-tag">Arch Manning</span>
+        <span class="afb-tag">QB</span>
+        <span class="afb-tag">2026 Season</span>
+        <span class="afb-tag">Offense</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="article-sidebar">
+    <div class="sidebar-sticky">
+
+      <div class="side-box">
+        <div class="side-hd">
+          <div class="side-hd-title">Player Bio</div>
+          <div class="side-hd-name">Arch Manning · QB</div>
+        </div>
+        <div class="bio-row"><div class="bio-lbl">Class</div><div class="bio-val">Junior (RS)</div></div>
+        <div class="bio-row"><div class="bio-lbl">Hometown</div><div class="bio-val">New Orleans, LA</div></div>
+        <div class="bio-row"><div class="bio-lbl">Height / Weight</div><div class="bio-val">6'4" · 225 lbs</div></div>
+        <div class="bio-row"><div class="bio-lbl">Recruit Rank</div><div class="bio-val orange">#1 Overall, 2023</div></div>
+        <div class="bio-row"><div class="bio-lbl">Family</div><div class="bio-val orange">Manning Dynasty</div></div>
+        <div class="bio-row"><div class="bio-lbl">Year at Texas</div><div class="bio-val">3rd season</div></div>
+        <div class="bio-row" style="background:rgba(191,87,0,0.04);"><div class="bio-lbl">Status</div><div class="bio-val orange">QB1 — Starter</div></div>
+      </div>
+
+      <div class="side-box">
+        <div class="side-hd">
+          <div class="side-hd-title">2026 Weapons</div>
+        </div>
+        <div class="weapon-item">
+          <img class="weapon-logo" src="https://a.espncdn.com/i/teamlogos/ncaa/500/251.png" alt="TX" onerror="this.style.display='none'"/>
+          <div class="weapon-info">
+            <div class="weapon-name">Cam Coleman</div>
+            <div class="weapon-pos">WR · Transfer (Auburn)</div>
+            <div class="weapon-note">True WR1. Changes coverage math.</div>
+          </div>
+        </div>
+        <div class="weapon-item">
+          <img class="weapon-logo" src="https://a.espncdn.com/i/teamlogos/ncaa/500/251.png" alt="TX" onerror="this.style.display='none'"/>
+          <div class="weapon-info">
+            <div class="weapon-name">Raleek Brown</div>
+            <div class="weapon-pos">RB · Transfer (Okla. State)</div>
+            <div class="weapon-note">Elite protection, elite YAC.</div>
+          </div>
+        </div>
+        <div class="weapon-item">
+          <img class="weapon-logo" src="https://a.espncdn.com/i/teamlogos/ncaa/500/251.png" alt="TX" onerror="this.style.display='none'"/>
+          <div class="weapon-info">
+            <div class="weapon-name">Isaiah Bond</div>
+            <div class="weapon-pos">WR · Texas (Sophomore)</div>
+            <div class="weapon-note">Breakout candidate. Speed threat.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="side-box">
+        <div class="side-hd">
+          <div class="side-hd-title">Key Games · 2026</div>
+        </div>
+        <div class="key-game">
+          <div class="kg-info">
+            <div class="kg-opp">Ohio State</div>
+            <div class="kg-meta">Sep 12 · Week 2 · DKR</div>
+          </div>
+          <div class="kg-badge">STATEMENT</div>
+        </div>
+        <div class="key-game">
+          <div class="kg-info">
+            <div class="kg-opp">at Tennessee</div>
+            <div class="kg-meta">Sep 26 · Week 4 · Neyland</div>
+          </div>
+          <div class="kg-badge">ROAD TEST</div>
+        </div>
+        <div class="key-game">
+          <div class="kg-info">
+            <div class="kg-opp">Oklahoma · Red River</div>
+            <div class="kg-meta">Oct 10 · Cotton Bowl</div>
+          </div>
+          <div class="kg-badge">RIVALRY</div>
+        </div>
+        <div class="key-game">
+          <div class="kg-info">
+            <div class="kg-opp">at Texas A&M</div>
+            <div class="kg-meta">Nov 27 · Kyle Field</div>
+          </div>
+          <div class="kg-badge">SEASON ON LINE</div>
+        </div>
+      </div>
+
+      <div class="side-box">
+        <div class="side-hd">
+          <div class="side-hd-title">More Coverage</div>
+        </div>
+        <div class="rel-item" onclick="location.href='story-simmons-osu-2026.html'">
+          <div class="rel-kicker">Defense · Rematch</div>
+          <div class="rel-hed">"We're Coming." Simmons Declares War on Ohio State</div>
+        </div>
+        <div class="rel-item" onclick="location.href='stories.html'">
+          <div class="rel-kicker">Film Room · QB</div>
+          <div class="rel-hed">Arch Manning Spring Tape: The Throws That Made the Staff Smile</div>
+        </div>
+        <div class="rel-item" onclick="location.href='stories.html'">
+          <div class="rel-kicker">Analysis · Offense</div>
+          <div class="rel-hed">The Cam Coleman Effect: What His Arrival Changes About Everything</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">TOWER<span>REPORT</span></div>
+  <div class="footer-text">The Tower Never Sleeps. © 2026 · @towerreportai</div>
+</footer>
+
+</body>
+</html>

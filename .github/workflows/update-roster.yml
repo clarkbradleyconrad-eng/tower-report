@@ -20,7 +20,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install requests beautifulsoup4 lxml anthropic
+          pip install requests beautifulsoup4 lxml anthropic youtube-transcript-api
 
       - name: Fetch roster data
         run: |
