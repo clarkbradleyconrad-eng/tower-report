@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>2026 Depth Chart — Tower Report</title>
+<meta name="description" content="Interactive 2026 Texas Longhorns depth chart. Post-spring snapshot with confidence ratings, position battles, trending indicators, and AI scouting notes."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+/* ============================================================
+   DESIGN TOKENS
+============================================================ */
+:root{
+  --orange:#BF5700;--orange-hi:#CF6210;--orange-lo:rgba(191,87,0,0.10);--orange-glow:rgba(191,87,0,0.06);
+  --black:#080808;--surface:#0F0F0F;--surface2:#151515;--surface3:#1C1C1C;--surface4:#232323;
+  --border:rgba(255,255,255,0.055);--border-mid:rgba(255,255,255,0.10);--border-strong:rgba(255,255,255,0.16);
+  --white:#F0EBE1;--white2:#C4BCB0;--muted:#5A5450;--secondary:#948C82;
+  --green:#22c55e;--amber:#f59e0b;--red:#ef4444;--blue:#60a5fa;--purple:#c084fc;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);overflow-x:hidden;line-height:1.5;}
+a{text-decoration:none;color:inherit;}
+
+/* ============================================================
+   NAV
+============================================================ */
+nav{position:sticky;top:0;z-index:200;background:rgba(8,8,8,0.97);backdrop-filter:blur(24px);border-bottom:1px solid var(--border-mid);}
+.nav-inner{display:flex;justify-content:space-between;align-items:center;padding:0 48px;max-width:1600px;margin:0 auto;}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;padding:11px 0;}
+.nav-logo-text{display:flex;flex-direction:column;line-height:1;}
+.nav-logo-top{font-family:'Barlow Condensed',sans-serif;font-size:21px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--white);}
+.nav-logo-sub{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:var(--orange);}
+.nav-links{display:flex;align-items:center;}
+.nav-link{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:18px 13px;border-bottom:2px solid transparent;transition:all .2s;}
+.nav-link:hover,.nav-link.active{color:var(--white);border-bottom-color:var(--orange);}
+.nav-cta{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;background:var(--orange);color:#fff;text-decoration:none;padding:9px 20px;margin-left:16px;border:1px solid var(--orange);transition:all .2s;}
+.nav-cta:hover{background:transparent;color:var(--orange);}
+
+/* ============================================================
+   PAGE HEADER
+============================================================ */
+.dc-header{padding:44px 48px 32px;border-bottom:1px solid var(--border);}
+.breadcrumb{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:6px;}
+.breadcrumb a{color:var(--muted);transition:color .2s;}
+.breadcrumb a:hover{color:var(--orange);}
+.breadcrumb-sep{color:var(--border-mid);}
+.breadcrumb span{color:var(--orange);}
+.dc-title-row{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:10px;}
+.dc-title{font-family:'Playfair Display',serif;font-size:clamp(36px,5vw,66px);font-weight:900;line-height:.92;letter-spacing:-2.5px;}
+.dc-title em{font-style:italic;color:var(--orange);}
+.dc-header-meta{display:flex;flex-direction:column;align-items:flex-end;gap:6px;padding-bottom:6px;}
+.dc-updated{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.dc-season-badge{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);background:var(--orange-lo);border:1px solid rgba(191,87,0,0.25);padding:4px 12px;}
+.dc-sub{font-size:14px;color:var(--secondary);font-style:italic;margin-bottom:18px;}
+.dc-context{max-width:820px;padding:16px 20px;background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--orange);font-size:13px;line-height:1.72;color:var(--secondary);}
+.dc-context strong{color:var(--white);}
+
+/* ============================================================
+   STATS STRIP
+============================================================ */
+.dc-stats-strip{display:flex;gap:0;border-bottom:1px solid var(--border);}
+.dc-stat{padding:14px 28px;border-right:1px solid var(--border);display:flex;flex-direction:column;gap:4px;}
+.dc-stat:last-child{border-right:none;}
+.dcs-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.dcs-val{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--white);line-height:1;letter-spacing:.5px;}
+.dcs-val.orange{color:var(--orange);}
+.dcs-val.amber{color:var(--amber);}
+.dcs-val.green{color:var(--green);}
+
+/* ============================================================
+   STICKY CONTROLS
+============================================================ */
+.dc-controls{position:sticky;top:47px;z-index:100;background:rgba(8,8,8,0.97);backdrop-filter:blur(24px);border-bottom:1px solid var(--border-mid);padding:10px 48px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.dc-search-wrap{position:relative;}
+.dc-search{padding:8px 14px 8px 34px;font-family:'Barlow',sans-serif;font-size:13px;background:var(--surface);border:1px solid var(--border-mid);color:var(--white);outline:none;width:210px;transition:border-color .2s,width .25s;}
+.dc-search:focus{border-color:var(--orange);width:270px;}
+.dc-search::placeholder{color:var(--muted);}
+.dc-search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:12px;pointer-events:none;font-style:normal;}
+.dc-unit-tabs{display:flex;gap:0;}
+.dc-unit-tab{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:8px 15px;border:1px solid var(--border);color:var(--muted);cursor:pointer;background:none;transition:all .15s;margin-right:-1px;position:relative;z-index:1;}
+.dc-unit-tab:hover{color:var(--white);z-index:2;}
+.dc-unit-tab.active{background:var(--orange);border-color:var(--orange);color:#fff;z-index:2;}
+.dc-actions{display:flex;gap:6px;margin-left:auto;}
+.dc-action-btn{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:7px 13px;border:1px solid var(--border);color:var(--muted);cursor:pointer;background:none;transition:all .15s;}
+.dc-action-btn:hover{color:var(--white);border-color:var(--border-mid);}
+.dc-result-bar{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:6px 48px;background:var(--surface);border-bottom:1px solid var(--border);display:none;}
+.dc-result-bar span{color:var(--orange);}
+
+/* ============================================================
+   LEGEND
+============================================================ */
+.dc-legend{display:flex;align-items:center;gap:20px;padding:9px 48px;border-bottom:1px solid var(--border);flex-wrap:wrap;}
+.legend-title{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-right:4px;}
+.legend-item{display:flex;align-items:center;gap:5px;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);}
+.leg-stripe{width:3px;height:14px;flex-shrink:0;}
+.leg-stripe.s1{background:var(--orange);}
+.leg-stripe.s2{background:var(--border-strong);}
+.leg-stripe.sb{background:var(--amber);}
+.leg-up{color:var(--green);font-size:12px;}
+.leg-down{color:var(--red);font-size:12px;}
+.leg-dots{display:flex;gap:2px;}
+.leg-dot{width:6px;height:6px;border-radius:50%;}
+.leg-dot.on{background:var(--orange);}
+.leg-dot.off{background:var(--surface3);border:1px solid var(--border-strong);}
+.leg-divider{width:1px;height:16px;background:var(--border);}
+
+/* ============================================================
+   DEPTH CHART BODY
+============================================================ */
+.dc-body{padding:32px 48px 72px;}
+.dc-no-results{font-family:'Barlow Condensed',sans-serif;font-size:14px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);text-align:center;padding:64px;display:none;}
+
+/* Unit section */
+.unit-section{margin-bottom:48px;}
+.unit-section.unit-hidden{display:none;}
+.unit-header-row{display:flex;align-items:center;gap:14px;margin-bottom:16px;}
+.unit-name{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;letter-spacing:4px;text-transform:uppercase;color:var(--orange);}
+.unit-hr{flex:1;height:1px;background:var(--border);}
+.unit-meta{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);}
+
+/* Position groups grid */
+.pos-groups-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);}
+
+/* Position group card */
+.pos-group{background:var(--surface);position:relative;}
+.pos-group.pg-hidden{display:none;}
+
+/* Group header */
+.pg-header{display:flex;align-items:center;gap:8px;padding:11px 16px;cursor:pointer;border-bottom:1px solid var(--border);user-select:none;transition:background .15s;}
+.pg-header:hover{background:var(--surface2);}
+.pg-abbr{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--orange);min-width:48px;flex-shrink:0;}
+.pg-name{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--white);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pg-battle-badge{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.28);color:var(--amber);white-space:nowrap;flex-shrink:0;}
+.pg-count{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);flex-shrink:0;}
+.pg-toggle{font-size:11px;color:var(--muted);transition:transform .22s;flex-shrink:0;margin-left:2px;}
+.pos-group.pg-collapsed .pg-toggle{transform:rotate(-90deg);}
+.pos-group.pg-collapsed .pg-body{display:none;}
+
+/* Depth rows */
+.depth-slot-wrap{border-bottom:1px solid var(--border);}
+.depth-slot-wrap:last-child{border-bottom:none;}
+
+.drow{display:grid;grid-template-columns:30px 1fr auto;align-items:stretch;min-height:50px;position:relative;transition:background .12s;}
+.drow:hover{background:var(--surface2);}
+.drow.drow-battle{background:rgba(245,158,11,0.018);}
+.drow.drow-match{background:rgba(191,87,0,0.05);}
+
+/* Left stripe */
+.drow-stripe{width:3px;position:absolute;left:0;top:0;bottom:0;}
+.stripe-s1{background:var(--orange);}
+.stripe-s2{background:var(--border-mid);}
+.stripe-s3{background:transparent;}
+.stripe-battle{background:var(--amber);}
+
+/* Slot number */
+.drow-num{display:flex;align-items:flex-start;padding:13px 0 0 9px;font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;line-height:1;color:var(--muted);flex-shrink:0;}
+.drow.drow-s1 .drow-num{color:var(--orange);font-size:19px;}
+.drow.drow-s2 .drow-num{color:var(--white2);}
+
+/* Player info */
+.drow-info{padding:10px 12px 10px 8px;min-width:0;flex:1;}
+.drow-top{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:3px;}
+.drow-name{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:.3px;color:var(--white);white-space:nowrap;}
+mark.drow-hl{background:rgba(191,87,0,0.35);color:var(--white);border-radius:1px;}
+.drow-year{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 5px;background:var(--surface3);border:1px solid var(--border);color:var(--muted);flex-shrink:0;}
+.drow-key{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:2px 6px;background:var(--orange-lo);border:1px solid rgba(191,87,0,0.3);color:var(--orange);flex-shrink:0;}
+.drow-attrs{display:flex;align-items:center;gap:5px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:.3px;color:var(--muted);}
+.drow-attrs-sep{color:var(--border-strong);}
+.drow-stars{color:var(--amber);letter-spacing:-1px;font-size:10px;}
+
+/* Side panel */
+.drow-side{display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:5px;padding:10px 12px;flex-shrink:0;}
+.drow-trend{font-size:12px;font-weight:800;line-height:1;}
+.trend-up{color:var(--green);}
+.trend-down{color:var(--red);}
+.trend-stable{color:var(--muted);font-size:10px;}
+.drow-conf{display:flex;gap:2px;align-items:center;}
+.cdot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+.cdot.on{background:var(--orange);}
+.cdot.off{background:var(--surface4);border:1px solid var(--border-strong);}
+.drow-conf-label{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
+
+/* AI note */
+.drow-note{font-size:12px;line-height:1.65;color:var(--muted);font-style:italic;padding:0 12px 9px 46px;margin-top:-3px;}
+
+/* OR separator */
+.or-sep{display:flex;align-items:center;background:rgba(245,158,11,0.04);border-top:1px dashed rgba(245,158,11,0.18);border-bottom:1px dashed rgba(245,158,11,0.18);}
+.or-sep-line{flex:1;height:1px;}
+.or-badge{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:800;letter-spacing:3px;text-transform:uppercase;padding:4px 12px;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.28);color:var(--amber);}
+.or-slot-note{font-size:11px;font-style:italic;color:var(--muted);padding:6px 14px 8px;background:rgba(245,158,11,0.025);border-top:1px solid rgba(245,158,11,0.08);}
+
+/* Tandem "&" separator */
+.tandem-sep{display:flex;align-items:center;justify-content:center;padding:4px 0;background:var(--surface2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.tandem-badge{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--secondary);}
+
+/* ============================================================
+   FOOTER
+============================================================ */
+footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:24px;background:var(--surface);}
+.footer-brand{display:flex;flex-direction:column;gap:4px;}
+.footer-logo{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;letter-spacing:4px;text-transform:uppercase;}
+.footer-logo span{color:var(--orange);}
+.footer-tagline{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);}
+.footer-links{display:flex;gap:16px;justify-content:center;}
+.f-link{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s;}
+.f-link:hover{color:var(--orange);}
+.footer-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
+.footer-copy{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);}
+.footer-ai{display:inline-flex;align-items:center;gap:5px;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);background:var(--orange-lo);border:1px solid rgba(191,87,0,0.2);padding:3px 8px;}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media(max-width:1200px){
+  .pos-groups-grid{grid-template-columns:1fr;}
+}
+@media(max-width:860px){
+  .dc-header,.dc-body{padding-left:20px;padding-right:20px;}
+  .dc-controls{padding:8px 20px;top:47px;}
+  .dc-legend{padding:8px 20px;}
+  .dc-result-bar{padding-left:20px;padding-right:20px;}
+  .dc-stats-strip{overflow-x:auto;scrollbar-width:none;}
+  .dc-stats-strip::-webkit-scrollbar{display:none;}
+  .dc-stat{padding:12px 18px;flex-shrink:0;}
+  .dc-actions{display:none;}
+  .dc-search{width:100%;}
+  .dc-search:focus{width:100%;}
+  .dc-search-wrap{flex:1;}
+  .dc-unit-tabs{overflow-x:auto;scrollbar-width:none;}
+  .dc-unit-tabs::-webkit-scrollbar{display:none;}
+  .nav-inner{padding:0 20px;}
+  .nav-link{display:none;}
+  .nav-link.keep{display:flex;}
+  footer{grid-template-columns:1fr;gap:16px;padding:24px 20px;}
+  .footer-links{justify-content:flex-start;}
+  .footer-right{align-items:flex-start;}
+  .dc-title-row{flex-direction:column;align-items:flex-start;}
+  .dc-header-meta{align-items:flex-start;}
+}
+@media(max-width:480px){
+  .drow-name{font-size:13px;}
+  .dc-unit-tab{font-size:10px;padding:7px 11px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     NAV
+============================================================ -->
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <svg viewBox="0 0 34 42" width="26" height="32" fill="none" aria-hidden="true">
+        <rect x="10" y="28" width="14" height="12" fill="#BF5700" opacity=".9"/>
+        <rect x="12" y="17" width="10" height="12" fill="#BF5700"/>
+        <rect x="14" y="7" width="6" height="11" fill="#BF5700"/>
+        <circle cx="17" cy="10" r="2.5" fill="#080808" stroke="#BF5700" stroke-width=".6"/>
+        <line x1="17" y1="7" x2="17" y2="2" stroke="#BF5700" stroke-width="1.5"/>
+        <circle cx="17" cy="1.5" r="1.3" fill="#E8620A"/>
+        <line x1="24" y1="13" x2="29" y2="10" stroke="#BF5700" stroke-width=".8" opacity=".6"/>
+        <circle cx="30" cy="9.5" r="1.1" fill="#BF5700" opacity=".6"/>
+        <line x1="10" y1="13" x2="5" y2="10" stroke="#BF5700" stroke-width=".8" opacity=".6"/>
+        <circle cx="4" cy="9.5" r="1.1" fill="#BF5700" opacity=".6"/>
+      </svg>
+      <div class="nav-logo-text">
+        <span class="nav-logo-top">TOWER</span>
+        <span class="nav-logo-sub">REPORT</span>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link keep">Home</a>
+      <a href="schedule.html" class="nav-link">Schedule</a>
+      <a href="roster.html" class="nav-link">Roster</a>
+      <a href="depth-chart.html" class="nav-link active keep">Depth Chart</a>
+      <a href="recruiting.html" class="nav-link">Recruiting</a>
+      <a href="portal.html" class="nav-link">Portal</a>
+      <a href="stats.html" class="nav-link">Stats</a>
+      <a href="stories.html" class="nav-link">Stories</a>
+      <a href="players.html" class="nav-link">Players</a>
+      <a href="history.html" class="nav-link">History</a>
+      <a href="index.html#waitlist" class="nav-cta">Join Waitlist</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============================================================
+     PAGE HEADER
+============================================================ -->
+<div class="dc-header">
+  <div class="breadcrumb">
+    <a href="index.html">Tower Report</a>
+    <span class="breadcrumb-sep">›</span>
+    <span>2026 Depth Chart</span>
+  </div>
+  <div class="dc-title-row">
+    <h1 class="dc-title">2026 Depth Chart<br><em>Post-Spring Snapshot</em></h1>
+    <div class="dc-header-meta">
+      <span class="dc-season-badge">2026 Season</span>
+      <span class="dc-updated">Updated · June 2026</span>
+    </div>
+  </div>
+  <p class="dc-sub">Spring Practice Complete · Preseason Camp Projections · AI Scouting Notes</p>
+  <div class="dc-context">
+    With spring practice in the books, this is a snapshot of the 2026 Texas depth chart — a combination of where players stood at the end of spring practice and projections for those who missed time.
+    <strong>Note:</strong> Four incoming summer transfers — Laurence Seymore and Paris Patterson Jr. (OL), Darius Snow (LB), and Nick Hudson (DB) — are not included and will be added before preseason camp.
+  </div>
+</div>
+
+<!-- ============================================================
+     STATS STRIP
+============================================================ -->
+<div class="dc-stats-strip" id="dc-stats-strip">
+  <div class="dc-stat"><div class="dcs-label">Total Players</div><div class="dcs-val orange" id="stat-total">—</div></div>
+  <div class="dc-stat"><div class="dcs-label">Position Groups</div><div class="dcs-val" id="stat-groups">—</div></div>
+  <div class="dc-stat"><div class="dcs-label">Position Battles</div><div class="dcs-val amber" id="stat-battles">—</div></div>
+  <div class="dc-stat"><div class="dcs-label">Trending Up</div><div class="dcs-val green" id="stat-trending">—</div></div>
+  <div class="dc-stat"><div class="dcs-label">Key Players</div><div class="dcs-val" id="stat-featured">—</div></div>
+  <div class="dc-stat"><div class="dcs-label">5-Star Recruits</div><div class="dcs-val orange" id="stat-5star">—</div></div>
+</div>
+
+<!-- ============================================================
+     STICKY CONTROLS
+============================================================ -->
+<div class="dc-controls">
+  <div class="dc-search-wrap">
+    <i class="dc-search-icon">⌕</i>
+    <input class="dc-search" id="dc-search" type="text" placeholder="Search players…" autocomplete="off"/>
+  </div>
+  <div class="dc-unit-tabs" id="dc-unit-tabs">
+    <button class="dc-unit-tab active" data-unit="all">All</button>
+    <button class="dc-unit-tab" data-unit="offense">Offense</button>
+    <button class="dc-unit-tab" data-unit="defense">Defense</button>
+    <button class="dc-unit-tab" data-unit="special">Special Teams</button>
+  </div>
+  <div class="dc-actions">
+    <button class="dc-action-btn" onclick="toggleAll(false)">Expand All</button>
+    <button class="dc-action-btn" onclick="toggleAll(true)">Collapse All</button>
+  </div>
+</div>
+
+<!-- ============================================================
+     LEGEND
+============================================================ -->
+<div class="dc-legend">
+  <span class="legend-title">Key:</span>
+  <div class="legend-item"><div class="leg-stripe s1"></div>Starter</div>
+  <div class="legend-item"><div class="leg-stripe s2"></div>Backup</div>
+  <div class="legend-item"><div class="leg-stripe sb"></div>Battle</div>
+  <div class="leg-divider"></div>
+  <div class="legend-item"><span class="leg-up">▲</span>Trending Up</div>
+  <div class="legend-item"><span class="leg-down">▼</span>Trending Down</div>
+  <div class="leg-divider"></div>
+  <div class="legend-item">
+    <div class="leg-dots">
+      <div class="leg-dot on"></div><div class="leg-dot on"></div><div class="leg-dot on"></div><div class="leg-dot on"></div><div class="leg-dot on"></div>
+    </div>
+    Locked
+  </div>
+  <div class="legend-item">
+    <div class="leg-dots">
+      <div class="leg-dot on"></div><div class="leg-dot on"></div><div class="leg-dot off"></div><div class="leg-dot off"></div><div class="leg-dot off"></div>
+    </div>
+    Battle
+  </div>
+</div>
+
+<!-- ============================================================
+     RESULT BAR
+============================================================ -->
+<div class="dc-result-bar" id="dc-result-bar">
+  Showing <span id="dc-result-num">0</span> players matching "<span id="dc-result-query"></span>"
+</div>
+
+<!-- ============================================================
+     DEPTH CHART BODY
+============================================================ -->
+<div class="dc-body">
+  <div class="dc-no-results" id="dc-no-results">No players match your search.</div>
+  <div id="dc-body"></div>
+</div>
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer>
+  <div class="footer-brand">
+    <div class="footer-logo"><span>TOWER</span> REPORT</div>
+    <div class="footer-tagline">AI-Powered · Human Trusted · Longhorn Focused</div>
+  </div>
+  <div class="footer-links">
+    <a href="index.html" class="f-link">Home</a>
+    <a href="roster.html" class="f-link">Roster</a>
+    <a href="schedule.html" class="f-link">Schedule</a>
+    <a href="recruiting.html" class="f-link">Recruiting</a>
+    <a href="stories.html" class="f-link">Stories</a>
+  </div>
+  <div class="footer-right">
+    <div class="footer-copy">© 2026 Tower Report · Austin, Texas</div>
+    <div class="footer-copy">The Tower Never Sleeps.</div>
+    <div class="footer-ai">⚡ AI Powered Platform</div>
+  </div>
+</footer>
+
+<!-- ============================================================
+     DATA + RENDER ENGINE
+============================================================ -->
+<script>
+/* ----------------------------------------------------------------
+   DEPTH CHART DATA
+   Structure: each position has slots. Each slot can be:
+   - single player  → players: [player]
+   - OR battle      → battle: true, players: [p1, p2]
+   - tandem pair    → tandem: true, players: [p1, p2]
+---------------------------------------------------------------- */
+const DC = [
+  /* ==================== OFFENSE ==================== */
+  {
+    id:'qb', name:'Quarterback', abbr:'QB', unit:'offense',
+    slots:[
+      { depth:1, players:[
+        { name:'Arch Manning', year:'Jr.', ht:'6-4', wt:'230', stars:5, conf:5, trend:'up', key:true,
+          note:'Heisman frontrunner entering senior season — red-zone efficiency is the one area scouts want cleaned up before the NFL.' }
+      ]},
+      { depth:2, players:[
+        { name:'KJ Lacey', year:'So.', ht:'6-2', wt:'205', stars:4, conf:4, trend:'stable', key:false, note:null }
+      ]},
+      { depth:3, battle:true, players:[
+        { name:'MJ Morris', year:'So.', ht:'6-3', wt:'205', stars:4, conf:2, trend:'stable', key:false, note:null },
+        { name:'Dia Bell', year:'Fr.', ht:'6-1', wt:'195', stars:4, conf:2, trend:'up', key:false, note:null }
+      ], battleNote:'Fall camp determines the emergency role — both bring dual-threat tools with different strengths.' }
+    ]
+  },
+  {
+    id:'rb', name:'Running Back', abbr:'RB', unit:'offense',
+    slots:[
+      { depth:1, battle:true, players:[
+        { name:'Raleek Brown', year:'Sr.', ht:'5-9', wt:'185', stars:4, conf:3, trend:'up', key:false, note:null },
+        { name:'Hollywood Smothers', year:'Jr.', ht:'5-11', wt:'200', stars:4, conf:3, trend:'up', key:false, note:null }
+      ], battleNote:'Sark has said both will play significant snaps — Brown is speed and YAC, Smothers brings power and pass protection.' },
+      { depth:2, players:[
+        { name:'Derrek Cooper', year:'Jr.', ht:'5-10', wt:'190', stars:3, conf:3, trend:'stable', key:false, note:null }
+      ]},
+      { depth:3, players:[
+        { name:'James Simon', year:'So.', ht:'5-10', wt:'185', stars:3, conf:2, trend:'stable', key:false, note:null }
+      ]},
+      { depth:4, players:[
+        { name:'Michael Terry III', year:'Fr.', ht:'5-11', wt:'190', stars:4, conf:2, trend:'up', key:false, note:null }
+      ]},
+      { depth:5, players:[
+        { name:'Ryan Niblett', year:'So.', ht:'5-8', wt:'175', stars:3, conf:3, trend:'stable', key:false, note:null }
+      ]},
+      { depth:6, players:[
+        { name:'Jett Walker', year:'Fr.', ht:'6-0', wt:'190', stars:3, conf:1, trend:'up', key:false, note:null }
+      ]}
+    ]
+  },
+  {
+    id:'wr-x', name:'Wide Receiver (X)', abbr:'WR-X', unit:'offense',
+    slots:[
+      { depth:1, players:[
+        { name:'Cam Coleman', year:'Jr.', ht:'6-3', wt:'195', stars:4, conf:4, trend:'up', key:true,
+          note:'1,247 receiving yards at Auburn without an elite QB — pairing with Arch Manning makes 1,200+ yards the floor of his ceiling.' }
+      ]},
+      { depth:2, players:[
+        { name:'Sterling Berkhalter', year:'So.', ht:'6-2', wt:'185', stars:3, conf:3, trend:'up', key:false, note:null }
+      ]},
+      { depth:3, players:[
+        { name:'Kaliq Lockett', year:'Jr.', ht:'5-11', wt:'175', stars:3, conf:2, trend:'stable', key:false, note:null }
+      ]}
+    ]
+  },
+  {
+    id:'wr-z', name:'Wide Receiver (Z)', abbr:'WR-Z', unit:'offense',
+    slots:[
+      { depth:1, players:[
+        { name:'Ryan Wingo', year:'Jr.', ht:'6-1', wt:'195', stars:4, conf:5, trend:'stable', key:true,
+          note:'All-SEC caliber returning starter — his ability to separate vs. press coverage is the key variable in the Ohio State and Tennessee matchups.' }
+      ]},
+      { depth:2, players:[
+        { name:'Kohen Brown', year:'Fr.', ht:'6-0', wt:'180', stars:4, conf:3, trend:'up', key:false, note:null }
+      ]},
+      { depth:3, players:[
+        { name:'Chris Stewart', year:'Jr.', ht:'6-2', wt:'185', stars:3, conf:2, trend:'stable', key:false, note:null }
+      ]}
+    ]
+  },
+  {
+    id:'wr-h', name:'Wide Receiver (H)', abbr:'WR-H', unit:'offense',
+    slots:[
+      { depth:1, players:[
+        { name:'Emmett Mosley V', year:'Sr.', ht:'5-11', wt:'185', stars:4, conf:4, trend:'stable', key:false, note:null }
+      ]},
+      { depth:2, players:[
+        { name:'Jermaine Bishop Jr.', year:'So.', ht:'5-10', wt:'175', stars:4, conf:3, trend:'up', key:false, note:null }
+      ]},
+      { depth:3, players:[
+        { name:'Daylan McCutcheon', year:'Fr.', ht:'5-10', wt:'175', stars:3, conf:2, trend:'up', key:false, note:null }
+      ]}
+    ]
+  },
+  {
+    id:'te-y', name:'Tight End (Y)', abbr:'TE-Y', unit:'offense',
+    slots:[
+      { depth:1, battle:true, players:[
+        { name:'Michael Masunas', year:'Jr.', ht:'6-5', wt:'245', stars:3, conf:2, trend:'stable', key:false, note:null },
+        { name:'Spencer Shannon', year:'So.', ht:'6-4', wt:'235', stars:3, conf:2, trend:'up', key:false, note:null }
+      ], battleNote:'Opposite skill sets — Masunas is the better blocker, Shannon the better receiver. Sark may deploy both situationally.' },
+      { depth:2, players:[
+        { name:'Charlie Jilek', year:'Jr.', ht:'6-5', wt:'240', stars:3, conf:3, trend:'stable', key:false, note:null }
+      ]}
+    ]
+  },
+  {
+    id:'te-h', name:'Tight End (H)', abbr:'TE-H', unit:'offense',
+    slots:[
+      { depth:1, players:[
+        { name:'Nick Townsend', year:'Sr.', ht:'6-4', wt:'240', stars:3, conf:4, trend:'stable', key:false, note:null }
+      ]},
+      { depth:2, players:[
+        { name:'Emaree Winston', year:'Jr.', ht:'6-5', wt:'245', stars:3, conf:3, trend:'stable', key:false, note:null }
+      ]},
+      { depth:3, players:[
+        { name:'Will Randle', year:'So.', ht:'6-3', wt:'230', stars:3, conf:2, trend:'up', key:false, note:null }
+      ]}
+    ]
+  },
+  {
+    id:'lt', name:'Left Tackle', abbr:'LT', unit:'offense',
+    slots:[
+      { depth:1, players:[
+        { name:'Trevor Goosby', year:'Sr.', ht:'6-7', wt:'315', stars:4, conf:4, trend:'stable', key:true,
+          note:'LT is the most critical position behind QB — Goosby\'s performance against elite pass rushers in Columbus, Knoxville, and College Station defines the season.' }
+      ]},
+      { depth:2, players:[
+        { name:'Jordan Coleman', year:'Jr.', ht:'6-6', wt:'310', stars:3, conf:3, trend:'up', key:false, note:null }
+      ]},
+      { depth:3, players:[
+        { name:'John Turntine III', year:'Fr.', ht:'6-7', wt:'305', stars:4, conf:2, trend:'up', key:false, note:null }
+      ]}
+    ]
+  },
+  {
+    id:'lg', name:'Left Guard', abbr:'LG', unit:'offense',
+    slots:[
+      { depth:1, players:[
+        { name:'Jaydon Chatman', year:'Jr.', ht:'6-4', wt:'310', stars:4, conf:3, trend:'up', key:false, note:null }
+      ]},
+      { depth:2, players:[
+        { name:'Dylan Sikorski', year:'So.', ht:'6-4', wt:'300', stars:3, conf:3, trend:'stable', key:false, note:null }
+      ]},
+      { depth:3, players:[
+        { name:'Jackson Christian', year:'Fr.', ht:'6-3', wt:'305', stars:3, conf:2, trend:'stable', key:false, note:null }
+      ]}
+    ]
+  },
+  {
+    id:'c', name:'Center', abbr:'C', unit:'offense',
+    slots:[
+      { depth:1, players:[
+        { name:'Connor Robertson', year:'Sr.', ht:'6-4', wt:'305', stars:3, conf:4, trend:'stable', key:false,
+          note:'Senior anchor — his ability to make pre-snap line calls is the intelligence engine for the entire interior offensive line.' }
+      ]},
+      { depth:2, players:[
+        { name:'Jackson Christian', year:'Fr.', ht:'6-3', wt:'305', stars:3, conf:2, trend:'stable', key:false, note:null }
+      ]},
+      { depth:3, players:[
+        { name:'Dylan Sikorski', year:'So.', ht:'6-4', wt:'300', stars:3, conf:2, trend:'stable', key:false, note:null }
+      ]}
+    ]
+  },
+  {
+    id:'rg', name:'Right Guard', abbr:'RG', unit:'offense',
+    slots:[
+      { depth:1, players:[
+        { name:'Brandon Baker', year:'Sr.', ht:'6-4', wt:'315', stars:3, conf:4, trend:'stable', key:false, note:null }
+      ]},
+      { depth:2, players:[
+        { name:'Devin Coleman', year:'Jr.', ht:'6-5', wt:'305', stars:3, conf:3, trend:'up', key:false, note:null }
+      ]},
+      { depth:3, players:[
+        { name:'Kaden Scherer', year:'So.', ht:'6-4', wt:'300', stars:3, conf:2, trend:'stable', key:false, note:null }
+      ]}
+    ]
+  },
+  {
+    id:'rt', name:'Right Tackle', abbr:'RT', unit:'offense',
+    slots:[
+      { depth:1, players:[
+        { name:'Melvin Siani', year:'Sr.', ht:'6-6', wt:'310', stars:4, conf:4, trend:'stable', key:false, note:null }
+      ]},
+      { depth:2, players:[
+        { name:'Andre Cojoe', year:'Jr.', ht:'6-5', wt:'300', stars:3, conf:3, trend:'up', key:false, note:null }
+      ]},
+      { depth:3, players:[
+        { name:'Jonte Newman', year:'Fr.', ht:'6-6', wt:'305', stars:3, conf:2, trend:'stable', key:false, note:null }
+      ]}
+    ]
+  },
+
+  /* ==================== DEFENSE ==================== */
+  {
+    id:'nt', name:'Nose Tackle', abbr:'NT', unit:'defense',
+    slots:[
+      { depth:1, players:[
+        { name:'Ian Geffrard', year:'Jr.', ht:'6-2', wt:'310', stars:4, conf:4, trend:'stable', key:false,
+          note:'NT is the most underrated position on this roster — Geffrard\'s ability to eat blocks determines whether this defense is good or elite against SEC run games.' }
+      ]},
+      { depth:2, players:[
+        { name:'Maraad Watson', year:'Sr.', ht:'6-3', wt:'305', stars:3, conf:3, trend:'stable', key:false, note:null }
+      ]},
+      { depth:3, players:[
+        { name:'Josiah Sharma', year:'Fr.', ht:'6-3', wt:'300', stars:3, conf:2, trend:'up', key:false, note:null }
+      ]},
+      { depth:4, players:[
+        { name:'Zion Williams', year:'Fr.', ht:'6-2', wt:'295', stars:3, conf:1, trend:'stable', key:false, note:null }
+      ]}
+    ]
+  },
+  {
+    id:'dt1', name:'Defensive Tackle', abbr:'DT', unit:'defense',
+    slots:[
+      { depth:1, players:[
+        { name:'Hero Kanu', year:'Jr.', ht:'6-4', wt:'295', stars:4, conf:4, trend:'up', key:false, note:null }
+      ]},
+      { depth:2, players:[
+        { name:'Justus Terry', year:'Jr.', ht:'6-3', wt:'290', stars:4, conf:3, trend:'stable', key:false, note:null }
+      ]},
+      { depth:3, players:[
+        { name:'James Johnson', year:'So.', ht:'6-4', wt:'285', stars:3, conf:2, trend:'stable', key:false, note:null }
+      ]}
+    ]
+  },
+  {
+    id:'dt2', name:'Defensive Tackle', abbr:'DT', unit:'defense',
+    slots:[
+      { depth:1, players:[
+        { name:'Alex January', year:'Sr.', ht:'6-3', wt:'285', stars:3, conf:3, trend:'stable', key:false, note:null }
+      ]},
+      { depth:2, players:[
+        { name:'Myron Charles', year:'Jr.', ht:'6-4', wt:'280', stars:3, conf:3, trend:'stable', key:false, note:null }
+      ]}
+    ]
+  },
+  {
+    id:'jack', name:'JACK — Edge', abbr:'JACK', unit:'defense',
+    slots:[
+      { depth:1, players:[
+        { name:'Colin Simmons', year:'So.', ht:'6-3', wt:'245', stars:5, conf:5, trend:'up', key:true,
+          note:'Best pass rusher in college football — 12+ sacks is the conservative projection. Bednarik Award frontrunner entering his sophomore season.' }
+      ]},
+      { depth:2, players:[
+        { name:'Colton Vasek', year:'Jr.', ht:'6-4', wt:'250', stars:4, conf:4, trend:'stable', key:false, note:null }
+      ]},
+      { depth:3, battle:true, players:[
+        { name:'Smith Orogbo', year:'So.', ht:'6-3', wt:'240', stars:3, conf:2, trend:'up', key:false, note:null },
+        { name:'Richard Wesley', year:'Jr.', ht:'6-4', wt:'245', stars:3, conf:2, trend:'stable', key:false, note:null }
+      ], battleNote:'Determines the rotation depth behind Simmons — both developing edge rushers with different strengths.' }
+    ]
+  },
+  {
+    id:'end', name:'End', abbr:'END', unit:'defense',
+    slots:[
+      { depth:1, players:[
+        { name:'Lance Jackson', year:'Sr.', ht:'6-4', wt:'255', stars:4, conf:4, trend:'stable', key:false, note:null }
+      ]},
+      { depth:2, players:[
+        { name:'Zina Umeozulu', year:'Jr.', ht:'6-4', wt:'250', stars:4, conf:3, trend:'up', key:false, note:null }
+      ]},
+      { depth:3, players:[
+        { name:'Jamarion Carlton', year:'Fr.', ht:'6-4', wt:'240', stars:4, conf:2, trend:'up', key:false, note:null }
+      ]}
+    ]
+  },
+  {
+    id:'wlb', name:'Will Linebacker', abbr:'WLB', unit:'defense',
+    slots:[
+      { depth:1, players:[
+        { name:'Rasheem Biles', year:'Jr.', ht:'6-1', wt:'225', stars:4, conf:4, trend:'stable', key:false, note:null }
+      ]},
+      { depth:2, players:[
+        { name:'Rocky Cummings', year:'Fr.', ht:'6-1', wt:'220', stars:4, conf:2, trend:'up', key:false, note:null }
+      ]}
+    ]
+  },
+  {
+    id:'slb', name:'Sam Linebacker', abbr:'SLB', unit:'defense',
+    slots:[
+      { depth:1, players:[
+        { name:'Brad Spence', year:'Jr.', ht:'6-2', wt:'225', stars:4, conf:4, trend:'stable', key:false, note:null }
+      ]},
+      { depth:2, players:[
+        { name:'Kosi Okpala', year:'So.', ht:'6-2', wt:'220', stars:3, conf:3, trend:'up', key:false, note:null }
+      ]}
+    ]
+  },
+  {
+    id:'mlb', name:'Mike Linebacker', abbr:'MLB', unit:'defense',
+    slots:[
+      { depth:1, players:[
+        { name:"Ty'Anthony Smith", year:'Jr.', ht:'6-1', wt:'230', stars:4, conf:4, trend:'stable', key:false, note:null }
+      ]},
+      { depth:2, players:[
+        { name:'Justin Cryer', year:'Sr.', ht:'6-2', wt:'230', stars:3, conf:3, trend:'stable', key:false, note:null }
+      ]},
+      { depth:3, players:[
+        { name:'Tyler Atkinson', year:'Jr.', ht:'6-1', wt:'225', stars:3, conf:2, trend:'stable', key:false, note:null }
+      ]},
+      { depth:4, players:[
+        { name:'Markus Boswell', year:'So.', ht:'6-2', wt:'225', stars:3, conf:2, trend:'up', key:false, note:null }
+      ]}
+    ]
+  },
+  {
+    id:'nickel', name:'Nickel', abbr:'NICK', unit:'defense',
+    slots:[
+      { depth:1, players:[
+        { name:'Graceson Littleton', year:'Jr.', ht:'5-11', wt:'195', stars:4, conf:4, trend:'up', key:false,
+          note:'Nickel demands elite coverage and linebacker instincts simultaneously — Littleton\'s spring tape was among the most impressive in the entire defensive backfield.' }
+      ]},
+      { depth:2, players:[
+        { name:'Bo Mascoe', year:'Jr.', ht:'5-11', wt:'185', stars:4, conf:3, trend:'stable', key:false, note:null }
+      ]},
+      { depth:3, players:[
+        { name:'Wardell Mack', year:'Fr.', ht:'5-11', wt:'185', stars:3, conf:2, trend:'up', key:false, note:null }
+      ]}
+    ]
+  },
+  {
+    id:'cb1', name:'Cornerback', abbr:'CB', unit:'defense',
+    slots:[
+      { depth:1, players:[
+        { name:'Kobe Black', year:'Jr.', ht:'6-1', wt:'195', stars:4, conf:4, trend:'up', key:false,
+          note:'Emerging as Texas\'s next great corner — plays with a Barron-like physicality at the catch point that wins contested ball battles.' }
+      ]},
+      { depth:2, players:[
+        { name:'Kade Phillips', year:'So.', ht:'6-0', wt:'185', stars:4, conf:3, trend:'up', key:false, note:null }
+      ]},
+      { depth:3, players:[
+        { name:'Hayward Howard Jr.', year:'Fr.', ht:'5-11', wt:'180', stars:4, conf:2, trend:'stable', key:false, note:null }
+      ]}
+    ]
+  },
+  {
+    id:'cb2', name:'Cornerback', abbr:'CB', unit:'defense',
+    slots:[
+      { depth:1, players:[
+        { name:'Bo Mascoe', year:'Jr.', ht:'5-11', wt:'185', stars:4, conf:3, trend:'stable', key:false, note:null }
+      ]},
+      { depth:2, players:[
+        { name:'Warren Roberson', year:'Sr.', ht:'6-0', wt:'185', stars:3, conf:3, trend:'stable', key:false, note:null }
+      ]},
+      { depth:3, players:[
+        { name:'Samari Matthews', year:'So.', ht:'5-11', wt:'180', stars:3, conf:2, trend:'up', key:false, note:null }
+      ]}
+    ]
+  },
+  {
+    id:'fs', name:'Free Safety', abbr:'FS', unit:'defense',
+    slots:[
+      { depth:1, players:[
+        { name:'Jelani McDonald', year:'Sr.', ht:'6-1', wt:'200', stars:4, conf:4, trend:'stable', key:false,
+          note:'Senior FS who sets the coverage from the back end — his communication with the corner corps is the organizational backbone of this secondary.' }
+      ]},
+      { depth:2, players:[
+        { name:'Jordon Johnson-Rubell', year:'Jr.', ht:'6-0', wt:'195', stars:3, conf:3, trend:'stable', key:false, note:null }
+      ]},
+      { depth:3, players:[
+        { name:'Toray Davis', year:'Jr.', ht:'6-0', wt:'195', stars:3, conf:2, trend:'stable', key:false, note:null }
+      ]},
+      { depth:4, players:[
+        { name:'Zelus Hicks', year:'Fr.', ht:'6-1', wt:'195', stars:3, conf:2, trend:'up', key:false, note:null }
+      ]}
+    ]
+  },
+  {
+    id:'ss', name:'Strong Safety', abbr:'SS', unit:'defense',
+    slots:[
+      { depth:1, players:[
+        { name:'Derek Williams Jr.', year:'Jr.', ht:'6-2', wt:'210', stars:4, conf:4, trend:'stable', key:false, note:null }
+      ]},
+      { depth:2, players:[
+        { name:'Xavier Filsaime', year:'Jr.', ht:'6-1', wt:'200', stars:3, conf:3, trend:'up', key:false, note:null }
+      ]},
+      { depth:3, players:[
+        { name:'Jonathan Cunningham', year:'So.', ht:'6-1', wt:'200', stars:3, conf:2, trend:'stable', key:false, note:null }
+      ]},
+      { depth:4, players:[
+        { name:'Jonah Williams', year:'Fr.', ht:'6-2', wt:'205', stars:4, conf:2, trend:'up', key:false, note:null }
+      ]},
+      { depth:5, players:[
+        { name:'Yaheim Riley', year:'Fr.', ht:'6-0', wt:'195', stars:3, conf:1, trend:'stable', key:false, note:null }
+      ]}
+    ]
+  },
+
+  /* ==================== SPECIAL TEAMS ==================== */
+  {
+    id:'p', name:'Punter', abbr:'P', unit:'special',
+    slots:[
+      { depth:1, players:[
+        { name:'Mac Chuimento', year:'Jr.', ht:'6-2', wt:'195', stars:null, conf:4, trend:'stable', key:false, note:null }
+      ]},
+      { depth:2, players:[
+        { name:'Mikey Bukauskus', year:'So.', ht:'6-1', wt:'190', stars:null, conf:3, trend:'stable', key:false, note:null }
+      ]}
+    ]
+  },
+  {
+    id:'k', name:'Kicker', abbr:'K', unit:'special',
+    slots:[
+      { depth:1, players:[
+        { name:'Gianni Spetic', year:'Jr.', ht:'6-1', wt:'185', stars:null, conf:5, trend:'stable', key:true,
+          note:'Entering third year as the starter — 14-of-18 career field goals with proven clutch ability in high-leverage situations.' }
+      ]},
+      { depth:2, players:[
+        { name:'Spencer Barnett', year:'Fr.', ht:'6-0', wt:'180', stars:null, conf:2, trend:'up', key:false, note:null }
+      ]},
+      { depth:3, players:[
+        { name:'Jake Collett', year:'So.', ht:'6-0', wt:'185', stars:null, conf:2, trend:'stable', key:false, note:null }
+      ]}
+    ]
+  },
+  {
+    id:'pr', name:'Punt Return', abbr:'PR', unit:'special',
+    slots:[
+      { depth:1, players:[
+        { name:'Ryan Niblett', year:'So.', ht:'5-8', wt:'175', stars:3, conf:4, trend:'stable', key:false, note:null }
+      ]},
+      { depth:2, players:[
+        { name:'Raleek Brown', year:'Sr.', ht:'5-9', wt:'185', stars:4, conf:3, trend:'stable', key:false, note:null }
+      ]},
+      { depth:3, players:[
+        { name:'Daylan McCutcheon', year:'Fr.', ht:'5-10', wt:'175', stars:3, conf:2, trend:'stable', key:false, note:null }
+      ]}
+    ]
+  },
+  {
+    id:'kor', name:'Kickoff Return', abbr:'KOR', unit:'special',
+    slots:[
+      { depth:1, tandem:true, players:[
+        { name:'Raleek Brown', year:'Sr.', ht:'5-9', wt:'185', stars:4, conf:4, trend:'stable', key:false, note:null },
+        { name:'Jermaine Bishop Jr.', year:'So.', ht:'5-10', wt:'175', stars:4, conf:4, trend:'up', key:false, note:null }
+      ]},
+      { depth:2, tandem:true, players:[
+        { name:'Derrek Cooper', year:'Jr.', ht:'5-10', wt:'190', stars:3, conf:3, trend:'stable', key:false, note:null },
+        { name:'Michael Terry III', year:'Fr.', ht:'5-11', wt:'190', stars:4, conf:2, trend:'up', key:false, note:null }
+      ]}
+    ]
+  }
+];
+
+/* ----------------------------------------------------------------
+   HELPERS
+---------------------------------------------------------------- */
+const UNITS = [
+  { key:'offense', label:'Offense' },
+  { key:'defense', label:'Defense' },
+  { key:'special', label:'Special Teams' }
+];
+
+const CONF_LABELS = ['','Open','Battle','Projected','Solid','Locked'];
+
+function stars(n){ return n ? '★'.repeat(n) : ''; }
+function confDots(n){
+  return Array.from({length:5},(_, i)=>
+    `<span class="cdot ${i<n?'on':'off'}"></span>`
+  ).join('');
+}
+function trend(t){
+  if(t==='up') return '<span class="drow-trend trend-up">▲</span>';
+  if(t==='down') return '<span class="drow-trend trend-down">▼</span>';
+  return '<span class="drow-trend trend-stable">—</span>';
+}
+function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function highlight(name, q){
+  if(!q) return esc(name);
+  const safe = q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  return esc(name).replace(new RegExp(`(${safe})`,'gi'),'<mark class="drow-hl">$1</mark>');
+}
+
+function slotStripeClass(slot){
+  if(slot.battle || slot.tandem) return 'stripe-battle';
+  return slot.depth===1?'stripe-s1':slot.depth===2?'stripe-s2':'stripe-s3';
+}
+function rowClass(slot){
+  let cls = `drow-s${Math.min(slot.depth,3)}`;
+  if(slot.battle||slot.tandem) cls += ' drow-battle';
+  return cls;
+}
+
+function renderPlayer(p, depth, isBattle, isTandem, q, showNote){
+  const stripeClass = isBattle||isTandem ? 'stripe-battle' : depth===1?'stripe-s1':depth===2?'stripe-s2':'stripe-s3';
+  const rowExtraClass = isBattle||isTandem ? 'drow-battle' : '';
+  const isMatch = q && p.name.toLowerCase().includes(q.toLowerCase());
+  return `
+<div class="drow drow-s${Math.min(depth,3)} ${rowExtraClass} ${isMatch?'drow-match':''}" data-name="${p.name.toLowerCase()}">
+  <div class="drow-stripe ${stripeClass}"></div>
+  <div class="drow-num">${depth}</div>
+  <div class="drow-info">
+    <div class="drow-top">
+      <span class="drow-name">${highlight(p.name,q)}</span>
+      <span class="drow-year">${p.year}</span>
+      ${p.key?'<span class="drow-key">Key</span>':''}
+    </div>
+    <div class="drow-attrs">
+      <span>${p.ht}</span><span class="drow-attrs-sep">·</span>
+      <span>${p.wt}</span>
+      ${p.stars?`<span class="drow-attrs-sep">·</span><span class="drow-stars">${stars(p.stars)}</span>`:''}
+    </div>
+  </div>
+  <div class="drow-side">
+    ${trend(p.trend)}
+    <div class="drow-conf">${confDots(p.conf)}</div>
+    <div class="drow-conf-label">${CONF_LABELS[p.conf]||''}</div>
+  </div>
+</div>
+${showNote && p.note ? `<div class="drow-note">${p.note}</div>` : ''}`;
+}
+
+function renderSlot(slot, q){
+  if(slot.battle && slot.players.length>=2){
+    const [p1,p2] = slot.players;
+    return `
+<div class="depth-slot-wrap">
+  ${renderPlayer(p1, slot.depth, true, false, q, false)}
+  <div class="or-sep"><div class="or-sep-line"></div><span class="or-badge">OR</span><div class="or-sep-line"></div></div>
+  ${renderPlayer(p2, slot.depth, true, false, q, false)}
+  ${slot.battleNote ? `<div class="or-slot-note">${slot.battleNote}</div>` : ''}
+</div>`;
+  }
+  if(slot.tandem && slot.players.length>=2){
+    const [p1,p2] = slot.players;
+    return `
+<div class="depth-slot-wrap">
+  ${renderPlayer(p1, slot.depth, false, true, q, false)}
+  <div class="tandem-sep"><span class="tandem-badge">&amp;</span></div>
+  ${renderPlayer(p2, slot.depth, false, true, q, false)}
+</div>`;
+  }
+  const p = slot.players[0];
+  return `
+<div class="depth-slot-wrap">
+  ${renderPlayer(p, slot.depth, false, false, q, true)}
+</div>`;
+}
+
+function posMatchesQuery(pos, q){
+  if(!q) return true;
+  return pos.slots.some(s=>s.players.some(p=>p.name.toLowerCase().includes(q.toLowerCase())));
+}
+
+function renderPosGroup(pos, q){
+  const hasBattle = pos.slots.some(s=>s.battle);
+  const total = pos.slots.reduce((a,s)=>a+s.players.length,0);
+  const anyMatch = q ? posMatchesQuery(pos,q) : true;
+  const hiddenClass = anyMatch ? '' : 'pg-hidden';
+  return `
+<div class="pos-group ${hiddenClass}" id="pg-${pos.id}">
+  <div class="pg-header" onclick="toggleGroup('${pos.id}')">
+    <span class="pg-abbr">${pos.abbr}</span>
+    <span class="pg-name">${pos.name}</span>
+    ${hasBattle ? '<span class="pg-battle-badge">Battle</span>' : ''}
+    <span class="pg-count">${total}</span>
+    <span class="pg-toggle">▾</span>
+  </div>
+  <div class="pg-body">
+    ${pos.slots.map(s=>renderSlot(s,q)).join('')}
+  </div>
+</div>`;
+}
+
+function render(unitFilter, q){
+  const body = document.getElementById('dc-body');
+  let totalMatchingPlayers = 0;
+  let html = '';
+
+  UNITS.forEach(unit=>{
+    if(unitFilter!=='all' && unitFilter!==unit.key) return;
+    const positions = DC.filter(p=>p.unit===unit.key);
+    const visiblePositions = q ? positions.filter(p=>posMatchesQuery(p,q)) : positions;
+
+    const playerCount = positions.reduce((a,p)=>a+p.slots.reduce((b,s)=>b+s.players.length,0),0);
+    totalMatchingPlayers += visiblePositions.reduce((a,p)=>a+p.slots.reduce((b,s)=>b+s.players.filter(pl=>!q||pl.name.toLowerCase().includes(q.toLowerCase())).length,0),0);
+
+    const hiddenClass = visiblePositions.length===0 && q ? 'unit-hidden' : '';
+
+    html += `
+<div class="unit-section ${hiddenClass}" data-unit="${unit.key}">
+  <div class="unit-header-row">
+    <span class="unit-name">${unit.label}</span>
+    <div class="unit-hr"></div>
+    <span class="unit-meta">${positions.length} positions · ${playerCount} players</span>
+  </div>
+  <div class="pos-groups-grid">
+    ${positions.map(p=>renderPosGroup(p,q)).join('')}
+  </div>
+</div>`;
+  });
+
+  body.innerHTML = html || '';
+
+  // No results message
+  const noRes = document.getElementById('dc-no-results');
+  noRes.style.display = totalMatchingPlayers===0 && q ? 'block' : 'none';
+
+  // Result bar
+  const bar = document.getElementById('dc-result-bar');
+  if(q && totalMatchingPlayers>0){
+    bar.style.display = 'block';
+    document.getElementById('dc-result-num').textContent = totalMatchingPlayers;
+    document.getElementById('dc-result-query').textContent = q;
+  } else {
+    bar.style.display = 'none';
+  }
+}
+
+/* ----------------------------------------------------------------
+   STATS STRIP
+---------------------------------------------------------------- */
+function buildStats(){
+  const totalPlayers = DC.reduce((a,p)=>a+p.slots.reduce((b,s)=>b+s.players.length,0),0);
+  const battles = DC.reduce((a,p)=>a+p.slots.filter(s=>s.battle).length,0);
+  const trendingUp = DC.reduce((a,p)=>a+p.slots.reduce((b,s)=>b+s.players.filter(pl=>pl.trend==='up').length,0),0);
+  const featured = DC.reduce((a,p)=>a+p.slots.reduce((b,s)=>b+s.players.filter(pl=>pl.key).length,0),0);
+  const fiveStars = DC.reduce((a,p)=>a+p.slots.reduce((b,s)=>b+s.players.filter(pl=>pl.stars===5).length,0),0);
+
+  document.getElementById('stat-total').textContent = totalPlayers;
+  document.getElementById('stat-groups').textContent = DC.length;
+  document.getElementById('stat-battles').textContent = battles;
+  document.getElementById('stat-trending').textContent = trendingUp;
+  document.getElementById('stat-featured').textContent = featured;
+  document.getElementById('stat-5star').textContent = fiveStars;
+}
+
+/* ----------------------------------------------------------------
+   INTERACTIVE CONTROLS
+---------------------------------------------------------------- */
+function toggleGroup(id){
+  const el = document.getElementById(`pg-${id}`);
+  if(el) el.classList.toggle('pg-collapsed');
+}
+
+function toggleAll(collapse){
+  document.querySelectorAll('.pos-group').forEach(g=>{
+    g.classList.toggle('pg-collapsed', collapse);
+  });
+}
+
+// Unit tab clicks
+let currentUnit = 'all';
+document.getElementById('dc-unit-tabs').addEventListener('click', e=>{
+  const btn = e.target.closest('.dc-unit-tab');
+  if(!btn) return;
+  currentUnit = btn.dataset.unit;
+  document.querySelectorAll('.dc-unit-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  render(currentUnit, document.getElementById('dc-search').value.trim());
+});
+
+// Search
+document.getElementById('dc-search').addEventListener('input', e=>{
+  render(currentUnit, e.target.value.trim());
+});
+
+// Clear search on Escape
+document.getElementById('dc-search').addEventListener('keydown', e=>{
+  if(e.key==='Escape'){ e.target.value=''; render(currentUnit,''); }
+});
+
+/* ----------------------------------------------------------------
+   INIT
+---------------------------------------------------------------- */
+document.addEventListener('DOMContentLoaded', ()=>{
+  buildStats();
+  render('all', '');
+});
+</script>
+</body>
+</html>
