@@ -246,7 +246,7 @@ function cardHTML(p){
       ${draft.notes?`<div class="pce-label">NFL Outlook</div><div class="pce-text">${draft.notes}</div>`:''}
       <div class="pce-links">
         <button class="pce-link primary" onclick="event.stopPropagation();openPlayerProfile('${p.slug}')">★ Full Profile →</button>
-        <a href="stats.html" class="pce-link">Stats →</a>
+        <a href="schedule.html" class="pce-link">Stats →</a>
         ${p.links&&p.links.utBio?`<a href="${p.links.utBio}" class="pce-link" target="_blank" rel="noopener">UT Bio →</a>`:''}
         ${p.links&&p.links.youtube?`<a href="${p.links.youtube}" class="pce-link" target="_blank" rel="noopener">▶ Highlights</a>`:''}
       </div>
@@ -310,12 +310,12 @@ function buildPage(players){
     ${heroHTML(hero)}
     <div class="sec-head" id="offense" style="margin-top:32px;">
       <div class="sec-title">Offensive Players to Watch</div>
-      <a href="stats.html" style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#BF5700;text-decoration:none;">Full Stat Leaders →</a>
+      <a href="schedule.html" style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#BF5700;text-decoration:none;">Full Stat Leaders →</a>
     </div>
     <div class="players-grid">${offense.map(cardHTML).join('')}</div>
     <div class="sec-head" id="defense">
       <div class="sec-title">Defensive Players to Watch</div>
-      <a href="stats.html" style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#BF5700;text-decoration:none;">Defense Leaders →</a>
+      <a href="schedule.html" style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#BF5700;text-decoration:none;">Defense Leaders →</a>
     </div>
     <div class="players-grid">${defense.map(cardHTML).join('')}</div>
     <div class="sec-head" id="nfl">

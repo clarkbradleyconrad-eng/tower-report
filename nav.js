@@ -1,13 +1,12 @@
 const NAV_PAGES = [
-  { label: 'Home',       href: 'index.html' },
-  { label: 'Schedule',   href: 'schedule.html' },
-  { label: 'Roster',     href: 'roster.html' },
-  { label: 'Recruiting', href: 'recruiting.html' },
-  { label: 'Portal',     href: 'portal.html' },
-  { label: 'Stats',      href: 'stats.html' },
-  { label: 'Stories',    href: 'stories.html' },
-  { label: 'Players',    href: 'players.html' },
-  { label: 'History',    href: 'history.html' },
+  { label: 'Home',        href: 'index.html' },
+  { label: 'Season Hub',  href: 'schedule.html' },
+  { label: 'Depth Chart', href: 'depth-chart.html' },
+  { label: 'Recruiting',  href: 'recruiting.html' },
+  { label: 'Portal',      href: 'portal.html' },
+  { label: 'Stories',     href: 'stories.html' },
+  { label: 'Players',     href: 'players.html' },
+  { label: 'History',     href: 'history.html' },
 ];
 
 const LOGO_SVG = `
