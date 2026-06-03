@@ -89,51 +89,55 @@ nav{position:sticky;top:0;z-index:200;background:rgba(8,8,8,0.97);backdrop-filte
 /* ======================================================
    HERO
 ====================================================== */
-.hero{display:grid;grid-template-columns:1fr 390px;min-height:82vh;border-bottom:1px solid var(--border);}
+.hero{display:grid;grid-template-columns:1fr 390px;min-height:88vh;border-bottom:1px solid var(--border);}
 .hero-left{display:flex;flex-direction:column;border-right:1px solid var(--border);}
 
 /* --- Hero Lead (top of left col) --- */
 .hero-lead{
-  flex:1;padding:48px 48px 40px;
+  flex:1;padding:52px 52px 44px;
   background:var(--surface);
   position:relative;overflow:hidden;
   display:flex;flex-direction:column;justify-content:flex-end;
-  min-height:400px;
+  min-height:440px;
+  border-left:2px solid var(--orange);
 }
 .hero-lead::before{
   content:'';position:absolute;inset:0;
   background:
-    radial-gradient(ellipse 70% 50% at 80% 10%,rgba(191,87,0,0.10) 0%,transparent 60%),
-    radial-gradient(ellipse 40% 70% at 0% 90%,rgba(191,87,0,0.06) 0%,transparent 70%);
+    radial-gradient(ellipse 65% 60% at 75% 5%,rgba(191,87,0,0.18) 0%,transparent 55%),
+    radial-gradient(ellipse 50% 80% at 0% 100%,rgba(191,87,0,0.10) 0%,transparent 60%),
+    radial-gradient(ellipse 30% 40% at 50% 50%,rgba(191,87,0,0.04) 0%,transparent 70%);
   pointer-events:none;
 }
 .hero-lead::after{
   content:'';position:absolute;inset:0;
-  background-image:repeating-linear-gradient(0deg,transparent,transparent 31px,rgba(255,255,255,0.012) 31px,rgba(255,255,255,0.012) 32px);
+  background-image:radial-gradient(rgba(255,255,255,0.035) 1px,transparent 1px);
+  background-size:28px 28px;
   pointer-events:none;
 }
 .hero-longhorn{
   position:absolute;right:-60px;top:-30px;
-  width:480px;height:480px;
-  opacity:.04;filter:sepia(1) saturate(6) hue-rotate(5deg) brightness(2);
+  width:520px;height:520px;
+  opacity:.05;filter:sepia(1) saturate(6) hue-rotate(5deg) brightness(2);
   pointer-events:none;z-index:0;
 }
 .hero-inner{position:relative;z-index:1;}
-.hero-eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:22px;}
+.hero-eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:26px;}
+.hero-eyebrow-rule{width:28px;height:2px;background:var(--orange);flex-shrink:0;}
 .live-pill{
   display:flex;align-items:center;gap:5px;
   font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
   color:var(--green);background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);padding:3px 8px;
 }
 .live-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:blink 2s ease-in-out infinite;}
-.hero-kicker{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);}
+.hero-kicker{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3.5px;text-transform:uppercase;color:var(--orange);}
 .hero-hed{
-  font-family:'Playfair Display',serif;font-size:clamp(46px,5.2vw,80px);
-  font-weight:900;line-height:.92;letter-spacing:-2.5px;color:var(--white);margin-bottom:18px;
+  font-family:'Playfair Display',serif;font-size:clamp(52px,7vw,108px);
+  font-weight:900;line-height:.88;letter-spacing:-3.5px;color:var(--white);margin-bottom:22px;
 }
 .hero-hed em{font-style:italic;color:var(--orange);}
-.hero-dek{font-size:15px;line-height:1.72;color:var(--secondary);max-width:540px;margin-bottom:28px;}
-.hero-btns{display:flex;gap:8px;flex-wrap:wrap;}
+.hero-dek{font-size:15px;line-height:1.68;color:var(--secondary);max-width:520px;margin-bottom:32px;}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap;}
 .btn-primary{
   font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
   background:var(--orange);color:#fff;text-decoration:none;padding:12px 22px;
@@ -148,14 +152,18 @@ nav{position:sticky;top:0;z-index:200;background:rgba(8,8,8,0.97);backdrop-filte
 .btn-ghost:hover{border-color:var(--white2);color:var(--white);}
 
 /* --- Hero Stats Bar --- */
+.hero-stats-header{
+  font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+  color:var(--muted);padding:12px 22px 8px;border-top:1px solid var(--border);position:relative;z-index:1;
+}
 .hero-stats{
-  display:flex;gap:0;border-top:1px solid var(--border);margin-top:36px;padding-top:0;
+  display:flex;gap:0;padding-top:0;
   position:relative;z-index:1;
 }
-.hero-stat{padding:18px 22px;border-right:1px solid var(--border);}
+.hero-stat{padding:14px 22px;border-right:1px solid var(--border);}
 .hero-stat:last-child{border-right:none;}
-.hs-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
-.hs-val{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700;color:var(--white);letter-spacing:.5px;}
+.hs-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+.hs-val{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;color:var(--white);letter-spacing:.3px;}
 .hs-val.orange{color:var(--orange);}
 a.hero-stat:hover{background:var(--surface2);}
 a.hero-stat:hover .hs-label{color:var(--orange);}
@@ -181,14 +189,20 @@ a.hero-stat:hover .hs-label{color:var(--orange);}
 }
 .ai-head-left{display:flex;align-items:center;gap:9px;}
 .ai-icon-box{
-  width:22px;height:22px;background:var(--orange);display:flex;align-items:center;justify-content:center;
-  font-size:11px;flex-shrink:0;
+  width:26px;height:26px;background:var(--orange);display:flex;align-items:center;justify-content:center;
+  font-size:12px;flex-shrink:0;animation:aiPulse 2.5s ease-in-out infinite;
 }
-.ai-title{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--white);}
+.ai-title{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--white);}
 .ai-badge{
   font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
   color:var(--orange);background:var(--orange-lo);border:1px solid rgba(191,87,0,0.22);padding:2px 7px;
 }
+.ai-signal-bar{
+  padding:5px 20px;display:flex;align-items:center;gap:6px;
+  background:rgba(191,87,0,0.035);border-bottom:1px solid var(--border);
+  font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);
+}
+.ai-signal-dot{width:4px;height:4px;border-radius:50%;background:var(--green);animation:blink 1.4s ease-in-out infinite;flex-shrink:0;}
 .ai-chips{padding:12px 20px 10px;border-bottom:1px solid var(--border);}
 .ai-chips-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:7px;}
 .ai-chip{
@@ -840,19 +854,19 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
     <div class="hero-lead">
       <img class="hero-longhorn" src="https://a.espncdn.com/i/teamlogos/ncaa/500/251.png" alt="" aria-hidden="true"/>
       <div class="hero-inner">
-        <div class="hero-eyebrow">
-          <div class="live-pill"><span class="live-dot"></span> Live Intel</div>
+        <div class="hero-eyebrow h-anim-1">
+          <div class="hero-eyebrow-rule"></div>
           <span class="hero-kicker">Longhorn Intelligence Platform</span>
         </div>
-        <h1 class="hero-hed">Every Signal.<br><em>One Answer.</em></h1>
-        <p class="hero-dek">Tower Report monitors recruiting crystal balls, portal filings, NIL deals, press conferences, and live data — then turns thousands of signals into the intelligence Texas fans actually need.</p>
-        <div class="hero-btns">
+        <h1 class="hero-hed h-anim-2">The Intelligence<br><em>Edge.</em></h1>
+        <p class="hero-dek h-anim-3">Every recruiting crystal ball, portal move, and program signal — analyzed, ranked, and surfaced for Longhorn fans who need more than a score.</p>
+        <div class="hero-btns h-anim-4">
           <a href="#waitlist" class="btn-primary">Get Early Access →</a>
-          <a href="schedule.html" class="btn-ghost">2026 Schedule</a>
-          <a href="history.html" class="btn-ghost">Program History</a>
+          <a href="schedule.html" class="btn-ghost">Explore 2026 Season</a>
         </div>
       </div>
-      <div class="hero-stats">
+      <div class="hero-stats-header h-anim-5">Program at a Glance · 2026</div>
+      <div class="hero-stats h-anim-5">
         <a href="stats.html" class="hero-stat" style="text-decoration:none;cursor:pointer;" title="View Stats & Projections"><div class="hs-label">Sark Record</div><div class="hs-val orange">48–20</div></a>
         <a href="history.html" class="hero-stat" style="text-decoration:none;cursor:pointer;" title="Program History"><div class="hs-label">All-Time Wins</div><div class="hs-val">972</div></a>
         <a href="history.html" class="hero-stat" style="text-decoration:none;cursor:pointer;" title="National Championships"><div class="hs-label">Natl. Titles</div><div class="hs-val">4</div></a>
@@ -863,22 +877,22 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
     <!-- 2×2 story grid -->
     <div class="hero-stories">
       <a href="schedule.html" class="story-card">
-        <div class="sc-tag">🏈 2026 Schedule</div>
+        <div class="sc-tag">2026 Schedule</div>
         <div class="sc-hed">Season Opens Sep 5 — Ohio State Home in Week 2</div>
         <div class="sc-meta">12 Games · SEC Regular Season · Nov 27 @ A&M</div>
       </a>
       <a href="recruiting.html" class="story-card">
-        <div class="sc-tag">⚡ Recruiting</div>
+        <div class="sc-tag">Recruiting Intel</div>
         <div class="sc-hed">2027 Class Taking Shape — Texas Leads on 3 Five-Stars</div>
         <div class="sc-meta">247Sports Board · Portal Watch · NIL Tracker</div>
       </a>
       <a href="roster.html" class="story-card">
-        <div class="sc-tag">👥 Roster</div>
+        <div class="sc-tag">Roster</div>
         <div class="sc-hed">Arch Manning Headlines Senior Year at Quarterback</div>
         <div class="sc-meta">Full Roster · Depth Chart · 2026 Projections</div>
       </a>
       <a href="history.html" class="story-card">
-        <div class="sc-tag">🏆 History</div>
+        <div class="sc-tag">Program History</div>
         <div class="sc-hed">972 Wins, 4 Titles, The Greatest Game Ever Played</div>
         <div class="sc-meta">1893–2025 · VY · Ricky Williams · Mack Brown</div>
       </a>
@@ -886,20 +900,20 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
   </div>
 
   <!-- RIGHT COLUMN -->
-  <div class="hero-right">
+  <div class="hero-right h-anim-r">
 
     <!-- AI PANEL -->
     <div class="ai-panel">
       <div class="ai-head">
         <div class="ai-head-left">
           <div class="ai-icon-box">⚡</div>
-          <span class="ai-title">Ask The Tower</span>
+          <span class="ai-title">Tower Intelligence</span>
         </div>
         <div class="ai-badge">AI Powered</div>
       </div>
 
       <div class="ai-chips">
-        <div class="ai-chips-label">Ask The Tower</div>
+        <div class="ai-chips-label">Suggested queries</div>
         <div class="ai-chip" onclick="askTower('What are Texas playoff chances in 2026?')">
           What are Texas's playoff chances?<span class="ai-chip-arr">→</span>
         </div>
@@ -911,11 +925,16 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
         </div>
       </div>
 
+      <div class="ai-signal-bar">
+        <span class="ai-signal-dot"></span>
+        <span>Monitoring 847 active signals</span>
+      </div>
+
       <div class="ai-body">
         <div class="ai-body-label" id="ai-label">Tower Intel</div>
         <div class="ai-body-text" id="ai-text">
-          Tower Report AI monitors recruiting Crystal Balls, portal filings, depth chart changes, practice reports, coach statements, and beat writer signals — then surfaces what actually matters to Longhorn fans.<br><br>
-          Ask a question or tap a suggestion to see it in action.
+          <strong>Tower Intelligence</strong> aggregates recruiting Crystal Balls, portal activity, depth chart signals, and program intel — then surfaces what actually matters.<br><br>
+          Select a query above or type your own question.
         </div>
       </div>
 
@@ -935,7 +954,21 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
         </div>
       </div>
       <div id="briefing-list">
-        <div class="briefing-item" style="color:var(--muted);font-style:italic;font-size:12px;">Loading today's intel…</div>
+        <div class="briefing-item">
+          <div class="bi-cat">Recruiting</div>
+          <div class="bi-text">Texas leads Crystal Ball on 5-star DT Jalen Thompson (Texas City) — decision expected before Aug. camp.</div>
+          <div class="bi-src">via 247Sports</div>
+        </div>
+        <div class="briefing-item">
+          <div class="bi-cat">Game of the Week</div>
+          <div class="bi-text">Ohio State opens as a narrow underdog at DKR — Vegas line moved to TX −3.5 after Arch Manning's spring performance data.</div>
+          <div class="bi-src">via DraftKings</div>
+        </div>
+        <div class="briefing-item">
+          <div class="bi-cat">Depth Chart</div>
+          <div class="bi-text">Colin Simmons (EDGE) and Cam Coleman (WR) named preseason All-Americans by multiple outlets entering summer camp.</div>
+          <div class="bi-src">via Inside Texas</div>
+        </div>
       </div>
       <div class="briefing-footer-ts" id="briefing-updated"></div>
     </div>
@@ -1875,14 +1908,15 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
 <!-- ===================== SCRIPTS ===================== -->
 <script>
 /* ---- DATE / COUNTDOWN ---- */
-(function(){
+document.addEventListener('DOMContentLoaded', function(){
   const now = new Date();
-  document.getElementById('mdate').textContent = now.toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-  const opener = new Date('2026-09-05');
+  const mdateEl = document.getElementById('mdate');
+  if(mdateEl) mdateEl.textContent = now.toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const opener = new Date(2026, 8, 5); // Sep 5, 2026 local midnight
   const days = Math.ceil((opener - now) / 86400000);
   const el = document.getElementById('days-count');
   if(el) el.textContent = days > 0 ? days : 0;
-})();
+});
 
 /* ---- SCHEDULE DATA ---- */
 const schedule2026 = [
@@ -2137,8 +2171,8 @@ function joinWL(){
 }
 
 /* ---- GAME OF THE WEEK COUNTDOWN ---- */
-(function(){
-  const gameTime = new Date('2026-09-12T18:30:00-05:00');
+document.addEventListener('DOMContentLoaded', function(){
+  const gameTime = new Date('2026-09-12T23:30:00Z'); // Sep 12 6:30 PM CDT = 23:30 UTC
   function updateCountdown(){
     const now = new Date();
     const diff = gameTime - now;
@@ -2157,7 +2191,7 @@ function joinWL(){
   }
   updateCountdown();
   setInterval(updateCountdown, 60000);
-})();
+});
 
 /* ---- CONFIDENCE BAR ANIMATION ---- */
 (function(){
