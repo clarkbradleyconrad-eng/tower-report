@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>"We're Coming." — Colin Simmons & the Ohio State Rematch | Tower Report</title>
+<meta name="description" content="Colin Simmons led the SEC with 12 sacks in 2025 and has September 12 circled since Columbus. The rematch comes to Austin. The business is coming."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet"/>
+<script src="nav.js" defer></script>
+<style>
+:root{
+  --orange:#BF5700;--black:#080808;--white:#F5F0E8;
+  --surface:#111;--surface2:#181818;--surface3:#202020;
+  --border:rgba(255,255,255,0.07);--border-strong:rgba(255,255,255,0.13);
+  --muted:#6B6560;--secondary:#A09890;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);}
+
+/* ─── HERO ─── */
+.article-hero{
+  position:relative;min-height:540px;
+  background:#040404;overflow:hidden;
+  display:flex;align-items:flex-end;
+}
+.hero-bg-tx{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 65% 90% at 10% 60%,rgba(191,87,0,0.22) 0%,transparent 65%);
+  animation:glowBreath 14s ease-in-out infinite;
+}
+.hero-bg-osu{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 80% at 90% 55%,rgba(190,30,45,0.07) 0%,transparent 60%);
+}
+.hero-logo-tx{
+  position:absolute;right:-2%;top:50%;transform:translateY(-50%);
+  width:54vw;height:54vw;max-width:620px;max-height:620px;
+  background:url('https://a.espncdn.com/i/teamlogos/ncaa/500/251.png') center/contain no-repeat;
+  opacity:0.1;
+  animation:logoBreath 16s ease-in-out infinite;
+}
+.hero-logo-osu{
+  position:absolute;left:4%;top:50%;transform:translateY(-50%);
+  width:16vw;height:16vw;max-width:180px;max-height:180px;
+  background:url('https://a.espncdn.com/i/teamlogos/ncaa/500/194.png') center/contain no-repeat;
+  opacity:0.055;filter:grayscale(55%);
+}
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,0.018) 1px,transparent 1px);
+  background-size:52px 52px;
+}
+.hero-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom,transparent 0%,rgba(4,4,4,0.55) 40%,rgba(4,4,4,0.94) 78%,#040404 100%);
+}
+.hero-edge-l{
+  position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(to bottom,transparent 10%,var(--orange) 35%,var(--orange) 65%,transparent 90%);
+}
+.hero-edge-top{
+  position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(191,87,0,0.6) 40%,rgba(191,87,0,0.9) 50%,rgba(191,87,0,0.6) 60%,transparent);
+  animation:edgePulse 7s ease-in-out infinite;
+}
+
+.hero-game-badge{
+  position:absolute;top:48px;right:48px;z-index:20;
+  background:rgba(6,6,6,0.88);backdrop-filter:blur(12px);
+  border:1px solid var(--border-strong);border-top:2px solid var(--orange);
+  padding:16px 22px;text-align:center;min-width:116px;
+}
+.hgb-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.hgb-vs{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:6px;}
+.hgb-logo{width:30px;height:30px;object-fit:contain;}
+.hgb-logo-osu{opacity:0.55;filter:grayscale(40%);}
+.hgb-sep{font-family:'Barlow Condensed',sans-serif;font-size:10px;color:var(--muted);font-weight:700;}
+.hgb-date{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;color:var(--orange);line-height:1;margin-bottom:3px;}
+.hgb-venue{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
+
+.hero-content{
+  position:relative;z-index:15;
+  padding:0 52px 48px;max-width:860px;
+}
+.hero-breadcrumb{
+  font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;
+  letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:18px;
+}
+.hero-breadcrumb a{color:var(--muted);text-decoration:none;transition:color .15s;}
+.hero-breadcrumb a:hover{color:var(--white);}
+.hero-breadcrumb .sep{color:rgba(107,101,96,0.45);margin:0 6px;}
+.hero-breadcrumb .cur{color:var(--orange);}
+.hero-kicker{
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:10px;
+}
+.hero-eye{
+  font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;
+  letter-spacing:2.5px;text-transform:uppercase;
+  color:rgba(245,240,232,0.35);margin-bottom:10px;
+}
+.hero-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(46px,7.5vw,88px);font-weight:900;
+  line-height:0.9;letter-spacing:-3px;color:var(--white);margin-bottom:16px;
+}
+.hero-deck{
+  font-size:17px;line-height:1.6;color:rgba(245,240,232,0.62);
+  font-style:italic;margin-bottom:20px;max-width:600px;
+}
+.hero-meta{
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;
+  letter-spacing:1px;text-transform:uppercase;color:var(--muted);
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+}
+.meta-dot{width:3px;height:3px;border-radius:50%;background:var(--muted);flex-shrink:0;}
+
+@keyframes logoBreath{0%,100%{opacity:0.08;}50%{opacity:0.13;}}
+@keyframes glowBreath{0%,100%{opacity:0.7;}50%{opacity:1;}}
+@keyframes edgePulse{0%,100%{opacity:0.3;}50%{opacity:1;}}
+
+/* ─── ARTICLE LAYOUT ─── */
+.article-outer{
+  max-width:1160px;margin:0 auto;
+  padding:44px 52px 90px;
+  display:grid;grid-template-columns:1fr 296px;gap:60px;
+}
+
+/* AI SUMMARY */
+.ai-summary{
+  background:var(--surface);
+  border:1px solid rgba(191,87,0,0.22);border-left:3px solid var(--orange);
+  padding:22px 26px;margin-bottom:34px;
+}
+.ais-top{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.ais-lbl{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);}
+.ais-badge{
+  font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:1px;text-transform:uppercase;
+  padding:2px 7px;background:rgba(191,87,0,0.1);border:1px solid rgba(191,87,0,0.22);color:var(--orange);
+}
+.ais-body{font-size:14px;line-height:1.78;color:var(--secondary);font-style:italic;margin-bottom:16px;}
+.ais-pts{display:flex;flex-direction:column;gap:9px;}
+.ais-pt{
+  font-size:13px;color:var(--white);line-height:1.45;
+  padding-left:20px;position:relative;
+}
+.ais-pt::before{content:'→';position:absolute;left:0;color:var(--orange);font-family:'Barlow Condensed',sans-serif;font-weight:700;}
+
+/* ARTICLE TEXT */
+.article-body{font-size:16.5px;line-height:1.84;color:#BEB9B2;}
+.article-body p{margin-bottom:24px;}
+.article-body strong{color:var(--white);}
+.article-body em{color:rgba(245,240,232,0.8);}
+
+.section-lbl{
+  display:block;
+  font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:3px;text-transform:uppercase;color:var(--orange);
+  padding-top:30px;margin-top:36px;margin-bottom:16px;
+  border-top:1px solid var(--border);
+}
+
+.pull-quote{
+  border-left:3px solid var(--orange);padding:18px 24px;
+  background:var(--surface);margin:28px 0;
+}
+.pq-text{
+  font-family:'Playfair Display',serif;font-size:20px;font-weight:700;
+  color:var(--white);line-height:1.3;font-style:italic;margin-bottom:10px;
+}
+.pq-attr{
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;
+  letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);
+}
+
+.bottom-line{
+  background:rgba(191,87,0,0.05);
+  border:1px solid rgba(191,87,0,0.18);border-top:3px solid var(--orange);
+  padding:24px 26px;margin-top:38px;
+}
+.bl-lbl{
+  font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:14px;
+}
+.bl-text{font-size:15px;line-height:1.78;color:var(--white);}
+.hookem{font-size:24px;margin-top:14px;display:block;}
+
+.article-footer-bar{
+  display:flex;align-items:center;gap:16px;margin-top:32px;
+  padding-top:20px;border-top:1px solid var(--border);
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;
+  letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);
+}
+.afb-tag{
+  padding:3px 8px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);
+  font-size:10px;
+}
+
+/* ─── SIDEBAR ─── */
+.article-sidebar{}
+.sidebar-sticky{position:sticky;top:82px;display:flex;flex-direction:column;gap:20px;}
+
+.side-box{background:var(--surface);border:1px solid var(--border);}
+.side-hd{
+  padding:12px 16px;border-bottom:1px solid var(--border);background:var(--surface2);
+}
+.side-hd-title{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.side-hd-name{font-size:13px;font-weight:700;color:var(--white);margin-top:3px;}
+
+/* game matchup */
+.matchup{display:flex;align-items:center;justify-content:space-between;padding:16px 14px;gap:6px;}
+.matchup-team{display:flex;flex-direction:column;align-items:center;gap:7px;flex:1;}
+.matchup-logo{width:44px;height:44px;object-fit:contain;}
+.matchup-name{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);text-align:center;}
+.matchup-center{flex-shrink:0;text-align:center;}
+.matchup-vs{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
+.matchup-date{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:var(--orange);line-height:1.1;}
+.matchup-info{padding:10px 16px;border-top:1px solid var(--border);font-family:'Barlow Condensed',sans-serif;font-size:10px;color:var(--muted);line-height:1.65;letter-spacing:0.3px;}
+
+/* stat rows */
+.srow{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1px solid var(--border);}
+.srow:last-child{border-bottom:none;}
+.srow-lbl{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
+.srow-val{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;color:var(--orange);}
+.srow-val.sm{font-size:13px;color:var(--white);text-align:right;line-height:1.3;}
+.srow-val.rank{font-size:12px;color:var(--orange);font-family:'Barlow Condensed',sans-serif;}
+.srow.accent{background:rgba(191,87,0,0.04);}
+
+/* quotes */
+.qitem{padding:14px 16px;border-bottom:1px solid var(--border);}
+.qitem:last-child{border-bottom:none;}
+.qitem-text{font-size:13px;font-style:italic;color:var(--white);line-height:1.5;margin-bottom:7px;}
+.qitem-src{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--orange);}
+
+/* ─── FOOTER ─── */
+footer{padding:28px 52px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);}
+.footer-logo{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;letter-spacing:3px;color:var(--muted);}
+.footer-logo span{color:var(--orange);}
+.footer-text{font-size:12px;color:var(--muted);}
+
+@media(max-width:900px){
+  .article-outer{grid-template-columns:1fr;padding:24px 20px 60px;gap:32px;}
+  .hero-content{padding:0 20px 36px;}
+  .hero-game-badge{display:none;}
+  .article-sidebar{display:none;}
+  footer{flex-direction:column;gap:8px;padding:20px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ─── HERO ─── -->
+<div class="article-hero">
+  <div class="hero-bg-tx"></div>
+  <div class="hero-bg-osu"></div>
+  <div class="hero-logo-tx"></div>
+  <div class="hero-logo-osu"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-edge-l"></div>
+  <div class="hero-edge-top"></div>
+
+  <!-- game date badge top-right -->
+  <div class="hero-game-badge">
+    <div class="hgb-label">Rematch</div>
+    <div class="hgb-vs">
+      <img class="hgb-logo" src="https://a.espncdn.com/i/teamlogos/ncaa/500/251.png" alt="Texas" onerror="this.style.display='none'"/>
+      <span class="hgb-sep">vs</span>
+      <img class="hgb-logo hgb-logo-osu" src="https://a.espncdn.com/i/teamlogos/ncaa/500/194.png" alt="Ohio State" onerror="this.style.display='none'"/>
+    </div>
+    <div class="hgb-date">SEP 12</div>
+    <div class="hgb-venue">DKR · Austin</div>
+  </div>
+
+  <!-- headline content bottom-left -->
+  <div class="hero-content">
+    <div class="hero-breadcrumb">
+      <a href="index.html">Tower Report</a>
+      <span class="sep">/</span>
+      <a href="stories.html">Stories</a>
+      <span class="sep">/</span>
+      <span class="cur">Defense · Analysis</span>
+    </div>
+    <div class="hero-kicker">🔱 Defense · Ohio State Rematch · June 2, 2026</div>
+    <div class="hero-eye">Colin Simmons · Texas Longhorns EDGE</div>
+    <h1 class="hero-title">"WE'RE<br>COMING."</h1>
+    <p class="hero-deck">Colin Simmons sends a message to Ohio State — and after leading the SEC with 12 sacks in 2025, it's time to believe every word of it.</p>
+    <div class="hero-meta">
+      <span>Tower Report Staff</span>
+      <span class="meta-dot"></span>
+      <span>June 2, 2026</span>
+      <span class="meta-dot"></span>
+      <span>7 min read</span>
+      <span class="meta-dot"></span>
+      <span style="color:var(--orange);">Defense · Analysis</span>
+    </div>
+  </div>
+</div>
+
+<!-- ─── ARTICLE WRAP ─── -->
+<div class="article-outer">
+
+  <!-- MAIN COLUMN -->
+  <div>
+
+    <!-- AI SUMMARY -->
+    <div class="ai-summary">
+      <div class="ais-top">
+        <span class="ais-lbl">🔱 Tower Report Intelligence</span>
+        <span class="ais-badge">AI Summary</span>
+      </div>
+      <p class="ais-body">Colin Simmons has had September 12 circled since the final whistle in Columbus last fall. After a quiet Week 1 opener — two tackles, zero sacks against Ohio State — the Texas EDGE rusher responded by leading the entire SEC with 12 sacks across the full 2025 season. Now the rematch comes to Austin in front of 100,000 fans in burnt orange, and Simmons is telling anyone who'll listen: there's business to be taken care of. This isn't hype. The résumé backs it up, and the stakes have never been higher for this program.</p>
+      <div class="ais-pts">
+        <div class="ais-pt">0 sacks vs. Ohio State in 2025 Week 1 — the quiet afternoon that became jet fuel for an entire season</div>
+        <div class="ais-pt">SEC-leading 12 sacks in 2025, plus 15.5 TFL, 43 tackles, 15 QB hurries, 3 forced fumbles</div>
+        <div class="ais-pt">Rematch on Sep. 12 comes to DKR — crowd, momentum, and home-field pressure all flipped from a year ago</div>
+        <div class="ais-pt">Texas's 2026 playoff path likely runs through this game — a loss makes the national title climb exponentially steeper</div>
+      </div>
+    </div>
+
+    <!-- ARTICLE BODY -->
+    <div class="article-body">
+
+      <p>The Buckeyes should probably hear this one.</p>
+
+      <p>Texas defensive end <strong>Colin Simmons</strong> has made his goals for 2026 crystal clear: <em>"National championship, dog, the national championship. All the individual rewards will come with it, but I just want to win. Win, win, win."</em></p>
+
+      <p>But before any trophy, there's a score to settle. On <strong>September 12</strong>, the Longhorns get their rematch against Ohio State — and Simmons has had that date circled ever since the Buckeyes beat Texas 14–7 to open the 2025 season. His message to Columbus? Direct. Unbothered. Cold.</p>
+
+      <div class="pull-quote">
+        <div class="pq-text">"Second game of the season, all that nervousness, all that jittery is out the door. We're coming. There's business to be taken care of."</div>
+        <div class="pq-attr">Colin Simmons — via Eleven Warriors</div>
+      </div>
+
+      <span class="section-lbl">The Backstory</span>
+
+      <p>When Ohio State and Texas opened the 2025 season in Columbus, Ryan Day's squad controlled most of the game. The Longhorns couldn't get their offense going, and Simmons had a quiet day — just two tackles, zero sacks. For a guy who came in promising to wreck the Buckeyes' quarterback, it was a humbling afternoon.</p>
+
+      <p>But what happened next is what makes this 2026 rematch must-watch television.</p>
+
+      <p>Simmons bounced back from that opener and finished 2025 leading the entire SEC with <strong>12 sacks</strong>, adding 15.5 tackles for loss, 43 total tackles, 15 QB hurries, 3 forced fumbles, and 2 pass breakups. He turned one of his worst individual games into the fuel that powered an SEC-best season. That's the kind of player he is — the kind that remembers, recalibrates, and returns.</p>
+
+      <p>And now he's hungry for the one thing that got away.</p>
+
+      <span class="section-lbl">The Stakes</span>
+
+      <p>This isn't just another non-conference game. Ohio State won convincingly in Columbus a year ago — the Buckeyes felt in control the majority of the way. Now the rematch comes to Austin, to DKR, in front of <strong>100,000+ fans in burnt orange</strong>. The roles are flipped, and so is the pressure.</p>
+
+      <p>Simmons also added a jab at Ohio State's quarterback situation, saying he's <em>"just glad that they chose a quarterback that I'm ready to sack"</em> — the same energy he's carried since before last year's game. Except this time, the résumé backs it up. He's not predicting. He's promising.</p>
+
+      <p>For Texas, beating Ohio State has become something bigger than a rivalry win. It's become a measuring stick. A statement. Every time the Longhorns have fallen short of a national title conversation, the Buckeyes have had a hand in it — directly or indirectly. Winning this game in September doesn't guarantee a championship. But losing it makes the climb a whole lot steeper, and everyone inside that program knows it.</p>
+
+      <p>The crowd will be primed. The preparation will be different. And the man they'll need the most has been waiting since November.</p>
+
+      <div class="bottom-line">
+        <div class="bl-lbl">Bottom Line</div>
+        <div class="bl-text">Colin Simmons is one of the best edge rushers in college football. He led the SEC in sacks. He's got unfinished business. And he's telling you straight up — he's coming.<br><br>Ohio State should take that seriously.</div>
+        <span class="hookem">Hook 'em. 🤘</span>
+      </div>
+
+      <div class="article-footer-bar">
+        <span>Tower Report</span>
+        <span class="meta-dot"></span>
+        <span>@towerreportai</span>
+        <span class="meta-dot"></span>
+        <span class="afb-tag">Defense</span>
+        <span class="afb-tag">Rematch</span>
+        <span class="afb-tag">Colin Simmons</span>
+        <span class="afb-tag">Ohio State</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="article-sidebar">
+    <div class="sidebar-sticky">
+
+      <!-- GAME CARD -->
+      <div class="side-box">
+        <div class="side-hd">
+          <div class="side-hd-title">The Rematch · Week 2</div>
+        </div>
+        <div class="matchup">
+          <div class="matchup-team">
+            <img class="matchup-logo" src="https://a.espncdn.com/i/teamlogos/ncaa/500/251.png" alt="Texas" onerror="this.style.display='none'"/>
+            <div class="matchup-name">Texas</div>
+          </div>
+          <div class="matchup-center">
+            <div class="matchup-vs">vs</div>
+            <div class="matchup-date">SEP<br>12</div>
+          </div>
+          <div class="matchup-team">
+            <img class="matchup-logo" src="https://a.espncdn.com/i/teamlogos/ncaa/500/194.png" alt="Ohio State" style="opacity:0.55;filter:grayscale(35%);" onerror="this.style.display='none'"/>
+            <div class="matchup-name">Ohio St.</div>
+          </div>
+        </div>
+        <div class="matchup-info">
+          DKR-Texas Memorial Stadium<br>
+          Austin, Texas · Home Game<br>
+          2026 Season · Week 2 · TBD
+        </div>
+      </div>
+
+      <!-- SIMMONS 2025 STATS -->
+      <div class="side-box">
+        <div class="side-hd">
+          <div class="side-hd-title">2025 Season Stats</div>
+          <div class="side-hd-name">Colin Simmons · EDGE</div>
+        </div>
+        <div class="srow accent">
+          <div class="srow-lbl">Sacks</div>
+          <div class="srow-val">12</div>
+        </div>
+        <div class="srow">
+          <div class="srow-lbl">SEC Rank</div>
+          <div class="srow-val rank">#1 in SEC ★</div>
+        </div>
+        <div class="srow">
+          <div class="srow-lbl">TFL</div>
+          <div class="srow-val">15.5</div>
+        </div>
+        <div class="srow">
+          <div class="srow-lbl">Tackles</div>
+          <div class="srow-val">43</div>
+        </div>
+        <div class="srow">
+          <div class="srow-lbl">QB Hurries</div>
+          <div class="srow-val">15</div>
+        </div>
+        <div class="srow">
+          <div class="srow-lbl">Forced Fum.</div>
+          <div class="srow-val">3</div>
+        </div>
+        <div class="srow">
+          <div class="srow-lbl">Pass Breakups</div>
+          <div class="srow-val">2</div>
+        </div>
+        <div class="srow accent" style="border-top:1px solid var(--border);">
+          <div class="srow-lbl">vs. Ohio St. '25</div>
+          <div class="srow-val sm">0 sacks<br>2 tackles</div>
+        </div>
+      </div>
+
+      <!-- KEY QUOTES -->
+      <div class="side-box">
+        <div class="side-hd">
+          <div class="side-hd-title">In His Own Words</div>
+        </div>
+        <div class="qitem">
+          <div class="qitem-text">"National championship, dog, the national championship. All the individual rewards will come with it, but I just want to win."</div>
+          <div class="qitem-src">Sports Illustrated</div>
+        </div>
+        <div class="qitem">
+          <div class="qitem-text">"We're coming. There's business to be taken care of."</div>
+          <div class="qitem-src">Eleven Warriors</div>
+        </div>
+        <div class="qitem">
+          <div class="qitem-text">"I'm just glad that they chose a quarterback that I'm ready to sack."</div>
+          <div class="qitem-src">Yahoo Sports</div>
+        </div>
+      </div>
+
+      <!-- RELATED -->
+      <div class="side-box">
+        <div class="side-hd">
+          <div class="side-hd-title">More Coverage</div>
+        </div>
+        <div class="qitem" style="cursor:pointer;" onclick="location.href='stories.html'">
+          <div class="qitem-text" style="font-style:normal;font-size:13px;font-weight:600;">Colin Simmons Pass Rush: A Technical Breakdown</div>
+          <div class="qitem-src">Film Room · Tower Report</div>
+        </div>
+        <div class="qitem" style="cursor:pointer;" onclick="location.href='stories.html'">
+          <div class="qitem-text" style="font-style:normal;font-size:13px;font-weight:600;">Three Games That Define Texas's 2026 Season</div>
+          <div class="qitem-src">Analysis · Tower Report</div>
+        </div>
+        <div class="qitem" style="border-bottom:none;cursor:pointer;" onclick="location.href='stories.html'">
+          <div class="qitem-text" style="font-style:normal;font-size:13px;font-weight:600;">Arch Manning's Moment Has Finally Arrived</div>
+          <div class="qitem-src">Feature · Tower Report</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-logo">TOWER<span>REPORT</span></div>
+  <div class="footer-text">The Tower Never Sleeps. © 2026 · @towerreportai</div>
+</footer>
+
+</body>
+</html>
