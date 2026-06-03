@@ -1,0 +1,152 @@
+{
+  "season": 2026,
+  "lastUpdated": "2026-06-03",
+  "confidenceLevel": "Tower Projection",
+  "note": "Projected depth chart as of June 2026. Based on published reports, spring practice notes, portal additions, and roster data. No positions are confirmed until fall camp. Subject to change.",
+  "positionBattles": [
+    { "pos": "OT", "label": "Left Tackle Battle", "status": "open", "note": "Kelvin Banks Jr. departed for NFL. Trevor Goosby and Jaydon Chatman competing." },
+    { "pos": "LB2", "label": "LB2 Spot", "status": "battle", "note": "Behind Rasheem Biles, the second LB spot is genuinely open." }
+  ],
+  "offense": {
+    "QB": {
+      "posLabel": "Quarterback",
+      "status": "locked",
+      "statusLabel": "Locked",
+      "storyIds": ["arch-manning-moment-has-arrived"],
+      "portalContext": "MJ Morris added from NC State as experienced backup.",
+      "players": [
+        { "slot": 1, "label": "QB1", "name": "Arch Manning", "slug": "arch-manning", "number": 16, "class": "Jr.", "height": "6'4\"", "weight": "235", "hometown": "New Orleans, La.", "transfer": false, "transferFrom": null, "trait": "Heisman Frontrunner", "note": "Unquestioned starter. 3,472 yds, 29 TD in 2025.", "confidenceLevel": "Confirmed" },
+        { "slot": 2, "label": "QB2", "name": "MJ Morris", "slug": null, "number": 19, "class": "Sr.", "height": "6'1\"", "weight": "198", "hometown": "Cary, NC", "transfer": true, "transferFrom": "NC State", "trait": "Transfer — Experienced Backup", "note": "Former NC State starter. 1,850 yds, 16 TD (2024). Solid emergency option.", "confidenceLevel": "Tower Projection" },
+        { "slot": 3, "label": "QB3", "name": "KJ Lacey", "slug": null, "number": 9, "class": "R-Fr.", "height": "6'1\"", "weight": "195", "hometown": "Saraland, Ala.", "transfer": false, "transferFrom": null, "trait": "Development", "note": "Redshirt freshman developing. Long-term upside.", "confidenceLevel": "Tower Projection" }
+      ]
+    },
+    "RB": {
+      "posLabel": "Running Back",
+      "status": "locked",
+      "statusLabel": "Locked",
+      "storyIds": ["texas-2026-portal-breakdown"],
+      "portalContext": "Raleek Brown (Oklahoma State) and Hollywood Smothers (Arizona State) added as lead backs.",
+      "players": [
+        { "slot": 1, "label": "RB1", "name": "Raleek Brown", "slug": "raleek-brown", "number": 0, "class": "Sr.", "height": "5'9\"", "weight": "185", "hometown": "Stockton, Calif.", "transfer": true, "transferFrom": "Oklahoma State", "trait": "Transfer — Lead Back", "note": "Projected RB1. Veteran big-play back from Oklahoma State.", "confidenceLevel": "Tower Projection" },
+        { "slot": 2, "label": "RB2", "name": "Hollywood Smothers", "slug": null, "number": 2, "class": "Jr.", "height": "5'10\"", "weight": "190", "hometown": "Charlotte, N.C.", "transfer": true, "transferFrom": "Arizona State", "trait": "Transfer — Change of Pace", "note": "Change-of-pace back. Pass-catching specialist.", "confidenceLevel": "Tower Projection" },
+        { "slot": 3, "label": "RB3", "name": "Derrek Cooper", "slug": null, "number": 5, "class": "Fr.", "height": "5'11\"", "weight": "205", "hometown": "Lauderhill, Fla.", "transfer": false, "transferFrom": null, "trait": "Freshman — Development", "note": "True freshman with upside. ST and spot duty.", "confidenceLevel": "Tower Projection" }
+      ]
+    },
+    "WR": {
+      "posLabel": "Wide Receiver",
+      "status": "locked",
+      "statusLabel": "Loaded",
+      "storyIds": ["cam-coleman-effect-wr-room", "texas-2026-portal-breakdown"],
+      "portalContext": "Cam Coleman (Auburn 5★) leads the group. Emmett Mosley V, Sterling Berkhalter, Ty Boatright, Rett Andersen all added via portal.",
+      "players": [
+        { "slot": 1, "label": "WR-X", "name": "Cam Coleman", "slug": "cam-coleman", "number": 8, "class": "Jr.", "height": "6'3\"", "weight": "195", "hometown": "Phenix City, Ala.", "transfer": true, "transferFrom": "Auburn", "trait": "Transfer — Immediate WR1", "note": "5-star portal addition. Paired with Wingo creates unsolvable matchup problem.", "confidenceLevel": "Tower Projection" },
+        { "slot": 2, "label": "WR-Z", "name": "Ryan Wingo", "slug": "ryan-wingo", "number": 1, "class": "Jr.", "height": "6'1\"", "weight": "195", "hometown": "St. Louis, Mo.", "transfer": false, "transferFrom": null, "trait": "WR1 — Proven Starter", "note": "38 rec, 624 yds in 2025. Legitimate WR1 — Coleman's arrival elevates him further.", "confidenceLevel": "Tower Projection" },
+        { "slot": 3, "label": "Slot", "name": "Jermaine Bishop Jr.", "slug": null, "number": 4, "class": "Fr.", "height": "6'0\"", "weight": "182", "hometown": "Willis, Texas", "transfer": false, "transferFrom": null, "trait": "Competing", "note": "Texas native competing for slot WR3 snaps.", "confidenceLevel": "Tower Projection" },
+        { "slot": 4, "label": "WR4", "name": "Emmett Mosley V", "slug": null, "number": 3, "class": "Jr.", "height": "6'2\"", "weight": "198", "hometown": "Chicago, Ill.", "transfer": true, "transferFrom": "Stanford", "trait": "Transfer — Rotational", "note": "Slot depth and rotational WR.", "confidenceLevel": "Tower Projection" }
+      ]
+    },
+    "TE": {
+      "posLabel": "Tight End",
+      "status": "open",
+      "statusLabel": "Battle",
+      "storyIds": [],
+      "portalContext": "Michael Masunas added from Navy to fill the TE void.",
+      "players": [
+        { "slot": 1, "label": "TE1", "name": "Michael Masunas", "slug": null, "number": 15, "class": "Sr.", "height": "6'4\"", "weight": "240", "hometown": "Tucson, Ariz.", "transfer": true, "transferFrom": "Navy", "trait": "Transfer — Projected Starter", "note": "Fills Billingsley void. Blocking and short-to-mid passing game TE.", "confidenceLevel": "Tower Projection" },
+        { "slot": 2, "label": "TE2", "name": "Bryce Chambers", "slug": null, "number": 48, "class": "Sr.", "height": "6'4\"", "weight": "242", "hometown": "Austin, Texas", "transfer": false, "transferFrom": null, "trait": "Veteran — Rotational", "note": "Senior depth. Blocking specialist.", "confidenceLevel": "Tower Projection" },
+        { "slot": 3, "label": "TE3", "name": "Ridge Barker", "slug": null, "number": 82, "class": "Jr.", "height": "6'3\"", "weight": "235", "hometown": "Lucas, Texas", "transfer": false, "transferFrom": null, "trait": "Development", "note": "Long-term development piece.", "confidenceLevel": "Tower Projection" }
+      ]
+    },
+    "OL": {
+      "posLabel": "Offensive Line",
+      "status": "battle",
+      "statusLabel": "LT Battle",
+      "storyIds": ["story-ol-2026", "story-portal-ol"],
+      "portalContext": "Kelvin Banks Jr. (1st round OT) departed. LT is the primary open competition.",
+      "players": [
+        { "slot": 1, "label": "LT", "name": "Trevor Goosby", "slug": null, "number": 74, "class": "Jr.", "height": "6'5\"", "weight": "305", "hometown": "Melissa, Texas", "transfer": false, "transferFrom": null, "trait": "Competing — LT Spot", "note": "Competing to replace Banks Jr. at LT. Most likely internal candidate.", "confidenceLevel": "Tower Projection" },
+        { "slot": 2, "label": "LG", "name": "Melvin Siani", "slug": null, "number": 71, "class": "Sr.", "height": "6'4\"", "weight": "315", "hometown": "Hamilton, Ontario", "transfer": false, "transferFrom": null, "trait": "Veteran — Starter", "note": "Returning starter. Provides OL anchor.", "confidenceLevel": "Tower Projection" },
+        { "slot": 3, "label": "C", "name": "Robert Sweeney", "slug": null, "number": 64, "class": "Sr.", "height": "6'3\"", "weight": "300", "hometown": "Dallas, Texas", "transfer": false, "transferFrom": null, "trait": "Veteran — Starter", "note": "Senior center. Snapping stability.", "confidenceLevel": "Tower Projection" },
+        { "slot": 4, "label": "RG", "name": "Brandon Baker", "slug": null, "number": 73, "class": "Jr.", "height": "6'4\"", "weight": "310", "hometown": "Ontario, Calif.", "transfer": false, "transferFrom": null, "trait": "Returning Starter", "note": "Interior OL anchor.", "confidenceLevel": "Tower Projection" },
+        { "slot": 5, "label": "RT", "name": "Jaydon Chatman", "slug": null, "number": 75, "class": "Jr.", "height": "6'5\"", "weight": "308", "hometown": "Harker Heights, Texas", "transfer": false, "transferFrom": null, "trait": "Competing — Starter", "note": "RT spot — competing but projected starter.", "confidenceLevel": "Tower Projection" }
+      ]
+    }
+  },
+  "defense": {
+    "EDGE": {
+      "posLabel": "Edge Rusher / DE",
+      "status": "locked",
+      "statusLabel": "Elite",
+      "storyIds": ["colin-simmons-bednarik-case"],
+      "portalContext": "No portal additions needed — Simmons anchors this group.",
+      "players": [
+        { "slot": 1, "label": "EDGE1", "name": "Colin Simmons", "slug": "colin-simmons", "number": 1, "class": "Jr.", "height": "6'2\"", "weight": "245", "hometown": "Duncanville, Texas", "transfer": false, "transferFrom": null, "trait": "Bednarik Candidate", "note": "10.5 sacks in 2025. Best pass rusher in college football. Unblockable at his peak.", "confidenceLevel": "Confirmed" },
+        { "slot": 2, "label": "EDGE2", "name": "Colton Vasek", "slug": "colton-vasek", "number": 92, "class": "Jr.", "height": "6'4\"", "weight": "250", "hometown": "Austin, Texas", "transfer": false, "transferFrom": null, "trait": "Veteran — Rotation", "note": "4.5 sacks in 2025. Quality rotation behind Simmons.", "confidenceLevel": "Tower Projection" },
+        { "slot": 3, "label": "EDGE3", "name": "Justus Terry", "slug": null, "number": 15, "class": "So.", "height": "6'4\"", "weight": "248", "hometown": "Manchester, Ga.", "transfer": false, "transferFrom": null, "trait": "Development", "note": "Second-year edge with upside. Depth and development.", "confidenceLevel": "Tower Projection" }
+      ]
+    },
+    "DT": {
+      "posLabel": "Defensive Tackle",
+      "status": "open",
+      "statusLabel": "Developing",
+      "storyIds": [],
+      "portalContext": "T'Vondre Sweat graduated and was drafted. Interior DL is a developing need.",
+      "players": [
+        { "slot": 1, "label": "DT1", "name": "Hero Kanu", "slug": null, "number": 93, "class": "Sr.", "height": "6'4\"", "weight": "290", "hometown": "Geltendorf, Germany", "transfer": false, "transferFrom": null, "trait": "Veteran — Starter", "note": "Senior interior anchor. Provides experience at DT.", "confidenceLevel": "Tower Projection" },
+        { "slot": 2, "label": "DT2", "name": "Maraad Watson", "slug": null, "number": 88, "class": "Jr.", "height": "6'3\"", "weight": "285", "hometown": "Irvington, N.J.", "transfer": false, "transferFrom": null, "trait": "Competing", "note": "Competing for second DT spot. Strong development arc.", "confidenceLevel": "Tower Projection" }
+      ]
+    },
+    "LB": {
+      "posLabel": "Linebacker",
+      "status": "battle",
+      "statusLabel": "LB2 Battle",
+      "storyIds": ["texas-2026-portal-breakdown"],
+      "portalContext": "Rasheem Biles (Ohio State) added to replace Anthony Hill Jr. (NFL, 1st round).",
+      "players": [
+        { "slot": 1, "label": "LB1", "name": "Rasheem Biles", "slug": null, "number": 3, "class": "Sr.", "height": "6'2\"", "weight": "235", "hometown": "Columbus, Ohio", "transfer": true, "transferFrom": "Ohio State", "trait": "Transfer — Immediate Starter", "note": "Replaces Anthony Hill Jr. Ohio State veteran brings immediate production.", "confidenceLevel": "Tower Projection" },
+        { "slot": 2, "label": "LB2", "name": "Justin Cryer", "slug": null, "number": 28, "class": "Sr.", "height": "6'1\"", "weight": "225", "hometown": "Katy, Texas", "transfer": false, "transferFrom": null, "trait": "Competing", "note": "Senior competing for second LB slot.", "confidenceLevel": "Tower Projection" },
+        { "slot": 3, "label": "LB3", "name": "Ty'Anthony Smith", "slug": null, "number": 26, "class": "Jr.", "height": "6'1\"", "weight": "220", "hometown": "Jasper, Texas", "transfer": false, "transferFrom": null, "trait": "Depth", "note": "Linebacker depth.", "confidenceLevel": "Tower Projection" }
+      ]
+    },
+    "CB": {
+      "posLabel": "Cornerback",
+      "status": "locked",
+      "statusLabel": "SEC-Level Duo",
+      "storyIds": ["texas-2026-portal-breakdown"],
+      "portalContext": "Derek Williams Jr. (Penn State, Big Ten All-Conference) added alongside returning Malik Muhammad.",
+      "players": [
+        { "slot": 1, "label": "CB1", "name": "Malik Muhammad", "slug": "malik-muhammad", "number": 7, "class": "So.", "height": "6'0\"", "weight": "185", "hometown": "Los Angeles, Calif.", "transfer": false, "transferFrom": null, "trait": "Jim Thorpe Candidate", "note": "4 INTs, 11 PDs in 2025. Consensus #1 CB in 2024 recruiting class.", "confidenceLevel": "Confirmed" },
+        { "slot": 2, "label": "CB2", "name": "Derek Williams Jr.", "slug": "derek-williams-jr", "number": 2, "class": "Jr.", "height": "5'11\"", "weight": "185", "hometown": "New Iberia, La.", "transfer": true, "transferFrom": "Penn State", "trait": "Transfer — 2025 Big Ten All-Conference", "note": "Proven SEC-level corner. Pairs with Muhammad for elite CB room.", "confidenceLevel": "Tower Projection" },
+        { "slot": 3, "label": "CB3", "name": "Kobe Black", "slug": null, "number": 6, "class": "Jr.", "height": "5'10\"", "weight": "180", "hometown": "Waco, Texas", "transfer": false, "transferFrom": null, "trait": "Depth", "note": "Slot corner depth and special teams.", "confidenceLevel": "Tower Projection" }
+      ]
+    },
+    "S": {
+      "posLabel": "Safety",
+      "status": "battle",
+      "statusLabel": "Developing",
+      "storyIds": [],
+      "portalContext": "No portal additions at safety. Internal development required.",
+      "players": [
+        { "slot": 1, "label": "SS", "name": "Jelani McDonald", "slug": null, "number": 4, "class": "Sr.", "height": "6'0\"", "weight": "200", "hometown": "Waco, Texas", "transfer": false, "transferFrom": null, "trait": "Veteran — Starter", "note": "Senior strong safety. Returning starter.", "confidenceLevel": "Tower Projection" },
+        { "slot": 2, "label": "FS", "name": "Jonah Williams", "slug": null, "number": 9, "class": "So.", "height": "6'1\"", "weight": "195", "hometown": "Galveston, Texas", "transfer": false, "transferFrom": null, "trait": "Developing", "note": "Second-year safety stepping into larger role.", "confidenceLevel": "Tower Projection" },
+        { "slot": 3, "label": "S3", "name": "Bo Mascoe", "slug": null, "number": 5, "class": "Sr.", "height": "5'11\"", "weight": "190", "hometown": "Kissimmee, Fla.", "transfer": false, "transferFrom": null, "trait": "Veteran Depth", "note": "Senior versatility piece. ST and rotation depth.", "confidenceLevel": "Tower Projection" }
+      ]
+    }
+  },
+  "specialTeams": {
+    "K": {
+      "posLabel": "Kicker",
+      "status": "locked",
+      "players": [
+        { "slot": 1, "label": "K", "name": "Gianni Spetic", "slug": null, "number": 44, "class": "Sr.", "hometown": "Chardon, Ohio", "note": "Returning starter.", "confidenceLevel": "Tower Projection" }
+      ]
+    },
+    "P": {
+      "posLabel": "Punter",
+      "status": "locked",
+      "players": [
+        { "slot": 1, "label": "P", "name": "Mac Chiumento", "slug": null, "number": 43, "class": "Sr.", "hometown": "Daytona Beach, Fla.", "note": "Returning starter.", "confidenceLevel": "Tower Projection" }
+      ]
+    }
+  }
+}
