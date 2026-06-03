@@ -69,13 +69,12 @@ function injectNav() {
       #tr-nav .nav-logo { display: flex; align-items: center; text-decoration: none; padding: 12px 0; }
       #tr-nav .nav-links { display: flex; gap: 0; align-items: center; }
       #tr-nav .nav-link {
-        font-size: 12px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
-        color: #6B6560; text-decoration: none; padding: 20px 13px;
+        font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+        color: #A09890; text-decoration: none; padding: 20px 13px;
         border-bottom: 2px solid transparent; transition: all .2s;
       }
-      #tr-nav .nav-link:hover, #tr-nav .nav-link.active {
-        color: #F5F0E8; border-bottom-color: #BF5700;
-      }
+      #tr-nav .nav-link:hover { color: #F5F0E8; border-bottom-color: rgba(191,87,0,0.4); }
+      #tr-nav .nav-link.active { color: #F5F0E8; border-bottom-color: #BF5700; }
       #tr-nav .nav-cta {
         font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
         background: #BF5700; color: #fff; text-decoration: none;
@@ -95,12 +94,12 @@ function injectNav() {
       }
       #tr-nav .nav-mobile.open { display: flex; }
       #tr-nav .nav-mobile a {
-        font-size: 14px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
-        color: #6B6560; text-decoration: none; padding: 12px 0;
-        border-bottom: 1px solid rgba(255,255,255,0.05);
+        font-size: 15px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+        color: #C4BCB0; text-decoration: none; padding: 14px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
         transition: color .15s;
       }
-      #tr-nav .nav-mobile a:hover, #tr-nav .nav-mobile a.active { color: #F5F0E8; }
+      #tr-nav .nav-mobile a:hover, #tr-nav .nav-mobile a.active { color: #F5F0E8; border-left: 2px solid #BF5700; padding-left: 10px; }
       #tr-nav .mobile-cta {
         margin-top: 12px; background: #BF5700 !important;
         color: #fff !important; text-align: center;
