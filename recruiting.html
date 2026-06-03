@@ -4,256 +4,253 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Recruiting — Tower Report</title>
-<meta name="description" content="Texas Longhorns recruiting and transfer portal hub. 2027 class tracker, portal moves, position needs, and recruiting timeline. Tower Report."/>
+<meta name="description" content="Texas Longhorns recruiting and transfer portal hub. Verified commits, public portal moves, position needs. Tower Report."/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet"/>
 <script src="nav.js" defer></script>
 <style>
 :root{
-  --orange:#BF5700;--orange-lo:rgba(191,87,0,0.10);
-  --black:#080808;--surface:#111;--surface2:#181818;--surface3:#202020;
-  --border:rgba(255,255,255,0.07);--border-mid:rgba(255,255,255,0.10);--border-strong:rgba(255,255,255,0.15);
+  --orange:#BF5700;--black:#080808;
+  --surface:#111;--surface2:#181818;--surface3:#202020;
+  --border:rgba(255,255,255,0.07);--border-mid:rgba(255,255,255,0.10);--border-hi:rgba(255,255,255,0.15);
   --white:#F5F0E8;--white2:#C4BCB0;--muted:#6B6560;--secondary:#A09890;
   --green:#22c55e;--amber:#f59e0b;--red:#ef4444;--blue:#3b82f6;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);}
 
-/* ── HERO ── */
-.hub-hero{position:relative;padding:60px 48px 52px;background:linear-gradient(135deg,#0a0a0a 0%,#0f0c0a 50%,#0a0a0a 100%);border-bottom:1px solid var(--border-mid);overflow:hidden;}
-.hub-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 900px 400px at 15% 60%,rgba(191,87,0,0.09) 0%,transparent 70%);pointer-events:none;}
-.hub-hero-inner{max-width:1400px;margin:0 auto;position:relative;}
-.live-badge{display:inline-flex;align-items:center;gap:9px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:18px;}
-.live-dot{width:8px;height:8px;border-radius:50%;background:var(--orange);flex-shrink:0;animation:pulse-dot 1.8s ease-in-out infinite;}
-@keyframes pulse-dot{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(191,87,0,0.6);}60%{opacity:0.9;box-shadow:0 0 0 7px rgba(191,87,0,0);}}
-.hero-title{font-family:'Playfair Display',serif;font-size:clamp(36px,5vw,66px);font-weight:900;line-height:1;letter-spacing:-2px;color:var(--white);margin-bottom:16px;}
-.hero-title span{color:var(--orange);}
-.hero-sub{font-size:14px;color:var(--secondary);max-width:680px;line-height:1.7;margin-bottom:24px;font-style:italic;}
-.hero-chips{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
-.hchip{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:5px 12px;border:1px solid;}
-.hchip.rank{color:var(--amber);border-color:rgba(245,158,11,0.35);background:rgba(245,158,11,0.06);}
-.hchip.commits{color:var(--green);border-color:rgba(34,197,94,0.35);background:rgba(34,197,94,0.06);}
-.hchip.portal{color:var(--blue);border-color:rgba(59,130,246,0.35);background:rgba(59,130,246,0.06);}
-.hchip.date{color:var(--muted);border-color:var(--border-mid);background:transparent;}
-.ai-note{font-size:11px;color:var(--muted);border-left:2px solid var(--border-strong);padding-left:12px;max-width:640px;line-height:1.65;}
+/* ─── HERO ─── */
+.hub-hero{position:relative;padding:56px 48px 48px;background:#0a0a0a;border-bottom:1px solid var(--border-mid);overflow:hidden;}
+.hub-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 800px 350px at 10% 65%,rgba(191,87,0,0.08) 0%,transparent 70%);pointer-events:none;}
+.hero-inner{max-width:1400px;margin:0 auto;position:relative;}
+.live-row{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--orange);flex-shrink:0;animation:pulse 1.8s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(191,87,0,0.55);}60%{opacity:.9;box-shadow:0 0 0 6px rgba(191,87,0,0);}}
+.live-label{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(34px,4.5vw,60px);font-weight:900;line-height:1.05;letter-spacing:-1.5px;color:var(--white);margin-bottom:20px;}
+.hero-title em{color:var(--orange);font-style:normal;}
+.hero-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;}
+.chip{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:5px 11px;border:1px solid;}
+.chip-rank{color:var(--amber);border-color:rgba(245,158,11,0.3);background:rgba(245,158,11,0.05);}
+.chip-commits{color:var(--green);border-color:rgba(34,197,94,0.3);background:rgba(34,197,94,0.05);}
+.chip-portal{color:var(--blue);border-color:rgba(59,130,246,0.3);background:rgba(59,130,246,0.05);}
+.chip-date{color:var(--muted);border-color:var(--border-mid);}
+.source-bar{font-size:11px;color:var(--muted);border-left:2px solid var(--border-hi);padding-left:12px;line-height:1.7;max-width:640px;}
 
-/* ── HUB TABS (sticky) ── */
-.hub-tabs-bar{position:sticky;top:59px;z-index:100;background:rgba(8,8,8,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border-mid);}
-.hub-tabs-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;gap:0;padding:0 48px;overflow-x:auto;}
-.htab{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:16px 20px;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;color:var(--muted);background:none;border-top:none;border-left:none;border-right:none;white-space:nowrap;}
-.htab:hover{color:var(--white2);}
-.htab.active{color:var(--white);border-bottom-color:var(--orange);}
+/* ─── INTERNAL TAB BAR ─── */
+.tab-bar{position:sticky;top:59px;z-index:100;background:rgba(8,8,8,0.97);backdrop-filter:blur(16px);border-bottom:1px solid var(--border-mid);}
+.tab-bar-inner{max-width:1400px;margin:0 auto;padding:0 48px;display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.tab-bar-inner::-webkit-scrollbar{display:none;}
+.itab{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:15px 18px;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;color:var(--muted);background:none;border-top:none;border-left:none;border-right:none;white-space:nowrap;flex-shrink:0;}
+.itab:hover{color:var(--white2);}
+.itab.active{color:var(--white);border-bottom-color:var(--orange);}
 
-/* ── LAYOUT ── */
-.content-wrap{max-width:1400px;margin:0 auto;padding:0 48px 80px;}
-.tab-panel{display:none;}
-.tab-panel.active{display:block;}
-.sec-head{display:flex;align-items:center;justify-content:space-between;padding:32px 0 16px;border-bottom:1px solid var(--border);margin-bottom:22px;flex-wrap:wrap;gap:8px;}
+/* ─── LAYOUT ─── */
+.wrap{max-width:1400px;margin:0 auto;padding:0 48px 80px;}
+.panel{display:none;padding-top:32px;}
+.panel.active{display:block;}
+.sec{margin-bottom:44px;}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--border);margin-bottom:20px;}
 .sec-title{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);}
-.sec-meta{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
+.sec-meta{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
 
-/* ── STATS ROW ── */
-.stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border);margin:24px 0 32px;}
-.sr-cell{background:var(--surface);padding:18px 16px;text-align:center;}
-.sr-num{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:700;color:var(--white);line-height:1;margin-bottom:4px;}
-.sr-num.orange{color:var(--orange);}
-.sr-num.amber{color:var(--amber);}
-.sr-num.green{color:var(--green);}
-.sr-num.red{color:var(--red);}
-.sr-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+/* ─── VERIFIED LABEL ─── */
+.vtag{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 6px;border:1px solid;display:inline-block;}
+.vtag-confirmed{color:var(--green);border-color:rgba(34,197,94,0.28);background:rgba(34,197,94,0.05);}
+.vtag-public{color:var(--amber);border-color:rgba(245,158,11,0.28);background:rgba(245,158,11,0.05);}
+.vtag-portal{color:var(--blue);border-color:rgba(59,130,246,0.28);background:rgba(59,130,246,0.05);}
+.vtag-editorial{color:var(--muted);border-color:var(--border-mid);}
 
-/* ── INTEL BLOCK ── */
-.intel-block{background:var(--surface);border:1px solid var(--border-mid);border-left:3px solid var(--orange);padding:24px 28px;margin-bottom:32px;}
-.intel-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--orange);margin-bottom:12px;}
-.intel-text{font-size:14px;color:var(--secondary);line-height:1.85;font-style:italic;}
+/* ─── STAT GRID ─── */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);}
+.stat-cell{background:var(--surface);padding:20px 16px;text-align:center;}
+.stat-num{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:700;line-height:1;margin-bottom:4px;}
+.stat-lbl{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
 
-/* ── FILTER BAR ── */
-.filter-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:20px 0 8px;}
-.filter-bar input,.filter-bar select{font-family:'Barlow',sans-serif;font-size:13px;background:var(--surface);color:var(--white);border:1px solid var(--border-mid);padding:9px 14px;outline:none;transition:border-color .15s;}
-.filter-bar input{flex:1;min-width:200px;}
-.filter-bar select{min-width:140px;cursor:pointer;}
+/* ─── ACTIVITY FEED ─── */
+.feed{display:flex;flex-direction:column;gap:1px;}
+.feed-item{display:grid;grid-template-columns:120px 1fr;gap:14px;align-items:start;background:var(--surface);padding:14px 18px;border-left:2px solid var(--border-mid);transition:background .15s;}
+.feed-item:hover{background:var(--surface2);}
+.feed-item.commit{border-left-color:var(--green);}
+.feed-item.portal{border-left-color:var(--blue);}
+.feed-item.intel{border-left-color:var(--orange);}
+.feed-item.visit{border-left-color:var(--amber);}
+.feed-date{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);padding-top:2px;}
+.feed-text{font-size:13px;color:var(--white2);line-height:1.6;margin-bottom:5px;}
+.feed-tag{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;border:1px solid;display:inline-block;}
+.tag-commit{background:rgba(34,197,94,0.07);border-color:rgba(34,197,94,0.22);color:var(--green);}
+.tag-portal{background:rgba(59,130,246,0.07);border-color:rgba(59,130,246,0.22);color:var(--blue);}
+.tag-intel{background:rgba(191,87,0,0.07);border-color:rgba(191,87,0,0.22);color:var(--orange);}
+.tag-visit{background:rgba(245,158,11,0.07);border-color:rgba(245,158,11,0.22);color:var(--amber);}
+
+/* ─── FILTER BAR ─── */
+.filter-bar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;}
+.filter-bar input,.filter-bar select{font-family:'Barlow',sans-serif;font-size:13px;background:var(--surface);color:var(--white);border:1px solid var(--border-mid);padding:9px 13px;outline:none;transition:border-color .15s;}
+.filter-bar input{flex:1;min-width:180px;}
+.filter-bar select{min-width:130px;cursor:pointer;}
 .filter-bar input:focus,.filter-bar select:focus{border-color:var(--orange);}
 .filter-bar select option{background:#111;}
 
-/* ── COMMITS TABLE ── */
-.commits-wrap{overflow-x:auto;background:var(--surface);border:1px solid var(--border-mid);margin-bottom:32px;}
-.commits-table{width:100%;border-collapse:collapse;}
-.commits-table thead tr{border-bottom:1px solid var(--border-strong);}
-.commits-table th{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:14px 14px;text-align:left;cursor:pointer;white-space:nowrap;user-select:none;transition:color .15s;}
-.commits-table th:hover{color:var(--white2);}
-.commits-table th.sort-asc::after{content:' ↑';color:var(--orange);}
-.commits-table th.sort-desc::after{content:' ↓';color:var(--orange);}
-.commits-table tbody tr.data-row{border-bottom:1px solid var(--border);transition:background .15s;cursor:pointer;}
-.commits-table tbody tr.data-row:hover{background:var(--surface2);}
-.commits-table tbody tr.is-tba{opacity:0.35;cursor:default;}
-.commits-table tbody tr.expand-row{border-bottom:1px solid var(--border);display:none;}
-.commits-table tbody tr.expand-row.open{display:table-row;}
-.commits-table td{padding:14px 14px;font-size:13px;color:var(--white2);white-space:nowrap;}
-.ct-name{font-size:14px;font-weight:600;color:var(--white) !important;}
-.ct-pos{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--orange) !important;}
-.ct-stars{color:var(--amber);font-size:12px;}
-.ct-score{font-size:11px;color:var(--muted);}
-.ct-city{font-size:11px;color:var(--muted);display:block;margin-top:2px;}
-.ct-date{color:var(--muted);}
-.ct-trend-up{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;color:var(--green);}
-.ct-trend-stable{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;color:var(--muted);}
-.expand-cell{background:var(--surface2) !important;padding:16px 20px !important;white-space:normal !important;}
-.expand-content{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;}
-.expand-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
-.expand-val{font-size:13px;color:var(--white2);line-height:1.6;}
-.expand-summary{font-size:12px;color:var(--secondary);line-height:1.65;font-style:italic;}
-.src-tag{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 6px;border:1px solid;display:inline-block;margin-top:5px;}
-.src-confirmed{color:var(--green);border-color:rgba(34,197,94,0.3);background:rgba(34,197,94,0.06);}
-.src-placeholder{color:var(--muted);border-color:var(--border-mid);}
-.commits-footer{font-size:11px;color:var(--muted);text-align:center;padding:12px 16px;border-top:1px solid var(--border);}
+/* ─── SORTABLE TABLE ─── */
+.tbl-wrap{overflow-x:auto;background:var(--surface);border:1px solid var(--border-mid);margin-bottom:28px;}
+.rtbl{width:100%;border-collapse:collapse;}
+.rtbl thead tr{border-bottom:1px solid var(--border-hi);}
+.rtbl th{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:13px 14px;text-align:left;cursor:pointer;white-space:nowrap;user-select:none;transition:color .14s;}
+.rtbl th:hover{color:var(--white2);}
+.rtbl th.asc::after{content:' ↑';color:var(--orange);}
+.rtbl th.desc::after{content:' ↓';color:var(--orange);}
+.rtbl tbody tr{border-bottom:1px solid var(--border);transition:background .13s;cursor:pointer;}
+.rtbl tbody tr:last-child{border-bottom:none;}
+.rtbl tbody tr:hover{background:var(--surface2);}
+.rtbl td{padding:13px 14px;font-size:13px;color:var(--white2);white-space:nowrap;}
+.td-name{font-size:14px;font-weight:600;color:var(--white) !important;}
+.td-pos{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;color:var(--orange) !important;}
+.td-stars{color:var(--amber);font-size:12px;}
+.td-sub{font-size:11px;color:var(--muted);display:block;margin-top:1px;}
+.rtbl tbody tr.expand-row{display:none;cursor:default;}
+.rtbl tbody tr.expand-row.open{display:table-row;}
+.expand-cell{background:var(--surface2) !important;padding:14px 18px !important;white-space:normal !important;}
+.expand-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+.ex-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+.ex-val{font-size:12px;color:var(--white2);line-height:1.55;}
+.tbl-foot{font-size:11px;color:var(--muted);text-align:center;padding:10px 14px;border-top:1px solid var(--border);}
 
-/* ── TARGETS GRID ── */
-.targets-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1px;background:var(--border);margin-bottom:40px;}
-.target-card{background:var(--surface);padding:20px;border-top:2px solid transparent;transition:background .15s,border-color .15s;}
-.target-card:hover{background:var(--surface2);}
-.target-card.tier1{border-top-color:rgba(191,87,0,0.55);}
-.tgt-pos{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:5px;}
-.tgt-name{font-size:15px;font-weight:600;color:var(--white);margin-bottom:4px;}
-.tgt-info{font-size:12px;color:var(--muted);margin-bottom:10px;}
-.tgt-footer{display:flex;align-items:center;justify-content:space-between;margin-top:8px;}
-.tgt-status{display:inline-flex;align-items:center;gap:5px;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 9px;border:1px solid;}
-.status-trending{background:rgba(245,158,11,0.09);border-color:rgba(245,158,11,0.3);color:var(--amber);}
-.status-target{background:rgba(191,87,0,0.09);border-color:rgba(191,87,0,0.3);color:var(--orange);}
-.status-monitoring{background:rgba(107,101,96,0.09);border-color:rgba(107,101,96,0.25);color:var(--muted);}
-.tgt-conf{font-size:10px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;}
-
-/* ── 2026 SIGNED CLASS ── */
-.signed-toggle{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);background:none;border:1px solid var(--border-mid);padding:7px 14px;cursor:pointer;transition:all .15s;}
-.signed-toggle:hover{color:var(--white);border-color:var(--border-strong);}
-.commit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:1px;background:var(--border);margin-bottom:40px;}
-.commit-card{background:var(--surface);padding:16px;transition:background .15s;}
+/* ─── COMMIT CARDS ─── */
+.commit-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:1px;background:var(--border);}
+.commit-card{background:var(--surface);padding:20px;border-top:2px solid transparent;transition:background .13s;}
 .commit-card:hover{background:var(--surface2);}
-.commit-pos{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:4px;}
-.commit-name{font-size:14px;font-weight:600;color:var(--white);margin-bottom:3px;}
-.commit-stars{color:var(--amber);font-size:11px;margin-bottom:3px;}
-.commit-home{font-size:12px;color:var(--muted);}
-.commit-badge{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;background:rgba(34,197,94,0.09);border:1px solid rgba(34,197,94,0.22);color:var(--green);margin-top:6px;}
+.cc-pos{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:5px;}
+.cc-name{font-size:15px;font-weight:600;color:var(--white);margin-bottom:4px;}
+.cc-stars{color:var(--amber);font-size:12px;margin-bottom:3px;}
+.cc-school{font-size:12px;color:var(--muted);margin-bottom:10px;}
+.cc-date{font-family:'Barlow Condensed',sans-serif;font-size:10px;color:var(--muted);}
 
-/* ── CALENDAR ── */
-.cal-list{display:flex;flex-direction:column;gap:1px;margin-bottom:40px;}
-.cal-item{display:grid;grid-template-columns:110px 1fr auto;gap:16px;align-items:center;background:var(--surface);padding:14px 20px;}
-.cal-date{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;color:var(--orange);}
-.cal-event{font-size:13px;font-weight:500;color:var(--white);}
-.cal-type{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:3px 8px;border:1px solid var(--border);white-space:nowrap;}
+/* ─── TARGET CARDS ─── */
+.target-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1px;background:var(--border);}
+.target-card{background:var(--surface);padding:20px;border-top:2px solid transparent;transition:background .13s;}
+.target-card:hover{background:var(--surface2);}
+.target-card.hot{border-top-color:rgba(191,87,0,0.5);}
+.tc-pos{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:5px;}
+.tc-name{font-size:15px;font-weight:600;color:var(--white);margin-bottom:4px;}
+.tc-info{font-size:12px;color:var(--muted);margin-bottom:12px;}
+.tc-footer{display:flex;align-items:center;justify-content:space-between;}
+.tc-status{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 9px;border:1px solid;}
+.st-trending{background:rgba(245,158,11,0.08);border-color:rgba(245,158,11,0.28);color:var(--amber);}
+.st-target{background:rgba(191,87,0,0.08);border-color:rgba(191,87,0,0.28);color:var(--orange);}
+.st-monitoring{background:rgba(107,101,96,0.08);border-color:rgba(107,101,96,0.22);color:var(--muted);}
 
-/* ── PORTAL ── */
-.portal-stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);margin:24px 0 28px;}
-.psr-cell{background:var(--surface);padding:20px 16px;text-align:center;}
-.psr-num{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:700;line-height:1;margin-bottom:4px;}
-.psr-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
-.sub-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:24px;}
-.stab{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:13px 20px;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;color:var(--muted);background:none;border-top:none;border-left:none;border-right:none;white-space:nowrap;}
+/* ─── 2026 SIGNED CLASS ─── */
+.toggle-btn{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);background:none;border:1px solid var(--border-mid);padding:6px 13px;cursor:pointer;transition:all .13s;}
+.toggle-btn:hover{color:var(--white);border-color:var(--border-hi);}
+.signed-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:1px;background:var(--border);margin-bottom:28px;}
+.signed-card{background:var(--surface);padding:14px;transition:background .13s;}
+.signed-card:hover{background:var(--surface2);}
+.sc-pos{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:3px;}
+.sc-name{font-size:13px;font-weight:600;color:var(--white);margin-bottom:2px;}
+.sc-stars{color:var(--amber);font-size:10px;margin-bottom:2px;}
+.sc-home{font-size:11px;color:var(--muted);}
+.sc-badge{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 6px;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);color:var(--green);margin-top:5px;}
+
+/* ─── CALENDAR ─── */
+.cal-list{display:flex;flex-direction:column;gap:1px;}
+.cal-item{display:grid;grid-template-columns:100px 1fr auto;gap:14px;align-items:center;background:var(--surface);padding:13px 18px;}
+.cal-d{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;color:var(--orange);}
+.cal-e{font-size:13px;font-weight:500;color:var(--white);}
+.cal-t{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:3px 7px;border:1px solid var(--border);white-space:nowrap;}
+
+/* ─── PORTAL ─── */
+.portal-stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);margin-bottom:24px;}
+.psg-cell{background:var(--surface);padding:18px 14px;text-align:center;}
+.psg-num{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:700;line-height:1;margin-bottom:4px;}
+.psg-lbl{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.sub-tab-bar{display:flex;border-bottom:1px solid var(--border);margin-bottom:20px;}
+.stab{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:12px 18px;cursor:pointer;border-bottom:2px solid transparent;transition:all .14s;color:var(--muted);background:none;border-top:none;border-left:none;border-right:none;white-space:nowrap;}
 .stab:hover{color:var(--white2);}
 .stab.active{color:var(--white);border-bottom-color:var(--orange);}
-.portal-table{width:100%;border-collapse:collapse;margin-bottom:32px;}
-.portal-table th{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:12px 14px;text-align:left;border-bottom:1px solid var(--border-strong);background:var(--surface);white-space:nowrap;}
-.portal-table td{padding:14px 14px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:middle;}
-.portal-table tr:hover td{background:var(--surface);}
-.p-name{font-size:15px;font-weight:600;color:var(--white);}
+.ptbl{width:100%;border-collapse:collapse;margin-bottom:28px;}
+.ptbl th{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:11px 13px;text-align:left;border-bottom:1px solid var(--border-hi);background:var(--surface);white-space:nowrap;}
+.ptbl td{padding:13px 13px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:middle;}
+.ptbl tr:hover td{background:var(--surface);}
+.p-name{font-size:14px;font-weight:600;color:var(--white);}
 .p-pos{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);}
 .p-stars{color:var(--amber);font-size:11px;}
-.p-class{font-family:'Barlow Condensed',sans-serif;font-size:11px;color:var(--muted);}
-.from-school{font-size:12px;color:var(--secondary);}
-.impact-badge{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;}
-.impact-immediate{background:rgba(191,87,0,0.15);border:1px solid rgba(191,87,0,0.3);color:var(--orange);}
-.impact-depth{background:rgba(160,152,144,0.1);border:1px solid rgba(160,152,144,0.2);color:var(--secondary);}
-.impact-rotational{background:rgba(107,101,96,0.1);border:1px solid rgba(107,101,96,0.15);color:var(--muted);}
-.watch-list{display:flex;flex-direction:column;gap:1px;margin-bottom:32px;}
-.watch-item{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;background:var(--surface);padding:16px 20px;transition:background .15s;}
+.p-from{font-size:12px;color:var(--secondary);}
+.ibadge{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;}
+.ib-now{background:rgba(191,87,0,0.14);border:1px solid rgba(191,87,0,0.28);color:var(--orange);}
+.ib-depth{background:rgba(160,152,144,0.09);border:1px solid rgba(160,152,144,0.18);color:var(--secondary);}
+.ib-role{background:rgba(107,101,96,0.09);border:1px solid rgba(107,101,96,0.14);color:var(--muted);}
+.watch-list{display:flex;flex-direction:column;gap:1px;}
+.watch-item{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;background:var(--surface);padding:14px 18px;transition:background .13s;}
 .watch-item:hover{background:var(--surface2);}
-.watch-name{font-size:14px;font-weight:600;color:var(--white);margin-bottom:3px;}
-.watch-detail{font-size:12px;color:var(--muted);}
-.watch-right{text-align:right;}
-.watch-status{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;}
-.ws-monitoring{background:rgba(160,152,144,0.1);border:1px solid rgba(160,152,144,0.2);color:var(--secondary);}
-.ws-target{background:rgba(191,87,0,0.12);border:1px solid rgba(191,87,0,0.3);color:var(--orange);}
-.ws-offer{background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);color:var(--green);}
-.watch-conf{font-family:'Barlow Condensed',sans-serif;font-size:11px;color:var(--muted);margin-top:3px;}
-.impact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-bottom:40px;}
-.impact-card{background:var(--surface);padding:24px 20px;}
-.impact-card-pos{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:8px;}
-.impact-card-name{font-size:16px;font-weight:600;color:var(--white);margin-bottom:8px;}
-.impact-card-from{font-size:12px;color:var(--muted);margin-bottom:12px;}
-.impact-card-body{font-size:13px;line-height:1.65;color:var(--secondary);}
-.impact-card-verdict{margin-top:14px;padding:10px 12px;background:var(--surface2);font-size:12px;color:var(--white);border-left:2px solid var(--orange);}
-.portal-src{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 6px;border:1px solid;display:inline-block;color:var(--blue);border-color:rgba(59,130,246,0.3);background:rgba(59,130,246,0.06);margin-top:6px;}
+.w-name{font-size:14px;font-weight:600;color:var(--white);margin-bottom:3px;}
+.w-detail{font-size:12px;color:var(--muted);}
+.w-right{text-align:right;}
+.w-status{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 9px;display:block;margin-bottom:3px;}
+.ws-mon{background:rgba(160,152,144,0.08);border:1px solid rgba(160,152,144,0.18);color:var(--secondary);}
+.ws-tgt{background:rgba(191,87,0,0.1);border:1px solid rgba(191,87,0,0.26);color:var(--orange);}
+.ws-off{background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);color:var(--green);}
+.w-conf{font-family:'Barlow Condensed',sans-serif;font-size:10px;color:var(--muted);}
 
-/* ── POSITION NEEDS ── */
-.needs-header-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:20px 0 16px;}
-.needs-filter-label{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
-.needs-filter{font-family:'Barlow',sans-serif;font-size:12px;background:var(--surface);color:var(--white);border:1px solid var(--border-mid);padding:8px 12px;outline:none;cursor:pointer;}
-.needs-filter:focus{border-color:var(--orange);}
-.needs-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1px;background:var(--border);margin-bottom:40px;}
-.need-card{background:var(--surface);padding:22px 20px;transition:background .15s;}
+/* ─── POSITION NEEDS ─── */
+.needs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1px;background:var(--border);}
+.need-card{background:var(--surface);padding:20px;transition:background .13s;}
 .need-card:hover{background:var(--surface2);}
-.need-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
-.need-card-pos{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;color:var(--white);}
-.need-urgency{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;}
-.urg-high{background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);color:var(--red);}
-.urg-med{background:rgba(191,87,0,0.12);border:1px solid rgba(191,87,0,0.3);color:var(--orange);}
-.urg-low{background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.25);color:var(--green);}
-.need-bar{height:3px;background:var(--surface3);border-radius:2px;margin-bottom:12px;}
+.need-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.need-pos{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;color:var(--white);}
+.need-urg{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 9px;}
+.urg-hi{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.26);color:var(--red);}
+.urg-md{background:rgba(191,87,0,0.1);border:1px solid rgba(191,87,0,0.26);color:var(--orange);}
+.urg-lo{background:rgba(34,197,94,0.07);border:1px solid rgba(34,197,94,0.2);color:var(--green);}
+.need-bar{height:2px;background:var(--surface3);border-radius:2px;margin-bottom:10px;}
 .need-fill{height:100%;border-radius:2px;}
-.need-fill.high{background:var(--red);}
-.need-fill.med{background:var(--orange);}
-.need-fill.low{background:var(--green);}
-.need-context{font-size:12px;color:var(--secondary);line-height:1.65;margin-bottom:14px;}
-.need-solutions{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.solution-block{background:var(--surface2);padding:10px 12px;}
-.solution-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
-.solution-text{font-size:12px;color:var(--white2);line-height:1.55;}
+.nf-hi{background:var(--red);}
+.nf-md{background:var(--orange);}
+.nf-lo{background:var(--green);}
+.need-context{font-size:12px;color:var(--secondary);line-height:1.6;margin-bottom:12px;}
+.need-2col{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.need-block{background:var(--surface2);padding:9px 11px;}
+.need-block-lbl{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+.need-block-val{font-size:11px;color:var(--white2);line-height:1.5;}
 
-/* ── TIMELINE ── */
-.timeline-filters{display:flex;gap:8px;flex-wrap:wrap;padding:20px 0 8px;}
-.tl-filter{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:6px 14px;border:1px solid var(--border-mid);cursor:pointer;background:transparent;color:var(--muted);transition:all .15s;}
-.tl-filter:hover{color:var(--white2);border-color:var(--border-strong);}
-.tl-filter.active{color:var(--white);border-color:var(--orange);background:rgba(191,87,0,0.08);}
-.timeline-list{display:flex;flex-direction:column;gap:1px;margin-bottom:48px;}
-.tl-item{display:grid;grid-template-columns:140px 1fr;gap:16px;align-items:start;background:var(--surface);padding:16px 20px;border-left:2px solid var(--border-mid);transition:background .15s;}
-.tl-item:hover{background:var(--surface2);}
-.tl-item.commit{border-left-color:var(--green);}
-.tl-item.portal{border-left-color:var(--blue);}
-.tl-item.visit{border-left-color:var(--amber);}
-.tl-item.intel{border-left-color:var(--orange);}
-.tl-date{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);padding-top:2px;}
-.tl-text{font-size:13px;color:var(--white2);line-height:1.65;margin-bottom:6px;}
-.tl-tag{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;border:1px solid;}
-.tag-commit{background:rgba(34,197,94,0.08);border-color:rgba(34,197,94,0.25);color:var(--green);}
-.tag-portal{background:rgba(59,130,246,0.08);border-color:rgba(59,130,246,0.25);color:var(--blue);}
-.tag-visit{background:rgba(245,158,11,0.08);border-color:rgba(245,158,11,0.25);color:var(--amber);}
-.tag-intel{background:rgba(191,87,0,0.08);border-color:rgba(191,87,0,0.25);color:var(--orange);}
+/* ─── EMPTY STATE ─── */
+.empty-state{padding:60px 24px;text-align:center;border:1px solid var(--border);background:var(--surface);}
+.empty-icon{font-size:28px;opacity:.3;margin-bottom:14px;}
+.empty-title{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--white2);margin-bottom:8px;}
+.empty-body{font-size:13px;color:var(--muted);line-height:1.65;max-width:420px;margin:0 auto;}
+.empty-link{color:var(--orange);text-decoration:none;}
+.empty-link:hover{text-decoration:underline;}
 
-/* ── FOOTER ── */
-footer{padding:28px 48px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);}
-.footer-logo{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;letter-spacing:3px;color:var(--muted);}
-.footer-logo span{color:var(--orange);}
-.footer-text{font-size:12px;color:var(--muted);}
+/* ─── EDITORIAL NOTICE ─── */
+.editorial-notice{display:flex;align-items:flex-start;gap:12px;padding:14px 18px;background:rgba(191,87,0,0.04);border:1px solid rgba(191,87,0,0.14);margin-bottom:20px;}
+.editorial-notice p{font-size:12px;color:var(--secondary);line-height:1.6;}
+.editorial-notice strong{color:var(--white2);}
 
-/* ── RESPONSIVE ── */
+/* ─── FOOTER ─── */
+footer{padding:26px 48px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);}
+.f-logo{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:3px;color:var(--muted);}
+.f-logo span{color:var(--orange);}
+.f-text{font-size:11px;color:var(--muted);}
+
+/* ─── RESPONSIVE ─── */
 @media(max-width:900px){
-  .hub-hero,.content-wrap{padding-left:20px;padding-right:20px;}
-  .hub-tabs-inner{padding:0 20px;}
-  .stats-row{grid-template-columns:repeat(3,1fr);}
-  .portal-stats-row{grid-template-columns:repeat(2,1fr);}
-  .impact-grid{grid-template-columns:1fr;}
-  .needs-cards{grid-template-columns:1fr;}
-  .need-solutions{grid-template-columns:1fr;}
-  .tl-item{grid-template-columns:1fr;gap:4px;}
-  .portal-table{display:block;overflow-x:auto;}
-  .expand-content{grid-template-columns:1fr;}
-  .cal-item{grid-template-columns:80px 1fr;}.cal-type{display:none;}
-  footer{flex-direction:column;gap:8px;padding:20px;}
+  .hub-hero,.wrap{padding-left:20px;padding-right:20px;}
+  .tab-bar-inner{padding:0 16px;}
+  .stat-grid{grid-template-columns:repeat(2,1fr);}
+  .portal-stat-grid{grid-template-columns:repeat(2,1fr);}
+  .feed-item{grid-template-columns:1fr;gap:3px;}
+  .expand-grid{grid-template-columns:1fr;}
+  .cal-item{grid-template-columns:85px 1fr;}.cal-t{display:none;}
+  .ptbl{display:block;overflow-x:auto;}
+  .need-2col{grid-template-columns:1fr;}
+  footer{flex-direction:column;gap:8px;padding:18px 20px;}
 }
 @media(max-width:600px){
-  .stats-row{grid-template-columns:repeat(2,1fr);}
-  .filter-bar{flex-direction:column;align-items:stretch;}
+  .stat-grid{grid-template-columns:repeat(2,1fr);}
+  .hero-chips{gap:6px;}
+  .filter-bar{flex-direction:column;}
   .filter-bar input,.filter-bar select{min-width:0;}
+  .commit-cards,.target-grid,.needs-grid{grid-template-columns:1fr;}
 }
 </style>
 </head>
@@ -261,612 +258,598 @@ footer{padding:28px 48px;display:flex;align-items:center;justify-content:space-b
 
 <!-- HERO -->
 <div class="hub-hero">
-  <div class="hub-hero-inner">
-    <div class="live-badge"><span class="live-dot"></span>Live Tower Intelligence</div>
-    <h1 class="hero-title">Texas Recruiting<br><span>&amp; Portal Hub</span></h1>
-    <p class="hero-sub">2027 class tracker, 2026 transfer portal movement, position needs, and recruiting signals — all from public sources only.</p>
+  <div class="hero-inner">
+    <div class="live-row">
+      <span class="live-dot"></span>
+      <span class="live-label">Tower Recruiting Hub</span>
+    </div>
+    <h1 class="hero-title">Texas Recruiting<br><em>&amp; Transfer Portal</em></h1>
     <div class="hero-chips">
-      <div class="hchip rank">#15 On3 · 2027</div>
-      <div class="hchip rank">#26 247Sports · 2027</div>
-      <div class="hchip commits">11 Commits · 2027</div>
-      <div class="hchip portal">11 Incoming Transfers · 2026</div>
-      <div class="hchip date">Updated June 3, 2026</div>
+      <div class="chip chip-rank">#15 On3 · 2027 Class</div>
+      <div class="chip chip-rank">#26 247Sports · 2027 Class</div>
+      <div class="chip chip-commits">8 Verified Commits · 2027</div>
+      <div class="chip chip-portal">11 Incoming Transfers · 2026</div>
+      <div class="chip chip-date">Updated June 3, 2026</div>
     </div>
-    <p class="ai-note">All data from public sources only: 247Sports, On3, Rivals, ESPN, and verified reporter posts. Tower never invents commitments, visits, offers, rankings, or quotes. Uncertain information is labeled <strong style="color:var(--white2)">projected</strong> or <strong style="color:var(--white2)">placeholder</strong>.</p>
+    <p class="source-bar">All data sourced from public records: 247Sports, On3, Rivals, ESPN Recruiting, and verified reporter posts. No commitments, visits, rankings, or quotes are invented. Uncertain items are labeled <strong>Public Report</strong>. Position analysis is labeled <strong>Editorial</strong>.</p>
   </div>
 </div>
 
-<!-- HUB TAB BAR (sticky) -->
-<div class="hub-tabs-bar">
-  <div class="hub-tabs-inner">
-    <button class="htab active" data-tab="recruiting">Recruiting Board</button>
-    <button class="htab" data-tab="portal">Transfer Portal</button>
-    <button class="htab" data-tab="needs">Position Needs</button>
-    <button class="htab" data-tab="timeline">Timeline</button>
+<!-- INTERNAL TAB BAR -->
+<div class="tab-bar">
+  <div class="tab-bar-inner">
+    <button class="itab active" data-tab="overview">Overview</button>
+    <button class="itab" data-tab="hs">HS Recruiting</button>
+    <button class="itab" data-tab="portal">Transfer Portal</button>
+    <button class="itab" data-tab="commits">Commits</button>
+    <button class="itab" data-tab="targets">Targets</button>
+    <button class="itab" data-tab="offers">Offers</button>
+    <button class="itab" data-tab="needs">Position Needs</button>
   </div>
 </div>
 
-<div class="content-wrap">
+<div class="wrap">
 
-<!-- ═══════════════════════ TAB 1: RECRUITING BOARD ═══════════════════════ -->
-<div class="tab-panel active" id="panel-recruiting">
+<!-- ══════════════════ OVERVIEW ══════════════════ -->
+<div class="panel active" id="panel-overview">
 
-  <div class="stats-row">
-    <div class="sr-cell"><div class="sr-num orange">11</div><div class="sr-label">2027 Committed</div></div>
-    <div class="sr-cell"><div class="sr-num amber">#15</div><div class="sr-label">On3 Team Rank</div></div>
-    <div class="sr-cell"><div class="sr-num amber">#26</div><div class="sr-label">247Sports Rank</div></div>
-    <div class="sr-cell"><div class="sr-num">21</div><div class="sr-label">2026 Signed</div></div>
-    <div class="sr-cell"><div class="sr-num orange">Jun–Aug</div><div class="sr-label">Visit Season</div></div>
-  </div>
-
-  <div class="intel-block">
-    <div class="intel-label">Tower Analysis — 2027 Class · June 3, 2026</div>
-    <div class="intel-text">Texas enters the summer visit season with eleven commitments in the 2027 class and a trajectory that projects into a top-10 national finish if the staff closes on its remaining priority targets. The class is built around a blue-chip anchor at wide receiver — Easton Royal checks in above 97 on On3's composite — and a defensive front that gains real depth with Cameron Hall and Derwin Fields already signed on. The offensive line remains the most critical open position: Jackson Cook gives Texas a credentialed OL early, but the staff needs at least one more blue-chip prospect before early signing period to fully close that gap. At quarterback, the 2027 need is genuine and the staff knows it — a name to watch closely will emerge this summer. With official visit season opening September 1 and the summer camp circuit underway, the next six weeks are the most important stretch of this cycle.</div>
-  </div>
-
-  <!-- Filter bar -->
-  <div class="filter-bar">
-    <input type="text" id="rec-search" placeholder="Search player, school, or city…" oninput="applyFilters()"/>
-    <select id="rec-pos" onchange="applyFilters()">
-      <option value="">All Positions</option>
-      <option>QB</option><option>RB</option><option>WR</option><option>TE</option>
-      <option>OL</option><option>EDGE</option><option>DE</option><option>DT</option>
-      <option>LB</option><option>CB</option><option>S</option>
-    </select>
-    <select id="rec-stars" onchange="applyFilters()">
-      <option value="">All Ratings</option>
-      <option value="5">5-Star Only</option>
-      <option value="4">4-Star Only</option>
-      <option value="3">3-Star Only</option>
-    </select>
-    <select id="rec-sort" onchange="applyFilters()">
-      <option value="dateSort">Sort: Commit Date</option>
-      <option value="rating">Sort: Rating</option>
-      <option value="name">Sort: Name A–Z</option>
-      <option value="pos">Sort: Position</option>
-    </select>
-  </div>
-
-  <div class="sec-head">
-    <div class="sec-title">2027 Commits</div>
-    <div class="sec-meta" id="commits-count">11 Total · Click any row to expand</div>
-  </div>
-  <div class="commits-wrap">
-    <table class="commits-table">
-      <thead>
-        <tr>
-          <th data-col="name">Player</th>
-          <th data-col="pos">Pos</th>
-          <th data-col="htWt">Ht/Wt</th>
-          <th data-col="rating">Rating</th>
-          <th data-col="school">School</th>
-          <th data-col="dateSort">Commit Date</th>
-          <th data-col="trend">Trend</th>
-          <th data-col="conf">Confidence</th>
-        </tr>
-      </thead>
-      <tbody id="commits-tbody"></tbody>
-    </table>
-    <p class="commits-footer">Sources: 247Sports · On3 · ESPN · Click column headers to sort · Click row to expand</p>
-  </div>
-
-  <div class="sec-head">
-    <div class="sec-title">Top Targets</div>
-    <div class="sec-meta">Priority Remaining Prospects — Public Reports Only</div>
-  </div>
-  <div class="targets-grid" id="targets-grid"></div>
-
-  <div class="sec-head">
-    <div class="sec-title">2026 Signed Class</div>
-    <div class="sec-meta">21 Players · ESD + NSD February 2026
-      <button class="signed-toggle" id="signed-toggle" onclick="toggleSigned()" style="margin-left:16px;">Show Class</button>
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-title">2027 Class At-a-Glance</div>
+      <div class="sec-meta">Sources: On3 · 247Sports · June 3, 2026</div>
     </div>
-  </div>
-  <div class="commit-grid" id="signed-grid" style="display:none;">
-    <div class="commit-card"><div class="commit-pos">QB</div><div class="commit-name">Dia Bell</div><div class="commit-stars">★★★★</div><div class="commit-home">Fort Lauderdale, Fla.</div><div class="commit-badge">Signed</div></div>
-    <div class="commit-card"><div class="commit-pos">RB</div><div class="commit-name">Derrek Cooper</div><div class="commit-stars">★★★★</div><div class="commit-home">Lauderhill, Fla.</div><div class="commit-badge">Signed</div></div>
-    <div class="commit-card"><div class="commit-pos">RB</div><div class="commit-name">Jett Walker</div><div class="commit-stars">★★★</div><div class="commit-home">Georgetown, Texas</div><div class="commit-badge">Signed</div></div>
-    <div class="commit-card"><div class="commit-pos">WR</div><div class="commit-name">Jermaine Bishop Jr.</div><div class="commit-stars">★★★★</div><div class="commit-home">Willis, Texas</div><div class="commit-badge">Signed</div></div>
-    <div class="commit-card"><div class="commit-pos">WR</div><div class="commit-name">Kohen Brown</div><div class="commit-stars">★★★★</div><div class="commit-home">Dallas, Texas</div><div class="commit-badge">Signed</div></div>
-    <div class="commit-card"><div class="commit-pos">WR</div><div class="commit-name">Chris Stewart</div><div class="commit-stars">★★★</div><div class="commit-home">Missouri City, Texas</div><div class="commit-badge">Signed</div></div>
-    <div class="commit-card"><div class="commit-pos">TE</div><div class="commit-name">Charlie Jilek</div><div class="commit-stars">★★★</div><div class="commit-home">Portage, Mich.</div><div class="commit-badge">Signed</div></div>
-    <div class="commit-card"><div class="commit-pos">OL</div><div class="commit-name">John Turntine III</div><div class="commit-stars">★★★★</div><div class="commit-home">Fort Worth, Texas</div><div class="commit-badge">Signed</div></div>
-    <div class="commit-card"><div class="commit-pos">OL</div><div class="commit-name">Kaden Scherer</div><div class="commit-stars">★★★</div><div class="commit-home">Georgetown, Texas</div><div class="commit-badge">Signed</div></div>
-    <div class="commit-card"><div class="commit-pos">DL</div><div class="commit-name">James Johnson</div><div class="commit-stars">★★★★</div><div class="commit-home">Fort Myers, Fla.</div><div class="commit-badge">Signed</div></div>
-    <div class="commit-card"><div class="commit-pos">DL</div><div class="commit-name">Jamarion Carlton</div><div class="commit-stars">★★★</div><div class="commit-home">Temple, Texas</div><div class="commit-badge">Signed</div></div>
-    <div class="commit-card"><div class="commit-pos">DL</div><div class="commit-name">Richard Wesley</div><div class="commit-stars">★★★★</div><div class="commit-home">Sylmar, Calif.</div><div class="commit-badge">Signed</div></div>
-    <div class="commit-card"><div class="commit-pos">LB</div><div class="commit-name">Tyler Atkinson</div><div class="commit-stars">★★★</div><div class="commit-home">Lawrenceville, Ga.</div><div class="commit-badge">Signed</div></div>
-    <div class="commit-card"><div class="commit-pos">LB</div><div class="commit-name">Kosi Okpala</div><div class="commit-stars">★★★</div><div class="commit-home">Houston, Texas</div><div class="commit-badge">Signed</div></div>
-    <div class="commit-card"><div class="commit-pos">LB</div><div class="commit-name">Rocky Cummings</div><div class="commit-stars">★★★★</div><div class="commit-home">Carlsbad, Calif.</div><div class="commit-badge">Signed</div></div>
-    <div class="commit-card"><div class="commit-pos">DB</div><div class="commit-name">Samari Matthews</div><div class="commit-stars">★★★★</div><div class="commit-home">Charlotte, N.C.</div><div class="commit-badge">Signed</div></div>
-    <div class="commit-card"><div class="commit-pos">DB</div><div class="commit-name">Hayward Howard Jr.</div><div class="commit-stars">★★★</div><div class="commit-home">New Orleans, La.</div><div class="commit-badge">Signed</div></div>
-    <div class="commit-card"><div class="commit-pos">DB</div><div class="commit-name">Toray Davis</div><div class="commit-stars">★★★</div><div class="commit-home">Thornton, Colo.</div><div class="commit-badge">Signed</div></div>
-    <div class="commit-card"><div class="commit-pos">DB</div><div class="commit-name">Yaheim Riley</div><div class="commit-stars">★★★</div><div class="commit-home">Miami, Fla.</div><div class="commit-badge">Signed</div></div>
-    <div class="commit-card"><div class="commit-pos">K</div><div class="commit-name">Jake Collett</div><div class="commit-stars">★★★</div><div class="commit-home">Ringgold, Ga.</div><div class="commit-badge">Signed</div></div>
-    <div class="commit-card"><div class="commit-pos">P</div><div class="commit-name">Mikey Bukauskas</div><div class="commit-stars">★★★</div><div class="commit-home">Prosper, Texas</div><div class="commit-badge">Signed</div></div>
-  </div>
-
-  <div class="sec-head">
-    <div class="sec-title">Recruiting Calendar</div>
-    <div class="sec-meta">Key Dates — 2026–2027</div>
-  </div>
-  <div class="cal-list">
-    <div class="cal-item"><div class="cal-date">Jun 1–30</div><div class="cal-event">Unofficial visit period — summer is the busiest month for 2027 campus activity</div><div class="cal-type">Visits</div></div>
-    <div class="cal-item"><div class="cal-date">Jul 4</div><div class="cal-event">Dead period begins — no in-person recruiting contact</div><div class="cal-type">Dead Period</div></div>
-    <div class="cal-item"><div class="cal-date">Jul 25</div><div class="cal-event">Contact period resumes — coaches on the road for in-home visits</div><div class="cal-type">Contact</div></div>
-    <div class="cal-item"><div class="cal-date">Sep 1</div><div class="cal-event">Official visit season opens for 2027 class</div><div class="cal-type">Official Visits</div></div>
-    <div class="cal-item"><div class="cal-date">Oct 2–4</div><div class="cal-event">Major recruiting weekend — multiple official visits expected</div><div class="cal-type">Official Visits</div></div>
-    <div class="cal-item"><div class="cal-date">Dec 17–19</div><div class="cal-event">Early Signing Period — 2027 class signs national letters of intent</div><div class="cal-type">Signing Day</div></div>
-    <div class="cal-item"><div class="cal-date">Feb 4, 2027</div><div class="cal-event">National Signing Day — remaining unsigned commits may sign</div><div class="cal-type">Signing Day</div></div>
-  </div>
-
-</div><!-- /panel-recruiting -->
-
-<!-- ═══════════════════════ TAB 2: TRANSFER PORTAL ═══════════════════════ -->
-<div class="tab-panel" id="panel-portal">
-
-  <div class="portal-stats-row">
-    <div class="psr-cell"><div class="psr-num" style="color:var(--green)">11</div><div class="psr-label">Incoming Transfers</div></div>
-    <div class="psr-cell"><div class="psr-num" style="color:var(--red)">8</div><div class="psr-label">Outgoing / Departed</div></div>
-    <div class="psr-cell"><div class="psr-num" style="color:var(--orange)">+3</div><div class="psr-label">Net Roster Gain</div></div>
-    <div class="psr-cell"><div class="psr-num">4</div><div class="psr-label">Immediate Impact</div></div>
-  </div>
-
-  <div class="sub-tabs">
-    <button class="stab active" data-ptab="incoming">Incoming (11)</button>
-    <button class="stab" data-ptab="outgoing">Outgoing / Departed (8)</button>
-    <button class="stab" data-ptab="watchlist">Watch List (6)</button>
-  </div>
-
-  <div id="ptab-incoming">
-    <table class="portal-table">
-      <thead><tr><th>Player</th><th>Pos</th><th>Stars</th><th>Yr</th><th>From</th><th>Depth Chart Impact</th><th>Source</th></tr></thead>
-      <tbody id="portal-incoming-tbody"></tbody>
-    </table>
-  </div>
-
-  <div id="ptab-outgoing" style="display:none">
-    <table class="portal-table">
-      <thead><tr><th>Player</th><th>Pos</th><th>Class</th><th>Destination</th><th>Reason</th></tr></thead>
-      <tbody id="portal-outgoing-tbody"></tbody>
-    </table>
-  </div>
-
-  <div id="ptab-watchlist" style="display:none">
-    <div class="watch-list" id="portal-watch-list"></div>
-  </div>
-
-  <div class="sec-head">
-    <div class="sec-title">Impact Analysis</div>
-    <div class="sec-meta">Top Additions — Depth Chart Projection · Tower Analysis</div>
-  </div>
-  <div class="impact-grid">
-    <div class="impact-card">
-      <div class="impact-card-pos">WR · Jr.</div>
-      <div class="impact-card-name">Cam Coleman</div>
-      <div class="impact-card-from">From: Auburn · On3: 99.1 · #7 WR nationally</div>
-      <div class="impact-card-body">The marquee portal addition of the 2026 cycle. Coleman was a 5-star recruit who never got the ball enough at Auburn. In Texas's offense with Arch Manning, he projects as a true WR1. Elite separation, contested-catch ability, and big-play speed.</div>
-      <div class="impact-card-verdict">Projection: WR1 starter · 70+ catches · 1,100+ yards</div>
-      <span class="portal-src">Public Report</span>
-    </div>
-    <div class="impact-card">
-      <div class="impact-card-pos">RB · Sr.</div>
-      <div class="impact-card-name">Raleek Brown</div>
-      <div class="impact-card-from">From: Oklahoma State · 1,300 rush yds in 2025</div>
-      <div class="impact-card-body">The most experienced and explosive back in the Big 12, now in burnt orange. Brown brings home-run ability and is exceptional in the open field and as a pass-catcher. Immediate starter who gives Sarkisian a true featured back option.</div>
-      <div class="impact-card-verdict">Projection: RB1 starter · 180+ carries · 1,100+ yards</div>
-      <span class="portal-src">Public Report</span>
-    </div>
-    <div class="impact-card">
-      <div class="impact-card-pos">CB · Jr.</div>
-      <div class="impact-card-name">Derek Williams Jr.</div>
-      <div class="impact-card-from">From: Penn State · 2025 Big Ten All-Conference</div>
-      <div class="impact-card-body">Texas needed a true CB1 after coverage losses to graduation. Williams brings elite man-coverage skills and the physicality the SEC demands. With Colin Simmons as the pass-rush anchor, this defense has a legitimate ceiling.</div>
-      <div class="impact-card-verdict">Projection: CB1 starter · 8+ PBUs · 3+ INTs</div>
-      <span class="portal-src">Public Report</span>
+    <div class="stat-grid">
+      <div class="stat-cell"><div class="stat-num" style="color:var(--green)">8</div><div class="stat-lbl">Public Commits</div></div>
+      <div class="stat-cell"><div class="stat-num" style="color:var(--amber)">#15</div><div class="stat-lbl">On3 Team Rank</div></div>
+      <div class="stat-cell"><div class="stat-num" style="color:var(--amber)">#26</div><div class="stat-lbl">247Sports Rank</div></div>
+      <div class="stat-cell"><div class="stat-num">21</div><div class="stat-lbl">2026 Signed</div></div>
     </div>
   </div>
 
-</div><!-- /panel-portal -->
-
-<!-- ═══════════════════════ TAB 3: POSITION NEEDS ═══════════════════════ -->
-<div class="tab-panel" id="panel-needs">
-
-  <div class="intel-block" style="margin-top:28px;">
-    <div class="intel-label">Tower Analysis — Roster Construction · June 3, 2026</div>
-    <div class="intel-text">Position need urgency maps 2027 recruiting commitments against 2026 portal additions and known departures. Urgency reflects what still needs to be addressed — not what is already filled. All assessments are Tower editorial analysis based on public roster and depth chart information. Nothing here is confirmed by staff.</div>
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-title">2026 Transfer Portal Summary</div>
+      <div class="sec-meta">Source: Public Reports</div>
+    </div>
+    <div class="portal-stat-grid">
+      <div class="psg-cell"><div class="psg-num" style="color:var(--green)">11</div><div class="psg-lbl">Incoming</div></div>
+      <div class="psg-cell"><div class="psg-num" style="color:var(--red)">8</div><div class="psg-lbl">Outgoing / Departed</div></div>
+      <div class="psg-cell"><div class="psg-num" style="color:var(--orange)">+3</div><div class="psg-lbl">Net Roster Change</div></div>
+      <div class="psg-cell"><div class="psg-num">4</div><div class="psg-lbl">Immediate Impact</div></div>
+    </div>
   </div>
 
-  <div class="needs-header-row">
-    <span class="needs-filter-label">Filter:</span>
-    <select class="needs-filter" id="needs-urgency" onchange="renderNeeds()">
-      <option value="">All Positions</option>
-      <option value="High">High Urgency</option>
-      <option value="Medium">Medium Urgency</option>
-      <option value="Low">Low Urgency</option>
-    </select>
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-title">Recent Activity</div>
+      <div class="sec-meta">Newest First</div>
+    </div>
+    <div class="feed" id="overview-feed"></div>
   </div>
 
-  <div class="needs-cards" id="needs-cards"></div>
+</div><!-- /overview -->
 
-</div><!-- /panel-needs -->
+<!-- ══════════════════ HS RECRUITING ══════════════════ -->
+<div class="panel" id="panel-hs">
 
-<!-- ═══════════════════════ TAB 4: TIMELINE ═══════════════════════ -->
-<div class="tab-panel" id="panel-timeline">
-
-  <div class="sec-head" style="margin-top:28px;">
-    <div class="sec-title">Recruiting &amp; Portal Timeline</div>
-    <div class="sec-meta">All Activity — Newest First</div>
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-title">2027 Commits</div>
+      <div class="sec-meta" id="hs-count">8 Publicly Named · Click row to expand</div>
+    </div>
+    <div class="filter-bar">
+      <input type="text" id="hs-search" placeholder="Search player, school, or city…" oninput="applyHsFilter()"/>
+      <select id="hs-pos" onchange="applyHsFilter()">
+        <option value="">All Positions</option>
+        <option>WR</option><option>DE</option><option>OL</option><option>EDGE</option>
+        <option>RB</option><option>TE</option><option>S</option><option>QB</option><option>CB</option><option>LB</option>
+      </select>
+      <select id="hs-stars" onchange="applyHsFilter()">
+        <option value="">All Ratings</option>
+        <option value="5">5-Star</option>
+        <option value="4">4-Star</option>
+        <option value="3">3-Star</option>
+      </select>
+      <select id="hs-sort" onchange="applyHsFilter()">
+        <option value="dateSort">Sort: Commit Date</option>
+        <option value="rating">Sort: Rating</option>
+        <option value="name">Sort: Name</option>
+        <option value="pos">Sort: Position</option>
+      </select>
+    </div>
+    <div class="tbl-wrap">
+      <table class="rtbl">
+        <thead>
+          <tr>
+            <th data-col="name">Player</th>
+            <th data-col="pos">Pos</th>
+            <th data-col="htWt">Ht/Wt</th>
+            <th data-col="rating">Rating</th>
+            <th data-col="school">School</th>
+            <th data-col="dateSort">Committed</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="hs-tbody"></tbody>
+      </table>
+      <p class="tbl-foot">Sources: 247Sports · On3 · ESPN · Click any column header to sort · Click row to expand</p>
+    </div>
   </div>
 
-  <div class="timeline-filters">
-    <button class="tl-filter active" data-type="">All</button>
-    <button class="tl-filter" data-type="commit">Commits</button>
-    <button class="tl-filter" data-type="portal">Portal</button>
-    <button class="tl-filter" data-type="visit">Visits</button>
-    <button class="tl-filter" data-type="intel">Intel</button>
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-title">Recruiting Calendar</div>
+      <div class="sec-meta">2026–2027 Key Dates</div>
+    </div>
+    <div class="cal-list">
+      <div class="cal-item"><div class="cal-d">Jun 1–30</div><div class="cal-e">Unofficial visit period — peak month for 2027 campus activity</div><div class="cal-t">Visits</div></div>
+      <div class="cal-item"><div class="cal-d">Jul 4</div><div class="cal-e">Dead period begins — no in-person recruiting contact</div><div class="cal-t">Dead Period</div></div>
+      <div class="cal-item"><div class="cal-d">Jul 25</div><div class="cal-e">Contact period resumes — coaches on road for in-home visits</div><div class="cal-t">Contact</div></div>
+      <div class="cal-item"><div class="cal-d">Sep 1</div><div class="cal-e">Official visit season opens for 2027 class</div><div class="cal-t">Official Visits</div></div>
+      <div class="cal-item"><div class="cal-d">Oct 2–4</div><div class="cal-e">Major recruiting weekend — multiple official visits expected</div><div class="cal-t">Official Visits</div></div>
+      <div class="cal-item"><div class="cal-d">Dec 17–19</div><div class="cal-e">Early Signing Period — 2027 class signs letters of intent</div><div class="cal-t">Signing Day</div></div>
+      <div class="cal-item"><div class="cal-d">Feb 4, 2027</div><div class="cal-e">National Signing Day — remaining unsigned commits may sign</div><div class="cal-t">Signing Day</div></div>
+    </div>
   </div>
 
-  <div class="timeline-list" id="timeline-list"></div>
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-title">2026 Signed Class</div>
+      <div class="sec-meta">21 Players · ESD + NSD · <button class="toggle-btn" id="signed-btn" onclick="toggleSigned()">Show Class</button></div>
+    </div>
+    <div class="signed-grid" id="signed-grid" style="display:none">
+      <div class="signed-card"><div class="sc-pos">QB</div><div class="sc-name">Dia Bell</div><div class="sc-stars">★★★★</div><div class="sc-home">Fort Lauderdale, Fla.</div><div class="sc-badge">Signed</div></div>
+      <div class="signed-card"><div class="sc-pos">RB</div><div class="sc-name">Derrek Cooper</div><div class="sc-stars">★★★★</div><div class="sc-home">Lauderhill, Fla.</div><div class="sc-badge">Signed</div></div>
+      <div class="signed-card"><div class="sc-pos">RB</div><div class="sc-name">Jett Walker</div><div class="sc-stars">★★★</div><div class="sc-home">Georgetown, Texas</div><div class="sc-badge">Signed</div></div>
+      <div class="signed-card"><div class="sc-pos">WR</div><div class="sc-name">Jermaine Bishop Jr.</div><div class="sc-stars">★★★★</div><div class="sc-home">Willis, Texas</div><div class="sc-badge">Signed</div></div>
+      <div class="signed-card"><div class="sc-pos">WR</div><div class="sc-name">Kohen Brown</div><div class="sc-stars">★★★★</div><div class="sc-home">Dallas, Texas</div><div class="sc-badge">Signed</div></div>
+      <div class="signed-card"><div class="sc-pos">WR</div><div class="sc-name">Chris Stewart</div><div class="sc-stars">★★★</div><div class="sc-home">Missouri City, Texas</div><div class="sc-badge">Signed</div></div>
+      <div class="signed-card"><div class="sc-pos">TE</div><div class="sc-name">Charlie Jilek</div><div class="sc-stars">★★★</div><div class="sc-home">Portage, Mich.</div><div class="sc-badge">Signed</div></div>
+      <div class="signed-card"><div class="sc-pos">OL</div><div class="sc-name">John Turntine III</div><div class="sc-stars">★★★★</div><div class="sc-home">Fort Worth, Texas</div><div class="sc-badge">Signed</div></div>
+      <div class="signed-card"><div class="sc-pos">OL</div><div class="sc-name">Kaden Scherer</div><div class="sc-stars">★★★</div><div class="sc-home">Georgetown, Texas</div><div class="sc-badge">Signed</div></div>
+      <div class="signed-card"><div class="sc-pos">DL</div><div class="sc-name">James Johnson</div><div class="sc-stars">★★★★</div><div class="sc-home">Fort Myers, Fla.</div><div class="sc-badge">Signed</div></div>
+      <div class="signed-card"><div class="sc-pos">DL</div><div class="sc-name">Jamarion Carlton</div><div class="sc-stars">★★★</div><div class="sc-home">Temple, Texas</div><div class="sc-badge">Signed</div></div>
+      <div class="signed-card"><div class="sc-pos">DL</div><div class="sc-name">Richard Wesley</div><div class="sc-stars">★★★★</div><div class="sc-home">Sylmar, Calif.</div><div class="sc-badge">Signed</div></div>
+      <div class="signed-card"><div class="sc-pos">LB</div><div class="sc-name">Tyler Atkinson</div><div class="sc-stars">★★★</div><div class="sc-home">Lawrenceville, Ga.</div><div class="sc-badge">Signed</div></div>
+      <div class="signed-card"><div class="sc-pos">LB</div><div class="sc-name">Kosi Okpala</div><div class="sc-stars">★★★</div><div class="sc-home">Houston, Texas</div><div class="sc-badge">Signed</div></div>
+      <div class="signed-card"><div class="sc-pos">LB</div><div class="sc-name">Rocky Cummings</div><div class="sc-stars">★★★★</div><div class="sc-home">Carlsbad, Calif.</div><div class="sc-badge">Signed</div></div>
+      <div class="signed-card"><div class="sc-pos">DB</div><div class="sc-name">Samari Matthews</div><div class="sc-stars">★★★★</div><div class="sc-home">Charlotte, N.C.</div><div class="sc-badge">Signed</div></div>
+      <div class="signed-card"><div class="sc-pos">DB</div><div class="sc-name">Hayward Howard Jr.</div><div class="sc-stars">★★★</div><div class="sc-home">New Orleans, La.</div><div class="sc-badge">Signed</div></div>
+      <div class="signed-card"><div class="sc-pos">DB</div><div class="sc-name">Toray Davis</div><div class="sc-stars">★★★</div><div class="sc-home">Thornton, Colo.</div><div class="sc-badge">Signed</div></div>
+      <div class="signed-card"><div class="sc-pos">DB</div><div class="sc-name">Yaheim Riley</div><div class="sc-stars">★★★</div><div class="sc-home">Miami, Fla.</div><div class="sc-badge">Signed</div></div>
+      <div class="signed-card"><div class="sc-pos">K</div><div class="sc-name">Jake Collett</div><div class="sc-stars">★★★</div><div class="sc-home">Ringgold, Ga.</div><div class="sc-badge">Signed</div></div>
+      <div class="signed-card"><div class="sc-pos">P</div><div class="sc-name">Mikey Bukauskas</div><div class="sc-stars">★★★</div><div class="sc-home">Prosper, Texas</div><div class="sc-badge">Signed</div></div>
+    </div>
+  </div>
 
-</div><!-- /panel-timeline -->
+</div><!-- /hs -->
 
-</div><!-- /content-wrap -->
+<!-- ══════════════════ TRANSFER PORTAL ══════════════════ -->
+<div class="panel" id="panel-portal">
+
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-title">2026 Transfer Portal</div>
+      <div class="sec-meta">Source: Public Reports</div>
+    </div>
+    <div class="portal-stat-grid">
+      <div class="psg-cell"><div class="psg-num" style="color:var(--green)">11</div><div class="psg-lbl">Incoming</div></div>
+      <div class="psg-cell"><div class="psg-num" style="color:var(--red)">8</div><div class="psg-lbl">Outgoing / Departed</div></div>
+      <div class="psg-cell"><div class="psg-num" style="color:var(--orange)">+3</div><div class="psg-lbl">Net Roster Change</div></div>
+      <div class="psg-cell"><div class="psg-num">4</div><div class="psg-lbl">Immediate Impact</div></div>
+    </div>
+    <div class="sub-tab-bar">
+      <button class="stab active" data-ptab="in">Incoming (11)</button>
+      <button class="stab" data-ptab="out">Outgoing (8)</button>
+      <button class="stab" data-ptab="watch">Watch List (6)</button>
+    </div>
+    <div id="ptab-in"><table class="ptbl"><thead><tr><th>Player</th><th>Pos</th><th>Stars</th><th>Yr</th><th>From</th><th>Depth Impact</th><th>Source</th></tr></thead><tbody id="portal-in-tbody"></tbody></table></div>
+    <div id="ptab-out" style="display:none"><table class="ptbl"><thead><tr><th>Player</th><th>Pos</th><th>Class</th><th>Destination</th><th>Reason</th></tr></thead><tbody id="portal-out-tbody"></tbody></table></div>
+    <div id="ptab-watch" style="display:none"><div class="watch-list" id="portal-watch-list"></div></div>
+  </div>
+
+</div><!-- /portal -->
+
+<!-- ══════════════════ COMMITS ══════════════════ -->
+<div class="panel" id="panel-commits">
+
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-title">2027 Verified Commits</div>
+      <div class="sec-meta">8 Publicly Named · Sources: 247Sports · On3</div>
+    </div>
+    <div class="commit-cards" id="commit-cards"></div>
+  </div>
+
+</div><!-- /commits -->
+
+<!-- ══════════════════ TARGETS ══════════════════ -->
+<div class="panel" id="panel-targets">
+
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-title">Priority Targets — 2027</div>
+      <div class="sec-meta">All items sourced from public reports only</div>
+    </div>
+    <div class="editorial-notice">
+      <p><strong>Source note:</strong> Target status (Trending, Target, Monitoring) reflects public reporting from 247Sports, On3, Rivals, and verified recruiting reporters as of the last update date. Tower does not independently verify contact or interest levels. Nothing below is confirmed by Texas staff or the prospects.</p>
+    </div>
+    <div class="target-grid" id="target-grid"></div>
+  </div>
+
+</div><!-- /targets -->
+
+<!-- ══════════════════ OFFERS ══════════════════ -->
+<div class="panel" id="panel-offers">
+
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-title">Offer Tracking</div>
+      <div class="sec-meta">2027 Class</div>
+    </div>
+    <div class="empty-state">
+      <div class="empty-icon">📋</div>
+      <div class="empty-title">No verified offer data available</div>
+      <p class="empty-body">Comprehensive offer tracking requires a live feed from a premium service. Texas 2027 offer lists are available at <a class="empty-link" href="https://247sports.com" target="_blank" rel="noopener">247Sports</a>, <a class="empty-link" href="https://on3.com" target="_blank" rel="noopener">On3</a>, and <a class="empty-link" href="https://rivals.com" target="_blank" rel="noopener">Rivals</a>. Tower does not publish offer lists without verification from those sources.</p>
+    </div>
+  </div>
+
+</div><!-- /offers -->
+
+<!-- ══════════════════ POSITION NEEDS ══════════════════ -->
+<div class="panel" id="panel-needs">
+
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-title">Position Needs — 2027</div>
+      <div class="sec-meta">Recruiting + Portal Combined View</div>
+    </div>
+    <div class="editorial-notice">
+      <p><strong>Editorial analysis:</strong> Urgency ratings below reflect Tower's assessment based on known departures, portal additions, and current 2027 commitments — all public information. These are not official team assessments. Roster projections are inherently uncertain.</p>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
+      <select style="font-family:'Barlow',sans-serif;font-size:12px;background:var(--surface);color:var(--white);border:1px solid var(--border-mid);padding:8px 12px;outline:none;cursor:pointer;" id="needs-filter" onchange="renderNeeds()">
+        <option value="">All Positions</option>
+        <option value="High">High Urgency</option>
+        <option value="Medium">Medium Urgency</option>
+        <option value="Low">Low Urgency</option>
+      </select>
+    </div>
+    <div class="needs-grid" id="needs-grid"></div>
+  </div>
+
+</div><!-- /needs -->
+
+</div><!-- /wrap -->
 
 <footer>
-  <div class="footer-logo">TOWER<span>REPORT</span></div>
-  <div class="footer-text">All intelligence from public sources only. The Tower Never Sleeps. © 2026</div>
+  <div class="f-logo">TOWER<span>REPORT</span></div>
+  <div class="f-text">All recruiting intelligence from public sources only. The Tower Never Sleeps. © 2026</div>
 </footer>
 
 <script>
 // ============================================================
-//  EASY UPDATE ZONE
-//  Edit the arrays below. No other code needs to change.
+//  DATA — edit these arrays to update the page.
+//  No other code needs changing for routine updates.
 // ============================================================
 
-// ── 2027 COMMITS ──────────────────────────────────────────
-// trend: "up" | "stable" | "—"
-// conf:  "High" | "Solid" | "Firm" | "Placeholder"
-// source:"confirmed" | "placeholder"
+// ── 2027 COMMITS (publicly named only — no placeholders) ──
+// source: always "confirmed" — only include publicly announced commits
 const commits = [
-  { name:"Easton Royal",   pos:"WR",   htWt:"6'0/205",  stars:5, rating:"97.33", school:"Brother Martin",   city:"New Orleans, LA",  date:"Nov 29, 2025", dateSort:20251129, trend:"stable", conf:"High",        summary:"Top WR in 2027 class by On3 composite. Committed early, remains firm. No decommitment noise.",               source:"confirmed" },
-  { name:"Cameron Hall",   pos:"DE",   htWt:"6'3/230",  stars:4, rating:"~89",   school:"Mansfield Summit", city:"Arlington, TX",    date:"Jan 28, 2026", dateSort:20260128, trend:"stable", conf:"Solid",       summary:"First defensive commitment of the cycle. In-state edge rusher, DFW pipeline.",                              source:"confirmed" },
-  { name:"Jackson Cook",   pos:"OL",   htWt:"6'3/290",  stars:4, rating:"~86",   school:"Westlake",         city:"Austin, TX",       date:"Mar 2026",     dateSort:20260301, trend:"stable", conf:"High",        summary:"In-state OL gives Texas first interior lineman. Austin Westlake pipeline continues.",                         source:"confirmed" },
-  { name:"Derwin Fields",  pos:"EDGE", htWt:"6'3/230",  stars:4, rating:"~88",   school:"Brookhaven",       city:"Brookhaven, MS",   date:"Apr 18, 2026", dateSort:20260418, trend:"stable", conf:"Solid",       summary:"Third pass rusher in the class. Staff went out of state to address a priority position.",                    source:"confirmed" },
-  { name:"Noah Roberts",   pos:"RB",   htWt:"5'11/205", stars:4, rating:"~87",   school:"Basha",            city:"Chandler, AZ",     date:"May 1, 2026",  dateSort:20260501, trend:"stable", conf:"Solid",       summary:"4-star back from Arizona fills the early RB need. Versatile receiver out of the backfield.",                 source:"confirmed" },
-  { name:"Brock Williams", pos:"TE",   htWt:"6'5/215",  stars:4, rating:"~90",   school:"Libertyville",     city:"Libertyville, IL", date:"May 15, 2026", dateSort:20260515, trend:"up",     conf:"Solid",       summary:"Second TE of the cycle. 6'5 frame with starter-caliber upside. National reach at a priority position.",      source:"confirmed" },
-  { name:"JT Geraci",      pos:"TE",   htWt:"6'5/230",  stars:3, rating:"~82",   school:"St. John Bosco",   city:"Ramsey, NJ",       date:"TBA",          dateSort:99999990, trend:"stable", conf:"Solid",       summary:"First TE commitment of the cycle. Northeastern prospect with strong offer sheet.",                           source:"confirmed" },
-  { name:"Karnell James",  pos:"S",    htWt:"—",        stars:3, rating:"—",     school:"Manvel",           city:"Manvel, TX",       date:"TBA",          dateSort:99999991, trend:"stable", conf:"Solid",       summary:"In-state safety from Manvel — a consistent Texas pipeline school.",                                         source:"confirmed" },
-  { name:"TBA",            pos:"—",    htWt:"—",        stars:0, rating:"—",     school:"—",                city:"",                 date:"—",            dateSort:99999992, trend:"—",      conf:"Placeholder", summary:"", source:"placeholder", tba:true },
-  { name:"TBA",            pos:"—",    htWt:"—",        stars:0, rating:"—",     school:"—",                city:"",                 date:"—",            dateSort:99999993, trend:"—",      conf:"Placeholder", summary:"", source:"placeholder", tba:true },
-  { name:"TBA",            pos:"—",    htWt:"—",        stars:0, rating:"—",     school:"—",                city:"",                 date:"—",            dateSort:99999994, trend:"—",      conf:"Placeholder", summary:"", source:"placeholder", tba:true },
+  { name:"Easton Royal",   pos:"WR",   htWt:"6'0 / 205",  stars:5, rating:"97.33", school:"Brother Martin",   city:"New Orleans, LA",  date:"Nov 29, 2025", dateSort:20251129 },
+  { name:"Cameron Hall",   pos:"DE",   htWt:"6'3 / 230",  stars:4, rating:"~89",   school:"Mansfield Summit", city:"Arlington, TX",    date:"Jan 28, 2026", dateSort:20260128 },
+  { name:"Jackson Cook",   pos:"OL",   htWt:"6'3 / 290",  stars:4, rating:"~86",   school:"Westlake",         city:"Austin, TX",       date:"Mar 2026",     dateSort:20260301 },
+  { name:"Derwin Fields",  pos:"EDGE", htWt:"6'3 / 230",  stars:4, rating:"~88",   school:"Brookhaven",       city:"Brookhaven, MS",   date:"Apr 18, 2026", dateSort:20260418 },
+  { name:"Noah Roberts",   pos:"RB",   htWt:"5'11 / 205", stars:4, rating:"~87",   school:"Basha",            city:"Chandler, AZ",     date:"May 1, 2026",  dateSort:20260501 },
+  { name:"Brock Williams", pos:"TE",   htWt:"6'5 / 215",  stars:4, rating:"~90",   school:"Libertyville",     city:"Libertyville, IL", date:"May 15, 2026", dateSort:20260515 },
+  { name:"JT Geraci",      pos:"TE",   htWt:"6'5 / 230",  stars:3, rating:"~82",   school:"St. John Bosco",   city:"Ramsey, NJ",       date:"Not announced",dateSort:99990001 },
+  { name:"Karnell James",  pos:"S",    htWt:"—",          stars:3, rating:"—",     school:"Manvel",           city:"Manvel, TX",       date:"Not announced",dateSort:99990002 },
 ];
 
-// ── HOT TARGETS ─────────────────────────────────────────────
-// status: "trending" | "target" | "monitoring"
+// ── TARGETS (public reports only — no invented intel) ──
 const targets = [
-  { name:"John Meredith III", pos:"QB",   info:"DFW, TX · 5★",         status:"target",    conf:"Priority QB need — multiple sources list Texas involved" },
-  { name:"Jaylen Mbakwe",     pos:"WR",   info:"Houston, TX · 5★",     status:"trending",  conf:"Texas trending per public reports" },
-  { name:"Devin Sanchez",     pos:"CB",   info:"Houston, TX · 5★",     status:"target",    conf:"Top CB priority" },
-  { name:"Malachi Nelson Jr.",pos:"QB",   info:"Denton, TX · 5★",      status:"target",    conf:"Multiple sources list Texas involved" },
-  { name:"Brashard Smith",    pos:"RB",   info:"Katy, TX · 4★",        status:"trending",  conf:"Camp visit expected per reports" },
-  { name:"Anthony Jones Jr.", pos:"OT",   info:"Cedar Hill, TX · 4★",  status:"target",    conf:"OT remains top need — Texas active" },
-  { name:"Caleb Carmouche",   pos:"S",    info:"New Orleans, LA · 4★", status:"monitoring",conf:"Monitoring per public sources" },
-  { name:"Elijah Griffin",    pos:"EDGE", info:"Georgia · 5★",         status:"monitoring",conf:"Long timeline — early evaluation only" },
+  { name:"John Meredith III", pos:"QB",   info:"DFW, TX · 5★",         status:"target",    source:"247Sports / On3 public reports" },
+  { name:"Jaylen Mbakwe",     pos:"WR",   info:"Houston, TX · 5★",     status:"trending",  source:"Multiple recruiting reporters" },
+  { name:"Devin Sanchez",     pos:"CB",   info:"Houston, TX · 5★",     status:"target",    source:"247Sports / On3 public reports" },
+  { name:"Malachi Nelson Jr.",pos:"QB",   info:"Denton, TX · 5★",      status:"target",    source:"247Sports / On3 public reports" },
+  { name:"Brashard Smith",    pos:"RB",   info:"Katy, TX · 4★",        status:"trending",  source:"Public recruiting reports" },
+  { name:"Anthony Jones Jr.", pos:"OT",   info:"Cedar Hill, TX · 4★",  status:"target",    source:"247Sports / On3 public reports" },
+  { name:"Caleb Carmouche",   pos:"S",    info:"New Orleans, LA · 4★", status:"monitoring",source:"Public recruiting reports" },
+  { name:"Elijah Griffin",    pos:"EDGE", info:"Georgia · 5★",         status:"monitoring",source:"Public recruiting reports" },
 ];
 
-// ── PORTAL INCOMING ─────────────────────────────────────────
-const portalIncoming = [
-  { name:"Cam Coleman",        pos:"WR", stars:5, yr:"Jr.", from:"Auburn",        impact:"immediate", impactLabel:"Immediate Starter" },
-  { name:"Raleek Brown",       pos:"RB", stars:4, yr:"Sr.", from:"Oklahoma State",impact:"immediate", impactLabel:"Immediate Starter" },
-  { name:"Hollywood Smothers", pos:"RB", stars:4, yr:"Jr.", from:"Arizona State", impact:"immediate", impactLabel:"Starter / Co-starter" },
-  { name:"MJ Morris",          pos:"QB", stars:4, yr:"Sr.", from:"NC State",      impact:"depth",     impactLabel:"QB2 / Depth" },
-  { name:"Emmett Mosley V",    pos:"WR", stars:4, yr:"Jr.", from:"Stanford",      impact:"depth",     impactLabel:"Rotational" },
-  { name:"Sterling Berkhalter",pos:"WR", stars:4, yr:"Sr.", from:"Tennessee",     impact:"depth",     impactLabel:"Rotational" },
-  { name:"Ty Boatright",       pos:"WR", stars:3, yr:"Sr.", from:"Oklahoma State",impact:"rotational",impactLabel:"Special Teams" },
-  { name:"Rett Andersen",      pos:"WR", stars:3, yr:"Sr.", from:"Stanford",      impact:"rotational",impactLabel:"Depth" },
-  { name:"Michael Masunas",    pos:"TE", stars:3, yr:"Sr.", from:"Navy",          impact:"depth",     impactLabel:"Starter" },
-  { name:"Rasheem Biles",      pos:"LB", stars:4, yr:"Sr.", from:"Ohio State",    impact:"immediate", impactLabel:"Immediate Starter" },
-  { name:"Derek Williams Jr.", pos:"CB", stars:4, yr:"Jr.", from:"Penn State",    impact:"immediate", impactLabel:"Immediate Starter" },
+// ── PORTAL INCOMING (all from public reporting) ──
+const portalIn = [
+  { name:"Cam Coleman",        pos:"WR", stars:5, yr:"Jr.", from:"Auburn",        impact:"ib-now",  label:"Immediate Starter" },
+  { name:"Raleek Brown",       pos:"RB", stars:4, yr:"Sr.", from:"Oklahoma State",impact:"ib-now",  label:"Immediate Starter" },
+  { name:"Hollywood Smothers", pos:"RB", stars:4, yr:"Jr.", from:"Arizona State", impact:"ib-now",  label:"Starter" },
+  { name:"MJ Morris",          pos:"QB", stars:4, yr:"Sr.", from:"NC State",      impact:"ib-depth",label:"QB2 / Depth" },
+  { name:"Emmett Mosley V",    pos:"WR", stars:4, yr:"Jr.", from:"Stanford",      impact:"ib-depth",label:"Rotational" },
+  { name:"Sterling Berkhalter",pos:"WR", stars:4, yr:"Sr.", from:"Tennessee",     impact:"ib-depth",label:"Rotational" },
+  { name:"Ty Boatright",       pos:"WR", stars:3, yr:"Sr.", from:"Oklahoma State",impact:"ib-role", label:"Special Teams" },
+  { name:"Rett Andersen",      pos:"WR", stars:3, yr:"Sr.", from:"Stanford",      impact:"ib-role", label:"Depth" },
+  { name:"Michael Masunas",    pos:"TE", stars:3, yr:"Sr.", from:"Navy",          impact:"ib-depth",label:"Starter" },
+  { name:"Rasheem Biles",      pos:"LB", stars:4, yr:"Sr.", from:"Ohio State",    impact:"ib-now",  label:"Immediate Starter" },
+  { name:"Derek Williams Jr.", pos:"CB", stars:4, yr:"Jr.", from:"Penn State",    impact:"ib-now",  label:"Immediate Starter" },
 ];
 
-// ── PORTAL OUTGOING ─────────────────────────────────────────
-const portalOutgoing = [
-  { name:"Quinn Ewers",         pos:"QB", yr:"Grad/NFL",  dest:"NFL — San Francisco 49ers (Rd. 1)", reason:"Graduated / drafted" },
-  { name:"Johntay Cook II",     pos:"WR", yr:"Sr.",       dest:"Entered NFL Draft",                  reason:"Graduated" },
-  { name:"Isaiah Bond",         pos:"WR", yr:"Sr.",       dest:"Entered NFL Draft",                  reason:"Graduated" },
-  { name:"Adonai Mitchell",     pos:"WR", yr:"Sr.",       dest:"NFL — Indianapolis Colts",           reason:"Graduated / drafted" },
-  { name:"Anthony Hill Jr.",    pos:"LB", yr:"So./NFL",   dest:"NFL Draft — 1st Round",              reason:"Early NFL departure" },
-  { name:"T'Vondre Sweat",      pos:"DT", yr:"Grad",      dest:"NFL — Tennessee Titans",             reason:"Graduated / drafted" },
-  { name:"Jahleel Billingsley", pos:"TE", yr:"Grad",      dest:"Departed",                           reason:"Graduation" },
-  { name:"Kelvin Banks Jr.",    pos:"OT", yr:"Sr./NFL",   dest:"NFL Draft — 1st Round",              reason:"Early NFL departure" },
+// ── PORTAL OUTGOING ──
+const portalOut = [
+  { name:"Quinn Ewers",         pos:"QB", yr:"Grad / NFL", dest:"NFL — San Francisco 49ers (Rd. 1)", reason:"Graduated / drafted" },
+  { name:"Johntay Cook II",     pos:"WR", yr:"Sr.",        dest:"Entered NFL Draft",                  reason:"Graduated" },
+  { name:"Isaiah Bond",         pos:"WR", yr:"Sr.",        dest:"Entered NFL Draft",                  reason:"Graduated" },
+  { name:"Adonai Mitchell",     pos:"WR", yr:"Sr.",        dest:"NFL — Indianapolis Colts",           reason:"Graduated / drafted" },
+  { name:"Anthony Hill Jr.",    pos:"LB", yr:"So. / NFL",  dest:"NFL Draft — 1st Round",              reason:"Early NFL departure" },
+  { name:"T'Vondre Sweat",      pos:"DT", yr:"Grad",       dest:"NFL — Tennessee Titans",             reason:"Graduated / drafted" },
+  { name:"Jahleel Billingsley", pos:"TE", yr:"Grad",       dest:"Departed",                           reason:"Graduation" },
+  { name:"Kelvin Banks Jr.",    pos:"OT", yr:"Sr. / NFL",  dest:"NFL Draft — 1st Round",              reason:"Early NFL departure" },
 ];
 
-// ── PORTAL WATCH LIST ───────────────────────────────────────
+// ── PORTAL WATCH LIST ──
 const portalWatch = [
-  { name:"TJ Moore",         pos:"WR", school:"Michigan",   detail:"Jr. · 6'1\" · ★★★★ · 42 rec, 610 yds, 6 TD in 2025", status:"target",    conf:"Offer extended" },
-  { name:"Deondre Jackson",  pos:"OT", school:"Ole Miss",   detail:"Sr. · 6'5\" 320 · ★★★★ · Multi-year starter",         status:"offer",     conf:"Texas in top 3" },
-  { name:"Quinshon Judkins", pos:"RB", school:"Ohio State", detail:"Jr. · 5'11\" 215 · ★★★★★ · 2x 1,000-yd rusher",      status:"monitoring",conf:"Long shot — likely NFL" },
-  { name:"Jaxson Dart",      pos:"QB", school:"Ole Miss",   detail:"Sr. · 6'3\" 225 · ★★★★ · 3,500+ yds passing in 2025",status:"monitoring",conf:"Depth / competition" },
-  { name:"Kaytron Allen",    pos:"RB", school:"Penn State", detail:"Jr. · 6'0\" 220 · ★★★★ · Power back, SEC-ready",      status:"target",    conf:"Visit expected" },
-  { name:"Malaki Starks",    pos:"S",  school:"Georgia",    detail:"Jr. · 6'1\" 200 · ★★★★★ · First-round NFL talent",   status:"monitoring",conf:"Likely stays or NFL" },
+  { name:"TJ Moore",         pos:"WR", school:"Michigan",   detail:"Jr. · 6'1\" · ★★★★ · 42 rec, 610 yds, 6 TD (2025)", status:"ws-tgt", label:"Texas Target",   conf:"Offer extended — source: public reports" },
+  { name:"Deondre Jackson",  pos:"OT", school:"Ole Miss",   detail:"Sr. · 6'5\" 320 · ★★★★ · Multi-year starter",        status:"ws-off", label:"Offer Extended", conf:"Texas in top 3 — source: public reports" },
+  { name:"Quinshon Judkins", pos:"RB", school:"Ohio State", detail:"Jr. · 5'11\" 215 · ★★★★★ · 2x 1,000-yd rusher",     status:"ws-mon", label:"Monitoring",     conf:"Long shot — likely NFL (source: reports)" },
+  { name:"Jaxson Dart",      pos:"QB", school:"Ole Miss",   detail:"Sr. · 6'3\" 225 · ★★★★ · 3,500+ yds passing (2025)",status:"ws-mon", label:"Monitoring",     conf:"Depth / competition — source: reports" },
+  { name:"Kaytron Allen",    pos:"RB", school:"Penn State", detail:"Jr. · 6'0\" 220 · ★★★★ · Power back",               status:"ws-tgt", label:"Texas Target",   conf:"Visit expected — source: public reports" },
+  { name:"Malaki Starks",    pos:"S",  school:"Georgia",    detail:"Jr. · 6'1\" 200 · ★★★★★",                           status:"ws-mon", label:"Monitoring",     conf:"Likely stays or NFL — source: reports" },
 ];
 
-// ── POSITION NEEDS ──────────────────────────────────────────
-// urgency: "High" | "Medium" | "Low" | fill: 0-100
-const positionNeeds = [
-  { pos:"QB",   urgency:"Medium", fill:60, context:"Arch Manning is the established starter. MJ Morris (portal, NC State) provides depth. The 2027 class needs one signal-caller to develop behind Manning — staff knows it.",                                             recruiting:"John Meredith III (5★, DFW) · Malachi Nelson Jr. (5★, Denton) — both listed as priority targets per public reports.", portal:"MJ Morris (NC State, Sr.) added as QB2. Jaxson Dart (Ole Miss) listed as monitoring — depth/competition." },
-  { pos:"RB",   urgency:"Medium", fill:50, context:"Raleek Brown and Hollywood Smothers added via portal provide immediate depth at RB. Noah Roberts is committed in 2027. One more back would give the staff full confidence.",                                            recruiting:"Noah Roberts (4★, Chandler AZ) — committed. Brashard Smith (4★, Katy TX) — trending per public reports.", portal:"Raleek Brown (OSU) + Hollywood Smothers (ASU) already added. Kaytron Allen (Penn State) — visit target per reports." },
-  { pos:"WR",   urgency:"High",   fill:88, context:"Lost Bond, Mitchell, and Cook II to graduation/NFL. Added Coleman (5★), Mosley, Berkhalter, Boatright, Andersen via portal. Easton Royal (5★) anchors 2027. Still need future-class depth.",                         recruiting:"Easton Royal (5★, New Orleans) — committed and firm. Jaylen Mbakwe (5★, Houston) — trending per public reports.", portal:"Cam Coleman (5★, Auburn) is WR1. TJ Moore (Michigan) listed as remaining portal target." },
-  { pos:"TE",   urgency:"Low",    fill:22, context:"JT Geraci and Brock Williams both committed in 2027. Michael Masunas (Navy) added via portal as a projected starter. Position is in good shape through the cycle.",                                                    recruiting:"Brock Williams (4★, Libertyville IL) + JT Geraci (3★, NJ) — both committed.", portal:"Michael Masunas (Navy, Sr.) added as projected starter. No active portal targets at TE per public reports." },
-  { pos:"OT",   urgency:"High",   fill:90, context:"Kelvin Banks Jr. (1st round, NFL) is gone. Tackle is the most critical remaining need in both recruiting and the portal. Jackson Cook addresses interior OL but tackle remains open.",                                  recruiting:"Anthony Jones Jr. (4★, Cedar Hill TX) — priority OT target per public reports.", portal:"Deondre Jackson (Ole Miss, Sr.) — Texas listed in top 3 per public reports. Highest-priority remaining portal target." },
-  { pos:"IOL",  urgency:"Medium", fill:62, context:"Jackson Cook (4★, Westlake/Austin) committed to fill interior OL. Staff likely needs one more interior lineman to fully close the 2027 OL class and build depth.",                                                    recruiting:"Jackson Cook (4★, Austin TX) — committed. Staff targeting 1–2 more per recruiting analysts.", portal:"No confirmed IOL portal targets per public reports as of June 2026." },
-  { pos:"EDGE", urgency:"High",   fill:80, context:"Cameron Hall and Derwin Fields committed, adding to an already strong front. A third edge rusher would give the staff true elite depth. Colin Simmons returns as the anchor.",                                          recruiting:"Cameron Hall (4★, Arlington TX) + Derwin Fields (4★, Brookhaven MS) — both committed. Elijah Griffin (5★, Georgia) — monitoring.", portal:"No confirmed portal additions at EDGE as of June 2026." },
-  { pos:"DT",   urgency:"Medium", fill:60, context:"T'Vondre Sweat (NFL, 1st round) graduated. Richard Wesley (4★) signed in 2026 provides one piece. Staff needs to restock interior D-line in 2027 class.",                                                           recruiting:"No current DT commitment in 2027 class — listed as a priority need by recruiting analysts.", portal:"No confirmed DT portal additions as of June 2026." },
-  { pos:"LB",   urgency:"High",   fill:78, context:"Anthony Hill Jr. (NFL, 1st round) departed early. Rasheem Biles (Ohio State) added via portal as an immediate starter. Need long-term 2027 depth at linebacker.",                                                     recruiting:"No current LB commitment in 2027 class — priority need per public reports.", portal:"Rasheem Biles (Ohio State, Sr.) added as projected immediate starter." },
-  { pos:"CB",   urgency:"High",   fill:88, context:"Corner is one of the two most critical needs of the full cycle. Derek Williams Jr. (Penn State) fills one spot via portal. Blue-chip 2027 corner depth is essential.",                                                 recruiting:"Devin Sanchez (5★, Houston TX) — listed as top CB priority per public reports.", portal:"Derek Williams Jr. (Penn State, Jr.) added as projected CB1 starter." },
-  { pos:"S",    urgency:"Medium", fill:55, context:"Karnell James (3★, Manvel TX) committed in 2027. Staff may still target one more safety depending on visit season outcomes and depth chart needs.",                                                                    recruiting:"Karnell James (3★, Manvel TX) — committed. Caleb Carmouche (4★, New Orleans) — monitoring.", portal:"Malaki Starks (Georgia) listed as monitoring — long shot; likely stays or goes NFL." },
-  { pos:"ST",   urgency:"Low",    fill:12, context:"Jake Collett (K) and Mikey Bukauskas (P) both signed in the 2026 class. Special teams depth is addressed for the near term. No active need.",                                                                         recruiting:"Jake Collett (K) + Mikey Bukauskas (P) — both signed in 2026.", portal:"No ST portal activity as of June 2026." },
+// ── POSITION NEEDS (editorial — clearly labeled) ──
+const needs = [
+  { pos:"QB",   urgency:"Medium", fill:60, context:"Arch Manning is the established starter. MJ Morris (portal) provides depth. One 2027 QB is a genuine staff priority.", recruiting:"John Meredith III (5★, DFW) · Malachi Nelson Jr. (5★, Denton) — per public reports", portal:"MJ Morris added (NC State, Sr.). Jaxson Dart listed as monitoring." },
+  { pos:"RB",   urgency:"Medium", fill:50, context:"Raleek Brown and Hollywood Smothers added via portal. Noah Roberts committed in 2027. Staff well-positioned at RB.", recruiting:"Noah Roberts (4★, AZ) — committed. Brashard Smith (4★, TX) — trending per reports.", portal:"Brown + Smothers added. Kaytron Allen (Penn State) listed as visit target per reports." },
+  { pos:"WR",   urgency:"High",   fill:88, context:"Lost Bond, Mitchell, Cook II to graduation/NFL. Five WRs added via portal. Easton Royal (5★) anchors 2027.", recruiting:"Easton Royal (5★) — committed. Jaylen Mbakwe (5★, Houston) — trending per reports.", portal:"Cam Coleman (5★, Auburn) added. TJ Moore (Michigan) listed as remaining portal target." },
+  { pos:"TE",   urgency:"Low",    fill:22, context:"JT Geraci and Brock Williams both committed in 2027. Michael Masunas added via portal.", recruiting:"Brock Williams (4★) + JT Geraci (3★) — both committed.", portal:"Masunas (Navy) added as projected starter." },
+  { pos:"OT",   urgency:"High",   fill:90, context:"Kelvin Banks Jr. (1st round) departed. Offensive tackle is the highest-priority remaining need.", recruiting:"Anthony Jones Jr. (4★, Cedar Hill TX) — priority target per public reports.", portal:"Deondre Jackson (Ole Miss) — Texas in top 3 per public reports." },
+  { pos:"IOL",  urgency:"Medium", fill:62, context:"Jackson Cook committed at interior OL. Staff likely needs one more interior lineman.", recruiting:"Jackson Cook (4★, Austin TX) — committed. Additional targets per recruiting analysts.", portal:"No confirmed IOL portal targets as of June 2026." },
+  { pos:"EDGE", urgency:"High",   fill:80, context:"Hall and Fields committed. A third edge rusher would complete the position. Colin Simmons returns.", recruiting:"Cameron Hall (4★) + Derwin Fields (4★) — both committed. Elijah Griffin (5★) — monitoring.", portal:"No confirmed EDGE portal additions as of June 2026." },
+  { pos:"DT",   urgency:"Medium", fill:60, context:"T'Vondre Sweat graduated/drafted. Richard Wesley (4★) signed in 2026 is one piece.", recruiting:"No current 2027 DT commitment — listed as a priority need by analysts.", portal:"No confirmed portal additions at DT as of June 2026." },
+  { pos:"LB",   urgency:"High",   fill:78, context:"Anthony Hill Jr. (1st round) departed early. Rasheem Biles added via portal.", recruiting:"No current 2027 LB commitment — priority need per public reports.", portal:"Rasheem Biles (Ohio State, Sr.) added as projected immediate starter." },
+  { pos:"CB",   urgency:"High",   fill:88, context:"Derek Williams Jr. fills one spot via portal. Blue-chip 2027 corner depth is a priority.", recruiting:"Devin Sanchez (5★, Houston TX) — top CB priority per public reports.", portal:"Derek Williams Jr. (Penn State) added as projected CB1 starter." },
+  { pos:"S",    urgency:"Medium", fill:55, context:"Karnell James committed in 2027. Staff may add one more depending on visit season.", recruiting:"Karnell James (3★, Manvel TX) — committed. Caleb Carmouche (4★) — monitoring.", portal:"Malaki Starks (Georgia) — monitoring; likely stays or NFL per reports." },
+  { pos:"ST",   urgency:"Low",    fill:12, context:"Jake Collett (K) and Mikey Bukauskas (P) both signed in 2026. No active special teams need.", recruiting:"Collett (K) + Bukauskas (P) signed in 2026.", portal:"No ST portal activity as of June 2026." },
 ];
 
-// ── TIMELINE ─────────────────────────────────────────────────
-// type: "commit" | "portal" | "visit" | "intel"
-// Add new entries to the TOP of this array (newest first).
+// ── ACTIVITY TIMELINE (newest first) ──
+// type: "commit" | "portal" | "intel" | "visit"
 const timeline = [
-  { date:"Jun 3, 2026",  type:"intel",  text:"Class sits at #15 On3 / #26 247Sports with 11 commits. Summer visit season is open — multiple official and unofficial visits expected through the July 4 dead period." },
-  { date:"May 15, 2026", type:"commit", text:"Brock Williams (TE, Libertyville, IL) officially commits to Texas. 6'5 tight end gives the staff their second TE of the cycle alongside JT Geraci." },
-  { date:"May 1, 2026",  type:"commit", text:"Noah Roberts (RB, Basha / Chandler, AZ) commits to Texas. 4-star back fills the staff's running back need early in the cycle." },
-  { date:"Apr 18, 2026", type:"commit", text:"Derwin Fields (EDGE, Brookhaven, MS) commits. Adds a third pass rusher in the class alongside Cameron Hall." },
-  { date:"Apr 2026",     type:"portal", text:"Derek Williams Jr. (CB, Penn State) officially joins Texas via transfer portal. 2025 Big Ten All-Conference selection, projects as immediate CB1 starter." },
-  { date:"Apr 2026",     type:"portal", text:"Rasheem Biles (LB, Ohio State) transfers to Texas. Replaces Anthony Hill Jr. on the depth chart — immediate starter expected." },
-  { date:"Mar 2026",     type:"commit", text:"Jackson Cook (OL, Westlake / Austin, TX) commits. In-state offensive lineman becomes the class's first interior OL." },
-  { date:"Mar 2026",     type:"portal", text:"Cam Coleman (WR, Auburn) transfers to Texas. 5-star who ranked #7 WR nationally in recruiting; the marquee portal addition of the 2026 cycle." },
-  { date:"Mar 2026",     type:"portal", text:"Raleek Brown (RB, Oklahoma State) and Hollywood Smothers (RB, Arizona State) both added via portal. Texas fills both RB spots with proven starters." },
-  { date:"Feb 2026",     type:"portal", text:"Texas adds WR portal depth: Emmett Mosley V (Stanford), Sterling Berkhalter (Tennessee), Ty Boatright (Oklahoma State), Rett Andersen (Stanford)." },
-  { date:"Feb 2026",     type:"portal", text:"MJ Morris (QB, NC State) joins as QB2 depth. Michael Masunas (TE, Navy) joins as projected TE starter." },
-  { date:"Jan 28, 2026", type:"commit", text:"Cameron Hall (DE, Mansfield Summit / Arlington, TX) commits. First defensive commitment of the 2027 class." },
-  { date:"Nov 29, 2025", type:"commit", text:"Easton Royal (WR, Brother Martin / New Orleans, LA) commits. 5-star, 97.33 On3 composite — immediately the highest-rated commit in the class." },
+  { date:"Jun 3, 2026",  type:"intel",  text:"Class sits at #15 On3 / #26 247Sports with 8 publicly named commits. Summer visit season open through July 4 dead period." },
+  { date:"May 15, 2026", type:"commit", text:"Brock Williams (TE, Libertyville, IL) publicly commits to Texas. 6'5 tight end is the second TE of the cycle." },
+  { date:"May 1, 2026",  type:"commit", text:"Noah Roberts (RB, Basha / Chandler, AZ) commits. 4-star back fills the early RB need." },
+  { date:"Apr 18, 2026", type:"commit", text:"Derwin Fields (EDGE, Brookhaven, MS) commits. Third pass rusher added alongside Cameron Hall." },
+  { date:"Apr 2026",     type:"portal", text:"Derek Williams Jr. (CB, Penn State) joins Texas via transfer portal. 2025 Big Ten All-Conference, projected CB1 starter." },
+  { date:"Apr 2026",     type:"portal", text:"Rasheem Biles (LB, Ohio State) transfers to Texas. Projected immediate starter at linebacker." },
+  { date:"Mar 2026",     type:"commit", text:"Jackson Cook (OL, Westlake / Austin, TX) commits. First interior OL of the cycle." },
+  { date:"Mar 2026",     type:"portal", text:"Cam Coleman (WR, Auburn) transfers to Texas. 5-star prospect, ranked #7 WR nationally in recruiting." },
+  { date:"Mar 2026",     type:"portal", text:"Raleek Brown (RB, Oklahoma State) and Hollywood Smothers (RB, Arizona State) both join via portal." },
+  { date:"Feb 2026",     type:"portal", text:"WR depth added via portal: Emmett Mosley V (Stanford), Sterling Berkhalter (Tennessee), Ty Boatright (Oklahoma State), Rett Andersen (Stanford)." },
+  { date:"Feb 2026",     type:"portal", text:"MJ Morris (QB, NC State) joins as depth. Michael Masunas (TE, Navy) joins as projected TE starter." },
+  { date:"Jan 28, 2026", type:"commit", text:"Cameron Hall (DE, Mansfield Summit / Arlington, TX) commits. First defensive commit of the 2027 cycle." },
+  { date:"Nov 29, 2025", type:"commit", text:"Easton Royal (WR, Brother Martin / New Orleans, LA) commits. 5-star, 97.33 On3 composite." },
 ];
 
 // ============================================================
-//  RENDER FUNCTIONS — no edits needed below for routine updates
+//  RENDER FUNCTIONS
 // ============================================================
 
-function starsHTML(n) {
-  if (!n) return '<span style="color:var(--muted)">—</span>';
-  return '<span class="ct-stars">' + '★'.repeat(n) + '</span>';
+const stars = n => n ? '<span class="td-stars">' + '★'.repeat(n) + '</span>' : '—';
+
+// Overview feed (5 most recent items)
+function renderOverviewFeed() {
+  document.getElementById('overview-feed').innerHTML = timeline.slice(0, 5).map(e => `
+    <div class="feed-item ${e.type}">
+      <div class="feed-date">${e.date}</div>
+      <div>
+        <div class="feed-text">${e.text}</div>
+        <span class="feed-tag tag-${e.type}">${e.type}</span>
+      </div>
+    </div>`).join('');
 }
 
-// ── COMMITS ──
-let sortCol = 'dateSort', sortDir = 1, filteredCommits = [...commits];
+// HS table
+let hsSortCol = 'dateSort', hsSortDir = 1, hsFiltered = [...commits];
 
-function applyFilters() {
-  const q   = document.getElementById('rec-search').value.toLowerCase();
-  const pos = document.getElementById('rec-pos').value;
-  const st  = document.getElementById('rec-stars').value;
-  sortCol   = document.getElementById('rec-sort').value;
-  sortDir   = 1;
-  const hasFilter = q || pos || st;
-  filteredCommits = commits.filter(p => {
-    if (hasFilter && p.tba) return false;
+function applyHsFilter() {
+  const q   = document.getElementById('hs-search').value.toLowerCase();
+  const pos = document.getElementById('hs-pos').value;
+  const st  = document.getElementById('hs-stars').value;
+  hsSortCol = document.getElementById('hs-sort').value;
+  hsSortDir = 1;
+  hsFiltered = commits.filter(p => {
     const mq = !q   || [p.name, p.school, p.city].some(s => s.toLowerCase().includes(q));
     const mp = !pos || p.pos === pos;
     const ms = !st  || p.stars === parseInt(st);
     return mq && mp && ms;
   });
-  document.querySelectorAll('.commits-table th').forEach(h => h.classList.remove('sort-asc','sort-desc'));
-  const th = document.querySelector(`.commits-table th[data-col="${sortCol}"]`);
-  if (th) th.classList.add('sort-asc');
-  renderCommits();
+  document.querySelectorAll('.rtbl th').forEach(h => h.classList.remove('asc','desc'));
+  const th = document.querySelector(`.rtbl th[data-col="${hsSortCol}"]`);
+  if (th) th.classList.add('asc');
+  renderHsTable();
 }
 
-function renderCommits() {
-  const sorted = [...filteredCommits].sort((a, b) => {
-    let av = a[sortCol], bv = b[sortCol];
+function renderHsTable() {
+  const sorted = [...hsFiltered].sort((a, b) => {
+    let av = a[hsSortCol], bv = b[hsSortCol];
     if (typeof av === 'string') av = av.toLowerCase();
     if (typeof bv === 'string') bv = bv.toLowerCase();
-    return av < bv ? -sortDir : av > bv ? sortDir : 0;
+    return av < bv ? -hsSortDir : av > bv ? hsSortDir : 0;
   });
-
-  const tbody = document.getElementById('commits-tbody');
-  tbody.innerHTML = sorted.map((p, i) => {
-    const tbaClass = p.tba ? ' is-tba' : '';
-    const srcTag   = p.source === 'confirmed'
-      ? '<span class="src-tag src-confirmed">Confirmed</span>'
-      : '<span class="src-tag src-placeholder">Placeholder</span>';
-    const trendHtml = p.trend === 'up'
-      ? '<span class="ct-trend-up">↑ Rising</span>'
-      : p.trend === 'stable' ? '<span class="ct-trend-stable">Stable</span>' : '—';
-
-    const row = `<tr class="data-row${tbaClass}" onclick="${p.tba ? '' : 'toggleExpand(' + i + ')'}">
-      <td class="ct-name">${p.name}</td>
-      <td class="ct-pos">${p.pos}</td>
+  document.getElementById('hs-tbody').innerHTML = sorted.map((p, i) => {
+    const dataRow = `<tr onclick="toggleRow(${i})">
+      <td class="td-name">${p.name}</td>
+      <td class="td-pos">${p.pos}</td>
       <td>${p.htWt}</td>
-      <td>${starsHTML(p.stars)}${p.rating !== '—' ? ' <span class="ct-score">(' + p.rating + ')</span>' : ''}</td>
-      <td>${p.school}${p.city ? '<span class="ct-city">' + p.city + '</span>' : ''}</td>
-      <td class="ct-date">${p.date}</td>
-      <td>${trendHtml}</td>
-      <td style="font-family:'Barlow Condensed',sans-serif;font-size:11px;color:var(--muted);">${p.conf}</td>
+      <td>${stars(p.stars)}${p.rating !== '—' ? ' <span style="font-size:11px;color:var(--muted)">(' + p.rating + ')</span>' : ''}</td>
+      <td>${p.school}<span class="td-sub">${p.city}</span></td>
+      <td style="color:var(--muted);font-size:12px;">${p.date}</td>
+      <td><span class="vtag vtag-confirmed">Confirmed</span></td>
     </tr>`;
-
-    if (p.tba) return row;
-
-    const expand = `<tr class="expand-row" id="expand-${i}">
-      <td colspan="8" class="expand-cell">
-        <div class="expand-content">
-          <div><div class="expand-label">Measurables</div><div class="expand-val">${p.pos} · ${p.htWt}</div></div>
-          <div><div class="expand-label">Commitment Status</div><div class="expand-val">${p.conf}</div>${srcTag}</div>
-          <div><div class="expand-label">Tower Note</div><div class="expand-summary">${p.summary || 'No additional note.'}</div></div>
+    const expandRow = `<tr class="expand-row" id="ex-${i}">
+      <td colspan="7" class="expand-cell">
+        <div class="expand-grid">
+          <div><div class="ex-label">Position / Size</div><div class="ex-val">${p.pos} · ${p.htWt}</div></div>
+          <div><div class="ex-label">High School</div><div class="ex-val">${p.school} · ${p.city}</div></div>
+          <div><div class="ex-label">Rating</div><div class="ex-val">${stars(p.stars)} ${p.rating !== '—' ? p.rating : 'Not rated'} <span class="vtag vtag-confirmed" style="margin-left:4px">Confirmed</span></div></div>
         </div>
       </td>
     </tr>`;
-    return row + expand;
+    return dataRow + expandRow;
   }).join('');
 
-  // Rebind sort headers
-  document.querySelectorAll('.commits-table th[data-col]').forEach(th => {
+  // Rebind sort
+  document.querySelectorAll('.rtbl th[data-col]').forEach(th => {
     th.onclick = () => {
       const col = th.dataset.col;
-      sortCol === col ? sortDir *= -1 : (sortCol = col, sortDir = 1);
-      document.querySelectorAll('.commits-table th').forEach(h => h.classList.remove('sort-asc','sort-desc'));
-      th.classList.add(sortDir === 1 ? 'sort-asc' : 'sort-desc');
-      renderCommits();
+      hsSortCol === col ? hsSortDir *= -1 : (hsSortCol = col, hsSortDir = 1);
+      document.querySelectorAll('.rtbl th').forEach(h => h.classList.remove('asc','desc'));
+      th.classList.add(hsSortDir === 1 ? 'asc' : 'desc');
+      renderHsTable();
     };
   });
 
-  const named = sorted.filter(p => !p.tba).length;
-  const tba   = sorted.filter(p =>  p.tba).length;
-  document.getElementById('commits-count').textContent = `${named} Named · ${tba} TBA · Click row to expand`;
+  document.getElementById('hs-count').textContent = `${sorted.length} of ${commits.length} · Click row to expand`;
 }
 
-function toggleExpand(i) {
-  const row = document.getElementById('expand-' + i);
-  if (row) row.classList.toggle('open');
+function toggleRow(i) {
+  const r = document.getElementById('ex-' + i);
+  if (r) r.classList.toggle('open');
 }
 
-// ── TARGETS ──
-function renderTargets() {
-  document.getElementById('targets-grid').innerHTML = targets.map(t => `
-    <div class="target-card${t.status === 'trending' ? ' tier1' : ''}">
-      <div class="tgt-pos">${t.pos}</div>
-      <div class="tgt-name">${t.name}</div>
-      <div class="tgt-info">${t.info}</div>
-      <div class="tgt-footer">
-        <span class="tgt-status status-${t.status}">${t.status === 'trending' ? '↑ Trending' : t.status.charAt(0).toUpperCase() + t.status.slice(1)}</span>
-        <span class="tgt-conf">${t.conf}</span>
+// Commit cards
+function renderCommitCards() {
+  document.getElementById('commit-cards').innerHTML = commits.map(p => `
+    <div class="commit-card">
+      <div class="cc-pos">${p.pos}</div>
+      <div class="cc-name">${p.name}</div>
+      <div class="cc-stars">${'★'.repeat(p.stars)}</div>
+      <div class="cc-school">${p.school} · ${p.city}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px;">
+        <div class="cc-date">${p.date}</div>
+        <span class="vtag vtag-confirmed">Confirmed</span>
       </div>
     </div>`).join('');
 }
 
-// ── PORTAL ──
-function renderPortal() {
-  document.getElementById('portal-incoming-tbody').innerHTML = portalIncoming.map(p => `
-    <tr>
-      <td><span class="p-name">${p.name}</span></td>
-      <td><span class="p-pos">${p.pos}</span></td>
-      <td><span class="p-stars">${'★'.repeat(p.stars)}</span></td>
-      <td><span class="p-class">${p.yr}</span></td>
-      <td><span class="from-school">${p.from}</span></td>
-      <td><span class="impact-badge impact-${p.impact}">${p.impactLabel}</span></td>
-      <td><span class="portal-src">Public Report</span></td>
-    </tr>`).join('');
-
-  document.getElementById('portal-outgoing-tbody').innerHTML = portalOutgoing.map(p => `
-    <tr>
-      <td><span class="p-name">${p.name}</span></td>
-      <td><span class="p-pos">${p.pos}</span></td>
-      <td><span class="p-class">${p.yr}</span></td>
-      <td><span class="from-school">${p.dest}</span></td>
-      <td><span style="font-size:12px;color:var(--muted)">${p.reason}</span></td>
-    </tr>`).join('');
-
-  document.getElementById('portal-watch-list').innerHTML = portalWatch.map(p => {
-    const sc = p.status === 'offer' ? 'ws-offer' : p.status === 'target' ? 'ws-target' : 'ws-monitoring';
-    const sl = p.status === 'offer' ? 'Offer Extended' : p.status === 'target' ? 'Texas Target' : 'Monitoring';
-    return `<div class="watch-item">
-      <div>
-        <div class="watch-name">${p.name} — ${p.pos} — ${p.school}</div>
-        <div class="watch-detail">${p.detail}</div>
+// Target cards
+function renderTargets() {
+  document.getElementById('target-grid').innerHTML = targets.map(t => {
+    const sc = t.status === 'trending' ? 'st-trending' : t.status === 'target' ? 'st-target' : 'st-monitoring';
+    const sl = t.status === 'trending' ? '↑ Trending' : t.status === 'target' ? 'Target' : 'Monitoring';
+    return `<div class="target-card${t.status === 'trending' ? ' hot' : ''}">
+      <div class="tc-pos">${t.pos}</div>
+      <div class="tc-name">${t.name}</div>
+      <div class="tc-info">${t.info}</div>
+      <div class="tc-footer">
+        <span class="tc-status ${sc}">${sl}</span>
+        <span class="vtag vtag-public">Public Report</span>
       </div>
-      <div class="watch-right">
-        <div class="watch-status ${sc}">${sl}</div>
-        <div class="watch-conf">${p.conf}</div>
-      </div>
+      <div style="font-size:10px;color:var(--muted);margin-top:7px;">Source: ${t.source}</div>
     </div>`;
   }).join('');
 }
 
+// Portal tables
+function renderPortal() {
+  document.getElementById('portal-in-tbody').innerHTML = portalIn.map(p => `
+    <tr>
+      <td><span class="p-name">${p.name}</span></td>
+      <td><span class="p-pos">${p.pos}</span></td>
+      <td><span class="p-stars">${'★'.repeat(p.stars)}</span></td>
+      <td><span style="font-family:'Barlow Condensed',sans-serif;font-size:11px;color:var(--muted)">${p.yr}</span></td>
+      <td><span class="p-from">${p.from}</span></td>
+      <td><span class="ibadge ${p.impact}">${p.label}</span></td>
+      <td><span class="vtag vtag-public">Public Report</span></td>
+    </tr>`).join('');
+
+  document.getElementById('portal-out-tbody').innerHTML = portalOut.map(p => `
+    <tr>
+      <td><span class="p-name">${p.name}</span></td>
+      <td><span class="p-pos">${p.pos}</span></td>
+      <td><span style="font-family:'Barlow Condensed',sans-serif;font-size:11px;color:var(--muted)">${p.yr}</span></td>
+      <td><span class="p-from">${p.dest}</span></td>
+      <td><span style="font-size:12px;color:var(--muted)">${p.reason}</span></td>
+    </tr>`).join('');
+
+  document.getElementById('portal-watch-list').innerHTML = portalWatch.map(p => `
+    <div class="watch-item">
+      <div>
+        <div class="w-name">${p.name} — ${p.pos} — ${p.school}</div>
+        <div class="w-detail">${p.detail}</div>
+      </div>
+      <div class="w-right">
+        <span class="w-status ${p.status}">${p.label}</span>
+        <div class="w-conf">${p.conf}</div>
+      </div>
+    </div>`).join('');
+}
+
 function showPortalTab(tab, btn) {
-  ['incoming','outgoing','watchlist'].forEach(t => {
-    document.getElementById('ptab-' + t).style.display = t === tab ? '' : 'none';
-  });
+  ['in','out','watch'].forEach(t =>
+    document.getElementById('ptab-' + t).style.display = t === tab ? '' : 'none');
   document.querySelectorAll('.stab').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
 }
 
-// ── POSITION NEEDS ──
+// Position needs
 function renderNeeds() {
-  const f = document.getElementById('needs-urgency').value;
-  const fc = u => u === 'High' ? 'high' : u === 'Medium' ? 'med' : 'low';
-  const uc = u => u === 'High' ? 'urg-high' : u === 'Medium' ? 'urg-med' : 'urg-low';
-  document.getElementById('needs-cards').innerHTML = positionNeeds
+  const f = document.getElementById('needs-filter').value;
+  const fc = u => u === 'High' ? 'nf-hi' : u === 'Medium' ? 'nf-md' : 'nf-lo';
+  const uc = u => u === 'High' ? 'urg-hi' : u === 'Medium' ? 'urg-md' : 'urg-lo';
+  document.getElementById('needs-grid').innerHTML = needs
     .filter(n => !f || n.urgency === f)
     .map(n => `
     <div class="need-card">
-      <div class="need-card-top">
-        <div class="need-card-pos">${n.pos}</div>
-        <div class="need-urgency ${uc(n.urgency)}">${n.urgency} Urgency</div>
+      <div class="need-top">
+        <div class="need-pos">${n.pos}</div>
+        <div class="need-urg ${uc(n.urgency)}">${n.urgency}</div>
       </div>
       <div class="need-bar"><div class="need-fill ${fc(n.urgency)}" style="width:${n.fill}%"></div></div>
       <div class="need-context">${n.context}</div>
-      <div class="need-solutions">
-        <div class="solution-block"><div class="solution-label">Recruiting</div><div class="solution-text">${n.recruiting}</div></div>
-        <div class="solution-block"><div class="solution-label">Portal</div><div class="solution-text">${n.portal}</div></div>
+      <div class="need-2col">
+        <div class="need-block"><div class="need-block-lbl">Recruiting</div><div class="need-block-val">${n.recruiting}</div></div>
+        <div class="need-block"><div class="need-block-lbl">Portal</div><div class="need-block-val">${n.portal}</div></div>
       </div>
     </div>`).join('');
 }
 
-// ── TIMELINE ──
-let tlFilter = '';
-function renderTimeline() {
-  const items = tlFilter ? timeline.filter(e => e.type === tlFilter) : timeline;
-  document.getElementById('timeline-list').innerHTML = items.map(e => `
-    <div class="tl-item ${e.type}">
-      <div class="tl-date">${e.date}</div>
-      <div>
-        <div class="tl-text">${e.text}</div>
-        <span class="tl-tag tag-${e.type}">${e.type}</span>
-      </div>
-    </div>`).join('');
-}
-
-// ── TAB SWITCHING ──
-function switchTab(tab, btn) {
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.htab').forEach(b => b.classList.remove('active'));
+// Tab switching
+function switchTab(tab) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.itab').forEach(b => b.classList.remove('active'));
   document.getElementById('panel-' + tab).classList.add('active');
-  btn.classList.add('active');
+  document.querySelector(`.itab[data-tab="${tab}"]`).classList.add('active');
   history.replaceState(null, '', '#' + tab);
 }
 
 function toggleSigned() {
   const g = document.getElementById('signed-grid');
-  const b = document.getElementById('signed-toggle');
+  const b = document.getElementById('signed-btn');
   const vis = g.style.display !== 'none';
   g.style.display = vis ? 'none' : 'grid';
   b.textContent = vis ? 'Show Class' : 'Hide Class';
 }
 
-// ── INIT ──
+// Init
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.htab').forEach(btn =>
-    btn.addEventListener('click', () => switchTab(btn.dataset.tab, btn)));
+  document.querySelectorAll('.itab').forEach(btn =>
+    btn.addEventListener('click', () => switchTab(btn.dataset.tab)));
 
   document.querySelectorAll('.stab').forEach(btn =>
     btn.addEventListener('click', () => showPortalTab(btn.dataset.ptab, btn)));
 
-  document.querySelectorAll('.tl-filter').forEach(btn =>
-    btn.addEventListener('click', () => {
-      tlFilter = btn.dataset.type;
-      document.querySelectorAll('.tl-filter').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      renderTimeline();
-    }));
-
-  filteredCommits = [...commits];
-  renderCommits();
+  hsFiltered = [...commits];
+  renderOverviewFeed();
+  renderHsTable();
+  renderCommitCards();
   renderTargets();
   renderPortal();
   renderNeeds();
-  renderTimeline();
 
-  // Auto-open tab from URL hash (e.g. recruiting.html#portal)
+  // URL hash: recruiting.html#portal auto-opens portal tab
   const hash = window.location.hash.replace('#', '');
-  const validTabs = ['recruiting','portal','needs','timeline'];
-  if (validTabs.includes(hash)) {
-    const btn = document.querySelector(`.htab[data-tab="${hash}"]`);
-    if (btn) switchTab(hash, btn);
-  }
+  const valid = ['overview','hs','portal','commits','targets','offers','needs'];
+  if (valid.includes(hash)) switchTab(hash);
 });
 </script>
 </body>
