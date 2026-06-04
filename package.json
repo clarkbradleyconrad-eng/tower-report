@@ -9,5 +9,9 @@
   },
   "scripts": {
     "dev": "vercel dev"
+  },
+  "dependencies": {
+    "@ai-sdk/xai": "^3.0.93",
+    "ai": "^6.0.196"
   }
 }
