@@ -92,7 +92,7 @@ export default async function handler(req) {
   userPrompt += 'Search the web for the latest information on this topic. Write the full Tower Report article and return only the JSON object.';
 
   try {
-    const xaiRes = await fetch('https://api.x.ai/v1/chat/completions', {
+    const xaiRes = await fetch('https://api.x.ai/v1/responses', {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${apiKey}`,
@@ -100,12 +100,11 @@ export default async function handler(req) {
       },
       body: JSON.stringify({
         model: 'grok-4',
-        messages: [
-          { role: 'system', content: SYSTEM },
+        instructions: SYSTEM,
+        input: [
           { role: 'user', content: userPrompt },
         ],
-        search_parameters: { mode: 'on' },
-        response_format: { type: 'json_object' },
+        tools: [{ type: 'web_search' }],
         temperature: 0.25,
       }),
       signal: AbortSignal.timeout(55000),
@@ -121,7 +120,8 @@ export default async function handler(req) {
     }
 
     const data = await xaiRes.json();
-    const content = data.choices?.[0]?.message?.content;
+    const messageItem = data.output?.find(o => o.type === 'message');
+    const content = messageItem?.content?.find(c => c.type === 'output_text')?.text;
     if (!content) throw new Error('Empty response from Grok');
 
     const parsed = JSON.parse(content);
