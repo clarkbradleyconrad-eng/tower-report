@@ -79,7 +79,7 @@ export default async function handler(req) {
       weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
     });
 
-    const xaiRes = await fetch('https://api.x.ai/v1/chat/completions', {
+    const xaiRes = await fetch('https://api.x.ai/v1/responses', {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${apiKey}`,
@@ -87,15 +87,14 @@ export default async function handler(req) {
       },
       body: JSON.stringify({
         model: 'grok-4',
-        messages: [
-          { role: 'system', content: SYSTEM },
+        instructions: SYSTEM,
+        input: [
           {
             role: 'user',
             content: `Today is ${today}. Search the web and return 6-10 Texas Longhorns football stories from the past 7 days, ranked by the Tower AI methodology. Return only the JSON object — nothing else.`,
           },
         ],
-        search_parameters: { mode: 'on' },
-        response_format: { type: 'json_object' },
+        tools: [{ type: 'web_search' }],
         temperature: 0.2,
       }),
       signal: AbortSignal.timeout(30000),
@@ -111,7 +110,8 @@ export default async function handler(req) {
     }
 
     const data = await xaiRes.json();
-    const content = data.choices?.[0]?.message?.content;
+    const messageItem = data.output?.find(o => o.type === 'message');
+    const content = messageItem?.content?.find(c => c.type === 'output_text')?.text;
 
     if (!content) throw new Error('Empty response from Grok');
 
