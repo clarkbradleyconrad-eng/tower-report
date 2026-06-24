@@ -980,44 +980,106 @@ function showToast(msg, type) {
 // ══════════════════════════════════════════════════════
 // API
 // ══════════════════════════════════════════════════════
+// Map a newsroom DB story to the shape the renderer expects
+function mapNewsroomStory(s, index) {
+  var cats = Array.isArray(s.categories) ? s.categories : (s.categories ? [s.categories] : []);
+  var cat = cats[0] || 'Program Outlook';
+  var overview = '';
+  if (s.whatHappened) overview += 'What happened: ' + s.whatHappened;
+  if (s.whyItMatters) overview += '<br><br><strong>Why it matters:</strong> ' + s.whyItMatters;
+  if (s.impactOnTexas) overview += '<br><br><strong>Impact on Texas:</strong> ' + s.impactOnTexas;
+  if (s.futureOutlook) overview += '<br><br><strong>What to watch next:</strong> ' + s.futureOutlook;
+  return {
+    id: s.id,
+    headline: s.title || '',
+    kicker: s.kicker || (cat + ' · TOWER REPORT'),
+    summary: s.summary || '',
+    hook: s.summary || '',
+    category: cat,
+    tags: s.tags || [],
+    impact: s.impactScore || 80,
+    trending: !!s.trending,
+    featured: !!s.featured,
+    date: s.publishedAt
+      ? new Date(s.publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+      : '',
+    overview: overview,
+    relatedImpact: (s.keySignals || [])[0] || '',
+    players: [],
+    sources: ['Tower Report'],
+    readTime: s.readTime || 3,
+    _authored: true,
+  };
+}
+
+// Fetch newsroom published stories — always runs in parallel, never blocks
+function fetchNewsroomStories() {
+  return fetch('/api/stories-db')
+    .then(function(r) { return r.ok ? r.json() : { stories: [] }; })
+    .then(function(d) {
+      return (d.stories || [])
+        .filter(function(s) { return s.status === 'published'; })
+        .sort(function(a, b) { return (b.impactScore || 0) - (a.impactScore || 0); })
+        .map(mapNewsroomStory)
+        .map(augment);
+    })
+    .catch(function() { return []; });
+}
+
+// Merge authored (newsroom) stories before AI stories, re-rank all
+function mergeStories(authored, ai) {
+  var seen = {};
+  authored.forEach(function(s) { seen[s.id] = true; });
+  var combined = authored.concat(ai.filter(function(s) { return !seen[s.id]; }));
+  combined.forEach(function(s, i) { s.rank = i + 1; s.featured = (i === 0); });
+  return combined;
+}
+
 async function loadStories(force) {
   if (isLoading) return;
   isLoading = true;
   setSyncLoading(true);
   document.getElementById('ts-err').classList.remove('show');
 
+  // Always fetch newsroom stories in parallel — never blocks the main feed
+  var newsroomPromise = fetchNewsroomStories();
+
   try {
-    // Try Grok live API first
     var apiUrl = '/api/stories' + (force ? '?r=' + Date.now() : '');
     var res = await fetch(apiUrl, { signal: AbortSignal.timeout(25000) });
     if (!res.ok) throw new Error('HTTP ' + res.status);
     var data = await res.json();
     if (!data.stories || !data.stories.length) throw new Error('Empty');
 
-    allStories = data.stories.map(augment);
+    var aiStories = data.stories.map(augment);
+    var authored = await newsroomPromise;
+    allStories = mergeStories(authored, aiStories);
+
     var signals = data.totalSignals || 847;
     updateHeroStats(allStories.length, signals, data.lastUpdated ? timeAgo(data.lastUpdated) : 'just now');
     renderAll();
     if (force) showToast('Tower signals synced', 'ok');
 
   } catch (apiErr) {
-    // Fall back to authored stories.json
+    // Fall back to authored stories.json + newsroom
     try {
       var jsonRes = await fetch('/data/stories.json');
       if (!jsonRes.ok) throw new Error('JSON fetch failed');
       var jsonData = await jsonRes.json();
-      allStories = (jsonData.stories || []).map(augment);
-      if (!allStories.length) throw new Error('Empty JSON');
+      var jsonStories = (jsonData.stories || []).map(augment);
+      if (!jsonStories.length) throw new Error('Empty JSON');
 
+      var authored = await newsroomPromise;
+      allStories = mergeStories(authored, jsonStories);
       var ts = jsonData.lastUpdated ? timeAgo(jsonData.lastUpdated) : 'cached';
       updateHeroStats(allStories.length, 847, ts);
       renderAll();
       if (force) showToast('Live sync unavailable — showing authored stories', 'err');
 
     } catch (jsonErr) {
-      // Final fallback to hardcoded data
-      allStories = FALLBACK;
-      updateHeroStats(FALLBACK.length, 847, 'cached');
+      var authored = await newsroomPromise;
+      allStories = authored.length ? mergeStories(authored, FALLBACK) : FALLBACK;
+      updateHeroStats(allStories.length, 847, 'cached');
       renderAll();
       if (force) showToast('Showing cached intelligence', 'err');
     }

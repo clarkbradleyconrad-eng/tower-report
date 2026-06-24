@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tower Report — Newsroom</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --orange:#BF5700;--orange-hi:#D96200;--orange-lo:rgba(191,87,0,0.10);
+  --black:#080808;--s0:#0F0F0F;--s1:#141414;--s2:#1A1A1A;--s3:#212121;
+  --border:rgba(255,255,255,0.06);--border-mid:rgba(255,255,255,0.11);--border-strong:rgba(255,255,255,0.18);
+  --white:#F0EBE1;--white2:#C4BCB0;--muted:#5A5450;--secondary:#948C82;
+  --green:#22c55e;--red:#ef4444;--blue:#60a5fa;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);min-height:100vh;overflow-x:hidden;}
+a{color:inherit;text-decoration:none;}
+button{font-family:inherit;cursor:pointer;}
+textarea,input,select{font-family:inherit;color:var(--white);background:var(--s2);border:1px solid var(--border-mid);outline:none;transition:border-color .15s;}
+textarea:focus,input:focus,select:focus{border-color:var(--orange);}
+
+/* ── HEADER ─────────────────────────────── */
+.nr-header{position:sticky;top:0;z-index:200;background:rgba(8,8,8,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border-mid);}
+.nr-header-inner{max-width:1400px;margin:0 auto;padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:56px;}
+.nr-brand{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nr-brand svg{flex-shrink:0;}
+.nr-brand-text{line-height:1;}
+.nr-brand-top{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--white);}
+.nr-brand-sub{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--orange);}
+.nr-nav{display:flex;align-items:center;gap:4px;}
+.nr-nav-btn{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);background:none;border:none;padding:8px 14px;border-bottom:2px solid transparent;transition:all .15s;}
+.nr-nav-btn:hover{color:var(--white2);}
+.nr-nav-btn.active{color:var(--white);border-bottom-color:var(--orange);}
+.nr-badge{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 5px;background:var(--orange-lo);border:1px solid rgba(191,87,0,.3);font-size:9px;font-weight:700;color:var(--orange);margin-left:5px;font-family:'Barlow Condensed',sans-serif;}
+.site-link{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:6px 12px;border:1px solid var(--border);transition:all .15s;}
+.site-link:hover{color:var(--white2);border-color:var(--border-mid);}
+
+/* ── STATS BAR ─────────────────────────── */
+.nr-stats{background:var(--s0);border-bottom:1px solid var(--border);}
+.nr-stats-inner{max-width:1400px;margin:0 auto;padding:0 32px;display:flex;gap:1px;background:var(--border);}
+.stat-cell{flex:1;padding:10px 20px;background:var(--s0);display:flex;align-items:center;gap:10px;}
+.stat-n{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--orange);line-height:1;}
+.stat-l{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+
+/* ── VIEWS ──────────────────────────────── */
+.view{display:none;}
+.view.active{display:block;}
+.nr-wrap{max-width:1400px;margin:0 auto;padding:32px;}
+@media(max-width:700px){.nr-wrap{padding:20px 16px;}}
+
+/* ── GENERATE VIEW ───────────────────────── */
+.gen-section{margin-bottom:24px;}
+.gen-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:10px;}
+.type-chips{display:flex;flex-wrap:wrap;gap:6px;}
+.type-chip{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:8px 16px;background:var(--s1);border:1px solid var(--border-mid);color:var(--secondary);transition:all .12s;}
+.type-chip:hover{color:var(--white);border-color:var(--border-strong);}
+.type-chip.active{background:var(--orange-lo);border-color:rgba(191,87,0,.5);color:var(--orange);}
+.news-textarea{width:100%;padding:16px;font-size:14px;line-height:1.7;resize:vertical;min-height:130px;border-radius:0;}
+.optional-section{border:1px solid var(--border);margin-bottom:24px;}
+.optional-section summary{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:12px 16px;cursor:pointer;list-style:none;transition:color .15s;}
+.optional-section summary:hover{color:var(--white2);}
+.optional-section summary::-webkit-details-marker{display:none;}
+.optional-body{padding:16px;display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--border);}
+.nr-input{width:100%;padding:10px 12px;font-size:13px;border-radius:0;}
+.generate-btn{width:100%;padding:18px;background:var(--orange);color:#fff;border:none;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;letter-spacing:3px;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:10px;transition:background .15s;margin-top:8px;}
+.generate-btn:hover{background:var(--orange-hi);}
+.generate-btn:disabled{opacity:.5;cursor:not-allowed;}
+.generate-error{color:var(--red);font-size:12px;margin-top:10px;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;text-transform:uppercase;min-height:20px;}
+.write-own-btn{width:100%;padding:14px;background:transparent;color:var(--white2);border:1px solid var(--border-mid);font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s;margin-top:8px;}
+.write-own-btn:hover{border-color:var(--border-strong);color:var(--white);}
+
+/* ── PREVIEW VIEW ────────────────────────── */
+.preview-layout{display:grid;grid-template-columns:1fr 340px;gap:1px;background:var(--border);align-items:start;}
+@media(max-width:900px){.preview-layout{grid-template-columns:1fr;}}
+.story-editor{background:var(--s0);}
+.editor-block{padding:20px 24px;border-bottom:1px solid var(--border);}
+.editor-block:last-child{border-bottom:none;}
+.eb-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:10px;}
+.ed-kicker{width:100%;padding:8px 0;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--orange);margin-bottom:12px;}
+.ed-kicker:focus{border-bottom-color:var(--orange);outline:none;}
+.ed-title{width:100%;padding:0;font-family:'Playfair Display',serif;font-size:clamp(22px,3vw,32px);font-weight:700;line-height:1.15;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--white);resize:none;margin-bottom:12px;overflow:hidden;}
+.ed-title:focus{border-bottom-color:var(--orange);outline:none;}
+.ed-summary{width:100%;padding:0;font-size:14px;line-height:1.7;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--white2);resize:none;overflow:hidden;}
+.ed-summary:focus{border-bottom-color:var(--orange);outline:none;}
+.ed-body{width:100%;padding:0;font-size:13.5px;line-height:1.8;background:transparent;border:none;color:var(--white2);resize:none;overflow:hidden;}
+.ed-body:focus{outline:none;}
+.signal-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
+.signal-bullet{color:var(--orange);font-size:8px;flex-shrink:0;}
+.signal-input{flex:1;padding:7px 10px;font-size:12.5px;border-radius:0;}
+.signal-remove{background:none;border:1px solid var(--border);color:var(--muted);width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;transition:all .12s;}
+.signal-remove:hover{border-color:var(--red);color:var(--red);}
+.add-signal-btn{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);background:none;border:1px solid var(--border);padding:6px 12px;transition:all .12s;margin-top:6px;}
+.add-signal-btn:hover{color:var(--orange);border-color:rgba(191,87,0,.4);}
+.preview-actions{display:flex;gap:8px;padding:20px 24px;border-top:1px solid var(--border);}
+.btn-primary{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;background:var(--orange);color:#fff;border:1px solid var(--orange);padding:11px 22px;transition:all .15s;}
+.btn-primary:hover{background:var(--orange-hi);}
+.btn-secondary{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;background:transparent;color:var(--white2);border:1px solid var(--border-mid);padding:11px 18px;transition:all .15s;}
+.btn-secondary:hover{border-color:var(--white2);color:var(--white);}
+
+/* ── SIDEBAR ─────────────────────────────── */
+.story-sidebar{background:var(--s1);display:flex;flex-direction:column;gap:1px;}
+.sidebar-block{background:var(--s0);padding:18px 20px;border-bottom:1px solid var(--border);}
+.sb-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
+.score-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
+.score-range{flex:1;accent-color:var(--orange);}
+.score-val{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:var(--orange);line-height:1;min-width:40px;}
+.post-block{margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border);}
+.post-block:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+.post-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.post-type{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--white2);}
+.post-chars{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;color:var(--muted);}
+.post-textarea{width:100%;padding:8px 10px;font-size:12px;line-height:1.65;resize:vertical;min-height:80px;margin-bottom:6px;border-radius:0;}
+.copy-btn{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;background:var(--s2);border:1px solid var(--border-mid);color:var(--secondary);padding:5px 12px;transition:all .12s;width:100%;}
+.copy-btn:hover{border-color:var(--orange);color:var(--orange);}
+.copy-btn.copied{border-color:var(--green);color:var(--green);}
+
+/* ── QUEUE VIEW ─────────────────────────── */
+.queue-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;}
+.queue-tabs{display:flex;gap:2px;}
+.qtab{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;background:var(--s1);border:1px solid var(--border-mid);color:var(--muted);padding:7px 16px;transition:all .12s;}
+.qtab:hover{color:var(--white2);}
+.qtab.active{background:var(--orange-lo);border-color:rgba(191,87,0,.4);color:var(--orange);}
+.queue-card{background:var(--s0);border:1px solid var(--border);padding:16px 20px;margin-bottom:6px;transition:border-color .15s;}
+.queue-card:hover{border-color:var(--border-mid);}
+.qc-row{display:flex;align-items:center;gap:16px;}
+.qc-main{flex:1;min-width:0;}
+.qc-kicker{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:4px;}
+.qc-title{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px;}
+.qc-meta{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
+.qc-actions{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.status-badge{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 8px;border:1px solid;}
+.badge-published{color:var(--green);border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.07);}
+.badge-draft{color:var(--secondary);border-color:var(--border-mid);background:var(--s2);}
+.qc-btn{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;border:1px solid var(--border-mid);padding:5px 10px;background:none;color:var(--muted);transition:all .12s;}
+.qc-btn:hover{color:var(--white);border-color:var(--border-strong);}
+.qc-edit:hover{color:var(--blue);border-color:rgba(96,165,250,.4);}
+.qc-publish:hover{color:var(--green);border-color:rgba(34,197,94,.4);}
+.qc-unpublish:hover{color:var(--secondary);border-color:var(--border-strong);}
+.qc-delete:hover{color:var(--red);border-color:rgba(239,68,68,.4);}
+.queue-empty{text-align:center;padding:60px 20px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;}
+.queue-empty a{color:var(--orange);}
+.qc-link-row{display:flex;align-items:center;gap:8px;padding-top:10px;margin-top:10px;border-top:1px solid var(--border);flex-wrap:wrap;}
+.qc-link-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);flex-shrink:0;}
+.qc-link-url{font-family:'Barlow Condensed',sans-serif;font-size:10px;color:var(--muted);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.qc-copy-link{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;border:1px solid var(--orange);color:var(--orange);background:var(--orange-lo);padding:4px 10px;transition:all .12s;flex-shrink:0;}
+.qc-copy-link:hover{background:var(--orange);color:#fff;}
+.qc-view-btn{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;border:1px solid var(--border-mid);color:var(--white2);background:none;padding:4px 10px;transition:all .12s;text-decoration:none;flex-shrink:0;display:inline-flex;align-items:center;}
+.qc-view-btn:hover{border-color:var(--white2);color:var(--white);}
+
+/* ── TOAST ───────────────────────────────── */
+.toast{position:fixed;bottom:24px;right:24px;z-index:999;padding:10px 18px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border:1px solid;animation:toastIn .25s cubic-bezier(.16,1,.3,1);}
+.toast.hidden{display:none;}
+.toast.ok{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.35);color:#86efac;}
+.toast.error{background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.35);color:#fca5a5;}
+@keyframes toastIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── SPINNER ─────────────────────────────── */
+.spin{animation:spin .7s linear infinite;display:inline-block;}
+@keyframes spin{to{transform:rotate(360deg);}}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="nr-header">
+  <div class="nr-header-inner">
+    <a href="index.html" class="nr-brand">
+      <svg viewBox="0 0 34 42" width="24" height="29" fill="none" aria-hidden="true">
+        <rect x="10" y="28" width="14" height="12" fill="#BF5700" opacity=".9"/>
+        <rect x="12" y="17" width="10" height="12" fill="#BF5700"/>
+        <rect x="14" y="7" width="6" height="11" fill="#BF5700"/>
+        <circle cx="17" cy="10" r="2.5" fill="#080808" stroke="#BF5700" stroke-width=".6"/>
+        <line x1="17" y1="7" x2="17" y2="2" stroke="#BF5700" stroke-width="1.5"/>
+        <circle cx="17" cy="1.5" r="1.3" fill="#E8620A"/>
+      </svg>
+      <div class="nr-brand-text">
+        <div class="nr-brand-top">Tower</div>
+        <div class="nr-brand-sub">Newsroom</div>
+      </div>
+    </a>
+    <div class="nr-nav">
+      <button class="nr-nav-btn active" id="nav-generate" onclick="showView('generate')">&#9889; AI Generate</button>
+      <button class="nr-nav-btn" id="nav-write" onclick="startBlankStory()">&#9999; Write Story</button>
+      <button class="nr-nav-btn" id="nav-queue" onclick="showView('queue')">Queue <span class="nr-badge" id="queue-count">0</span></button>
+      <a href="stories.html" target="_blank" class="site-link" style="margin-left:12px;">Stories &#8599;</a>
+    </div>
+  </div>
+</header>
+
+<!-- STATS BAR -->
+<div class="nr-stats">
+  <div class="nr-stats-inner">
+    <div class="stat-cell"><span class="stat-n" id="stat-published">—</span><span class="stat-l">Published</span></div>
+    <div class="stat-cell"><span class="stat-n" id="stat-drafts">—</span><span class="stat-l">Drafts</span></div>
+    <div class="stat-cell"><span class="stat-n" id="stat-today">—</span><span class="stat-l">Today</span></div>
+    <div class="stat-cell"><span class="stat-n" id="stat-total">—</span><span class="stat-l">Total</span></div>
+  </div>
+</div>
+
+<!-- GENERATE VIEW -->
+<div class="view active" id="view-generate">
+  <div class="nr-wrap" style="max-width:820px;">
+
+    <div class="gen-section">
+      <div class="gen-label">Event Type</div>
+      <div class="type-chips" id="type-chips"></div>
+    </div>
+
+    <div class="gen-section">
+      <div class="gen-label" style="margin-bottom:4px;">What's the story?</div>
+      <p style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Tower AI searches the web, X, and sports news to gather the facts automatically.</p>
+      <textarea id="news-input" class="news-textarea" placeholder="Describe the news or topic. Examples:&#10;&#10;'Texas commits 5-star CB Jaylen Smith from Dallas'&#10;'Arch Manning named to Davey O&apos;Brien Award watch list'&#10;'Colin Simmons injury update from practice'&#10;'Texas lands top transfer OL from Ohio State'&#10;&#10;Be specific — include player names, positions, schools."></textarea>
+    </div>
+
+    <details class="optional-section">
+      <summary>+ Paste article content (optional — for paywalled or specific sources)</summary>
+      <div class="optional-body">
+        <textarea id="source-content" class="nr-input" rows="6" placeholder="Paste article text, tweet thread, or press release if you have it. This gets added to what Grok finds on its own."></textarea>
+        <input type="url" id="source-url" class="nr-input" placeholder="Source URL (optional)">
+      </div>
+    </details>
+
+    <button class="generate-btn" id="generate-btn" onclick="generateStory()">
+      <span id="btn-icon">&#9889;</span>
+      <span id="btn-text">Research &amp; Write with Tower AI</span>
+    </button>
+
+    <button class="write-own-btn" onclick="startBlankStory()">
+      &#9999; Write Story Manually (no AI)
+    </button>
+
+    <div class="generate-error" id="generate-error"></div>
+  </div>
+</div>
+
+<!-- PREVIEW VIEW -->
+<div class="view" id="view-preview">
+  <div class="nr-wrap" style="padding-top:0;padding-bottom:0;max-width:none;">
+    <div class="preview-layout">
+
+      <!-- LEFT: Story editor -->
+      <div class="story-editor">
+
+        <div class="editor-block">
+          <div class="eb-label">Kicker &amp; Headline</div>
+          <input type="text" id="ed-kicker" class="ed-kicker" placeholder="KICKER LABEL">
+          <textarea id="ed-title" class="ed-title" placeholder="Story headline…" rows="2" oninput="autoResize(this)"></textarea>
+          <textarea id="ed-summary" class="ed-summary" placeholder="Summary — 2-3 sentences that hook the reader…" rows="3" oninput="autoResize(this)"></textarea>
+        </div>
+
+        <div class="editor-block">
+          <div class="eb-label">What Happened</div>
+          <textarea id="ed-whatHappened" class="ed-body" rows="6" oninput="autoResize(this)" placeholder="What happened…"></textarea>
+        </div>
+
+        <div class="editor-block">
+          <div class="eb-label">Why It Matters</div>
+          <textarea id="ed-whyItMatters" class="ed-body" rows="6" oninput="autoResize(this)" placeholder="Why it matters…"></textarea>
+        </div>
+
+        <div class="editor-block">
+          <div class="eb-label">Impact on Texas Football</div>
+          <textarea id="ed-impactOnTexas" class="ed-body" rows="5" oninput="autoResize(this)" placeholder="Impact on the program…"></textarea>
+        </div>
+
+        <div class="editor-block">
+          <div class="eb-label">Future Outlook</div>
+          <textarea id="ed-futureOutlook" class="ed-body" rows="4" oninput="autoResize(this)" placeholder="What comes next…"></textarea>
+        </div>
+
+        <div class="editor-block">
+          <div class="eb-label">Key Signals</div>
+          <div id="key-signals-list"></div>
+          <button class="add-signal-btn" onclick="addSignal()">+ Add Signal</button>
+        </div>
+
+        <div class="preview-actions">
+          <button class="btn-secondary" id="back-btn" onclick="goBack()">&#8592; Back</button>
+          <button class="btn-secondary" onclick="saveCurrentStory('draft')">Save Draft</button>
+          <button class="btn-primary" onclick="confirmPublish()">Publish Now &#8594;</button>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Sidebar -->
+      <div class="story-sidebar">
+
+        <div class="sidebar-block">
+          <div class="sb-label">Impact Score</div>
+          <div class="score-row">
+            <input type="range" id="impact-score" class="score-range" min="0" max="100" value="80" oninput="document.getElementById('score-val').textContent=this.value">
+            <span class="score-val" id="score-val">80</span>
+          </div>
+        </div>
+
+        <div class="sidebar-block">
+          <div class="sb-label">Category &amp; Tags</div>
+          <select id="ed-category" class="nr-input" style="margin-bottom:8px;">
+            <option value="">— Select Category —</option>
+            <option value="Analysis">Analysis</option>
+            <option value="Recruiting">Recruiting</option>
+            <option value="Portal">Portal</option>
+            <option value="Offense">Offense</option>
+            <option value="Defense">Defense</option>
+            <option value="Championship">Championship</option>
+            <option value="Program">Program</option>
+            <option value="Rivalry">Rivalry</option>
+            <option value="Film Room">Film Room</option>
+            <option value="Depth Chart">Depth Chart</option>
+          </select>
+          <input type="text" id="ed-tags" class="nr-input" placeholder="Tags — comma separated">
+        </div>
+
+        <div class="sidebar-block">
+          <div class="sb-label">Options</div>
+          <label style="display:flex;align-items:center;gap:8px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--secondary);margin-bottom:8px;cursor:pointer;">
+            <input type="checkbox" id="ed-trending" style="width:14px;height:14px;accent-color:var(--orange);background:var(--s2);border:1px solid var(--border-mid);">
+            Mark as Trending
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--secondary);cursor:pointer;">
+            <input type="checkbox" id="ed-featured" style="width:14px;height:14px;accent-color:var(--orange);background:var(--s2);border:1px solid var(--border-mid);">
+            Feature this Story
+          </label>
+        </div>
+
+        <div class="sidebar-block">
+          <div class="sb-label" style="margin-bottom:4px;">X / Twitter Posts</div>
+          <p style="font-size:11px;color:var(--muted);margin-bottom:14px;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;text-transform:uppercase;">4 drafts ready to copy</p>
+
+          <div class="post-block">
+            <div class="post-hd">
+              <span class="post-type">&#128680; Breaking Alert</span>
+              <span class="post-chars" id="chars-breaking">0/280</span>
+            </div>
+            <textarea id="post-breaking" class="post-textarea" oninput="charCount('breaking',this.value)"></textarea>
+            <button class="copy-btn" onclick="copyPost('breaking',this)">Copy &amp; Post to X</button>
+          </div>
+
+          <div class="post-block">
+            <div class="post-hd">
+              <span class="post-type">&#128202; Analysis Take</span>
+              <span class="post-chars" id="chars-analysis">0/280</span>
+            </div>
+            <textarea id="post-analysis" class="post-textarea" oninput="charCount('analysis',this.value)"></textarea>
+            <button class="copy-btn" onclick="copyPost('analysis',this)">Copy &amp; Post to X</button>
+          </div>
+
+          <div class="post-block">
+            <div class="post-hd">
+              <span class="post-type">&#128172; Fan Question</span>
+              <span class="post-chars" id="chars-engagement">0/280</span>
+            </div>
+            <textarea id="post-engagement" class="post-textarea" oninput="charCount('engagement',this.value)"></textarea>
+            <button class="copy-btn" onclick="copyPost('engagement',this)">Copy &amp; Post to X</button>
+          </div>
+
+          <div class="post-block" style="border-bottom:none;padding-bottom:0;margin-bottom:0;">
+            <div class="post-hd">
+              <span class="post-type">&#128240; Story Share</span>
+              <span class="post-chars" id="chars-readMore">0/280</span>
+            </div>
+            <textarea id="post-readMore" class="post-textarea" oninput="charCount('readMore',this.value)"></textarea>
+            <button class="copy-btn" onclick="copyPost('readMore',this)">Copy &amp; Post to X</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- QUEUE VIEW -->
+<div class="view" id="view-queue">
+  <div class="nr-wrap">
+    <div class="queue-hd">
+      <div class="queue-tabs">
+        <button class="qtab active" onclick="filterQueue('all',this)">All</button>
+        <button class="qtab" onclick="filterQueue('draft',this)">Drafts</button>
+        <button class="qtab" onclick="filterQueue('published',this)">Published</button>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn-secondary" onclick="startBlankStory()">&#9999; Write Story</button>
+        <button class="btn-secondary" onclick="showView('generate')">&#9889; AI Generate</button>
+      </div>
+    </div>
+    <div id="queue-list"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast hidden"></div>
+
+<script>
+/* ── STATE ─────────────────────────────────── */
+let currentStory = null;
+let currentSocialPosts = null;
+let db = { stories: [] };
+let queueFilter = 'all';
+let previousView = 'generate';
+
+const EVENT_TYPES = [
+  { label:'Commitment', emoji:'⭐' },
+  { label:'Transfer In', emoji:'🔀' },
+  { label:'Transfer Out', emoji:'↗' },
+  { label:'Decommitment', emoji:'❌' },
+  { label:'Injury Update', emoji:'🚑' },
+  { label:'Recruiting Update', emoji:'📋' },
+  { label:'Game Analysis', emoji:'🏈' },
+  { label:'Depth Chart', emoji:'📊' },
+  { label:'Coaching News', emoji:'🎙' },
+  { label:'Program News', emoji:'📰' },
+  { label:'Rankings', emoji:'🏆' },
+  { label:'Custom', emoji:'✏' },
+];
+
+let selectedType = EVENT_TYPES[0].label;
+
+/* ── INIT ──────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  buildTypeChips();
+  loadQueue();
+});
+
+function buildTypeChips() {
+  const c = document.getElementById('type-chips');
+  c.innerHTML = EVENT_TYPES.map(t =>
+    `<button class="type-chip${t.label===selectedType?' active':''}" onclick="selectType('${t.label}',this)">
+      ${t.emoji} ${t.label}
+    </button>`
+  ).join('');
+}
+
+function selectType(label, btn) {
+  selectedType = label;
+  document.querySelectorAll('.type-chip').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+/* ── VIEW MANAGEMENT ───────────────────────── */
+function showView(name) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById(`view-${name}`).classList.add('active');
+  document.querySelectorAll('.nr-nav-btn').forEach(b => b.classList.remove('active'));
+  const navBtn = document.getElementById(`nav-${name}`);
+  if (navBtn) navBtn.classList.add('active');
+  if (name === 'queue') renderQueue();
+}
+
+function goBack() {
+  if (previousView === 'queue') {
+    showView('queue');
+  } else {
+    showView('generate');
+  }
+}
+
+/* ── START BLANK STORY ─────────────────────── */
+function startBlankStory() {
+  const id = `story-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+  currentStory = {
+    id,
+    status: 'draft',
+    createdAt: new Date().toISOString(),
+    publishedAt: null,
+    url: null,
+  };
+  currentSocialPosts = null;
+  populatePreview({
+    story: { kicker: '', title: '', summary: '', whatHappened: '', whyItMatters: '',
+      impactOnTexas: '', futureOutlook: '', keySignals: [], categories: [], tags: [], impactScore: 80 },
+    socialPosts: { breaking: '', analysis: '', engagement: '', readMore: '' },
+  });
+  previousView = 'generate';
+  document.querySelectorAll('.nr-nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('nav-write').classList.add('active');
+  showView('preview');
+}
+
+/* ── EDIT EXISTING STORY ───────────────────── */
+function editStory(id) {
+  const story = db.stories.find(s => s.id === id);
+  if (!story) { toast('Story not found', 'error'); return; }
+  currentStory = story;
+  currentSocialPosts = story.socialPosts || null;
+  populatePreview({
+    story,
+    socialPosts: story.socialPosts || { breaking: '', analysis: '', engagement: '', readMore: '' },
+  });
+  previousView = 'queue';
+  document.getElementById('back-btn').textContent = '← Queue';
+  showView('preview');
+}
+
+/* ── GENERATE ──────────────────────────────── */
+async function generateStory() {
+  const topic = document.getElementById('news-input').value.trim();
+  const sourceContent = document.getElementById('source-content')?.value.trim() || '';
+  if (!topic && !sourceContent) {
+    showError('Describe the news or topic before generating.');
+    return;
+  }
+
+  const btn = document.getElementById('generate-btn');
+  const icon = document.getElementById('btn-icon');
+  const text = document.getElementById('btn-text');
+  btn.disabled = true;
+  icon.innerHTML = '<span class="spin">⚙</span>';
+  text.textContent = 'Researching across web, X & news…';
+  document.getElementById('generate-error').textContent = '';
+
+  try {
+    const res = await fetch('/api/generate-story', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        eventType: selectedType,
+        topic: topic || null,
+        sourceContent: sourceContent || null,
+        sourceUrl: document.getElementById('source-url')?.value.trim() || null,
+      }),
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ error: 'Generation failed' }));
+      throw new Error(err.error || 'API error');
+    }
+
+    const data = await res.json();
+    currentStory = data.story;
+    currentSocialPosts = data.socialPosts;
+    populatePreview(data);
+    previousView = 'generate';
+    document.getElementById('back-btn').textContent = '← Back';
+    showView('preview');
+  } catch (err) {
+    showError(err.message || 'Generation failed. Try again.');
+  } finally {
+    btn.disabled = false;
+    icon.textContent = '⚡';
+    text.textContent = 'Research & Write with Tower AI';
+  }
+}
+
+/* ── POPULATE PREVIEW ──────────────────────── */
+function populatePreview({ story: s, socialPosts: p }) {
+  set('ed-kicker', s.kicker || '');
+  set('ed-title', s.title || '');
+  set('ed-summary', s.summary || '');
+  set('ed-whatHappened', s.whatHappened || '');
+  set('ed-whyItMatters', s.whyItMatters || '');
+  set('ed-impactOnTexas', s.impactOnTexas || '');
+  set('ed-futureOutlook', s.futureOutlook || '');
+
+  const cats = Array.isArray(s.categories) ? s.categories : (s.categories ? [s.categories] : []);
+  const catEl = document.getElementById('ed-category');
+  catEl.value = cats[0] || '';
+
+  set('ed-tags', Array.isArray(s.tags) ? s.tags.join(', ') : (s.tags || ''));
+
+  const score = s.impactScore || 80;
+  document.getElementById('impact-score').value = score;
+  document.getElementById('score-val').textContent = score;
+
+  document.getElementById('ed-trending').checked = !!s.trending;
+  document.getElementById('ed-featured').checked = !!s.featured;
+
+  buildSignals(s.keySignals || s.keyInsights || []);
+
+  p = p || {};
+  set('post-breaking', p.breaking || '');
+  set('post-analysis', p.analysis || '');
+  set('post-engagement', p.engagement || '');
+  set('post-readMore', p.readMore || '');
+  charCount('breaking', p.breaking || '');
+  charCount('analysis', p.analysis || '');
+  charCount('engagement', p.engagement || '');
+  charCount('readMore', p.readMore || '');
+
+  setTimeout(() => {
+    document.querySelectorAll('#view-preview textarea').forEach(autoResize);
+  }, 50);
+}
+
+function set(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.value = val;
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = el.scrollHeight + 'px';
+}
+
+/* ── KEY SIGNALS ───────────────────────────── */
+function buildSignals(signals) {
+  document.getElementById('key-signals-list').innerHTML = signals.map((s) =>
+    `<div class="signal-row">
+      <span class="signal-bullet">●</span>
+      <input type="text" class="signal-input" value="${esc(s)}" placeholder="Signal…">
+      <button class="signal-remove" onclick="this.closest('.signal-row').remove()">×</button>
+    </div>`
+  ).join('');
+}
+
+function addSignal() {
+  const list = document.getElementById('key-signals-list');
+  const row = document.createElement('div');
+  row.className = 'signal-row';
+  row.innerHTML = `<span class="signal-bullet">●</span>
+    <input type="text" class="signal-input" placeholder="Signal…">
+    <button class="signal-remove" onclick="this.closest('.signal-row').remove()">×</button>`;
+  list.appendChild(row);
+  row.querySelector('input').focus();
+}
+
+function getSignals() {
+  return Array.from(document.querySelectorAll('.signal-input'))
+    .map(i => i.value.trim()).filter(Boolean);
+}
+
+/* ── SOCIAL POST UTILS ─────────────────────── */
+function charCount(type, text) {
+  const el = document.getElementById(`chars-${type}`);
+  if (!el) return;
+  const n = (text || '').length;
+  el.textContent = `${n}/280`;
+  el.style.color = n > 280 ? 'var(--red)' : 'var(--muted)';
+}
+
+async function copyPost(type, btn) {
+  const text = document.getElementById(`post-${type}`).value;
+  try {
+    await navigator.clipboard.writeText(text);
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy Post'; btn.classList.remove('copied'); }, 2000);
+  } catch {
+    btn.textContent = 'Select & copy manually';
+    setTimeout(() => btn.textContent = 'Copy Post', 2000);
+  }
+}
+
+/* ── READ PREVIEW ──────────────────────────── */
+function readPreview() {
+  const catVal = document.getElementById('ed-category').value;
+  const categories = catVal ? [catVal] : [];
+
+  return {
+    ...(currentStory || {}),
+    title: val('ed-title'),
+    kicker: val('ed-kicker'),
+    summary: val('ed-summary'),
+    whatHappened: val('ed-whatHappened'),
+    whyItMatters: val('ed-whyItMatters'),
+    impactOnTexas: val('ed-impactOnTexas'),
+    futureOutlook: val('ed-futureOutlook'),
+    keySignals: getSignals(),
+    categories,
+    tags: val('ed-tags').split(',').map(s => s.trim()).filter(Boolean),
+    impactScore: parseInt(document.getElementById('impact-score').value) || 80,
+    trending: document.getElementById('ed-trending').checked,
+    featured: document.getElementById('ed-featured').checked,
+    socialPosts: {
+      breaking: val('post-breaking'),
+      analysis: val('post-analysis'),
+      engagement: val('post-engagement'),
+      readMore: val('post-readMore'),
+    },
+  };
+}
+
+function val(id) { return (document.getElementById(id)?.value || '').trim(); }
+
+/* ── CONFIRM PUBLISH ───────────────────────── */
+function confirmPublish() {
+  const title = val('ed-title');
+  if (!title) { toast('Add a headline before publishing', 'error'); return; }
+  if (!confirm(`Publish "${title.slice(0, 60)}${title.length > 60 ? '…' : ''}" to the live Stories page?`)) return;
+  saveCurrentStory('published');
+}
+
+/* ── SAVE ──────────────────────────────────── */
+async function saveCurrentStory(status) {
+  if (!currentStory?.id) {
+    currentStory = currentStory || {};
+    currentStory.id = `story-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+    currentStory.createdAt = currentStory.createdAt || new Date().toISOString();
+    currentStory.url = null;
+  }
+
+  const preview = readPreview();
+  if (!preview.title && !preview.summary) {
+    toast('Add a title before saving', 'error');
+    return;
+  }
+
+  const story = { ...preview, status };
+  if (status === 'published' && !story.publishedAt) {
+    story.publishedAt = new Date().toISOString();
+  }
+  const imp = story.impactScore || 80;
+  story.source = story.source || 'Tower Report';
+  story.fanEngagementPotential = story.fanEngagementPotential || Math.min(99, imp + 3);
+  story.uniquenessScore = story.uniquenessScore || Math.round(imp * 0.92);
+  story.depthLevel = story.depthLevel || 'deep';
+  story.isStoryOfTheDay = false;
+
+  try {
+    const res = await fetch('/api/stories-db', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ story }),
+    });
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      throw new Error(errData.error || `Server error ${res.status}`);
+    }
+    toast(status === 'published' ? '✓ Story published to Stories page!' : '✓ Saved as draft');
+    await loadQueue();
+    showView('queue');
+  } catch (err) {
+    toast(`Save failed: ${err.message}`, 'error');
+    console.error('Save error:', err);
+  }
+}
+
+/* ── QUEUE ─────────────────────────────────── */
+async function loadQueue() {
+  try {
+    const res = await fetch('/api/stories-db');
+    if (res.ok) db = await res.json();
+  } catch (e) {
+    console.warn('loadQueue failed:', e);
+  }
+  updateStats();
+  renderQueue();
+}
+
+function updateStats() {
+  const stories = db.stories || [];
+  const today = new Date().toDateString();
+  document.getElementById('stat-published').textContent = stories.filter(s => s.status === 'published').length;
+  document.getElementById('stat-drafts').textContent = stories.filter(s => s.status === 'draft').length;
+  document.getElementById('stat-today').textContent = stories.filter(s => {
+    const d = new Date(s.publishedAt || s.createdAt);
+    return d.toDateString() === today;
+  }).length;
+  document.getElementById('stat-total').textContent = stories.length;
+  document.getElementById('queue-count').textContent = stories.length;
+}
+
+function filterQueue(filter, btn) {
+  queueFilter = filter;
+  document.querySelectorAll('.qtab').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderQueue();
+}
+
+function renderQueue() {
+  const container = document.getElementById('queue-list');
+  let stories = (db.stories || []).filter(s =>
+    queueFilter === 'all' ? true : s.status === queueFilter
+  );
+  stories = stories.slice().sort((a, b) =>
+    new Date(b.publishedAt || b.createdAt) - new Date(a.publishedAt || a.createdAt)
+  );
+
+  if (!stories.length) {
+    container.innerHTML = `<div class="queue-empty">
+      No ${queueFilter === 'all' ? '' : queueFilter + ' '}stories yet.
+      <a href="#" onclick="showView('generate');return false;">Create your first story →</a>
+    </div>`;
+    return;
+  }
+
+  const SITE = 'https://tower-report.vercel.app/stories.html';
+  container.innerHTML = stories.map(s => {
+    const date = new Date(s.publishedAt || s.createdAt).toLocaleDateString('en-US', {
+      month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+    });
+    const directUrl = `${SITE}?id=${encodeURIComponent(s.id)}`;
+    const badge = s.status === 'published'
+      ? `<span class="status-badge badge-published">Live</span>`
+      : `<span class="status-badge badge-draft">Draft</span>`;
+    const publishBtn = s.status !== 'published'
+      ? `<button class="qc-btn qc-publish" onclick="quickPublish('${esc(s.id)}')">Publish</button>` : '';
+    const unpublishBtn = s.status === 'published'
+      ? `<button class="qc-btn qc-unpublish" onclick="quickUnpublish('${esc(s.id)}')">Unpublish</button>` : '';
+    const linkRow = s.status === 'published'
+      ? `<div class="qc-link-row">
+          <span class="qc-link-label">Live link →</span>
+          <span class="qc-link-url">${esc(directUrl)}</span>
+          <button class="qc-copy-link" onclick="copyDirectLink('${esc(s.id)}',this)">Copy Link</button>
+          <a href="${esc(directUrl)}" target="_blank" class="qc-view-btn">View on Site ↗</a>
+         </div>` : '';
+
+    return `<div class="queue-card">
+      <div class="qc-row">
+        <div class="qc-main">
+          <div class="qc-kicker">${esc(s.kicker || '')}</div>
+          <div class="qc-title">${esc(s.title || 'Untitled')}</div>
+          <div class="qc-meta">${esc(date)} · Score ${s.impactScore || '—'} · ${esc((s.categories||[''])[0]||'No category')}</div>
+        </div>
+        <div class="qc-actions">
+          ${badge}
+          <button class="qc-btn qc-edit" onclick="editStory('${esc(s.id)}')">Edit</button>
+          ${publishBtn}
+          ${unpublishBtn}
+          <button class="qc-btn qc-delete" onclick="deleteStory('${esc(s.id)}')">Delete</button>
+        </div>
+      </div>
+      ${linkRow}
+    </div>`;
+  }).join('');
+}
+
+async function quickPublish(id) {
+  if (!confirm('Publish this story to the live Stories page?')) return;
+  try {
+    const res = await fetch('/api/stories-db', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, updates: { status: 'published', publishedAt: new Date().toISOString() } }),
+    });
+    if (!res.ok) throw new Error(`Status ${res.status}`);
+    toast('✓ Published to Stories page!');
+    await loadQueue();
+  } catch (e) {
+    toast(`Publish failed: ${e.message}`, 'error');
+  }
+}
+
+async function quickUnpublish(id) {
+  if (!confirm('Unpublish this story? It will move back to draft status and be removed from the Stories page.')) return;
+  try {
+    const res = await fetch('/api/stories-db', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, updates: { status: 'draft', publishedAt: null } }),
+    });
+    if (!res.ok) throw new Error(`Status ${res.status}`);
+    toast('Story moved back to draft');
+    await loadQueue();
+  } catch (e) {
+    toast(`Failed: ${e.message}`, 'error');
+  }
+}
+
+function copyDirectLink(id, btn) {
+  const url = `https://tower-report.vercel.app/stories.html?id=${encodeURIComponent(id)}`;
+  navigator.clipboard.writeText(url).then(() => {
+    btn.textContent = '✓ Copied!';
+    setTimeout(() => btn.textContent = 'Copy Link', 2000);
+  }).catch(() => {
+    btn.textContent = 'Failed';
+    setTimeout(() => btn.textContent = 'Copy Link', 2000);
+  });
+}
+
+async function deleteStory(id) {
+  const story = db.stories.find(s => s.id === id);
+  const title = story?.title || 'this story';
+  if (!confirm(`Delete "${title.slice(0,60)}"? This cannot be undone.`)) return;
+  try {
+    const res = await fetch(`/api/stories-db?id=${encodeURIComponent(id)}`, { method: 'DELETE' });
+    if (!res.ok) throw new Error(`Status ${res.status}`);
+    toast('Deleted');
+    await loadQueue();
+  } catch (e) {
+    toast(`Delete failed: ${e.message}`, 'error');
+  }
+}
+
+/* ── UTILS ─────────────────────────────────── */
+function showError(msg) {
+  document.getElementById('generate-error').textContent = msg;
+}
+
+function toast(msg, type = 'ok') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = `toast ${type}`;
+  clearTimeout(el._timer);
+  el._timer = setTimeout(() => el.classList.add('hidden'), 4000);
+}
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+</body>
+</html>
