@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@ai-sdk/xai": "^3.0.93",
+    "@vercel/blob": "^2.4.1",
     "ai": "^6.0.196"
   }
 }
