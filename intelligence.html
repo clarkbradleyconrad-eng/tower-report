@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Longhorn Intelligence — Tower Report</title>
+  <meta name="description" content="AI-powered Texas Longhorns football analysis. Ask anything about the 2026 season, roster, recruiting, and CFP path." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet" />
+  <!-- marked.js for markdown rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/marked@9.1.6/marked.min.js"></script>
+  <script src="nav.js" defer></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --orange: #BF5700;
+      --orange-bright: #E8620A;
+      --black: #080808;
+      --surface: #111111;
+      --surface2: #181818;
+      --surface3: #202020;
+      --border: rgba(255,255,255,0.07);
+      --border-strong: rgba(255,255,255,0.12);
+      --text: #F5F0E8;
+      --text-dim: #A09890;
+      --text-muted: #6B6560;
+      --user-bg: #1E1008;
+      --user-border: rgba(191,87,0,0.35);
+      --assistant-bg: #141414;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--black);
+      color: var(--text);
+      font-family: 'Barlow', sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ── Page layout ── */
+    #intel-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 64px); /* below nav */
+    }
+
+    /* ── Page header ── */
+    #intel-header {
+      padding: 20px 32px 0;
+      border-bottom: 1px solid var(--border);
+      background: var(--black);
+      flex-shrink: 0;
+    }
+
+    #intel-header .header-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      padding-bottom: 14px;
+    }
+
+    #intel-header h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+
+    .intel-badge {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--orange);
+      background: rgba(191,87,0,0.12);
+      border: 1px solid rgba(191,87,0,0.3);
+      padding: 2px 8px;
+      border-radius: 2px;
+    }
+
+    #intel-header .subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+      padding-bottom: 14px;
+      max-width: 860px;
+      margin: 0 auto;
+      display: block;
+    }
+
+    /* ── Chat area ── */
+    #chat-area {
+      flex: 1;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+      padding: 24px 32px;
+    }
+
+    #chat-area::-webkit-scrollbar { width: 4px; }
+    #chat-area::-webkit-scrollbar-track { background: transparent; }
+    #chat-area::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+
+    #messages {
+      max-width: 860px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    /* ── Empty state ── */
+    #empty-state {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 20px 0 32px;
+    }
+
+    .empty-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .empty-title span {
+      color: var(--orange);
+    }
+
+    .empty-subtitle {
+      font-size: 14px;
+      color: var(--text-dim);
+      margin-bottom: 28px;
+    }
+
+    .prompt-section-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .prompt-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .prompt-chip {
+      background: var(--surface2);
+      border: 1px solid var(--border-strong);
+      border-radius: 4px;
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-align: left;
+      color: var(--text);
+      font-family: 'Barlow', sans-serif;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .prompt-chip:hover {
+      border-color: var(--orange);
+      background: rgba(191,87,0,0.08);
+      color: var(--text);
+    }
+
+    .prompt-chip .chip-icon {
+      font-size: 16px;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .prompt-chip .chip-label {
+      font-weight: 600;
+      color: var(--text);
+      display: block;
+      margin-bottom: 2px;
+      font-size: 13px;
+    }
+
+    .prompt-chip .chip-desc {
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+
+    /* ── Messages ── */
+    .message {
+      padding: 18px 0;
+      border-bottom: 1px solid var(--border);
+      animation: fadeIn 0.2s ease;
+    }
+
+    .message:last-child {
+      border-bottom: none;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .message-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .avatar {
+      width: 26px;
+      height: 26px;
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 800;
+      font-family: 'Barlow Condensed', sans-serif;
+      letter-spacing: 0.5px;
+      flex-shrink: 0;
+    }
+
+    .avatar-user {
+      background: var(--orange);
+      color: #fff;
+    }
+
+    .avatar-assistant {
+      background: var(--surface3);
+      color: var(--orange);
+      border: 1px solid rgba(191,87,0,0.25);
+    }
+
+    .message-role {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .message-body {
+      padding-left: 34px;
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .message-body.user-body {
+      color: var(--text);
+    }
+
+    /* Markdown rendering */
+    .message-body p { margin-bottom: 12px; }
+    .message-body p:last-child { margin-bottom: 0; }
+    .message-body strong { color: var(--text); font-weight: 600; }
+    .message-body em { color: var(--text-dim); font-style: italic; }
+    .message-body ul, .message-body ol { padding-left: 20px; margin-bottom: 12px; }
+    .message-body li { margin-bottom: 4px; }
+    .message-body h1, .message-body h2, .message-body h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: var(--text);
+      margin: 16px 0 8px;
+    }
+    .message-body h1 { font-size: 22px; }
+    .message-body h2 { font-size: 18px; }
+    .message-body h3 { font-size: 15px; text-transform: uppercase; color: var(--orange); }
+    .message-body code {
+      background: var(--surface3);
+      border: 1px solid var(--border-strong);
+      border-radius: 3px;
+      padding: 1px 5px;
+      font-size: 13px;
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      color: var(--orange-bright);
+    }
+    .message-body pre {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 14px;
+      overflow-x: auto;
+      margin: 12px 0;
+    }
+    .message-body pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      color: var(--text);
+    }
+    .message-body blockquote {
+      border-left: 3px solid var(--orange);
+      padding-left: 14px;
+      color: var(--text-dim);
+      margin: 12px 0;
+    }
+    .message-body hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 16px 0;
+    }
+    .message-body a { color: var(--orange); text-decoration: none; }
+    .message-body a:hover { text-decoration: underline; }
+
+    /* ── Thinking indicator ── */
+    .thinking {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding-left: 34px;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-style: italic;
+    }
+
+    .dot-pulse {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .dot-pulse span {
+      width: 5px;
+      height: 5px;
+      background: var(--orange);
+      border-radius: 50%;
+      animation: pulse 1.2s infinite;
+      opacity: 0.4;
+    }
+
+    .dot-pulse span:nth-child(2) { animation-delay: 0.2s; }
+    .dot-pulse span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes pulse {
+      0%, 80%, 100% { opacity: 0.2; transform: scale(1); }
+      40% { opacity: 1; transform: scale(1.3); }
+    }
+
+    /* ── Input bar ── */
+    #input-bar {
+      flex-shrink: 0;
+      background: var(--black);
+      border-top: 1px solid var(--border);
+      padding: 16px 32px 20px;
+    }
+
+    #input-bar .input-inner {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    #input-form {
+      display: flex;
+      gap: 10px;
+      align-items: flex-end;
+    }
+
+    #chat-input {
+      flex: 1;
+      background: var(--surface2);
+      border: 1px solid var(--border-strong);
+      border-radius: 6px;
+      color: var(--text);
+      font-family: 'Barlow', sans-serif;
+      font-size: 15px;
+      padding: 12px 16px;
+      resize: none;
+      min-height: 50px;
+      max-height: 180px;
+      overflow-y: auto;
+      line-height: 1.5;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    #chat-input:focus {
+      border-color: rgba(191,87,0,0.5);
+    }
+
+    #chat-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    #chat-input::-webkit-scrollbar { width: 3px; }
+    #chat-input::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
+
+    #send-btn {
+      background: var(--orange);
+      border: none;
+      border-radius: 6px;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+      flex-shrink: 0;
+    }
+
+    #send-btn:hover:not(:disabled) {
+      background: var(--orange-bright);
+      transform: translateY(-1px);
+    }
+
+    #send-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    #send-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: #fff;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .input-hint {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    /* ── Error ── */
+    .error-msg {
+      padding: 12px 16px;
+      background: rgba(180,30,30,0.15);
+      border: 1px solid rgba(200,50,50,0.3);
+      border-radius: 4px;
+      color: #F88;
+      font-size: 13px;
+      margin: 8px 0;
+      padding-left: 34px;
+    }
+
+    /* ── Clear button ── */
+    #clear-btn {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text-muted);
+      font-size: 11px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      cursor: pointer;
+      transition: all 0.15s;
+      margin-left: 8px;
+    }
+
+    #clear-btn:hover { color: var(--text); border-color: var(--border-strong); }
+
+    /* ── Responsive ── */
+    @media (max-width: 700px) {
+      #chat-area { padding: 16px; }
+      #input-bar { padding: 12px 16px 16px; }
+      #intel-header { padding: 16px 16px 0; }
+      .prompt-grid { grid-template-columns: 1fr; }
+      .empty-title { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="intel-wrap">
+  <div id="intel-header">
+    <div class="header-inner">
+      <h1>Longhorn Intelligence</h1>
+      <span class="intel-badge">Powered by Grok-4</span>
+      <button id="clear-btn" onclick="clearChat()" style="margin-left:auto">Clear</button>
+    </div>
+    <span class="subtitle">Ask anything about the 2026 Longhorns — roster, recruiting, schedule, CFP path.</span>
+  </div>
+
+  <div id="chat-area">
+    <div id="messages">
+      <!-- empty state or messages go here -->
+    </div>
+    <div id="empty-state">
+      <div class="prompt-section-label">Try asking</div>
+      <div class="prompt-grid" id="prompt-grid">
+        <button class="prompt-chip" onclick="sendPrompt(this)">
+          <span class="chip-icon">🏈</span>
+          <span class="chip-label">2026 Season Outlook</span>
+          <span class="chip-desc">Break down the schedule, key games, and CFP path</span>
+        </button>
+        <button class="prompt-chip" onclick="sendPrompt(this)">
+          <span class="chip-icon">⭐</span>
+          <span class="chip-label">Arch Manning Heisman Case</span>
+          <span class="chip-desc">Is he the frontrunner? What does he need to do?</span>
+        </button>
+        <button class="prompt-chip" onclick="sendPrompt(this)">
+          <span class="chip-icon">🔥</span>
+          <span class="chip-label">Ohio State Week 2 Preview</span>
+          <span class="chip-desc">Biggest early game — matchups, keys to winning</span>
+        </button>
+        <button class="prompt-chip" onclick="sendPrompt(this)">
+          <span class="chip-icon">📋</span>
+          <span class="chip-label">Portal Class Grades</span>
+          <span class="chip-desc">Cam Coleman, Raleek Brown, Derek Williams — how do they fit?</span>
+        </button>
+        <button class="prompt-chip" onclick="sendPrompt(this)">
+          <span class="chip-icon">💪</span>
+          <span class="chip-label">Colin Simmons vs Top Edge Rushers</span>
+          <span class="chip-desc">How does he compare nationally heading into 2026?</span>
+        </button>
+        <button class="prompt-chip" onclick="sendPrompt(this)">
+          <span class="chip-icon">🎯</span>
+          <span class="chip-label">Biggest Roster Question Marks</span>
+          <span class="chip-desc">OL, DT depth — where is Texas most vulnerable?</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="input-bar">
+    <div class="input-inner">
+      <form id="input-form" onsubmit="return false;">
+        <textarea
+          id="chat-input"
+          placeholder="Ask about the Longhorns..."
+          rows="1"
+          maxlength="2000"
+        ></textarea>
+        <button id="send-btn" type="submit" disabled title="Send">
+          <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </form>
+      <div class="input-hint">Enter to send &nbsp;·&nbsp; Shift+Enter for new line</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var messages = []; // { role: 'user'|'assistant', content: string }
+    var isStreaming = false;
+
+    var messagesEl = document.getElementById('messages');
+    var emptyState = document.getElementById('empty-state');
+    var inputEl   = document.getElementById('chat-input');
+    var sendBtn   = document.getElementById('send-btn');
+    var form      = document.getElementById('input-form');
+
+    // ── Configure marked ──
+    if (typeof marked !== 'undefined') {
+      marked.setOptions({
+        breaks: true,
+        gfm: true,
+        headerIds: false,
+        mangle: false,
+      });
+    }
+
+    function renderMarkdown(text) {
+      if (typeof marked === 'undefined') return escapeHtml(text).replace(/\n/g, '<br>');
+      try {
+        return marked.parse(text);
+      } catch (e) {
+        return escapeHtml(text).replace(/\n/g, '<br>');
+      }
+    }
+
+    function escapeHtml(s) {
+      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    // ── Auto-resize textarea ──
+    inputEl.addEventListener('input', function () {
+      this.style.height = 'auto';
+      this.style.height = Math.min(this.scrollHeight, 180) + 'px';
+      sendBtn.disabled = !this.value.trim() || isStreaming;
+    });
+
+    // ── Enter to send, Shift+Enter for newline ──
+    inputEl.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        if (!sendBtn.disabled) handleSend();
+      }
+    });
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!sendBtn.disabled) handleSend();
+    });
+
+    // ── Chip click ──
+    window.sendPrompt = function (el) {
+      var label = el.querySelector('.chip-label').textContent.trim();
+      var desc  = el.querySelector('.chip-desc').textContent.trim();
+      inputEl.value = label + ' — ' + desc;
+      inputEl.dispatchEvent(new Event('input'));
+      handleSend();
+    };
+
+    // ── Clear ──
+    window.clearChat = function () {
+      messages = [];
+      messagesEl.innerHTML = '';
+      emptyState.style.display = '';
+      sendBtn.disabled = true;
+      inputEl.value = '';
+      inputEl.style.height = '';
+    };
+
+    // ── Render a user message ──
+    function appendUserMessage(text) {
+      var div = document.createElement('div');
+      div.className = 'message';
+      div.innerHTML =
+        '<div class="message-header">' +
+          '<div class="avatar avatar-user">YOU</div>' +
+          '<span class="message-role">You</span>' +
+        '</div>' +
+        '<div class="message-body user-body">' + escapeHtml(text).replace(/\n/g, '<br>') + '</div>';
+      messagesEl.appendChild(div);
+      scrollToBottom();
+      return div;
+    }
+
+    // ── Render assistant message shell + thinking ──
+    function appendAssistantShell() {
+      var div = document.createElement('div');
+      div.className = 'message';
+      div.innerHTML =
+        '<div class="message-header">' +
+          '<div class="avatar avatar-assistant">TR</div>' +
+          '<span class="message-role">Longhorn Intelligence</span>' +
+        '</div>' +
+        '<div class="thinking">' +
+          '<div class="dot-pulse"><span></span><span></span><span></span></div>' +
+          '&nbsp;Tower Intel is thinking...' +
+        '</div>' +
+        '<div class="message-body" style="display:none"></div>';
+      messagesEl.appendChild(div);
+      scrollToBottom();
+      return div;
+    }
+
+    // ── Stream ──
+    async function handleSend() {
+      var text = inputEl.value.trim();
+      if (!text || isStreaming) return;
+
+      isStreaming = true;
+      sendBtn.disabled = true;
+      inputEl.value = '';
+      inputEl.style.height = '';
+      emptyState.style.display = 'none';
+
+      messages.push({ role: 'user', content: text });
+      appendUserMessage(text);
+
+      var shell       = appendAssistantShell();
+      var thinkingEl  = shell.querySelector('.thinking');
+      var bodyEl      = shell.querySelector('.message-body');
+      var accumulated = '';
+
+      try {
+        var res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messages: messages }),
+        });
+
+        if (!res.ok) {
+          var errData = {};
+          try { errData = await res.json(); } catch (_) {}
+          throw new Error(errData.error || 'Server error ' + res.status);
+        }
+
+        if (!res.body) throw new Error('No response stream');
+
+        thinkingEl.style.display = 'none';
+        bodyEl.style.display = '';
+
+        var reader  = res.body.getReader();
+        var decoder = new TextDecoder();
+        var leftover = '';
+
+        while (true) {
+          var chunk = await reader.read();
+          if (chunk.done) break;
+
+          var raw = leftover + decoder.decode(chunk.value, { stream: true });
+          var lines = raw.split('\n');
+          leftover = lines.pop(); // incomplete last line
+
+          for (var i = 0; i < lines.length; i++) {
+            var line = lines[i].trim();
+            if (!line || line === 'data: [DONE]') continue;
+            if (!line.startsWith('data: ')) continue;
+
+            var jsonStr = line.slice(6);
+            try {
+              var evt = JSON.parse(jsonStr);
+              var delta = evt.choices && evt.choices[0] && evt.choices[0].delta;
+              if (delta && delta.content) {
+                accumulated += delta.content;
+                bodyEl.innerHTML = renderMarkdown(accumulated);
+                scrollToBottom();
+              }
+            } catch (_) {
+              // partial line — wait for next chunk
+            }
+          }
+        }
+
+        // flush leftover
+        if (leftover.trim() && leftover.startsWith('data: ') && leftover !== 'data: [DONE]') {
+          try {
+            var evt = JSON.parse(leftover.slice(6));
+            var delta = evt.choices && evt.choices[0] && evt.choices[0].delta;
+            if (delta && delta.content) {
+              accumulated += delta.content;
+              bodyEl.innerHTML = renderMarkdown(accumulated);
+            }
+          } catch (_) {}
+        }
+
+        // Final render
+        bodyEl.innerHTML = renderMarkdown(accumulated || '*(No response)*');
+        messages.push({ role: 'assistant', content: accumulated });
+
+      } catch (err) {
+        thinkingEl.style.display = 'none';
+        bodyEl.style.display = '';
+        bodyEl.innerHTML = '<div class="error-msg">Error: ' + escapeHtml(err.message) + '<br>Check your connection or try again.</div>';
+        // pop the failed user message so history stays clean
+        messages.pop();
+      }
+
+      isStreaming = false;
+      sendBtn.disabled = !inputEl.value.trim();
+      scrollToBottom();
+    }
+
+    function scrollToBottom() {
+      var area = document.getElementById('chat-area');
+      area.scrollTop = area.scrollHeight;
+    }
+  })();
+</script>
+</body>
+</html>

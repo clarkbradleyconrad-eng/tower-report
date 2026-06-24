@@ -1,10 +1,11 @@
 const NAV_PAGES = [
-  { label: 'Home',        href: 'index.html' },
-  { label: 'Season Hub',  href: 'schedule.html' },
+  { label: 'Home',           href: 'index.html' },
+  { label: 'Season Hub',     href: 'schedule.html' },
   { label: 'Roster & Depth', href: 'depth-chart.html' },
-  { label: 'Recruiting',    href: 'recruiting.html' },
-  { label: 'Stories',       href: 'stories.html' },
-  { label: 'History',       href: 'history.html' },
+  { label: 'Recruiting',     href: 'recruiting.html' },
+  { label: 'Stories',        href: 'stories.html' },
+  { label: 'Intelligence',   href: 'intelligence.html' },
+  { label: 'History',        href: 'history.html' },
 ];
 
 const LOGO_SVG = `
@@ -42,13 +43,13 @@ function injectNav() {
         <a href="index.html" class="nav-logo">${LOGO_SVG}</a>
         <div class="nav-links">
           ${links}
-          <a href="index.html#waitlist" class="nav-cta">Join Waitlist</a>
+          <a href="intelligence.html" class="nav-cta">Ask AI</a>
         </div>
         <button class="nav-hamburger" onclick="toggleMobileNav()" aria-label="Menu">☰</button>
       </div>
       <div class="nav-mobile" id="nav-mobile">
         ${mobileLinks}
-        <a href="index.html#waitlist" class="mobile-cta">Join Waitlist</a>
+        <a href="intelligence.html" class="mobile-cta">Ask AI</a>
       </div>
     </nav>`;
 
