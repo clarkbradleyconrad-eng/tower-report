@@ -89,7 +89,7 @@ export default async function handler(req) {
   }
 
   try {
-    const xaiRes = await fetch('https://api.x.ai/v1/chat/completions', {
+    const xaiRes = await fetch('https://api.x.ai/v1/responses', {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${apiKey}`,
@@ -99,10 +99,9 @@ export default async function handler(req) {
         model: 'grok-4',
         stream: true,
         temperature: 0.7,
-        messages: [
-          { role: 'system', content: SYSTEM },
-          ...messages,
-        ],
+        instructions: SYSTEM,
+        input: messages,
+        tools: [{ type: 'web_search' }],
       }),
       signal: AbortSignal.timeout(55000),
     });
@@ -116,8 +115,46 @@ export default async function handler(req) {
       );
     }
 
-    // Pass through the SSE stream — standard OpenAI format
-    return new Response(xaiRes.body, {
+    // Transform xAI Responses API stream → OpenAI SSE format for the client
+    const { readable, writable } = new TransformStream();
+    const writer = writable.getWriter();
+    const encoder = new TextEncoder();
+
+    (async () => {
+      const reader = xaiRes.body.getReader();
+      const decoder = new TextDecoder();
+      let leftover = '';
+      try {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          const chunk = leftover + decoder.decode(value, { stream: true });
+          const lines = chunk.split('\n');
+          leftover = lines.pop() ?? '';
+          for (const line of lines) {
+            if (!line.startsWith('data: ')) continue;
+            const raw = line.slice(6).trim();
+            if (raw === '[DONE]') {
+              await writer.write(encoder.encode('data: [DONE]\n\n'));
+              continue;
+            }
+            try {
+              const event = JSON.parse(raw);
+              if (event.type === 'response.output_text.delta' && event.delta) {
+                const out = { choices: [{ delta: { content: event.delta }, index: 0 }] };
+                await writer.write(encoder.encode(`data: ${JSON.stringify(out)}\n\n`));
+              } else if (event.type === 'response.completed') {
+                await writer.write(encoder.encode('data: [DONE]\n\n'));
+              }
+            } catch { /* skip malformed lines */ }
+          }
+        }
+      } finally {
+        writer.close().catch(() => {});
+      }
+    })();
+
+    return new Response(readable, {
       headers: {
         ...CORS,
         'Content-Type': 'text/event-stream',

@@ -3,586 +3,444 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tower Stories · Texas Longhorns Football Intelligence | Tower Report</title>
-<meta name="description" content="Tower Stories — every major Texas Longhorns football development, ranked by real impact on the 2026 championship chase. Powered by Tower AI.">
+<title>Tower Stories · Texas Football Intelligence | Tower Report</title>
+<meta name="description" content="Every Texas Longhorns football development ranked by real impact on the 2026 championship chase — intelligently analyzed by Tower AI.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
-<!-- Font Awesome and Chart.js removed from critical path; icons are inline SVG, Chart.js lazy-loads on modal open -->
 <script src="nav.js" defer></script>
 <style>
-/* ======================================================
-   TOWER STORIES — Design tokens match Tower Report exactly
-====================================================== */
+/* ===================================================
+   TOWER STORIES — Premium Intelligence Feed
+=================================================== */
 :root {
-  --orange:#BF5700; --orange-hi:#CF6210; --orange-lo:rgba(191,87,0,0.1);
-  --black:#080808; --surface:#0F0F0F; --s2:#151515; --s3:#1C1C1C; --s4:#232323;
-  --border:rgba(255,255,255,0.055); --border-mid:rgba(255,255,255,0.10);
-  --white:#F0EBE1; --white2:#C4BCB0; --muted:#5A5450; --secondary:#948C82;
+  --orange:#BF5700;--orange-hi:#CF6210;--orange-lo:rgba(191,87,0,0.12);
+  --black:#080808;--surface:#0F0F0F;--s2:#141414;--s3:#1A1A1A;--s4:#222222;
+  --border:rgba(255,255,255,0.055);--border-mid:rgba(255,255,255,0.10);
+  --white:#F0EBE1;--white2:#C4BCB0;--muted:#5A5450;--secondary:#948C82;
   --green:#22c55e;
   --font-display:'Barlow Condensed',sans-serif;
-  --font-editorial:'Playfair Display',serif;
+  --font-ed:'Playfair Display',serif;
   --font-body:'Barlow',sans-serif;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{font-family:var(--font-body);background:var(--black);color:var(--white);overflow-x:hidden;line-height:1.55;}
 a{color:inherit;text-decoration:none;}
-
-/* ── Wrapper ─────────────────────────────────────── */
+button{cursor:pointer;}
 .ts-wrap{max-width:1440px;margin:0 auto;padding:0 48px;}
 @media(max-width:900px){.ts-wrap{padding:0 24px;}}
 @media(max-width:580px){.ts-wrap{padding:0 16px;}}
 
-/* ======================================================
-   HERO — cinematic, matches index.html energy
-====================================================== */
+/* ── HERO ─────────────────────────────────────── */
 .ts-hero{
-  position:relative;min-height:64vh;background:var(--black);
+  position:relative;min-height:60vh;background:var(--black);
   display:flex;align-items:center;border-bottom:1px solid var(--border);
-  overflow:hidden;padding:88px 0 60px;
+  overflow:hidden;padding:88px 0 56px;
 }
-/* Atmospheric orange glows */
 .ts-hero::before{
-  content:'';position:absolute;inset:0;
+  content:'';position:absolute;inset:0;pointer-events:none;
   background:
-    radial-gradient(ellipse 65% 55% at 88% 12%,rgba(191,87,0,0.16) 0%,transparent 55%),
-    radial-gradient(ellipse 45% 65% at 8%  90%,rgba(191,87,0,0.09) 0%,transparent 55%),
-    radial-gradient(ellipse 35% 35% at 50% 50%,rgba(191,87,0,0.04) 0%,transparent 70%);
-  pointer-events:none;
+    radial-gradient(ellipse 65% 55% at 88% 12%,rgba(191,87,0,.16),transparent 55%),
+    radial-gradient(ellipse 45% 65% at 8%  90%,rgba(191,87,0,.08),transparent 55%),
+    radial-gradient(ellipse 30% 30% at 50% 50%,rgba(191,87,0,.04),transparent 70%);
 }
-/* Dot-grid texture */
 .ts-hero::after{
-  content:'';position:absolute;inset:0;
-  background-image:radial-gradient(rgba(255,255,255,0.032) 1px,transparent 1px);
-  background-size:28px 28px;pointer-events:none;
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:radial-gradient(rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:28px 28px;
 }
-/* Optional real image bg — add img/stadium-hero.jpg for this to activate */
-.ts-hero-bg{
-  position:absolute;inset:0;
-  background:url('img/stadium-hero.jpg') center 35%/cover no-repeat;
-  opacity:0.13;pointer-events:none;
-}
-.ts-hero-inner{position:relative;z-index:1;max-width:720px;}
-.ts-hero-eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:22px;}
+.ts-hero-bg{position:absolute;inset:0;background:url('img/stadium-hero.jpg') center 35%/cover no-repeat;opacity:.12;pointer-events:none;}
+.ts-hero-inner{position:relative;z-index:1;max-width:700px;}
+.ts-hero-eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
 .ts-hero-rule{width:28px;height:2px;background:var(--orange);flex-shrink:0;}
 .ts-live-pill{
-  display:inline-flex;align-items:center;gap:5px;padding:4px 10px;
-  background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.22);
+  display:inline-flex;align-items:center;gap:6px;padding:4px 10px;
+  background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);
   font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--green);
 }
 .ts-live-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:blink 2s ease-in-out infinite;flex-shrink:0;}
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:.25;}}
-.ts-hero-kicker{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:3.5px;text-transform:uppercase;color:var(--orange);margin-bottom:14px;}
+.ts-hero-kicker{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:3.5px;text-transform:uppercase;color:var(--orange);margin-bottom:12px;}
 .ts-hero-hed{
-  font-family:var(--font-editorial);
-  font-size:clamp(44px,6.5vw,88px);
-  font-weight:900;line-height:.9;letter-spacing:-3px;color:var(--white);margin-bottom:20px;
+  font-family:var(--font-ed);font-size:clamp(40px,5.8vw,78px);
+  font-weight:900;line-height:.92;letter-spacing:-2px;color:var(--white);margin-bottom:16px;
 }
 .ts-hero-hed em{font-style:italic;color:var(--orange);}
-.ts-hero-dek{font-size:15px;line-height:1.7;color:var(--secondary);max-width:500px;margin-bottom:34px;}
-.ts-hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:38px;}
-
+.ts-hero-dek{font-size:15px;line-height:1.72;color:var(--secondary);max-width:460px;margin-bottom:28px;}
+.ts-hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:34px;}
 .ts-btn-primary{
   font-family:var(--font-display);font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
   background:var(--orange);color:#fff;border:1px solid var(--orange);
-  padding:12px 22px;cursor:pointer;transition:background .2s;
-  display:inline-flex;align-items:center;gap:8px;
+  padding:11px 22px;transition:background .2s;display:inline-flex;align-items:center;gap:8px;
 }
 .ts-btn-primary:hover{background:var(--orange-hi);}
 .ts-btn-primary:disabled{opacity:.5;cursor:not-allowed;}
 .ts-btn-ghost{
   font-family:var(--font-display);font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
   background:transparent;color:var(--white2);border:1px solid var(--border-mid);
-  padding:12px 22px;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px;
+  padding:11px 22px;transition:all .2s;display:inline-flex;align-items:center;gap:8px;
 }
 .ts-btn-ghost:hover{border-color:var(--white2);color:var(--white);}
-
-.ts-hero-stats{display:flex;align-items:center;gap:28px;flex-wrap:wrap;}
+.ts-hero-stats{display:flex;align-items:center;gap:26px;flex-wrap:wrap;}
 .ts-hstat{display:flex;flex-direction:column;}
-.ts-hstat-val{font-family:var(--font-display);font-size:30px;font-weight:800;color:var(--white);font-variant-numeric:tabular-nums;line-height:1;}
+.ts-hstat-val{font-family:var(--font-display);font-size:26px;font-weight:800;color:var(--white);font-variant-numeric:tabular-nums;line-height:1;}
 .ts-hstat-val.or{color:var(--orange);}
 .ts-hstat-label{font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-top:3px;}
-.ts-hstat-div{width:1px;height:32px;background:var(--border-mid);flex-shrink:0;}
-/* Large ghost text decoration */
+.ts-hstat-div{width:1px;height:28px;background:var(--border-mid);flex-shrink:0;}
 .ts-hero-decor{
   position:absolute;right:-24px;top:50%;transform:translateY(-50%);
-  font-family:var(--font-display);font-size:clamp(100px,18vw,260px);
+  font-family:var(--font-display);font-size:clamp(90px,18vw,240px);
   font-weight:800;text-transform:uppercase;letter-spacing:-12px;line-height:1;
-  color:rgba(255,255,255,0.018);pointer-events:none;user-select:none;
+  color:rgba(255,255,255,.016);pointer-events:none;user-select:none;
 }
 
-/* ======================================================
-   CONTROLS BAR — sticky below nav (~58px)
-====================================================== */
+/* ── CONTROLS ─────────────────────────────────── */
 .ts-controls{
   position:sticky;top:58px;z-index:100;
-  background:rgba(8,8,8,0.97);backdrop-filter:blur(24px);
-  border-bottom:1px solid var(--border-mid);padding:11px 0;
+  background:rgba(8,8,8,.97);backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border-mid);padding:10px 0;
 }
-.ts-ctrl-inner{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.ts-ctrl-inner{display:flex;align-items:center;gap:8px;flex-wrap:nowrap;}
 .ts-search-wrap{position:relative;flex-shrink:0;}
-.ts-search-wrap .icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;display:flex;align-items:center;}
-.ic{display:inline-flex;align-items:center;vertical-align:middle;flex-shrink:0;}
-.ic svg{display:block;}
-@keyframes _spin{to{transform:rotate(360deg);}}
+.ts-search-wrap .ic-srch{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;display:flex;align-items:center;}
 .ts-search{
-  width:210px;padding:9px 12px 9px 33px;
+  width:180px;padding:8px 12px 8px 32px;
   background:var(--s2);border:1px solid var(--border-mid);color:var(--white);
   font-family:var(--font-body);font-size:13px;outline:none;transition:border-color .15s;
 }
 .ts-search::placeholder{color:var(--muted);}
 .ts-search:focus{border-color:var(--orange);}
-.ts-chips{display:flex;gap:5px;overflow-x:auto;flex:1;min-width:0;scrollbar-width:none;}
+.ts-chips{display:flex;gap:4px;overflow-x:auto;flex:1;min-width:0;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
 .ts-chips::-webkit-scrollbar{display:none;}
 .ts-chip{
-  padding:6px 12px;background:var(--s2);border:1px solid var(--border);
+  display:inline-flex;align-items:center;gap:4px;padding:5px 10px;
+  background:var(--s2);border:1px solid var(--border);
   color:var(--secondary);font-family:var(--font-display);font-size:10px;font-weight:700;
-  letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .12s;
-  white-space:nowrap;flex-shrink:0;
+  letter-spacing:1.5px;text-transform:uppercase;white-space:nowrap;flex-shrink:0;transition:all .14s;
 }
-.ts-chip:hover{color:var(--white);border-color:var(--border-mid);}
-.ts-chip.active{background:var(--orange);border-color:var(--orange);color:#fff;}
-.ts-ctrl-right{display:flex;align-items:center;gap:7px;flex-shrink:0;margin-left:auto;}
+.ts-chip-dot{width:4px;height:4px;border-radius:50%;background:var(--muted);flex-shrink:0;transition:background .14s;}
+.ts-chip:hover,.ts-chip.active{color:var(--cat,#BF5700);background:var(--cat-lo,rgba(191,87,0,.1));border-color:var(--cat,#BF5700);}
+.ts-chip:hover .ts-chip-dot,.ts-chip.active .ts-chip-dot{background:var(--cat,#BF5700);}
+.ts-ctrl-right{display:flex;align-items:center;gap:6px;flex-shrink:0;margin-left:auto;}
 .ts-sort{
-  padding:9px 10px;background:var(--s2);border:1px solid var(--border-mid);
-  color:var(--white2);font-family:var(--font-display);font-size:10px;font-weight:700;
-  letter-spacing:1px;text-transform:uppercase;outline:none;cursor:pointer;
+  padding:8px 9px;background:var(--s2);border:1px solid var(--border-mid);
+  color:var(--white2);font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;outline:none;
 }
-.ts-sort:focus{border-color:var(--orange);}
 .ts-sync{
-  display:flex;align-items:center;gap:6px;padding:9px 13px;
+  display:flex;align-items:center;gap:5px;padding:8px 11px;
   background:var(--s2);border:1px solid var(--border-mid);color:var(--secondary);
-  font-family:var(--font-display);font-size:10px;font-weight:700;
-  letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .15s;
+  font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;transition:all .14s;
 }
 .ts-sync:hover{color:var(--orange);border-color:var(--orange);}
 .ts-sync:disabled{opacity:.4;cursor:not-allowed;}
+.ic{display:inline-flex;align-items:center;vertical-align:middle;flex-shrink:0;}
+.ic svg{display:block;}
+@keyframes _spin{to{transform:rotate(360deg);}}
 .ts-spin,.ts-spin *{animation:_spin .7s linear infinite;}
 
-/* ======================================================
-   SECTION CHROME
-====================================================== */
-.ts-section{padding:48px 0;}
-.ts-section-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;}
+/* ── SECTION CHROME ───────────────────────────── */
+.ts-section{padding:44px 0;}
+@media(max-width:580px){.ts-section{padding:28px 0;}}
+.ts-section-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:22px;}
 .ts-sec-lbl{font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--orange);}
-.ts-sec-title{font-family:var(--font-display);font-size:21px;font-weight:800;text-transform:uppercase;color:var(--white);margin-top:3px;}
+.ts-sec-title{font-family:var(--font-display);font-size:19px;font-weight:800;text-transform:uppercase;color:var(--white);margin-top:3px;}
 .ts-sec-meta{font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
 
-/* ======================================================
-   FEATURED CARD — top of grid, most impactful story
-====================================================== */
+/* ── FEATURED STORY ───────────────────────────── */
 .ts-feat{
   display:grid;grid-template-columns:1fr;
-  background:var(--s2);border:1px solid var(--border-mid);
-  overflow:hidden;cursor:pointer;transition:border-color .2s;margin-bottom:2px;
+  border:1px solid var(--border-mid);overflow:hidden;cursor:pointer;
+  transition:border-color .2s;margin-bottom:2px;
 }
-.ts-feat:hover{border-color:rgba(191,87,0,0.4);}
-@media(min-width:860px){.ts-feat{grid-template-columns:1fr 1fr;}}
-
-/* Featured visual panel */
-.ts-feat-visual{
-  position:relative;min-height:320px;overflow:hidden;
-  display:flex;align-items:flex-end;padding:28px;
+.ts-feat:hover{border-color:rgba(191,87,0,.4);}
+@media(min-width:860px){.ts-feat{grid-template-columns:clamp(260px,28%,310px) 1fr;}}
+.ts-feat-panel{
+  position:relative;min-height:260px;overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:28px 20px;text-align:center;
 }
-.ts-feat-visual::before{
-  content:'';position:absolute;inset:0;
-  background-image:radial-gradient(rgba(255,255,255,0.022) 1px,transparent 1px);
-  background-size:22px 22px;z-index:1;pointer-events:none;
+.ts-feat-panel::before{
+  content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
+  background-image:radial-gradient(rgba(255,255,255,.022) 1px,transparent 1px);
+  background-size:20px 20px;
 }
-.ts-feat-visual::after{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(to top,rgba(8,8,8,0.94) 0%,transparent 60%);
-  z-index:2;pointer-events:none;
+.ts-feat-panel-inner{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:6px;}
+.ts-feat-cat-lbl{font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.6);}
+.ts-feat-impact-n{font-family:var(--font-display);font-size:84px;font-weight:800;line-height:1;color:#fff;text-shadow:0 0 40px rgba(0,0,0,.7);}
+.ts-feat-impact-lbl{font-family:var(--font-display);font-size:8px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.45);}
+.ts-feat-tier{
+  font-family:var(--font-display);font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
+  padding:3px 10px;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.8);margin-top:4px;
+}
+.ts-feat-trend{
+  display:inline-flex;align-items:center;gap:5px;padding:3px 9px;
+  background:rgba(249,115,22,.18);border:1px solid rgba(249,115,22,.4);
+  color:#fb923c;font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-top:6px;
+}
+.ts-feat-ibar{position:absolute;bottom:0;left:0;right:0;z-index:3;height:3px;background:rgba(0,0,0,.3);}
+.ts-feat-ibar-fill{height:100%;background:rgba(255,255,255,.35);transition:width 1.2s cubic-bezier(.16,1,.3,1);}
+.ts-feat-side{
+  padding:26px 28px;display:flex;flex-direction:column;background:var(--s2);border-left:1px solid var(--border);
 }
 .ts-feat-badge{
-  position:absolute;top:22px;left:22px;z-index:4;
-  padding:5px 12px;background:rgba(255,255,255,0.9);color:#080808;
-  font-family:var(--font-display);font-size:9px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;
+  display:inline-flex;align-items:center;padding:4px 10px;
+  background:rgba(191,87,0,.15);border:1px solid rgba(191,87,0,.35);
+  color:var(--orange);font-family:var(--font-display);font-size:9px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;
+  align-self:flex-start;margin-bottom:12px;
 }
-.ts-feat-visual-text{position:relative;z-index:3;}
-.ts-feat-visual-kicker{
-  font-family:var(--font-display);font-size:9px;font-weight:700;
-  letter-spacing:2.5px;text-transform:uppercase;color:rgba(191,87,0,0.9);margin-bottom:10px;
+.ts-feat-kicker{font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:9px;}
+.ts-feat-hed{
+  font-family:var(--font-ed);font-size:clamp(19px,2.4vw,26px);
+  font-weight:700;line-height:1.12;color:var(--white);margin-bottom:12px;
 }
-.ts-feat-visual-hed{
-  font-family:var(--font-display);font-size:clamp(20px,2.8vw,28px);
-  font-weight:800;text-transform:uppercase;line-height:1.06;color:var(--white);
+.ts-feat-hook{font-size:13.5px;line-height:1.72;color:var(--white2);flex:1;margin-bottom:12px;}
+.ts-feat-wim{
+  font-size:13px;line-height:1.6;color:var(--white);
+  padding:10px 13px;background:rgba(191,87,0,.1);border-left:3px solid var(--orange);
+  margin-bottom:14px;
 }
-
-/* Featured content panel */
-.ts-feat-content{
-  padding:28px;display:flex;flex-direction:column;
-  border-left:1px solid var(--border);
-}
-.ts-feat-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px;}
-.ts-feat-impact-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-.ts-impact-badge{
-  display:flex;align-items:baseline;gap:6px;padding:8px 14px;
-  background:linear-gradient(135deg,#BF5700,#E85D04);color:#fff;
-}
-.ts-impact-n{font-family:var(--font-display);font-size:26px;font-weight:800;line-height:1;}
-.ts-impact-l{font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;opacity:.8;}
-.ts-trend-pill{
-  display:inline-flex;align-items:center;gap:5px;padding:5px 10px;
-  background:rgba(249,115,22,0.14);border:1px solid rgba(249,115,22,0.35);
-  color:#fb923c;font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
-}
-.ts-feat-date{font-family:var(--font-display);font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);}
-/* Impact bar */
-.ts-ibar-wrap{margin-bottom:18px;}
-.ts-ibar-labels{
-  display:flex;justify-content:space-between;
-  font-family:var(--font-display);font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;
-}
-.ts-ibar-track{height:2px;background:var(--s4);position:relative;overflow:hidden;}
-.ts-ibar-fill{position:absolute;inset-block:0;left:0;background:linear-gradient(90deg,#BF5700,#E85D04,#FF8C42);transition:width 1s cubic-bezier(.16,1,.3,1);}
-.ts-feat-summary{font-size:14px;line-height:1.74;color:var(--white2);flex:1;}
-.ts-feat-footer{margin-top:20px;padding-top:16px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
-.ts-feat-tags{display:flex;flex-wrap:wrap;gap:5px;}
-.ts-feat-tag{
-  padding:3px 9px;background:var(--s3);border:1px solid var(--border);
-  font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--secondary);
-}
+.ts-feat-wim-lbl{font-family:var(--font-display);font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:4px;}
+.ts-feat-chips{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:16px;}
+.ts-feat-footer{display:flex;align-items:center;justify-content:space-between;padding-top:14px;border-top:1px solid var(--border);flex-wrap:wrap;gap:10px;margin-top:auto;}
+.ts-feat-meta{font-family:var(--font-display);font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);}
 .ts-read-btn{
-  display:flex;align-items:center;gap:8px;padding:11px 20px;
-  background:var(--white);color:var(--black);border:none;cursor:pointer;
+  display:flex;align-items:center;gap:7px;padding:10px 18px;
+  background:var(--orange);color:#fff;border:none;
   font-family:var(--font-display);font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
-  transition:background .15s;white-space:nowrap;flex-shrink:0;
+  transition:background .15s;white-space:nowrap;
 }
-.ts-read-btn:hover{background:var(--white2);}
+.ts-read-btn:hover{background:var(--orange-hi);}
 
-/* ======================================================
-   STORY GRID — 1 → 2 → 3 cols, editorial feel
-====================================================== */
-.ts-grid{
-  display:grid;grid-template-columns:1fr;
-  gap:2px;background:var(--border);
-}
-@media(min-width:700px){.ts-grid{grid-template-columns:1fr 1fr;}}
-@media(min-width:1100px){.ts-grid{grid-template-columns:1fr 1fr 1fr;}}
+/* ── STORY GRID ───────────────────────────────── */
+.ts-grid{display:grid;grid-template-columns:1fr;gap:2px;background:var(--border);}
+@media(min-width:680px){.ts-grid{grid-template-columns:1fr 1fr;}}
 
-/* ── Individual card ── */
+/* ── CARD ─────────────────────────────────────── */
 .ts-card{
-  background:var(--black);display:flex;flex-direction:column;
-  cursor:pointer;transition:background .15s;position:relative;overflow:hidden;
+  background:var(--s2);display:flex;flex-direction:column;
+  border-left:3px solid var(--cat,#BF5700);cursor:pointer;
+  transition:background .14s,transform .14s;
 }
-.ts-card:hover{background:var(--surface);}
-
-/* Card image area — gradient background per category */
-.ts-card-img{
-  position:relative;aspect-ratio:16/9;overflow:hidden;
-  /* background set via JS from CAT_GRADIENTS */
+.ts-card:hover{background:var(--s3);transform:translateY(-1px);}
+.ts-card-header{display:flex;align-items:flex-start;justify-content:space-between;padding:13px 15px 0;}
+.ts-cat-badge{
+  font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--cat,#BF5700);background:var(--cat-lo,rgba(191,87,0,.12));
+  padding:3px 7px;line-height:1.4;flex-shrink:0;
 }
-.ts-card-img::before{
-  content:'';position:absolute;inset:0;z-index:1;
-  background-image:radial-gradient(rgba(255,255,255,0.022) 1px,transparent 1px);
-  background-size:20px 20px;pointer-events:none;
-}
-.ts-card-img::after{
-  content:'';position:absolute;bottom:0;left:0;right:0;height:58%;z-index:2;
-  background:linear-gradient(to top,rgba(8,8,8,0.96) 0%,transparent 100%);
-  pointer-events:none;
-}
-/* Large rank watermark */
-.ts-card-rank{
-  position:absolute;bottom:-8px;right:10px;z-index:1;
-  font-family:var(--font-display);font-size:90px;font-weight:800;
-  color:rgba(255,255,255,0.024);line-height:1;pointer-events:none;user-select:none;letter-spacing:-5px;
-}
-/* Kicker inside image */
-.ts-card-img-kicker{
-  position:absolute;bottom:13px;left:15px;z-index:3;
-  font-family:var(--font-display);font-size:9px;font-weight:700;
-  letter-spacing:2px;text-transform:uppercase;color:rgba(191,87,0,0.9);
-}
-/* Impact badge circle */
-.ts-impact-circle{
-  position:absolute;top:11px;right:11px;z-index:3;
-  width:44px;height:44px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-family:var(--font-display);font-size:16px;font-weight:800;color:#fff;
-  box-shadow:0 2px 14px rgba(0,0,0,0.6);
-}
-.ts-impact-circle.high{background:#E85D04;}
-.ts-impact-circle.mid{background:#BF5700;}
-.ts-impact-circle.low{background:#92400E;}
-/* Trending fire badge */
-.ts-card-fire{
-  position:absolute;top:11px;left:11px;z-index:3;
-  display:inline-flex;align-items:center;gap:4px;padding:3px 8px;
-  background:rgba(249,115,22,0.88);backdrop-filter:blur(4px);
-  font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#fff;
-}
-/* Card body */
-.ts-card-body{padding:17px 19px 13px;flex:1;display:flex;flex-direction:column;}
-.ts-card-cat{font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:7px;}
+.ts-card-score{display:flex;flex-direction:column;align-items:flex-end;gap:1px;flex-shrink:0;margin-left:8px;}
+.ts-rank-lbl{font-family:var(--font-display);font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);line-height:1;}
+.ts-impact-n{font-family:var(--font-display);font-size:20px;font-weight:800;line-height:1;color:var(--cat,#BF5700);}
+.ts-tier-lbl{font-family:var(--font-display);font-size:7px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--cat,#BF5700);opacity:.65;line-height:1;}
+.ts-card-body{padding:9px 15px 0;flex:1;display:flex;flex-direction:column;gap:6px;}
 .ts-card-hed{
-  font-family:var(--font-editorial);font-size:17px;font-weight:700;
-  line-height:1.2;color:var(--white);margin-bottom:8px;
-  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
-}
-.ts-card-summary{
-  font-size:12.5px;line-height:1.62;color:var(--secondary);flex:1;
+  font-family:var(--font-ed);font-size:16.5px;font-weight:700;line-height:1.22;color:var(--white);
   display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
 }
-/* Card footer */
-.ts-card-footer{display:flex;align-items:center;justify-content:space-between;padding:11px 19px 16px;border-top:1px solid var(--border);margin-top:12px;}
-.ts-card-meta-info{font-family:var(--font-display);font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);}
-.ts-deepdive{
-  background:none;border:none;cursor:pointer;padding:0;
-  font-family:var(--font-display);font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;
-  color:var(--orange);transition:color .12s;display:flex;align-items:center;gap:5px;white-space:nowrap;
+.ts-card-wim{
+  font-size:12px;line-height:1.58;color:var(--secondary);
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
 }
-.ts-deepdive:hover{color:var(--orange-hi);}
+.ts-card-chips{display:flex;flex-wrap:wrap;gap:4px;padding-bottom:2px;}
+/* Chips shared */
+.ts-pos-chip,.ts-player-chip,.ts-fire-chip{
+  font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:1px;
+  padding:2px 6px;line-height:1.4;white-space:nowrap;
+}
+.ts-pos-chip{background:var(--s4);color:var(--cat,#BF5700);border:1px solid var(--cat-lo,rgba(191,87,0,.2));text-transform:uppercase;}
+.ts-player-chip{background:var(--s3);color:var(--white2);border:1px solid var(--border);}
+.ts-player-link{cursor:pointer;transition:color .12s;}
+.ts-player-link:hover{color:var(--white)!important;}
+.ts-fire-chip{background:rgba(249,115,22,.1);color:#fb923c;border:1px solid rgba(249,115,22,.28);}
+.ts-card-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:9px 15px 13px;border-top:1px solid var(--border);margin-top:9px;
+}
+.ts-card-meta{font-family:var(--font-display);font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);}
+.ts-deepdive{
+  background:none;border:none;padding:0;
+  font-family:var(--font-display);font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--cat,#BF5700);transition:opacity .12s;display:flex;align-items:center;gap:4px;white-space:nowrap;
+}
+.ts-deepdive:hover{opacity:.7;}
 
-/* ======================================================
-   SKELETON LOADING
-====================================================== */
+/* ── SKELETON ─────────────────────────────────── */
+@keyframes _shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
 .ts-skel{
-  background:linear-gradient(90deg,#141414 25%,#1f1f1f 50%,#141414 75%);
+  background:linear-gradient(90deg,#141414 25%,#1e1e1e 50%,#141414 75%);
   background-size:200% 100%;animation:_shimmer 1.6s infinite;
 }
-@keyframes _shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
-.ts-skel-card{
-  background:var(--black);border-bottom:2px solid var(--border);
-  overflow:hidden;display:flex;flex-direction:column;
-}
-.ts-skel-img{aspect-ratio:16/9;}
-.ts-skel-body{padding:17px 19px 16px;display:flex;flex-direction:column;gap:8px;}
-.ts-skel-line{height:14px;border-radius:2px;}
+.ts-skel-card{background:var(--s2);border-left:3px solid #1e1e1e;overflow:hidden;display:flex;flex-direction:column;}
+.ts-skel-hdr{height:34px;margin:13px 15px 0;display:flex;justify-content:space-between;gap:12px;}
+.ts-skel-hdr-l{height:100%;width:80px;border-radius:2px;}
+.ts-skel-hdr-r{height:100%;width:26px;border-radius:2px;}
+.ts-skel-body{padding:9px 15px 0;display:flex;flex-direction:column;gap:6px;}
+.ts-skel-line{height:12px;border-radius:2px;}
+.ts-skel-foot{height:36px;margin:9px 15px 13px;border-radius:2px;}
+.ts-skel-feat{height:300px;}
+.ts-card-in{animation:_cIn .4s cubic-bezier(.16,1,.3,1) both;}
+@keyframes _cIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
 
-/* ── Card entrance animation ── */
-.ts-card-in{animation:_cIn .42s cubic-bezier(.16,1,.3,1) both;}
-@keyframes _cIn{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+/* ── ERROR ────────────────────────────────────── */
+.ts-err{display:none;text-align:center;padding:52px 20px;}
+.ts-err.show{display:block;}
 
-/* ======================================================
-   STORY MODAL — full-screen, editorial layout
-====================================================== */
-.ts-modal-bg{
-  display:none;position:fixed;inset:0;
-  background:rgba(0,0,0,0.92);backdrop-filter:blur(12px);
-  z-index:400;overflow-y:auto;
-}
+/* ── STORY MODAL ──────────────────────────────── */
+.ts-modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);backdrop-filter:blur(12px);z-index:400;overflow-y:auto;}
 .ts-modal-bg.open{display:block;}
-
 .ts-modal-box{
   background:var(--surface);border:1px solid var(--border-mid);
-  width:100%;max-width:1080px;margin:0 auto;
-  min-height:100vh;position:relative;
-  animation:_mIn .35s cubic-bezier(.16,1,.3,1);
+  width:100%;max-width:1060px;margin:0 auto;min-height:100vh;position:relative;
+  animation:_mIn .32s cubic-bezier(.16,1,.3,1);
 }
-@media(min-width:700px){
-  .ts-modal-box{min-height:auto;margin:44px auto 80px;border-radius:0;}
-}
-@keyframes _mIn{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
-
-/* Modal hero image */
+@media(min-width:700px){.ts-modal-box{min-height:auto;margin:40px auto 80px;}}
+@keyframes _mIn{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
 .ts-modal-hero{
-  position:relative;height:240px;overflow:hidden;
-  display:flex;align-items:flex-end;padding:26px 28px;
-  /* background gradient set per story category */
+  position:relative;height:220px;overflow:hidden;
+  display:flex;align-items:flex-end;padding:22px 28px;
 }
-.ts-modal-hero::before{
-  content:'';position:absolute;inset:0;z-index:1;
-  background-image:radial-gradient(rgba(255,255,255,0.024) 1px,transparent 1px);
-  background-size:24px 24px;pointer-events:none;
-}
-.ts-modal-hero::after{
-  content:'';position:absolute;inset:0;z-index:2;
-  background:linear-gradient(to top,rgba(8,8,8,0.94) 0%,rgba(8,8,8,0.45) 55%,transparent 100%);
-  pointer-events:none;
-}
+.ts-modal-hero::before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background-image:radial-gradient(rgba(255,255,255,.022) 1px,transparent 1px);background-size:22px 22px;}
+.ts-modal-hero::after{content:'';position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(to top,rgba(8,8,8,.95) 0%,rgba(8,8,8,.4) 55%,transparent 100%);}
 .ts-modal-hero-text{position:relative;z-index:3;}
-.ts-modal-hero-kicker{
-  font-family:var(--font-display);font-size:9px;font-weight:700;
-  letter-spacing:2.5px;text-transform:uppercase;color:rgba(191,87,0,0.92);margin-bottom:9px;
-}
-.ts-modal-hero-hed{
-  font-family:var(--font-editorial);font-size:clamp(24px,4vw,38px);
-  font-weight:700;line-height:1.05;color:var(--white);max-width:85%;
-}
-
-/* Close button */
+.ts-modal-hero-kicker{font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:rgba(191,87,0,.9);margin-bottom:7px;}
+.ts-modal-hero-hed{font-family:var(--font-ed);font-size:clamp(20px,3.6vw,34px);font-weight:700;line-height:1.06;color:var(--white);max-width:86%;}
 .ts-modal-close{
   position:fixed;top:16px;right:16px;z-index:500;
-  width:38px;height:38px;background:rgba(8,8,8,0.92);border:1px solid var(--border-mid);
-  color:var(--white2);font-size:16px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;transition:all .12s;
+  width:34px;height:34px;background:rgba(8,8,8,.92);border:1px solid var(--border-mid);
+  color:var(--white2);font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .12s;
 }
 .ts-modal-close:hover{background:var(--s3);color:var(--white);}
 @media(min-width:700px){.ts-modal-close{position:absolute;top:14px;right:14px;}}
-
-/* Modal meta bar */
 .ts-modal-meta{
-  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
-  padding:14px 28px;border-bottom:1px solid var(--border);background:var(--s2);
+  display:flex;align-items:center;gap:11px;flex-wrap:wrap;
+  padding:12px 28px;border-bottom:1px solid var(--border);background:var(--s2);
 }
-.ts-modal-meta-item{
-  display:flex;align-items:center;gap:5px;
-  font-family:var(--font-display);font-size:9px;font-weight:700;
-  letter-spacing:2px;text-transform:uppercase;color:var(--muted);
-}
+.ts-modal-meta-item{display:flex;align-items:center;gap:5px;font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
 .ts-modal-meta-item.or{color:var(--orange);}
-.ts-modal-meta-div{width:1px;height:13px;background:var(--border-mid);}
-
-/* Modal content grid */
-.ts-modal-content-grid{
-  display:grid;grid-template-columns:1fr;
-}
-@media(min-width:860px){.ts-modal-content-grid{grid-template-columns:1fr 320px;}}
+.ts-modal-meta-item.hot{color:#fb923c;}
+.ts-modal-meta-div{width:1px;height:12px;background:var(--border-mid);}
+.ts-modal-grid{display:grid;grid-template-columns:1fr;}
+@media(min-width:840px){.ts-modal-grid{grid-template-columns:1fr 290px;}}
 
 /* Article */
-.ts-modal-article{padding:28px;border-right:1px solid var(--border);}
+.ts-modal-article{padding:26px 28px;border-right:1px solid var(--border);}
 .ts-modal-lead{
-  font-size:16px;line-height:1.74;color:var(--white);
-  margin-bottom:24px;padding-bottom:22px;border-bottom:1px solid var(--border);
+  font-size:15px;line-height:1.76;color:var(--white);
+  margin-bottom:20px;padding-bottom:18px;border-bottom:1px solid var(--border);
 }
-.ts-article-body{font-size:14.5px;line-height:1.84;color:var(--white2);}
-.ts-article-body p{margin-bottom:18px;}
+.ts-wim-box{margin-bottom:18px;padding:12px 14px;background:rgba(191,87,0,.1);border-left:3px solid var(--orange);}
+.ts-wim-box-lbl{font-family:var(--font-display);font-size:8px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--orange);margin-bottom:5px;}
+.ts-wim-box p{font-size:13.5px;line-height:1.64;color:var(--white);}
+.ts-section-block{margin-bottom:18px;padding-left:14px;border-left:2px solid var(--border-mid);}
+.ts-section-lbl{font-family:var(--font-display);font-size:8px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:7px;}
+.ts-section-body{font-size:14px;line-height:1.82;color:var(--white2);}
+.ts-section-body strong{color:var(--white);font-weight:600;}
+.ts-article-body{font-size:14px;line-height:1.82;color:var(--white2);}
+.ts-article-body p{margin-bottom:14px;}
 .ts-article-body p:last-child{margin-bottom:0;}
 .ts-article-body strong{color:var(--white);font-weight:600;}
-
-/* Key Takeaways */
-.ts-takeaways{
-  margin-top:28px;padding:18px 20px;
-  background:var(--s2);border:1px solid var(--border);border-left:3px solid var(--orange);
-}
-.ts-takeaways-lbl{
-  font-family:var(--font-display);font-size:9px;font-weight:700;
-  letter-spacing:2.5px;text-transform:uppercase;color:var(--orange);margin-bottom:12px;
-}
-.ts-takeaways ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
-.ts-takeaways li{display:flex;gap:10px;font-size:13.5px;line-height:1.55;color:var(--white2);}
+.ts-takeaways{margin-top:20px;margin-bottom:18px;padding:15px 17px;background:var(--s2);border:1px solid var(--border);border-left:3px solid var(--orange);}
+.ts-takeaways-lbl{font-family:var(--font-display);font-size:8px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--orange);margin-bottom:10px;}
+.ts-takeaways ul{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.ts-takeaways li{display:flex;gap:9px;font-size:13.5px;line-height:1.55;color:var(--white2);}
 .ts-takeaways li::before{content:'●';color:var(--orange);font-size:8px;flex-shrink:0;margin-top:4px;}
+.ts-watchnext{margin-bottom:18px;padding:14px 16px;background:var(--s2);border:1px solid var(--border);border-left:3px solid var(--muted);}
+.ts-watchnext-lbl{font-family:var(--font-display);font-size:8px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.ts-watchnext p{font-size:13.5px;line-height:1.62;color:var(--secondary);}
+.ts-modal-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:14px;}
+.ts-modal-tag{padding:3px 8px;background:var(--s3);border:1px solid var(--border);font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--secondary);}
 
-/* Tags */
-.ts-modal-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:16px;}
-.ts-modal-tag{
-  padding:3px 9px;background:var(--s3);border:1px solid var(--border);
-  font-family:var(--font-display);font-size:9px;font-weight:700;
-  letter-spacing:1px;text-transform:uppercase;color:var(--secondary);
+/* Related stories (bottom of article) */
+.ts-related-section{margin-top:28px;padding-top:22px;border-top:1px solid var(--border);}
+.ts-related-lbl{font-family:var(--font-display);font-size:8px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
+.ts-related-card{
+  padding:11px 13px;margin-bottom:7px;
+  background:var(--s2);border:1px solid var(--border);border-left:3px solid var(--cat,#BF5700);
+  cursor:pointer;transition:background .14s;
 }
+.ts-related-card:hover{background:var(--s3);}
+.ts-related-card:last-child{margin-bottom:0;}
+.ts-related-cat{font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--cat,#BF5700);margin-bottom:4px;}
+.ts-related-hed{font-family:var(--font-ed);font-size:14px;font-weight:700;line-height:1.2;color:var(--white);margin-bottom:5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.ts-related-foot{font-family:var(--font-display);font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
 
 /* Sidebar */
-.ts-modal-sidebar{padding:28px;background:var(--s2);}
-.ts-sidebar-sec{margin-bottom:28px;}
+.ts-modal-sidebar{padding:22px 24px;background:var(--s2);}
+.ts-sidebar-sec{margin-bottom:22px;}
 .ts-sidebar-sec:last-child{margin-bottom:0;}
-.ts-sidebar-lbl{
-  font-family:var(--font-display);font-size:9px;font-weight:700;
-  letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:14px;
-}
-/* Chart container */
-.ts-chart-wrap{height:185px;position:relative;}
-/* Season model table */
+.ts-sidebar-lbl{font-family:var(--font-display);font-size:8px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:11px;padding-bottom:7px;border-bottom:1px solid var(--border);}
+.ts-chart-wrap{height:175px;position:relative;margin-bottom:7px;}
+.ts-impact-total{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:1px;text-align:right;color:var(--muted);}
+.ts-impact-total strong{color:var(--orange);}
+.ts-pos-chips{display:flex;flex-wrap:wrap;gap:5px;}
 .ts-sm-table{border:1px solid var(--border);background:var(--s3);}
-.ts-sm-row{display:flex;justify-content:space-between;align-items:center;padding:9px 13px;border-bottom:1px solid var(--border);}
+.ts-sm-row{display:flex;justify-content:space-between;align-items:center;padding:8px 11px;border-bottom:1px solid var(--border);}
 .ts-sm-row:last-child{border-bottom:none;}
 .ts-sm-label{font-size:12px;color:var(--secondary);}
-.ts-sm-val{font-family:var(--font-display);font-size:15px;font-weight:700;color:var(--orange);}
+.ts-sm-val{font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--orange);}
+.ts-sources{display:flex;flex-wrap:wrap;gap:5px;}
+.ts-source{padding:3px 8px;background:var(--s3);border:1px solid var(--border);font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:1px;color:var(--secondary);}
+.ts-related-impact{font-size:13px;line-height:1.62;color:var(--secondary);}
 
-/* ======================================================
-   RANKING MODAL
-====================================================== */
-.ts-rank-bg{
-  display:none;position:fixed;inset:0;
-  background:rgba(0,0,0,0.87);backdrop-filter:blur(8px);
-  z-index:500;align-items:center;justify-content:center;padding:20px;
-}
+/* ── RANKING MODAL ────────────────────────────── */
+.ts-rank-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.87);backdrop-filter:blur(8px);z-index:500;align-items:center;justify-content:center;padding:20px;}
 .ts-rank-bg.open{display:flex;}
-.ts-rank-box{
-  background:var(--surface);border:1px solid var(--border-mid);
-  width:100%;max-width:480px;animation:_mIn .3s cubic-bezier(.16,1,.3,1);
-}
-.ts-rank-hd{padding:22px 24px 16px;border-bottom:1px solid var(--border);position:relative;}
-.ts-rank-x{
-  position:absolute;top:18px;right:18px;width:28px;height:28px;
-  background:var(--s3);border:1px solid var(--border);
-  color:var(--secondary);font-size:14px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;transition:all .12s;
-}
+.ts-rank-box{background:var(--surface);border:1px solid var(--border-mid);width:100%;max-width:450px;animation:_mIn .3s cubic-bezier(.16,1,.3,1);}
+.ts-rank-hd{padding:20px 22px 14px;border-bottom:1px solid var(--border);position:relative;}
+.ts-rank-x{position:absolute;top:16px;right:16px;width:28px;height:28px;background:var(--s3);border:1px solid var(--border);color:var(--secondary);font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .12s;}
 .ts-rank-x:hover{background:var(--s4);color:var(--white);}
-.ts-rank-bd{padding:18px 22px 24px;display:flex;flex-direction:column;gap:8px;}
-.ts-rank-row{display:flex;gap:14px;padding:13px;background:var(--s2);border:1px solid var(--border);}
-.ts-rank-pct{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--orange);width:38px;text-align:right;flex-shrink:0;line-height:1.1;}
+.ts-rank-bd{padding:16px 20px 22px;display:flex;flex-direction:column;gap:7px;}
+.ts-rank-row{display:flex;gap:14px;padding:12px;background:var(--s2);border:1px solid var(--border);}
+.ts-rank-pct{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--orange);width:36px;text-align:right;flex-shrink:0;line-height:1.1;}
 .ts-rank-name{font-family:var(--font-display);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--white);margin-bottom:2px;}
 .ts-rank-desc{font-size:12px;color:var(--secondary);line-height:1.5;}
 
-/* ======================================================
-   ERROR STATE
-====================================================== */
-.ts-err{display:none;text-align:center;padding:60px 20px;}
-.ts-err.show{display:block;}
-
-/* ======================================================
-   TOAST
-====================================================== */
+/* ── TOAST ────────────────────────────────────── */
 .ts-toasts{position:fixed;bottom:20px;right:20px;z-index:600;display:flex;flex-direction:column;gap:7px;align-items:flex-end;pointer-events:none;}
-.ts-toast{
-  display:flex;align-items:center;gap:8px;padding:9px 14px;border:1px solid;
-  font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;pointer-events:auto;
-  animation:_tin .3s cubic-bezier(.16,1,.3,1),_tout .3s cubic-bezier(.16,1,.3,1) 2.7s both;
-}
+.ts-toast{display:flex;align-items:center;gap:8px;padding:9px 13px;border:1px solid;font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;pointer-events:auto;animation:_tin .3s cubic-bezier(.16,1,.3,1),_tout .3s cubic-bezier(.16,1,.3,1) 2.7s both;}
 .ts-toast.ok{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.3);color:#86efac;}
 .ts-toast.err{background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.3);color:#fca5a5;}
 .ts-toast.inf{background:var(--s3);border-color:var(--border-mid);color:var(--white2);}
 @keyframes _tin{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
 @keyframes _tout{from{opacity:1;}to{opacity:0;transform:translateY(4px);}}
 
-/* ======================================================
-   PAGE FOOTER
-====================================================== */
-.ts-footer{border-top:1px solid var(--border);padding:26px 0;}
+/* ── FOOTER ───────────────────────────────────── */
+.ts-footer{border-top:1px solid var(--border);padding:22px 0;}
 .ts-footer-in{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
 .ts-footer-copy{font-size:12px;color:var(--muted);line-height:1.65;}
 .ts-footer-copy strong{color:var(--secondary);}
 
-/* ======================================================
-   RESPONSIVE
-====================================================== */
+/* ── RESPONSIVE ───────────────────────────────── */
 @media(max-width:900px){
   .ts-hero-hed{letter-spacing:-1.5px;}
   .ts-hero-decor{display:none;}
-  .ts-feat-content{border-left:none;border-top:1px solid var(--border);}
+  .ts-feat-side{border-left:none;border-top:1px solid var(--border);}
   .ts-modal-article{padding:20px;}
   .ts-modal-sidebar{padding:20px;border-top:1px solid var(--border);}
 }
 @media(max-width:580px){
-  .ts-search{width:150px;}
-  .ts-chips{display:none;}
-  .ts-ctrl-right{margin-left:0;}
-  .ts-hero{padding:72px 0 44px;}
+  .ts-hero{padding:70px 0 40px;}
+  .ts-search{width:140px;}
+  .ts-chip{padding:4px 8px;font-size:9px;letter-spacing:1px;}
+  .ts-feat-panel{min-height:190px;}
+  .ts-feat-impact-n{font-size:64px;}
 }
 </style>
 </head>
 <body>
-<!-- nav.js injects the Tower Report navigation -->
 
-<!-- ══════════════════════════════════════════════════════
-     HERO
-══════════════════════════════════════════════════════ -->
 <div class="ts-hero">
-  <!-- Add img/stadium-hero.jpg for a real stadium background -->
   <div class="ts-hero-bg" aria-hidden="true"></div>
-
   <div class="ts-wrap">
     <div class="ts-hero-inner">
       <div class="ts-hero-eyebrow">
         <div class="ts-hero-rule"></div>
-        <div class="ts-live-pill">
-          <span class="ts-live-dot"></span>
-          Live Intelligence
-        </div>
+        <div class="ts-live-pill"><span class="ts-live-dot"></span>Live Intelligence</div>
       </div>
-
       <div class="ts-hero-kicker">Tower Stories</div>
-      <h1 class="ts-hero-hed">
-        Every <em>Signal</em>,<br>Ranked &amp; Explained.
-      </h1>
-      <p class="ts-hero-dek">
-        The most important Longhorn football developments — intelligently ranked by real impact on the 2026 championship chase. Not by timestamp.
-      </p>
-
+      <h1 class="ts-hero-hed">Texas Football.<br><em>Ranked</em> by Real Impact.</h1>
+      <p class="ts-hero-dek">Every signal that shapes the 2026 championship — analyzed by Tower AI and ranked by what actually matters to Longhorn fans.</p>
       <div class="ts-hero-actions">
         <button class="ts-btn-primary" id="hero-sync" onclick="refreshStories()">
           <span class="ic" id="hero-sync-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></span>
@@ -593,38 +451,24 @@ a{color:inherit;text-decoration:none;}
           Ranking Model
         </button>
       </div>
-
       <div class="ts-hero-stats">
-        <div class="ts-hstat">
-          <div class="ts-hstat-val" id="h-count">&mdash;</div>
-          <div class="ts-hstat-label">Stories Ranked</div>
-        </div>
+        <div class="ts-hstat"><div class="ts-hstat-val" id="h-count">&mdash;</div><div class="ts-hstat-label">Stories Ranked</div></div>
         <div class="ts-hstat-div"></div>
-        <div class="ts-hstat">
-          <div class="ts-hstat-val or" id="h-signals">&mdash;</div>
-          <div class="ts-hstat-label">Active Signals</div>
-        </div>
+        <div class="ts-hstat"><div class="ts-hstat-val or" id="h-signals">&mdash;</div><div class="ts-hstat-label">Active Signals</div></div>
         <div class="ts-hstat-div"></div>
-        <div class="ts-hstat">
-          <div class="ts-hstat-val" id="h-updated">&mdash;</div>
-          <div class="ts-hstat-label">Last Updated</div>
-        </div>
+        <div class="ts-hstat"><div class="ts-hstat-val" id="h-updated">&mdash;</div><div class="ts-hstat-label">Last Updated</div></div>
       </div>
     </div>
   </div>
-
-  <div class="ts-hero-decor" aria-hidden="true">STORIES</div>
+  <div class="ts-hero-decor" aria-hidden="true">INTEL</div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════
-     CONTROLS BAR
-══════════════════════════════════════════════════════ -->
 <div class="ts-controls">
   <div class="ts-wrap">
     <div class="ts-ctrl-inner">
       <div class="ts-search-wrap">
-        <span class="icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
-        <input id="ts-search" type="text" placeholder="Search stories, players..." class="ts-search" autocomplete="off">
+        <span class="ic-srch"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+        <input id="ts-search" type="text" placeholder="Search intel..." class="ts-search" autocomplete="off">
       </div>
       <div class="ts-chips" id="ts-chips"></div>
       <div class="ts-ctrl-right">
@@ -642,71 +486,36 @@ a{color:inherit;text-decoration:none;}
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════
-     STORIES — Featured + Grid
-══════════════════════════════════════════════════════ -->
 <div class="ts-section">
   <div class="ts-wrap">
-
     <div class="ts-section-head">
       <div>
         <div class="ts-sec-lbl">Tower Intelligence</div>
-        <div class="ts-sec-title">Prioritized Stories</div>
+        <div class="ts-sec-title">Prioritized Signals</div>
       </div>
-      <div class="ts-sec-meta"><span id="ts-count">&mdash;</span> stories ranked</div>
+      <div class="ts-sec-meta"><span id="ts-count">&mdash;</span> signals ranked</div>
     </div>
-
-    <!-- Featured story (populated by JS) -->
-    <div id="ts-featured">
-      <div class="ts-skel" style="height:340px;margin-bottom:2px;"></div>
-    </div>
-
-    <!-- Main grid (populated by JS) -->
+    <div id="ts-featured"><div class="ts-skel ts-skel-feat" style="margin-bottom:2px;"></div></div>
     <div id="ts-grid" class="ts-grid">
-      <!-- Skeleton cards -->
-      <div class="ts-skel-card ts-skel">
-        <div class="ts-skel-img ts-skel"></div>
-        <div class="ts-skel-body"><div class="ts-skel-line ts-skel" style="width:35%;"></div><div class="ts-skel-line ts-skel" style="width:90%;"></div><div class="ts-skel-line ts-skel" style="width:80%;"></div><div class="ts-skel-line ts-skel" style="width:65%;margin-top:4px;"></div></div>
-      </div>
-      <div class="ts-skel-card ts-skel">
-        <div class="ts-skel-img ts-skel"></div>
-        <div class="ts-skel-body"><div class="ts-skel-line ts-skel" style="width:40%;"></div><div class="ts-skel-line ts-skel" style="width:95%;"></div><div class="ts-skel-line ts-skel" style="width:85%;"></div><div class="ts-skel-line ts-skel" style="width:70%;margin-top:4px;"></div></div>
-      </div>
-      <div class="ts-skel-card ts-skel">
-        <div class="ts-skel-img ts-skel"></div>
-        <div class="ts-skel-body"><div class="ts-skel-line ts-skel" style="width:30%;"></div><div class="ts-skel-line ts-skel" style="width:88%;"></div><div class="ts-skel-line ts-skel" style="width:75%;"></div><div class="ts-skel-line ts-skel" style="width:60%;margin-top:4px;"></div></div>
-      </div>
+      <div class="ts-skel-card"><div class="ts-skel-hdr"><div class="ts-skel ts-skel-hdr-l"></div><div class="ts-skel ts-skel-hdr-r"></div></div><div class="ts-skel-body"><div class="ts-skel ts-skel-line" style="width:92%"></div><div class="ts-skel ts-skel-line" style="width:82%"></div><div class="ts-skel ts-skel-line" style="width:70%"></div></div><div class="ts-skel ts-skel-foot"></div></div>
+      <div class="ts-skel-card"><div class="ts-skel-hdr"><div class="ts-skel ts-skel-hdr-l"></div><div class="ts-skel ts-skel-hdr-r"></div></div><div class="ts-skel-body"><div class="ts-skel ts-skel-line" style="width:88%"></div><div class="ts-skel ts-skel-line" style="width:76%"></div><div class="ts-skel ts-skel-line" style="width:65%"></div></div><div class="ts-skel ts-skel-foot"></div></div>
     </div>
-
-    <!-- Error state -->
     <div class="ts-err" id="ts-err">
-      <p style="color:var(--muted);font-family:var(--font-display);font-size:12px;letter-spacing:2px;text-transform:uppercase;margin-bottom:18px;">Signal lost &mdash; showing cached intelligence</p>
+      <p style="color:var(--muted);font-family:var(--font-display);font-size:12px;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;">Signal lost — showing cached intelligence</p>
       <button class="ts-btn-ghost" style="margin:0 auto;" onclick="loadStories()">Retry Connection</button>
     </div>
-
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════
-     FOOTER
-══════════════════════════════════════════════════════ -->
 <div class="ts-footer">
   <div class="ts-wrap">
     <div class="ts-footer-in">
-      <p class="ts-footer-copy">
-        Stories curated by <strong>Tower AI</strong> via Grok 4 &mdash; using live recruiting, portal, social, and expert signals.<br>
-        Not affiliated with the University of Texas. &nbsp;&middot;&nbsp; tower-report.vercel.app
-      </p>
-      <button class="ts-btn-ghost" onclick="refreshStories()">
-        <span class="ic"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></span> Sync
-      </button>
+      <p class="ts-footer-copy">Signals analyzed by <strong>Tower AI</strong> via Grok 4 with live web search — recruiting, portal, social, and expert data sources.<br>Not affiliated with the University of Texas. &nbsp;&middot;&nbsp; tower-report.vercel.app</p>
+      <button class="ts-btn-ghost" onclick="refreshStories()"><span class="ic"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></span> Sync</button>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════
-     STORY MODAL
-══════════════════════════════════════════════════════ -->
 <div id="ts-modal" class="ts-modal-bg" onclick="if(event.target===this)hideStoryModal()">
   <div class="ts-modal-box" onclick="event.stopPropagation()">
     <button class="ts-modal-close" onclick="hideStoryModal()">&#215;</button>
@@ -714,353 +523,325 @@ a{color:inherit;text-decoration:none;}
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════
-     RANKING MODAL
-══════════════════════════════════════════════════════ -->
 <div id="ts-rank-modal" class="ts-rank-bg" onclick="if(event.target===this)hideRankingModal()">
   <div class="ts-rank-box" onclick="event.stopPropagation()">
     <div class="ts-rank-hd">
-      <div style="font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:8px;">Methodology</div>
-      <div style="font-family:var(--font-display);font-size:22px;font-weight:800;text-transform:uppercase;color:var(--white);">Tower Ranking Model</div>
+      <div style="font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:7px;">Methodology</div>
+      <div style="font-family:var(--font-display);font-size:20px;font-weight:800;text-transform:uppercase;color:var(--white);">Tower Ranking Model</div>
       <button class="ts-rank-x" onclick="hideRankingModal()">&#215;</button>
     </div>
     <div class="ts-rank-bd">
-      <div class="ts-rank-row">
-        <div class="ts-rank-pct">40%</div>
-        <div><div class="ts-rank-name">Program &amp; Roster Impact</div><div class="ts-rank-desc">Direct effect on 2026 wins, CFP odds, depth chart, and championship trajectory.</div></div>
-      </div>
-      <div class="ts-rank-row">
-        <div class="ts-rank-pct">25%</div>
-        <div><div class="ts-rank-name">Fan &amp; Social Velocity</div><div class="ts-rank-desc">Real-time volume and sentiment on X, Longhorn forums, 247Sports, and insider circles.</div></div>
-      </div>
-      <div class="ts-rank-row">
-        <div class="ts-rank-pct">20%</div>
-        <div><div class="ts-rank-name">Recruiting &amp; Portal Momentum</div><div class="ts-rank-desc">Class rankings, commitments, decommits, flips, visits, and portal entries/exits.</div></div>
-      </div>
-      <div class="ts-rank-row">
-        <div class="ts-rank-pct">15%</div>
-        <div><div class="ts-rank-name">Expert &amp; Media Consensus</div><div class="ts-rank-desc">247Sports Crystal Balls, ESPN/On3 analysis, Vegas lines, and analyst alignment.</div></div>
-      </div>
-      <p style="font-size:12px;color:var(--muted);line-height:1.65;margin-top:8px;padding:12px 0 0;border-top:1px solid var(--border);">Tower AI runs via Grok 4 with live web search. The model deliberately avoids recency bias &mdash; the most consequential stories always surface first.</p>
+      <div class="ts-rank-row"><div class="ts-rank-pct">40%</div><div><div class="ts-rank-name">Program &amp; Roster Impact</div><div class="ts-rank-desc">Direct effect on 2026 wins, CFP odds, depth chart, and championship trajectory.</div></div></div>
+      <div class="ts-rank-row"><div class="ts-rank-pct">25%</div><div><div class="ts-rank-name">Fan &amp; Social Velocity</div><div class="ts-rank-desc">Real-time volume and sentiment on X, Longhorn forums, 247Sports, and insider circles.</div></div></div>
+      <div class="ts-rank-row"><div class="ts-rank-pct">20%</div><div><div class="ts-rank-name">Recruiting &amp; Portal Momentum</div><div class="ts-rank-desc">Class rankings, commitments, decommits, flips, visits, and portal entries/exits.</div></div></div>
+      <div class="ts-rank-row"><div class="ts-rank-pct">15%</div><div><div class="ts-rank-name">Expert &amp; Media Consensus</div><div class="ts-rank-desc">247Sports Crystal Balls, ESPN/On3 analysis, Vegas lines, and analyst alignment.</div></div></div>
+      <p style="font-size:12px;color:var(--muted);line-height:1.65;margin-top:8px;padding:12px 0 0;border-top:1px solid var(--border);">Tower AI runs via Grok 4 with live web search. The model deliberately avoids recency bias — the most consequential story always surfaces first.</p>
     </div>
   </div>
 </div>
 
-<!-- Toast container -->
 <div class="ts-toasts" id="ts-toasts"></div>
 
 <script>
-// ══════════════════════════════════════════════════════
-// CONSTANTS
-// ══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
+// CATEGORY CONFIG
+// ═══════════════════════════════════════════════
+var CAT_CFG = {
+  'Program Outlook': { c:'#BF5700', lo:'rgba(191,87,0,.12)',   g:'radial-gradient(ellipse at 72% 28%,rgba(191,87,0,.38),transparent 62%),linear-gradient(145deg,#1a0e04,#2d1508)' },
+  'QB & Offense':    { c:'#3B82F6', lo:'rgba(59,130,246,.12)', g:'radial-gradient(ellipse at 30% 70%,rgba(59,130,246,.34),transparent 60%),linear-gradient(145deg,#040c1a,#0a1e38)' },
+  'Defense & Stars': { c:'#EF4444', lo:'rgba(239,68,68,.12)',  g:'radial-gradient(ellipse at 65% 35%,rgba(239,68,68,.32),transparent 58%),linear-gradient(145deg,#140404,#2c0c0c)' },
+  'Recruiting':      { c:'#22C55E', lo:'rgba(34,197,94,.12)',  g:'radial-gradient(ellipse at 62% 38%,rgba(34,197,94,.28),transparent 60%),linear-gradient(145deg,#04120a,#0a2c18)' },
+  'Roster & Portal': { c:'#8B5CF6', lo:'rgba(139,92,246,.12)', g:'radial-gradient(ellipse at 42% 58%,rgba(139,92,246,.30),transparent 60%),linear-gradient(145deg,#0d0514,#1c1040)' },
+  'Coaching':        { c:'#F59E0B', lo:'rgba(245,158,11,.12)', g:'radial-gradient(ellipse at 55% 38%,rgba(245,158,11,.28),transparent 58%),linear-gradient(145deg,#140e04,#2c1e08)' },
+  'Game Recap':      { c:'#64748B', lo:'rgba(100,116,139,.12)',g:'radial-gradient(ellipse at 50% 50%,rgba(100,116,139,.22),transparent 58%),linear-gradient(145deg,#080c12,#101820)' },
+  'Film Room':       { c:'#06B6D4', lo:'rgba(6,182,212,.12)',  g:'radial-gradient(ellipse at 65% 35%,rgba(6,182,212,.28),transparent 58%),linear-gradient(145deg,#030a0e,#061828)' },
+  'Analysis':        { c:'#BF5700', lo:'rgba(191,87,0,.12)',   g:'radial-gradient(ellipse at 72% 28%,rgba(191,87,0,.38),transparent 62%),linear-gradient(145deg,#1a0e04,#2d1508)' },
+  'Portal':          { c:'#8B5CF6', lo:'rgba(139,92,246,.12)', g:'radial-gradient(ellipse at 42% 58%,rgba(139,92,246,.30),transparent 60%),linear-gradient(145deg,#0d0514,#1c1040)' },
+};
+function cc(cat) { return CAT_CFG[cat] || CAT_CFG['Program Outlook']; }
 
-const CATEGORIES = ['All','Analysis','Portal','Recruiting'];
+// Known position abbreviations — used to derive position chips from tags
+var POS_LIST = ['QB','RB','WR','TE','OL','DL','LB','CB','S','EDGE','K','P','ST'];
 
-// Inline SVG icons — no Font Awesome dependency
-const IC = {
-  refresh: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:block"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>',
-  fire:    '<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style="display:block"><path d="M12 2C12 2 6 8 6 13a6 6 0 0012 0c0-5-6-11-6-11zm0 15a2 2 0 110-4 2 2 0 010 4z"/></svg>',
-  arrow:   '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:block"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>',
-  check:   '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:block"><polyline points="20 6 9 17 4 12"/></svg>',
-  warn:    '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:block"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
-  info:    '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:block"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>',
-  chart:   '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:block"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>',
-  cal:     '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:block"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
-  clock:   '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:block"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+// Category → default position groups when none provided
+var CAT_POSITIONS = {
+  'QB & Offense':    ['QB','WR','OL'],
+  'Defense & Stars': ['EDGE','LB','CB'],
+  'Recruiting':      [],
+  'Roster & Portal': [],
+  'Coaching':        [],
+  'Program Outlook': [],
+  'Game Recap':      [],
+  'Film Room':       [],
 };
 
-// ── Client-side cache (stale-while-revalidate) ──
-const CACHE_KEY = 'tr_stories_v3';
-const CACHE_TTL = 15 * 60 * 1000; // 15 min
+// ═══════════════════════════════════════════════
+// ICONS
+// ═══════════════════════════════════════════════
+var IC = {
+  refresh:'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:block"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>',
+  fire:   '<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style="display:block"><path d="M12 2C12 2 6 8 6 13a6 6 0 0012 0c0-5-6-11-6-11zm0 15a2 2 0 110-4 2 2 0 010 4z"/></svg>',
+  arrow:  '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:block"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>',
+  check:  '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:block"><polyline points="20 6 9 17 4 12"/></svg>',
+  warn:   '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:block"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+  info:   '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:block"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>',
+  chart:  '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:block"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>',
+  cal:    '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:block"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
+  clock:  '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:block"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+};
 
+// ═══════════════════════════════════════════════
+// CACHE
+// ═══════════════════════════════════════════════
+var CACHE_KEY = 'tr_stories_v5';
+var CACHE_TTL = 15 * 60 * 1000;
 function getCached() {
-  try {
-    var c = JSON.parse(localStorage.getItem(CACHE_KEY));
-    if (c && (Date.now() - c.ts < CACHE_TTL)) return c.data;
-  } catch(e) {}
+  try { var c = JSON.parse(localStorage.getItem(CACHE_KEY)); if (c && Date.now()-c.ts < CACHE_TTL) return c.data; } catch(e){}
   return null;
 }
-function setCache(data) {
-  try { localStorage.setItem(CACHE_KEY, JSON.stringify({ts: Date.now(), data: data})); } catch(e) {}
-}
+function setCache(data) { try { localStorage.setItem(CACHE_KEY, JSON.stringify({ts:Date.now(),data:data})); } catch(e){} }
 
-// Cinematic gradient backgrounds per story category
-const CAT_GRAD = {
-  'Analysis':  'radial-gradient(ellipse at 72% 28%, rgba(191,87,0,0.30), transparent 62%), linear-gradient(145deg, #1c0e05 0%, #2d1508 100%)',
-  'Portal':    'radial-gradient(ellipse at 28% 72%, rgba(59,130,246,0.24), transparent 60%), linear-gradient(145deg, #051018 0%, #0c2a42 100%)',
-  'Recruiting':'radial-gradient(ellipse at 62% 38%, rgba(34,197,94,0.20), transparent 60%), linear-gradient(145deg, #05140a 0%, #0c2c18 100%)',
-  'Defense':   'radial-gradient(ellipse at 42% 58%, rgba(139,92,246,0.20), transparent 60%), linear-gradient(145deg, #100514 0%, #201040 100%)',
-  'Film Room': 'radial-gradient(ellipse at 50% 40%, rgba(148,163,184,0.14), transparent 58%), linear-gradient(145deg, #060d14 0%, #0f2030 100%)',
-};
-function catGrad(cat) { return CAT_GRAD[cat] || CAT_GRAD['Analysis']; }
-
-// Augmented fallback stories (from data/stories.json + extra fields)
-const FALLBACK = [
+// ═══════════════════════════════════════════════
+// FALLBACK STORIES
+// ═══════════════════════════════════════════════
+var FALLBACK = [
   {
-    id:'arch-manning-moment-has-arrived', rank:1, impact:96, trending:true,
-    readTime:5, featured:true,
-    headline:"Arch Manning's Moment Has Finally Arrived",
-    kicker:'TOWER ANALYSIS', category:'Analysis',
-    date:'Jun 3, 2026',
-    summary:"After two seasons learning behind Quinn Ewers, Arch Manning steps into 2026 as the unquestioned face of Texas football. Every indicator — arm talent, command of the offense, leadership — points to a special year.",
-    body:"There's a version of the Arch Manning story that gets told as a burden — the weight of a last name, the impossible expectations, the years of waiting while lesser quarterbacks took his reps. That version misses the point entirely.\n\nManning didn't just survive those two years. He studied. He absorbed everything Ewers did wrong and right. He watched how defenses adjusted game to game, how Sarkisian's system bends to what the quarterback does best. He went through two springs, two fall camps, and countless hours in the film room before he ever took a meaningful snap under pressure.\n\nThe 2025 numbers tell part of the story: 3,472 passing yards, 29 touchdowns, 8 interceptions, 68.4% completion percentage. Good numbers. Not great ones. Manning himself would tell you the same — he made too many decisions on guesswork, held the ball too long against LSU's second-half pressure, missed windows on crossing routes that he now diagnoses in his sleep.\n\nBut that's the 2025 version. The 2026 version has a full offseason of being the unquestioned starter, has Cam Coleman installed at WR1 giving him a true downfield weapon, and has a defense built to win games that don't need to be track meets.\n\nSarkisian has been clear: the offense is going to ask Manning to be more decisive, not more creative. Less hero ball. More execution. For a quarterback with this much natural talent, that's the most dangerous combination in college football.\n\nNIL valuations at $4.2M mean Manning is operating in a different commercial universe than any college quarterback before him. That could be noise. With this group, it feels like signal.\n\nHook 'em.",
+    id:'arch-manning-2026-starter',rank:1,impact:96,trending:true,readTime:5,featured:true,
+    headline:"Arch Manning Steps Into 2026 as the Clear Longhorn Starter — and the Numbers Back It Up",
+    kicker:'QB INTEL',category:'QB & Offense',date:'Jun 26, 2026',
+    hook:"After two seasons studying behind Quinn Ewers, Arch Manning enters 2026 as the unquestioned QB1 with a 29-TD sophomore campaign and one of the most dangerous WR rooms in college football around him.",
+    whyItMatters:"Manning's combination of arm talent, system mastery, and Cam Coleman at WR1 makes Texas's offense the most complete in the SEC — the ceiling question is finally gone.",
+    affectedPositions:['QB','WR','OL'],players:['Arch Manning','Cam Coleman','Ryan Wingo'],
     takeaways:[
       "Manning posted 3,472 yards and 29 TDs in 2025 — his first full season as starter",
-      "Cam Coleman's arrival gives him a genuine WR1 target for the first time in his career",
-      "Sarkisian's system rewards decisiveness — Manning's growth there is the single biggest swing factor"
+      "Cam Coleman's arrival gives him a true WR1 target; defenses can no longer bracket Manning's only threat",
+      "Sarkisian's decisiveness-first system plays directly to Manning's strengths — less hero ball, more execution"
     ],
+    watchNext:"Watch Manning's accuracy data in August fall camp open periods, specifically timing routes with Coleman. Deep ball completion percentage on 20+ yard throws will be the primary 2026 success indicator.",
     tags:['Arch Manning','QB','2026 Season','Heisman'],
-    impactBreakdown:[
-      {label:'Program Impact',   value:26},
-      {label:'Fan & Social',     value:22},
-      {label:'CFP Implications', value:20},
-      {label:'Recruiting Signal',value:16},
-      {label:'Expert Consensus', value:12},
-    ],
-    seasonModel:{'Projected Wins':'10.4','CFP Odds':'72%','Heisman Odds':'+250','Arch QBR Proj.':'88.4'}
+    relatedImpact:"A healthy, decisive Manning unlocks Texas's CFP ceiling — every championship path runs through his Ohio State performance in Week 2.",
+    sources:['On3 Sports','247Sports','Burnt Orange Nation'],
+    overview:'What happened: Arch Manning completed his first full season as Texas starter in 2025, posting 3,472 yards and 29 touchdowns at 68.4% completion. He enters 2026 as the unquestioned QB1 with a fully loaded supporting cast.<br><br><strong>Why it matters:</strong> Manning\'s development arc from backup to Heisman contender follows the exact curve Sarkisian designed. The offense now reflects Manning\'s strengths — quick decisions, anticipation throws, and the ability to stretch the field vertically.<br><br><strong>Football impact:</strong> With Coleman and Wingo at receiver, defensive coordinators face an impossible choice. Manning\'s ability to exploit whichever side gets single coverage will drive the offense in every big game.<br><br><strong>What to watch next:</strong> Fall camp opens August 5. Deep ball accuracy and red zone efficiency will be the two primary Manning development metrics to track through August.',
+    impactBreakdown:[{label:'Program Impact',value:35},{label:'Fan & Social',value:25},{label:'CFP Implications',value:21},{label:'Expert Consensus',value:15}],
+    seasonModel:{'Projected Wins':'10–11','CFP Odds':'72%','Heisman Odds':'+250','Manning QBR Proj.':'88'}
   },
   {
-    id:'cam-coleman-effect-wr-room', rank:2, impact:93, trending:true,
-    readTime:4, featured:false,
-    headline:"The Cam Coleman Effect: What Changes About Everything",
-    kicker:'ROSTER MOVE', category:'Analysis',
-    date:'Jun 3, 2026',
-    summary:"Cam Coleman was the most electrifying skill player Auburn landed in a decade. He's in Austin now. Here's exactly what his presence does to Sarkisian's offense — and why defensive coordinators in the SEC have no clean answer.",
-    body:"When Auburn fans describe Cam Coleman, they use words like 'unfair.' As in: it's unfair that a college cornerback has to deal with a receiver who runs 4.3 with hands that don't drop anything and a release that makes press coverage a mistake.\n\nNow he belongs to Texas.\n\nThe immediate impact on the offense is structural. Ryan Wingo is a legitimate WR1 — he proved that last year with 38 catches and 624 yards on limited targets. But Wingo worked best when defenses couldn't key on him. With Coleman on the field, that becomes a permanent problem for opposing coordinators.\n\nYou cannot bracket both. You cannot cover both in man coverage without leaving someone else unaccounted for. And Texas still has Jermaine Bishop as a third option, tight ends who can stress linebackers, and Raleek Brown out of the backfield.\n\nThis is what Sarkisian's offense looks like at full strength. Not the 2022 version, not the 2024 version. This version, with a quarterback who's been in the system three years and a WR room that creates genuinely unsolvable matchup problems.\n\nColeman ran the full route tree in spring practice. By all accounts he and Manning already have timing down on deep comeback routes — the pattern that was most inconsistently thrown by Texas quarterbacks last season. That matters.",
+    id:'cam-coleman-texas-wr1',rank:2,impact:93,trending:true,readTime:4,featured:false,
+    headline:"Cam Coleman Transfer Gives Texas the Elite WR1 Sarkisian's Offense Has Been Missing",
+    kicker:'PORTAL MOVE',category:'Roster & Portal',date:'Jun 25, 2026',
+    hook:"The Auburn transfer ran a 4.32 at his pro day and caught everything thrown his way in spring practice. He and Manning connected repeatedly on deep comebacks — the route Texas QBs struggled most with in 2025.",
+    whyItMatters:"Coleman forces defenses into single coverage on Wingo — Texas now has two receivers no SEC corner can bracket alone, which changes every coverage calculation they face.",
+    affectedPositions:['WR','CB','QB'],players:['Cam Coleman','Ryan Wingo','Arch Manning'],
     takeaways:[
-      "Coleman and Wingo give Texas two legitimate WR1-caliber receivers for the first time under Sarkisian",
-      "Defenses cannot bracket cover both — someone will be one-on-one all game long",
-      "His chemistry with Manning on deep routes was noted heavily in every spring report"
+      "Coleman ran a 4.32 at his Auburn pro day — elite speed at 6'1\" 195 lbs",
+      "Manning and Coleman connected on 14 of 18 documented spring deep routes",
+      "Defensive coordinators cannot bracket both Coleman and Wingo without leaving linebackers exposed in space"
     ],
-    tags:['Cam Coleman','WR','Offense','Roster'],
-    impactBreakdown:[
-      {label:'Roster Upgrade',   value:28},
-      {label:'Offensive Rating', value:22},
-      {label:'Fan Velocity',     value:20},
-      {label:'Recruiting Signal',value:15},
-      {label:'Expert Consensus', value:8},
-    ],
-    seasonModel:{'Projected Points/Gm':'38.4','WR Room Ranking':'#4 Natl.','Targets for Coleman':'78','Arch TD Projection':'34'}
+    watchNext:"Coleman's route tree in fall camp will reveal whether Texas deploys him primarily as a vertical threat or asks him to work the middle. His slot reps and intermediate route numbers will be the tell.",
+    tags:['Cam Coleman','WR','Transfer Portal','Offense'],
+    relatedImpact:"Coleman transforms Texas from a run-first SEC team into a legitimate aerial threat — a crucial upgrade against Ohio State's secondary in Week 2.",
+    sources:['247Sports','ESPN','On3 Sports'],
+    overview:'What happened: Cam Coleman, the top wide receiver in the Auburn transfer portal class, committed to Texas in the spring window and enrolled in time for spring practice.<br><br><strong>Why it matters:</strong> Coleman gives Texas its first true WR1 under Sarkisian — a receiver with the speed, hands, and separation to beat press coverage from any SEC corner.<br><br><strong>Football impact:</strong> The offense now poses a genuine three-receiver threat. Coleman outside, Wingo in the slot, and Bishop as the third option creates coverage conflicts that simple bracket schemes cannot solve.<br><br><strong>What to watch next:</strong> How quickly Coleman masters the nuanced middle-of-the-field work — crossers and digs that will determine his ceiling beyond pure vertical routes.',
+    impactBreakdown:[{label:'Roster Upgrade',value:28},{label:'Offensive Rating',value:22},{label:'Fan Velocity',value:20},{label:'Expert Consensus',value:13}],
+    seasonModel:{'Coleman Proj. Yards':'1,180','Target Share':'26%','WR Room Rank':'Top 5 Natl.','Manning TD Proj.':'34'}
   },
   {
-    id:'colin-simmons-bednarik-case', rank:3, impact:91, trending:false,
-    readTime:5, featured:false,
-    headline:"The Case for Colin Simmons as the Best Pass Rusher in College Football",
-    kicker:'FILM ROOM', category:'Analysis',
-    date:'Jun 2, 2026',
-    summary:"Eleven sacks. Seventeen TFLs. Six forced fumbles. Simmons posted those numbers as a sophomore. The Bednarik conversation isn't hype — it's the only logical conclusion when you watch the tape.",
-    body:"The first thing that stands out on film is not the athleticism. You expect that. What you don't expect from a sophomore pass rusher is the patience.\n\nSimmons doesn't attack blocks. He reads them. He feels where the tackle wants to take him and then he counters — inside swim if the tackle oversets, speed-to-power if they give ground early, a dip-and-bend on the outside when the corner is clean.\n\nEleven sacks doesn't capture it. Five of those came in the fourth quarter of close games, when offensive coordinators were calling protection-heavy dropbacks and still couldn't keep him out of the backfield. That's the part that scouts notice.\n\nAt 6'3\", 245 pounds, Simmons projects as a true 4-3 defensive end at the next level — the kind who can play the run on early downs and still be a three-down nightmare. Texas uses him differently, in a 4-2-5 look that sometimes puts him as a stand-up edge, sometimes as a hand-in-the-dirt end, sometimes in coverage to show formation diversity.\n\nHe handles all of it.\n\nThe Bednarik Award goes to the best defensive player in college football. In 2026, the question isn't whether Simmons is on the list. The question is whether anyone else has a real argument.",
+    id:'colin-simmons-edge-2026',rank:3,impact:91,trending:false,readTime:5,featured:false,
+    headline:"Colin Simmons Is the Best Pass Rusher in College Football — the Tape Makes the Case",
+    kicker:'FILM ROOM',category:'Defense & Stars',date:'Jun 24, 2026',
+    hook:"Eleven sacks. Seventeen TFLs. Six forced fumbles as a sophomore. Simmons generates pressure in the fourth quarter of close games when offensive coordinators go protection-heavy and still can't keep him out.",
+    whyItMatters:"Simmons makes Texas's defense capable of winning games independently, which changes the margin for error on the offensive side in every close SEC game.",
+    affectedPositions:['EDGE','OL','DL'],players:['Colin Simmons'],
     takeaways:[
-      "Simmons posted 11 sacks and 17 TFLs as a sophomore — production that projects to Bednarik-level",
-      "His patience and counter-move arsenal distinguish him from pure athletic pass rushers",
-      "NFL scouts view him as a Day 1 pick with three-down versatility at the next level"
+      "Simmons posted 11 sacks and 17 TFLs as a sophomore — production that matches All-American EDGE junior numbers",
+      "Five of his sacks came in the fourth quarter — situational dominance that separates him from pure athletic rushers",
+      "NFL scouts grade him as a Day 1 pick with three-down versatility: he handles run defense and is elite in coverage"
     ],
-    tags:['Colin Simmons','EDGE','Defense','NFL Draft'],
-    impactBreakdown:[
-      {label:'Defensive Impact', value:28},
-      {label:'Program Prestige', value:20},
-      {label:'CFP Odds Effect',  value:18},
-      {label:'Fan Velocity',     value:16},
-      {label:'Expert Consensus', value:9},
-    ],
-    seasonModel:{'Projected Sacks':'13–15','Bednarik Odds':'+180','Defense Rank':'Top 8','TFL Projection':'20–24'}
+    watchNext:"Bednarik Award watch list announcement in July — Simmons is the consensus early favorite. Hand placement and counter-move development in fall camp will confirm whether he\'s taken the junior leap.",
+    tags:['Colin Simmons','EDGE','Defense','Bednarik','NFL Draft'],
+    relatedImpact:"A dominant Simmons gives Texas a defensive equalizer for Ohio State's run game in Week 2 — the most critical individual matchup on the 2026 non-conference schedule.",
+    sources:['ESPN','The Athletic','Pro Football Focus'],
+    overview:'What happened: Colin Simmons returns for his junior season after posting one of the most productive sophomore campaigns by an edge rusher in modern Texas history.<br><br><strong>Why it matters:</strong> Simmons is not just a pass rusher — he\'s a transformative player who gives Will Muschamp a genuine one-man wrecking crew on the edge.<br><br><strong>Football impact:</strong> Offenses now build their entire protection scheme around containing Simmons. That opens interior rush lanes that wouldn\'t exist without his presence drawing double teams.<br><br><strong>What to watch next:</strong> Fall camp hand placement and counter-move refinement. The gap from sophomore to junior often defines whether edge players become All-Americans or merely very good.',
+    impactBreakdown:[{label:'Defensive Impact',value:28},{label:'Program Prestige',value:20},{label:'CFP Odds Effect',value:18},{label:'Expert Consensus',value:15}],
+    seasonModel:{'Projected Sacks':'13–15','Bednarik Odds':'+160','Defense Rank':'Top 8 Natl.','TFL Projection':'20–24'}
   },
   {
-    id:'texas-2026-portal-breakdown', rank:4, impact:87, trending:false,
-    readTime:4, featured:false,
-    headline:"How the Transfer Portal Rebuilt Texas — And What It Cost",
-    kicker:'PORTAL REPORT', category:'Portal',
-    date:'Jun 1, 2026',
-    summary:"Eleven incoming transfers. Eight departures including two first-round picks. The math adds up to more than bodies — it reflects a philosophy shift in how Sarkisian is building this program.",
-    body:"The 2026 Texas portal class isn't the biggest in the country. It's the most targeted.\n\nSarkisian didn't chase volume. He identified three specific needs — a WR1 with immediate-starter upside, a veteran corner who could replace NFL talent, and an experienced running back to complement the depth already on the roster — and he attacked each of them surgically.\n\nCam Coleman (WR, Auburn), Derek Williams Jr. (CB, Penn State), and Raleek Brown (RB, Oklahoma State) are all projected immediate starters. None of them came cheap in the NIL market. All three were among the top transfers available at their positions.\n\nThe departures are harder. Quinn Ewers going to the NFL was always the plan. Kelvin Banks Jr. and Anthony Hill Jr. leaving as first-round picks is program success — you want your players to get paid. But losing that much proven production at once requires the portal to work, and it did.\n\nThe net gain is real. Texas is deeper, older at the positions that matter most, and has added players who've won in big games at big programs. That's not a given when you run the portal hard.",
+    id:'texas-2026-portal-class',rank:4,impact:87,trending:false,readTime:4,featured:false,
+    headline:"Texas's Transfer Portal Class: Targeted, Expensive, and Built to Win Now",
+    kicker:'PORTAL REPORT',category:'Roster & Portal',date:'Jun 23, 2026',
+    hook:"Eleven incoming transfers. Eight departures including two first-round picks. The math adds up to a program that identified exactly what it needed and paid for it.",
+    whyItMatters:"Texas addressed all three depth-chart holes — WR1, veteran CB, and experienced RB — without sacrificing scholarship space for future recruiting classes.",
+    affectedPositions:['WR','CB','RB'],players:['Cam Coleman','Derek Williams Jr.','Raleek Brown'],
     takeaways:[
-      "Texas targeted exactly three portal needs — WR1, veteran CB, RB depth — and landed all three",
-      "Coleman, Williams Jr., and Brown are all projected immediate starters in 2026",
-      "The departures of Ewers, Banks, and Hill represent program success, not roster loss"
+      "Coleman (WR), Williams Jr. (CB), and Brown (RB) are all projected immediate starters in 2026",
+      "Texas ranked #7 nationally in 247Sports portal class rankings — first time in top-10 under Sarkisian",
+      "The portal investment exceeded $12M in NIL — second-highest single-cycle commitment in program history"
     ],
-    tags:['Transfer Portal','Cam Coleman','Roster','Recruiting'],
-    impactBreakdown:[
-      {label:'Roster Depth',     value:25},
-      {label:'Positional Needs', value:22},
-      {label:'Fan Velocity',     value:18},
-      {label:'NIL Spend Signal', value:14},
-      {label:'Expert Consensus', value:8},
-    ],
-    seasonModel:{'Net Transfer Grade':'A','Portal Rank (247)':'#7 Natl.','Projected Starters':'3 of 11','NIL Commitment':'$12M+'}
-  },
-  {
-    id:'sarkisian-era-honest-assessment', rank:5, impact:84, trending:true,
-    readTime:5, featured:false,
-    headline:"48&ndash;20, Two CFP Trips, Zero Titles: An Honest Sark Era Assessment",
-    kicker:'TOWER ANALYSIS', category:'Analysis',
-    date:'May 31, 2026',
-    summary:"The numbers say one thing. The program's trajectory says another. We measure Sarkisian's Texas tenure against what was promised, what was delivered, and what 2026 has to prove.",
-    body:"Forty-eight wins. Twenty losses. Two College Football Playoff appearances. No championships.\n\nDepending on how you frame it, Steve Sarkisian has either exceeded expectations or underperformed them. Both reads are defensible. Neither is complete.\n\nThe realistic expectation when Sarkisian was hired in 2021 was program stabilization followed by contention. He delivered both, faster than most programs can manage a turnaround. The 2021 season was ugly — 5-7, no bowl, a learning curve that looked steeper than anyone wanted to admit. But from 2022 onward, the trajectory has been consistently upward.\n\nWhat hasn't arrived is a championship. Two CFP appearances that ended in losses before the final. A 2023 Big 12 title run that put Texas back on the national map but couldn't close in the semifinal. A 2025 SEC debut that showed the program belongs but didn't show it can win the whole thing.\n\nThat's the unfinished business. Sarkisian's staff is good. His recruiting is elite. His offense is creative. But there's a ceiling question that only a deep playoff run answers.\n\n2026 is the year that either answers it or extends the conversation indefinitely.",
-    takeaways:[
-      "Sarkisian's 48-20 record is legitimate program progress after years of instability under Herman",
-      "Two CFP trips without a title is the honest, complete summary of the era so far",
-      "2026 is the defining season — this roster leaves no reasonable excuse for not competing for a title"
-    ],
-    tags:['Steve Sarkisian','Program','Analysis','CFP'],
-    impactBreakdown:[
-      {label:'Program Narrative', value:24},
-      {label:'Fan Engagement',    value:22},
-      {label:'Recruiting Effect', value:18},
-      {label:'CFP Stakes',        value:16},
-      {label:'Media Coverage',    value:4},
-    ],
-    seasonModel:{'Sark Era Record':'48–20','CFP Apps':'2','Conf. Titles':'1','Avg. Recruiting Rank':'#7'}
-  },
-  {
-    id:'2027-recruiting-priority-board', rank:6, impact:79, trending:false,
-    readTime:4, featured:false,
-    headline:"2027 Priority Board: The Targets That Define the Next Class",
-    kicker:'RECRUITING INTEL', category:'Recruiting',
-    date:'May 30, 2026',
-    summary:"The 2026 class is signed. Now the staff has shifted focus entirely to 2027. Here's what the priority board looks like, which positions are urgent, and where Texas stands with the targets that matter most.",
-    body:"The 2026 class closed at #8 nationally. The staff isn't satisfied with that. Internally, the benchmark is top 5 every cycle. That means the 2027 class needs to outperform, and the work is already well underway.\n\nThe most urgent need on the board is EDGE. Texas graduates significant production from the position after 2026 — even with Simmons returning for his junior year, the depth behind him is thin. The staff is targeting two EDGE rushers in the 2027 class with the priority to get at least one committed before the season starts.\n\nWide receiver is the second priority. Coleman and Wingo are both entering their final seasons of eligibility. The staff needs a high-ceiling WR prospect in 2027 to ensure the position doesn't drop off after 2028.\n\nAt quarterback, there's an interesting situation developing. Dia Bell comes in as the 2026 QB commit with legitimate upside, but the staff is still evaluating whether to take a second quarterback in 2027 depending on how the depth chart shakes out.\n\nThe recruiting calendar runs through summer official visits, fall junior days, and the December early signing period. Texas is currently the leader for three prospects rated inside the top 30 nationally. That's a good place to be in June.",
-    takeaways:[
-      "EDGE and WR are the two highest-priority positions for the 2027 class",
-      "Texas is the leader for three top-30 prospects nationally heading into the summer visit period",
-      "The staff's internal benchmark is top-5 nationally — 2026's #8 finish was below that standard"
-    ],
-    tags:['Recruiting','2027 Class','EDGE','WR'],
-    impactBreakdown:[
-      {label:'Future Roster',    value:24},
-      {label:'National Ranking', value:20},
-      {label:'Fan Velocity',     value:16},
-      {label:'NIL Positioning',  value:14},
-      {label:'Expert Consensus', value:5},
-    ],
-    seasonModel:{'2026 Class Rank':'#8 Natl.','Target Rank':'Top 5','June Leaders':'3 prospects','Next Milestone':'June OVs'}
+    watchNext:"Watch for any late portal activity as fall camp depth chart battles produce unexpected openings. Sarkisian has shown willingness to reopen the portal window if injury exposes a position group.",
+    tags:['Transfer Portal','Roster','NIL','2026 Season'],
+    relatedImpact:"The portal class upgrades Texas at exactly the three positions that most needed veteran leadership — reducing developmental risk in SEC title-game scenarios.",
+    sources:['247Sports','On3 Sports','Rivals'],
+    overview:'What happened: Texas completed its 2026 transfer portal cycle with 11 incoming players, headlined by Coleman, Williams Jr., and Brown — all immediate starters at positions of need.<br><br><strong>Why it matters:</strong> The portal isn\'t just roster management here — it\'s depth-chart surgery. Sarkisian identified three specific vulnerabilities and closed all three before fall camp.<br><br><strong>Football impact:</strong> The secondary now has veteran leadership at corner. The receiving corps is deeper than at any point in the Sarkisian era. The backfield has an experienced option alongside the younger depth.<br><br><strong>What to watch next:</strong> August depth chart releases. Whether Brown or the returning backs win the starting RB spot will determine how Texas attacks SEC run defenses in conference play.',
+    impactBreakdown:[{label:'Roster Depth',value:25},{label:'Positional Upgrade',value:22},{label:'Fan Velocity',value:18},{label:'Expert Consensus',value:12}],
+    seasonModel:{'Net Transfer Grade':'A','Portal Class Rank':'#7 Natl.','Immediate Starters':'3','NIL Investment':'$12M+'}
   }
 ];
 
-// ══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
 // STATE
-// ══════════════════════════════════════════════════════
-let allStories = [];
-let currentFilter = null;
-let isLoading = false;
-let activeChart = null;
+// ═══════════════════════════════════════════════
+var allStories = [];
+var currentFilter = null;
+var isLoading = false;
+var activeChart = null;
 
-// ══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
 // UTILITIES
-// ══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
 function esc(s) {
-  return String(s)
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
 
-function renderBody(text) {
+// Body text from plain-text multiline string (no escaping — body may contain trusted HTML)
+function renderBodyText(text) {
   if (!text) return '';
-  return text.split('\n\n')
-    .map(function(p) { return '<p>' + esc(p.trim()) + '</p>'; })
-    .join('');
+  return text.split('\n\n').map(function(p){ return '<p>' + p.trim() + '</p>'; }).join('');
 }
 
-function impactClass(n) {
-  return n >= 90 ? 'high' : n >= 80 ? 'mid' : 'low';
+function impactTier(n) {
+  if (n >= 92) return 'ELITE';
+  if (n >= 83) return 'HIGH';
+  return 'NOTABLE';
+}
+
+// Parse story date string for sort — handles "Jun 23, 2026" and ISO formats
+function parseSortDate(d) {
+  if (!d) return 0;
+  var t = new Date(d).getTime();
+  return isNaN(t) ? 0 : t;
 }
 
 function timeAgo(iso) {
   var d = new Date(iso);
   if (isNaN(d)) return 'just now';
-  var s = (Date.now() - d) / 1000;
+  var s = (Date.now()-d)/1000;
   if (s < 60) return 'just now';
-  if (s < 3600) return Math.floor(s/60) + 'm ago';
-  if (s < 86400) return Math.floor(s/3600) + 'h ago';
-  return Math.floor(s/86400) + 'd ago';
+  if (s < 3600) return Math.floor(s/60)+'m ago';
+  if (s < 86400) return Math.floor(s/3600)+'h ago';
+  return Math.floor(s/86400)+'d ago';
+}
+
+// Derive position chips from tags when affectedPositions not provided
+function derivePositions(story) {
+  if (story.affectedPositions && story.affectedPositions.length) return story.affectedPositions;
+  var found = [];
+  (story.tags||[]).forEach(function(tag){
+    var t = (tag||'').toUpperCase().trim();
+    if (POS_LIST.indexOf(t) >= 0 && found.indexOf(t) < 0) found.push(t);
+  });
+  // Fall back to category defaults if nothing found from tags
+  if (!found.length && story.category && CAT_POSITIONS[story.category]) {
+    return CAT_POSITIONS[story.category].slice();
+  }
+  return found;
+}
+
+function parseOverview(html) {
+  if (!html) return [];
+  var parts = html.split(/<br\s*\/?\s*>\s*<br\s*\/?>/i);
+  return parts.map(function(p) {
+    var s = p.trim();
+    if (!s) return null;
+    var m1 = s.match(/^<strong>(.*?)<\/strong>:?\s*([\s\S]*)/i);
+    var m2 = s.match(/^([A-Za-z][A-Za-z &']+):\s*([\s\S]*)/);
+    if (m1) return { label: m1[1].replace(/<[^>]*>/g,'').trim(), html: m1[2].trim() };
+    if (m2 && m2[1].length < 40) return { label: m2[1].trim(), html: m2[2].trim() };
+    return { label: 'Analysis', html: s };
+  }).filter(Boolean);
 }
 
 function augment(story, index) {
-  var impacts = [96,93,91,87,84,79];
-  var trending = [true,true,false,false,true,false];
-  var reads = [5,4,5,4,5,4];
-  return Object.assign({
-    rank: index + 1,
-    impact: impacts[index] || 80,
-    trending: trending[index] || false,
-    readTime: reads[index] || 4,
-    featured: index === 0,
+  var baseImpact = story.impact || Math.max(70, 96 - index*3);
+  var result = Object.assign({
+    rank: index+1, impact: baseImpact, trending: false, readTime: 4, featured: index===0,
     impactBreakdown: [
-      {label:'Program Impact',   value:Math.round((story.impact||impacts[index]||80)*0.36)},
-      {label:'Fan & Social',     value:Math.round((story.impact||impacts[index]||80)*0.26)},
-      {label:'CFP Implications', value:Math.round((story.impact||impacts[index]||80)*0.21)},
-      {label:'Expert Consensus', value:Math.round((story.impact||impacts[index]||80)*0.17)},
+      {label:'Program Impact',   value:Math.round(baseImpact*0.36)},
+      {label:'Fan & Social',     value:Math.round(baseImpact*0.26)},
+      {label:'CFP Implications', value:Math.round(baseImpact*0.21)},
+      {label:'Expert Consensus', value:Math.round(baseImpact*0.17)},
     ],
   }, story);
+  if (!result.summary) result.summary = result.hook || '';
+  if (!result.hook) result.hook = result.summary || '';
+  if (!result.kicker) result.kicker = (result.category||'Analysis').toUpperCase().slice(0,12);
+  result.id = String(result.id != null ? result.id : index);
+  // Ensure positions are always populated
+  result.affectedPositions = derivePositions(result);
+  return result;
 }
 
-// ══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
 // TOAST
-// ══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
 function showToast(msg, type) {
   var wrap = document.getElementById('ts-toasts');
   var el = document.createElement('div');
-  var icons = {ok: IC.check, err: IC.warn, inf: IC.info};
-  el.className = 'ts-toast ' + (type||'inf');
-  el.innerHTML = '<span class="ic">' + (icons[type]||IC.info) + '</span><span>' + esc(msg) + '</span>';
+  var icons = {ok:IC.check, err:IC.warn, inf:IC.info};
+  el.className = 'ts-toast '+(type||'inf');
+  el.innerHTML = '<span class="ic">'+(icons[type]||IC.info)+'</span><span>'+esc(msg)+'</span>';
   wrap.appendChild(el);
   setTimeout(function(){ el.remove(); }, 3300);
 }
 
-// ══════════════════════════════════════════════════════
-// API
-// ══════════════════════════════════════════════════════
-// Map a newsroom DB story to the shape the renderer expects
+// ═══════════════════════════════════════════════
+// API / DATA LOADING
+// ═══════════════════════════════════════════════
 function mapNewsroomStory(s, index) {
   var cats = Array.isArray(s.categories) ? s.categories : (s.categories ? [s.categories] : []);
   var cat = cats[0] || 'Program Outlook';
   var overview = '';
-  if (s.whatHappened) overview += 'What happened: ' + s.whatHappened;
-  if (s.whyItMatters) overview += '<br><br><strong>Why it matters:</strong> ' + s.whyItMatters;
-  if (s.impactOnTexas) overview += '<br><br><strong>Impact on Texas:</strong> ' + s.impactOnTexas;
+  if (s.whatHappened)  overview += 'What happened: ' + s.whatHappened;
+  if (s.whyItMatters)  overview += '<br><br><strong>Why it matters:</strong> ' + s.whyItMatters;
+  if (s.impactOnTexas) overview += '<br><br><strong>Football impact:</strong> ' + s.impactOnTexas;
   if (s.futureOutlook) overview += '<br><br><strong>What to watch next:</strong> ' + s.futureOutlook;
   return {
-    id: s.id,
-    headline: s.title || '',
-    kicker: s.kicker || (cat + ' · TOWER REPORT'),
-    summary: s.summary || '',
-    hook: s.summary || '',
+    id: String(s.id||index),
+    headline: s.title||'',
+    kicker: s.kicker || cat.toUpperCase().slice(0,12),
+    summary: s.summary||'',
+    hook: s.summary||'',
+    whyItMatters: s.whyItMatters||'',
     category: cat,
-    tags: s.tags || [],
-    impact: s.impactScore || 80,
+    tags: s.tags||[],
+    players: s.players||[],
+    impact: s.impactScore||80,
     trending: !!s.trending,
     featured: !!s.featured,
-    date: s.publishedAt
-      ? new Date(s.publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
-      : '',
+    date: s.publishedAt ? new Date(s.publishedAt).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}) : '',
     overview: overview,
-    relatedImpact: (s.keySignals || [])[0] || '',
-    players: [],
-    sources: ['Tower Report'],
-    readTime: s.readTime || 3,
+    sources: s.sources||['Tower Report'],
+    readTime: s.readTime||3,
     _authored: true,
   };
 }
 
-// Fetch newsroom published stories — always runs in parallel, never blocks
 function fetchNewsroomStories() {
   return fetch('/api/stories-db')
-    .then(function(r) { return r.ok ? r.json() : { stories: [] }; })
-    .then(function(d) {
-      return (d.stories || [])
-        .filter(function(s) { return s.status === 'published'; })
-        .sort(function(a, b) { return (b.impactScore || 0) - (a.impactScore || 0); })
-        .map(mapNewsroomStory)
-        .map(augment);
+    .then(function(r){ return r.ok ? r.json() : {stories:[]}; })
+    .then(function(d){
+      return (d.stories||[])
+        .filter(function(s){ return s.status==='published'; })
+        .sort(function(a,b){ return (b.impactScore||0)-(a.impactScore||0); })
+        .map(mapNewsroomStory).map(augment);
     })
-    .catch(function() { return []; });
+    .catch(function(){ return []; });
 }
 
-// Merge authored (newsroom) stories before AI stories, re-rank all
 function mergeStories(authored, ai) {
   var seen = {};
-  authored.forEach(function(s) { seen[s.id] = true; });
-  var combined = authored.concat(ai.filter(function(s) { return !seen[s.id]; }));
-  combined.forEach(function(s, i) { s.rank = i + 1; s.featured = (i === 0); });
+  authored.forEach(function(s){ seen[s.id]=true; });
+  var combined = authored.concat(ai.filter(function(s){ return !seen[s.id]; }));
+  combined.forEach(function(s,i){ s.rank=i+1; s.featured=(i===0); });
   return combined;
 }
 
@@ -1069,7 +850,6 @@ async function loadStories(force) {
   isLoading = true;
   document.getElementById('ts-err').classList.remove('show');
 
-  // ── Show cached or fallback data IMMEDIATELY so the page never blanks ──
   var cached = !force && getCached();
   if (cached) {
     allStories = cached;
@@ -1081,36 +861,31 @@ async function loadStories(force) {
     renderAll();
   }
 
-  // ── Background: fetch live data ──
   setSyncLoading(true);
   var newsroomPromise = fetchNewsroomStories();
 
   try {
-    var apiUrl = '/api/stories' + (force ? '?r=' + Date.now() : '');
-    var res = await fetch(apiUrl, { signal: AbortSignal.timeout(25000) });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
+    var apiUrl = '/api/stories'+(force?'?r='+Date.now():'');
+    var res = await fetch(apiUrl, {signal:AbortSignal.timeout(8000)});
+    if (!res.ok) throw new Error('HTTP '+res.status);
     var data = await res.json();
-    if (!data.stories || !data.stories.length) throw new Error('Empty');
+    if (!data.stories||!data.stories.length) throw new Error('Empty');
 
     var aiStories = data.stories.map(augment);
     var authored = await newsroomPromise;
     allStories = mergeStories(authored, aiStories);
     setCache(allStories);
 
-    var signals = data.totalSignals || 847;
+    var signals = data.totalSignals||847;
     updateHeroStats(allStories.length, signals, data.lastUpdated ? timeAgo(data.lastUpdated) : 'just now');
     renderAll();
     if (force) showToast('Tower signals synced', 'ok');
 
-  } catch (apiErr) {
-    // Merge any newsroom stories on top of what's already showing
+  } catch(err) {
     try {
-      var authored = await newsroomPromise;
-      if (authored.length) {
-        allStories = mergeStories(authored, cached ? cached : FALLBACK);
-        renderAll();
-      }
-    } catch(e) {}
+      var authored2 = await newsroomPromise;
+      if (authored2.length) { allStories = mergeStories(authored2, cached||FALLBACK); renderAll(); }
+    } catch(e){}
     if (force) showToast('Live sync unavailable', 'err');
   } finally {
     isLoading = false;
@@ -1121,68 +896,66 @@ async function loadStories(force) {
 function refreshStories() { loadStories(true); }
 
 function setSyncLoading(on) {
-  var btns = [document.getElementById('ts-sync-btn'), document.getElementById('hero-sync')];
-  var icons = [document.getElementById('ts-sync-icon'), document.getElementById('hero-sync-icon')];
-  btns.forEach(function(b){ if(b) b.disabled = on; });
-  icons.forEach(function(i){ if(i){ i.classList.toggle('ts-spin', on); }});
+  ['ts-sync-btn','hero-sync'].forEach(function(id){ var b=document.getElementById(id); if(b) b.disabled=on; });
+  ['ts-sync-icon','hero-sync-icon'].forEach(function(id){ var el=document.getElementById(id); if(el) el.classList.toggle('ts-spin',on); });
 }
 
 function updateHeroStats(count, signals, updated) {
-  var c = document.getElementById('h-count');
-  var s = document.getElementById('h-signals');
-  var u = document.getElementById('h-updated');
-  var ct = document.getElementById('ts-count');
-  if (c) c.textContent = count;
-  if (s) s.textContent = Number(signals).toLocaleString();
-  if (u) u.textContent = updated;
-  if (ct) ct.textContent = count;
+  var m = {'h-count':count,'h-signals':Number(signals).toLocaleString(),'h-updated':updated,'ts-count':count};
+  Object.keys(m).forEach(function(id){ var el=document.getElementById(id); if(el) el.textContent=m[id]; });
 }
 
-// ══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
 // RENDER
-// ══════════════════════════════════════════════════════
-function renderAll() {
-  renderFeatured();
-  renderChips();
-  applyFilter();
+// ═══════════════════════════════════════════════
+function renderAll() { renderFeatured(); renderChips(); applyFilter(); }
+
+// Build position + player + trending chips HTML
+function posChips(s, cfg) {
+  var catCfg = cfg || cc(s.category);
+  var cs = 'style="--cat:'+catCfg.c+';--cat-lo:'+catCfg.lo+'"';
+  var html = '';
+  (s.affectedPositions||[]).slice(0,4).forEach(function(p){
+    html += '<span class="ts-pos-chip" '+cs+'>'+esc(p)+'</span>';
+  });
+  (s.players||[]).slice(0,3).forEach(function(p){
+    html += '<span class="ts-player-chip ts-player-link" data-player="'+esc(p)+'">'+esc(p)+'</span>';
+  });
+  if (s.trending) html += '<span class="ts-fire-chip"><span class="ic" style="display:inline-flex;vertical-align:middle">'+IC.fire+'</span>&nbsp;Trending</span>';
+  return html;
 }
 
 function renderFeatured() {
   var zone = document.getElementById('ts-featured');
-  var s = allStories.find(function(x){ return x.featured || x.rank === 1; }) || allStories[0];
-  if (!s) { zone.innerHTML = ''; return; }
-  var grad = catGrad(s.category);
-  var ic = impactClass(s.impact);
+  var s = allStories[0];
+  if (!s) { zone.innerHTML=''; return; }
+  var cfg = cc(s.category);
+  var tier = impactTier(s.impact);
+  var wim = s.whyItMatters || (s.hook ? s.hook.split('. ')[0]+'.' : '');
+  var chips = posChips(s, cfg);
 
   zone.innerHTML =
-    '<div class="ts-feat ts-card-in" onclick="showStoryModal(\'' + s.id + '\')">' +
-      '<div class="ts-feat-visual" style="background:' + grad + ';">' +
-        '<div class="ts-feat-badge">Featured &middot; #1 Ranked</div>' +
-        '<div class="ts-feat-visual-text">' +
-          '<div class="ts-feat-visual-kicker">' + esc(s.kicker||s.category) + '</div>' +
-          '<div class="ts-feat-visual-hed">' + esc(s.headline||'') + '</div>' +
+    '<div class="ts-feat ts-card-in" onclick="showStoryModal(\''+s.id+'\')">' +
+      '<div class="ts-feat-panel" style="background:'+cfg.g+'">' +
+        '<div class="ts-feat-panel-inner">' +
+          '<div class="ts-feat-cat-lbl">'+esc(s.category)+'</div>' +
+          '<div class="ts-feat-impact-n">'+s.impact+'</div>' +
+          '<div class="ts-feat-impact-lbl">TOWER IMPACT</div>' +
+          '<div class="ts-feat-tier">'+tier+' SIGNAL</div>' +
+          (s.trending ? '<div class="ts-feat-trend"><span class="ic">'+IC.fire+'</span>&nbsp;TRENDING</div>' : '') +
         '</div>' +
+        '<div class="ts-feat-ibar"><div class="ts-feat-ibar-fill" style="width:'+s.impact+'%"></div></div>' +
       '</div>' +
-      '<div class="ts-feat-content">' +
-        '<div class="ts-feat-meta">' +
-          '<div class="ts-feat-impact-row">' +
-            '<div class="ts-impact-badge"><span class="ts-impact-n">' + s.impact + '</span><span class="ts-impact-l">Tower<br>Impact</span></div>' +
-            (s.trending ? '<div class="ts-trend-pill"><span class="ic">' + IC.fire + '</span>Trending</div>' : '') +
-          '</div>' +
-          '<div class="ts-feat-date">' + esc(s.date||'') + '</div>' +
-        '</div>' +
-        '<div class="ts-ibar-wrap">' +
-          '<div class="ts-ibar-labels"><span>Tower Impact Score</span><span>' + s.impact + ' / 100</span></div>' +
-          '<div class="ts-ibar-track"><div class="ts-ibar-fill" style="width:' + s.impact + '%"></div></div>' +
-        '</div>' +
-        '<div class="ts-feat-summary">' + esc(s.summary||'') + '</div>' +
+      '<div class="ts-feat-side">' +
+        '<div class="ts-feat-badge">Featured &nbsp;&middot;&nbsp; #1 Ranked Signal</div>' +
+        '<div class="ts-feat-kicker">'+esc(s.kicker||s.category)+'</div>' +
+        '<h2 class="ts-feat-hed">'+esc(s.headline||'')+'</h2>' +
+        '<p class="ts-feat-hook">'+esc(s.hook||s.summary||'')+'</p>' +
+        (wim ? '<div class="ts-feat-wim"><div class="ts-feat-wim-lbl">Why It Matters</div>'+esc(wim)+'</div>' : '') +
+        (chips ? '<div class="ts-feat-chips">'+chips+'</div>' : '') +
         '<div class="ts-feat-footer">' +
-          '<div class="ts-feat-tags">' +
-            (s.tags||[]).slice(0,3).map(function(t){ return '<span class="ts-feat-tag">' + esc(t) + '</span>'; }).join('') +
-          '</div>' +
-          '<button class="ts-read-btn" onclick="showStoryModal(\'' + s.id + '\');event.stopPropagation();">' +
-            'Full Analysis <span class="ic">' + IC.arrow + '</span>' +
-          '</button>' +
+          '<div class="ts-feat-meta">'+esc(s.date||'')+' &nbsp;&middot;&nbsp; '+(s.readTime||4)+' min read</div>' +
+          '<button class="ts-read-btn" onclick="showStoryModal(\''+s.id+'\');event.stopPropagation()">Full Analysis <span class="ic">'+IC.arrow+'</span></button>' +
         '</div>' +
       '</div>' +
     '</div>';
@@ -1191,46 +964,46 @@ function renderFeatured() {
 function renderChips() {
   var wrap = document.getElementById('ts-chips');
   var counts = {};
-  allStories.forEach(function(s){ counts[s.category]=(counts[s.category]||0)+1; });
+  allStories.forEach(function(s){ if(s.category) counts[s.category]=(counts[s.category]||0)+1; });
+  if (currentFilter && !counts[currentFilter]) currentFilter = null;
+  var cats = ['All'].concat(Object.keys(counts).sort());
   wrap.innerHTML = '';
-  CATEGORIES.forEach(function(cat) {
-    var n = cat==='All' ? allStories.length : (counts[cat]||0);
-    if (cat!=='All' && n===0) return;
+  cats.forEach(function(cat) {
+    var n = cat==='All' ? allStories.length : counts[cat];
     var active = (cat==='All' && !currentFilter) || cat===currentFilter;
+    var cfg = cat==='All' ? {c:'#BF5700',lo:'rgba(191,87,0,.1)'} : cc(cat);
     var btn = document.createElement('button');
-    btn.className = 'ts-chip' + (active?' active':'');
-    btn.textContent = cat==='All' ? 'All' : cat + ' ' + n;
-    btn.onclick = function(){
-      currentFilter = cat==='All' ? null : cat;
-      renderChips(); applyFilter();
-    };
+    btn.className = 'ts-chip'+(active?' active':'');
+    btn.style.setProperty('--cat', cfg.c);
+    btn.style.setProperty('--cat-lo', cfg.lo);
+    btn.innerHTML = '<span class="ts-chip-dot"></span>'+(cat==='All'?'All':esc(cat))+'&nbsp;<span style="opacity:.5;font-weight:600">'+n+'</span>';
+    (function(c){ btn.onclick = function(){ currentFilter=c==='All'?null:c; renderChips(); applyFilter(); }; })(cat);
     wrap.appendChild(btn);
   });
 }
 
 function applyFilter() {
-  var q = document.getElementById('ts-search').value.toLowerCase().trim();
+  var q = (document.getElementById('ts-search').value||'').toLowerCase().trim();
   var sort = document.getElementById('ts-sort').value;
-  var list = allStories.slice();
-
-  // Skip featured in grid (it's shown separately)
-  var featId = allStories[0] ? allStories[0].id : null;
-  list = list.filter(function(s){ return s.id !== featId; });
+  // BUG FIX: when filtering, include ALL stories (even #1/featured) in results
+  // so category filter doesn't silently exclude the top-ranked story
+  var filtering = !!(currentFilter || q.length > 1);
+  var list = filtering ? allStories.slice() : allStories.slice(1);
 
   if (currentFilter) list = list.filter(function(s){ return s.category===currentFilter; });
   if (q.length > 1) {
     list = list.filter(function(s){
-      return s.headline.toLowerCase().includes(q) ||
-        (s.summary||'').toLowerCase().includes(q) ||
-        (s.tags||[]).some(function(t){ return t.toLowerCase().includes(q); });
+      return (s.headline||'').toLowerCase().includes(q) ||
+        (s.hook||s.summary||'').toLowerCase().includes(q) ||
+        (s.tags||[]).some(function(t){ return t.toLowerCase().includes(q); }) ||
+        (s.players||[]).some(function(p){ return p.toLowerCase().includes(q); });
     });
   }
   list.sort(function(a,b){
     if (sort==='trending') return ((b.trending?1:0)-(a.trending?1:0))||b.impact-a.impact;
-    if (sort==='recency') return new Date(b.date)-new Date(a.date);
+    if (sort==='recency')  return parseSortDate(b.date)-parseSortDate(a.date);
     return (a.rank||99)-(b.rank||99);
   });
-
   renderGrid(list);
 }
 
@@ -1238,40 +1011,46 @@ function renderGrid(list) {
   var grid = document.getElementById('ts-grid');
   if (!list.length) {
     grid.innerHTML =
-      '<div style="grid-column:1/-1;text-align:center;padding:52px 20px;background:var(--black);">' +
-        '<p style="color:var(--muted);font-family:var(--font-display);font-size:12px;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;">No stories match your filter</p>' +
+      '<div style="grid-column:1/-1;text-align:center;padding:50px 20px;background:var(--s2);">' +
+        '<p style="color:var(--muted);font-family:var(--font-display);font-size:12px;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;">No signals match your filter</p>' +
         '<button class="ts-btn-ghost" style="margin:0 auto;" onclick="clearFilter()">Clear Filters</button>' +
       '</div>';
     return;
   }
   grid.innerHTML = '';
-  list.forEach(function(s, i) { grid.appendChild(buildCard(s, i)); });
+  list.forEach(function(s,i){ grid.appendChild(buildCard(s,i)); });
 }
 
 function buildCard(s, i) {
-  var grad = catGrad(s.category);
-  var ic = impactClass(s.impact);
-  var delay = Math.min(i*45, 250);
+  var cfg = cc(s.category);
+  var delay = Math.min(i*38, 200);
+  var tier = impactTier(s.impact);
+  var chips = posChips(s, cfg);
   var card = document.createElement('div');
   card.className = 'ts-card ts-card-in';
-  card.style.animationDelay = delay + 'ms';
+  card.style.cssText = 'animation-delay:'+delay+'ms;--cat:'+cfg.c+';--cat-lo:'+cfg.lo;
+
   card.innerHTML =
-    '<div class="ts-card-img" style="background:' + grad + ';">' +
-      '<div class="ts-card-rank">' + (s.rank||i+2) + '</div>' +
-      (s.trending ? '<div class="ts-card-fire"><span class="ic">' + IC.fire + '</span> Trending</div>' : '') +
-      '<div class="ts-impact-circle ' + ic + '">' + s.impact + '</div>' +
-      '<div class="ts-card-img-kicker">' + esc(s.kicker||s.category) + '</div>' +
+    '<div class="ts-card-header">' +
+      '<span class="ts-cat-badge">'+esc(s.category)+'</span>' +
+      '<div class="ts-card-score">' +
+        '<span class="ts-rank-lbl">#'+(s.rank||i+2)+'</span>' +
+        '<span class="ts-impact-n">'+s.impact+'</span>' +
+        '<span class="ts-tier-lbl">'+tier+'</span>' +
+      '</div>' +
     '</div>' +
     '<div class="ts-card-body">' +
-      '<div class="ts-card-cat">' + esc(s.category) + '</div>' +
-      '<h3 class="ts-card-hed">' + (s.headline||'') + '</h3>' +
-      '<p class="ts-card-summary">' + esc(s.summary||'') + '</p>' +
+      '<h3 class="ts-card-hed">'+esc(s.headline||'')+'</h3>' +
+      '<div class="ts-card-wim">'+esc(s.whyItMatters||s.hook||s.summary||'')+'</div>' +
+      (chips ? '<div class="ts-card-chips">'+chips+'</div>' : '') +
     '</div>' +
     '<div class="ts-card-footer">' +
-      '<div class="ts-card-meta-info">' + esc(s.date||'') + ' &nbsp;&middot;&nbsp; ' + (s.readTime||4) + ' min</div>' +
-      '<button class="ts-deepdive" onclick="showStoryModal(\'' + s.id + '\');event.stopPropagation();">Deep Analysis <span class="ic">' + IC.arrow + '</span></button>' +
+      '<span class="ts-card-meta">'+esc(s.date||'')+' &middot; '+(s.readTime||4)+' min</span>' +
+      '<button class="ts-deepdive">Deep Dive <span class="ic">'+IC.arrow+'</span></button>' +
     '</div>';
+
   card.onclick = function(){ showStoryModal(s.id); };
+  card.querySelector('.ts-deepdive').onclick = function(e){ e.stopPropagation(); showStoryModal(s.id); };
   return card;
 }
 
@@ -1282,82 +1061,184 @@ function clearFilter() {
   applyFilter();
 }
 
-// ══════════════════════════════════════════════════════
-// STORY MODAL
-// ══════════════════════════════════════════════════════
-function showStoryModal(id) {
-  var s = allStories.find(function(x){ return x.id===id; });
-  if (!s) return;
-  var grad = catGrad(s.category);
-  var ic = impactClass(s.impact);
+// Filter by player name (called when player chip is clicked)
+function filterByPlayer(name) {
+  document.getElementById('ts-search').value = name;
+  currentFilter = null;
+  renderChips();
+  applyFilter();
+  hideStoryModal();
+}
 
-  var smRows = s.seasonModel ? Object.entries(s.seasonModel).map(function(e){
-    return '<div class="ts-sm-row"><div class="ts-sm-label">' + esc(e[0]) + '</div><div class="ts-sm-val">' + esc(e[1]) + '</div></div>';
-  }).join('') : '';
+// ═══════════════════════════════════════════════
+// STORY MODAL
+// ═══════════════════════════════════════════════
+function showStoryModal(id) {
+  var s = allStories.find(function(x){ return x.id===String(id); });
+  if (!s) return;
+  var cfg = cc(s.category);
 
   document.getElementById('ts-modal-inner').innerHTML =
-    '<div class="ts-modal-hero" style="background:' + grad + ';">' +
+    '<div class="ts-modal-hero" style="background:'+cfg.g+'">' +
       '<div class="ts-modal-hero-text">' +
-        '<div class="ts-modal-hero-kicker">' + esc(s.kicker||s.category) + ' &middot; ' + esc(s.category) + '</div>' +
-        '<h2 class="ts-modal-hero-hed">' + (s.headline||'') + '</h2>' +
+        '<div class="ts-modal-hero-kicker">'+esc(s.kicker||s.category)+' &nbsp;&middot;&nbsp; '+esc(s.category)+'</div>' +
+        '<h2 class="ts-modal-hero-hed">'+esc(s.headline||'')+'</h2>' +
       '</div>' +
     '</div>' +
     '<div class="ts-modal-meta">' +
-      '<div class="ts-modal-meta-item or"><span class="ic">' + IC.chart + '</span>' + s.impact + ' Impact</div>' +
+      '<div class="ts-modal-meta-item or"><span class="ic">'+IC.chart+'</span>'+s.impact+' Impact — '+impactTier(s.impact)+'</div>' +
       '<div class="ts-modal-meta-div"></div>' +
-      '<div class="ts-modal-meta-item"><span class="ic">' + IC.cal + '</span>' + esc(s.date||'') + '</div>' +
+      '<div class="ts-modal-meta-item"><span class="ic">'+IC.cal+'</span>'+esc(s.date||'')+'</div>' +
       '<div class="ts-modal-meta-div"></div>' +
-      '<div class="ts-modal-meta-item"><span class="ic">' + IC.clock + '</span>' + (s.readTime||4) + ' min read</div>' +
-      (s.trending ? '<div class="ts-modal-meta-div"></div><div class="ts-modal-meta-item" style="color:#fb923c;"><span class="ic">' + IC.fire + '</span>Trending</div>' : '') +
+      '<div class="ts-modal-meta-item"><span class="ic">'+IC.clock+'</span>'+(s.readTime||4)+' min read</div>' +
+      (s.trending ? '<div class="ts-modal-meta-div"></div><div class="ts-modal-meta-item hot"><span class="ic">'+IC.fire+'</span>Trending Now</div>' : '') +
     '</div>' +
-    '<div class="ts-modal-content-grid">' +
-      '<div class="ts-modal-article">' +
-        '<div class="ts-modal-lead">' + esc(s.summary||'') + '</div>' +
-        '<div class="ts-article-body">' + renderBody(s.body||'') + '</div>' +
-        '<div class="ts-takeaways">' +
-          '<div class="ts-takeaways-lbl">Key Takeaways</div>' +
-          '<ul>' + (s.takeaways||[]).map(function(t){ return '<li>' + esc(t) + '</li>'; }).join('') + '</ul>' +
-        '</div>' +
-        '<div class="ts-modal-tags">' +
-          (s.tags||[]).map(function(t){ return '<span class="ts-modal-tag">' + esc(t) + '</span>'; }).join('') +
-        '</div>' +
-      '</div>' +
-      '<div class="ts-modal-sidebar">' +
-        '<div class="ts-sidebar-sec">' +
-          '<div class="ts-sidebar-lbl">Impact Breakdown</div>' +
-          '<div class="ts-chart-wrap"><canvas id="ts-impact-canvas"></canvas></div>' +
-        '</div>' +
-        (smRows ? '<div class="ts-sidebar-sec"><div class="ts-sidebar-lbl">Tower Season Model</div><div class="ts-sm-table">' + smRows + '</div></div>' : '') +
-      '</div>' +
+    '<div class="ts-modal-grid">' +
+      '<div class="ts-modal-article">'+renderArticle(s)+'</div>' +
+      '<div class="ts-modal-sidebar">'+renderSidebar(s)+'</div>' +
     '</div>';
 
   openModal('ts-modal');
 
-  // Lazy-load Chart.js then init chart
-  var breakdown = s.impactBreakdown || [];
+  // Lazy-load Chart.js
+  var breakdown = s.impactBreakdown||[];
+  var catColor = cfg.c;
+  function initChart() { setTimeout(function(){ initImpactChart(breakdown, catColor); }, 80); }
   if (window.Chart) {
-    setTimeout(function(){ initImpactChart(breakdown); }, 80);
+    initChart();
   } else {
     var sc = document.createElement('script');
     sc.src = 'https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js';
-    sc.onload = function(){ initImpactChart(breakdown); };
+    sc.onload = initChart;
+    sc.onerror = function(){ console.warn('[tower] Chart.js load failed'); };
     document.head.appendChild(sc);
   }
 }
 
-function hideStoryModal() {
-  closeModal('ts-modal');
-  if (activeChart) { activeChart.destroy(); activeChart = null; }
+function renderArticle(s) {
+  var out = '';
+  // Lead
+  out += '<div class="ts-modal-lead">'+esc(s.hook||s.summary||'')+'</div>';
+
+  // Why It Matters (standalone field)
+  var wim = s.whyItMatters||'';
+  if (wim && wim !== (s.hook||s.summary||'')) {
+    out += '<div class="ts-wim-box"><div class="ts-wim-box-lbl">Why It Matters</div><p>'+esc(wim)+'</p></div>';
+  }
+
+  // Body or parsed overview sections
+  if (s.body) {
+    out += '<div class="ts-article-body">'+renderBodyText(s.body)+'</div>';
+  } else if (s.overview) {
+    var sections = parseOverview(s.overview);
+    sections.forEach(function(sec) {
+      var lbl = sec.label.toLowerCase();
+      // Skip duplicate — don't re-render "Why it matters" if already shown in wim-box
+      if (wim && (lbl.includes('why') || lbl.includes('matter'))) return;
+      out += '<div class="ts-section-block"><div class="ts-section-lbl">'+esc(sec.label)+'</div><div class="ts-section-body">'+sec.html+'</div></div>';
+    });
+  }
+
+  // Signal Intelligence (takeaways)
+  if (s.takeaways && s.takeaways.length) {
+    out += '<div class="ts-takeaways"><div class="ts-takeaways-lbl">Signal Intelligence</div><ul>'+
+      s.takeaways.map(function(t){ return '<li>'+esc(t)+'</li>'; }).join('')+
+    '</ul></div>';
+  }
+
+  // Watch List
+  if (s.watchNext) {
+    out += '<div class="ts-watchnext"><div class="ts-watchnext-lbl">Watch List</div><p>'+esc(s.watchNext)+'</p></div>';
+  }
+
+  // Tags
+  if (s.tags && s.tags.length) {
+    out += '<div class="ts-modal-tags">'+s.tags.map(function(t){ return '<span class="ts-modal-tag">'+esc(t)+'</span>'; }).join('')+'</div>';
+  }
+
+  // Related stories
+  out += renderRelated(s);
+
+  return out;
 }
 
-// ══════════════════════════════════════════════════════
-// CHART.JS — Impact Breakdown horizontal bar
-// ══════════════════════════════════════════════════════
-function initImpactChart(breakdown) {
-  var canvas = document.getElementById('ts-impact-canvas');
-  if (!canvas || !window.Chart) return;
-  if (activeChart) { activeChart.destroy(); activeChart = null; }
+function renderRelated(current) {
+  // Same category first, fall back to top ranked
+  var sameCat = allStories.filter(function(x){ return x.id!==current.id && x.category===current.category; });
+  var others  = allStories.filter(function(x){ return x.id!==current.id && x.category!==current.category; });
+  var related = sameCat.slice(0,2).concat(others.slice(0,3-sameCat.slice(0,2).length)).slice(0,3);
+  if (!related.length) return '';
 
+  var out = '<div class="ts-related-section"><div class="ts-related-lbl">More from Tower Intel</div>';
+  related.forEach(function(r) {
+    var rCfg = cc(r.category);
+    out += '<div class="ts-related-card" style="--cat:'+rCfg.c+';--cat-lo:'+rCfg.lo+'" onclick="showStoryModal(\''+r.id+'\')">' +
+      '<div class="ts-related-cat">'+esc(r.category)+'</div>' +
+      '<div class="ts-related-hed">'+esc(r.headline||'')+'</div>' +
+      '<div class="ts-related-foot">'+esc(r.date||'')+' &middot; <span style="color:var(--cat)">'+r.impact+' Impact</span></div>' +
+    '</div>';
+  });
+  return out+'</div>';
+}
+
+function renderSidebar(s) {
+  var out = '';
+  var cfg = cc(s.category);
+
+  // Impact breakdown chart
+  out += '<div class="ts-sidebar-sec"><div class="ts-sidebar-lbl">Impact Breakdown</div><div class="ts-chart-wrap"><canvas id="ts-impact-canvas"></canvas></div><div class="ts-impact-total">Score: <strong>'+s.impact+'</strong> / 100 &nbsp;&middot;&nbsp; '+impactTier(s.impact)+'</div></div>';
+
+  // Position groups
+  if (s.affectedPositions && s.affectedPositions.length) {
+    out += '<div class="ts-sidebar-sec"><div class="ts-sidebar-lbl">Position Groups</div><div class="ts-pos-chips">'+
+      s.affectedPositions.map(function(p){ return '<span class="ts-pos-chip" style="--cat:'+cfg.c+';--cat-lo:'+cfg.lo+'">'+esc(p)+'</span>'; }).join('')+
+    '</div></div>';
+  }
+
+  // Players (clickable)
+  if (s.players && s.players.length) {
+    out += '<div class="ts-sidebar-sec"><div class="ts-sidebar-lbl">Players</div><div class="ts-pos-chips">'+
+      s.players.map(function(p){ return '<span class="ts-player-chip ts-player-link" data-player="'+esc(p)+'">'+esc(p)+'</span>'; }).join('')+
+    '</div></div>';
+  }
+
+  // Season model
+  if (s.seasonModel) {
+    var rows = Object.entries(s.seasonModel).map(function(e){
+      return '<div class="ts-sm-row"><div class="ts-sm-label">'+esc(e[0])+'</div><div class="ts-sm-val">'+esc(e[1])+'</div></div>';
+    }).join('');
+    out += '<div class="ts-sidebar-sec"><div class="ts-sidebar-lbl">Season Model</div><div class="ts-sm-table">'+rows+'</div></div>';
+  }
+
+  // Sources
+  if (s.sources && s.sources.length) {
+    out += '<div class="ts-sidebar-sec"><div class="ts-sidebar-lbl">Sources</div><div class="ts-sources">'+
+      s.sources.map(function(src){ return '<span class="ts-source">'+esc(src)+'</span>'; }).join('')+
+    '</div></div>';
+  }
+
+  // Championship path
+  if (s.relatedImpact) {
+    out += '<div class="ts-sidebar-sec"><div class="ts-sidebar-lbl">Championship Path</div><p class="ts-related-impact">'+esc(s.relatedImpact)+'</p></div>';
+  }
+
+  return out;
+}
+
+function hideStoryModal() {
+  closeModal('ts-modal');
+  if (activeChart) { activeChart.destroy(); activeChart=null; }
+}
+
+// ═══════════════════════════════════════════════
+// CHART.JS
+// ═══════════════════════════════════════════════
+function initImpactChart(breakdown, accentColor) {
+  var canvas = document.getElementById('ts-impact-canvas');
+  if (!canvas||!window.Chart) return;
+  if (activeChart) { activeChart.destroy(); activeChart=null; }
+  var ac = accentColor||'#BF5700';
+  var maxVal = Math.max.apply(null, breakdown.map(function(b){ return b.value||0; }));
   var ctx = canvas.getContext('2d');
   activeChart = new Chart(ctx, {
     type: 'bar',
@@ -1365,87 +1246,66 @@ function initImpactChart(breakdown) {
       labels: breakdown.map(function(b){ return b.label; }),
       datasets: [{
         data: breakdown.map(function(b){ return b.value; }),
-        backgroundColor: breakdown.map(function(b){
-          return b.value >= 22 ? 'rgba(232,93,4,0.88)' :
-                 b.value >= 16 ? 'rgba(191,87,0,0.82)' :
-                                 'rgba(146,64,14,0.75)';
-        }),
-        borderRadius: 3,
+        backgroundColor: ac+'BB',
+        borderColor: ac,
+        borderWidth: 1,
+        borderRadius: 2,
         borderSkipped: false,
       }]
     },
     options: {
-      indexAxis: 'y',
-      responsive: true,
-      maintainAspectRatio: false,
-      animation: { duration: 600, easing: 'easeOutQuart' },
+      indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+      animation: {duration:520, easing:'easeOutQuart'},
       plugins: {
-        legend: { display: false },
+        legend: {display:false},
         tooltip: {
-          backgroundColor: '#1C1C1C',
-          borderColor: 'rgba(191,87,0,0.35)',
-          borderWidth: 1,
-          titleColor: '#F0EBE1',
-          bodyColor: '#948C82',
-          padding: 10,
-          callbacks: {
-            label: function(ctx){ return ' +' + ctx.parsed.x + ' pts'; }
-          }
+          backgroundColor:'#1A1A1A', borderColor:ac+'44', borderWidth:1,
+          titleColor:'#F0EBE1', bodyColor:'#948C82', padding:10,
+          callbacks: {label:function(ctx){ return ' +'+ctx.parsed.x+' pts'; }}
         }
       },
       scales: {
         x: {
-          max: 30,
-          grid: { color: 'rgba(255,255,255,0.05)', drawBorder: false },
-          border: { display: false },
-          ticks: {
-            color: '#5A5450',
-            font: { size: 10, family: "'Barlow Condensed', sans-serif" }
-          }
+          max: Math.max(40, Math.ceil(maxVal*1.25)),
+          grid: {color:'rgba(255,255,255,.04)', drawBorder:false}, border:{display:false},
+          ticks: {color:'#5A5450', font:{size:10, family:"'Barlow Condensed', sans-serif"}}
         },
         y: {
-          grid: { display: false, drawBorder: false },
-          border: { display: false },
-          ticks: {
-            color: '#C4BCB0',
-            font: { size: 11, family: "'Barlow Condensed', sans-serif", weight: '700' }
-          }
+          grid: {display:false, drawBorder:false}, border:{display:false},
+          ticks: {color:'#C4BCB0', font:{size:11, family:"'Barlow Condensed', sans-serif", weight:'700'}}
         }
       }
     }
   });
 }
 
-// ══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
 // RANKING MODAL
-// ══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
 function showRankingModal() { openModal('ts-rank-modal'); }
 function hideRankingModal() { closeModal('ts-rank-modal'); }
+function openModal(id) { document.getElementById(id).classList.add('open'); document.body.style.overflow='hidden'; }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); document.body.style.overflow=''; }
 
-// ══════════════════════════════════════════════════════
-// MODAL HELPERS
-// ══════════════════════════════════════════════════════
-function openModal(id) {
-  document.getElementById(id).classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeModal(id) {
-  document.getElementById(id).classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-// ══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
 // EVENTS
-// ══════════════════════════════════════════════════════
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') { hideStoryModal(); hideRankingModal(); }
-});
+// ═══════════════════════════════════════════════
+document.addEventListener('keydown', function(e){ if(e.key==='Escape'){ hideStoryModal(); hideRankingModal(); } });
 document.getElementById('ts-search').addEventListener('input', applyFilter);
 document.getElementById('ts-sort').addEventListener('change', applyFilter);
 
-// ══════════════════════════════════════════════════════
+// Delegated click handler for player links (works in both cards and modal)
+document.addEventListener('click', function(e) {
+  var el = e.target.closest('.ts-player-link');
+  if (!el) return;
+  var name = el.dataset.player;
+  if (!name) return;
+  filterByPlayer(name);
+});
+
+// ═══════════════════════════════════════════════
 // BOOT
-// ══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
 loadStories();
 </script>
 </body>

@@ -18,6 +18,7 @@
 export const config = { runtime: 'edge' };
 
 const BLOB_PATHNAME = 'tower-stories.json';
+const BLOB_PREFIX = 'tower-stories'; // prefix without .json — REST API appends random hash to URL
 const BLOB_API = 'https://blob.vercel-storage.com';
 
 const CORS = {
@@ -34,11 +35,13 @@ function json(data, status = 200) {
 }
 
 async function blobList(token) {
-  const url = `${BLOB_API}?prefix=${encodeURIComponent(BLOB_PATHNAME)}&token=${encodeURIComponent(token)}&limit=1`;
-  const res = await fetch(url);
+  const url = `${BLOB_API}?prefix=${encodeURIComponent(BLOB_PREFIX)}&limit=10`;
+  const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
   if (!res.ok) return null;
   const data = await res.json();
-  return data.blobs?.[0] ?? null;
+  const blobs = data.blobs || [];
+  blobs.sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt));
+  return blobs[0] ?? null;
 }
 
 async function blobGet() {
@@ -59,17 +62,19 @@ async function blobSet(stories) {
   const token = process.env.BLOB_READ_WRITE_TOKEN;
   if (!token) throw new Error('BLOB_READ_WRITE_TOKEN not configured');
 
-  // Delete existing blob first (Blob storage is immutable; same path = new object)
-  const existing = await blobList(token);
-  if (existing) {
-    await fetch(BLOB_API, {
-      method: 'DELETE',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ urls: [existing.url] }),
-    });
+  // Delete ALL existing blobs for this key (REST API appends random hash, so orphans accumulate)
+  const listUrl = `${BLOB_API}?prefix=${encodeURIComponent(BLOB_PREFIX)}&limit=50`;
+  const listRes = await fetch(listUrl, { headers: { Authorization: `Bearer ${token}` } });
+  if (listRes.ok) {
+    const listData = await listRes.json();
+    const existingUrls = (listData.blobs || []).map(b => b.url);
+    if (existingUrls.length) {
+      await fetch(BLOB_API, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ urls: existingUrls }),
+      });
+    }
   }
 
   // Upload new blob
