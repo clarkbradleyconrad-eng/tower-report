@@ -8,8 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<!-- Font Awesome and Chart.js removed from critical path; icons are inline SVG, Chart.js lazy-loads on modal open -->
 <script src="nav.js" defer></script>
 <style>
 /* ======================================================
@@ -123,7 +122,10 @@ a{color:inherit;text-decoration:none;}
 }
 .ts-ctrl-inner{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
 .ts-search-wrap{position:relative;flex-shrink:0;}
-.ts-search-wrap i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:12px;pointer-events:none;}
+.ts-search-wrap .icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;display:flex;align-items:center;}
+.ic{display:inline-flex;align-items:center;vertical-align:middle;flex-shrink:0;}
+.ic svg{display:block;}
+@keyframes _spin{to{transform:rotate(360deg);}}
 .ts-search{
   width:210px;padding:9px 12px 9px 33px;
   background:var(--s2);border:1px solid var(--border-mid);color:var(--white);
@@ -156,8 +158,7 @@ a{color:inherit;text-decoration:none;}
 }
 .ts-sync:hover{color:var(--orange);border-color:var(--orange);}
 .ts-sync:disabled{opacity:.4;cursor:not-allowed;}
-.ts-spin{animation:_spin .7s linear infinite;}
-@keyframes _spin{to{transform:rotate(360deg);}}
+.ts-spin,.ts-spin *{animation:_spin .7s linear infinite;}
 
 /* ======================================================
    SECTION CHROME
@@ -584,11 +585,11 @@ a{color:inherit;text-decoration:none;}
 
       <div class="ts-hero-actions">
         <button class="ts-btn-primary" id="hero-sync" onclick="refreshStories()">
-          <i class="fa-solid fa-rotate-right" id="hero-sync-icon"></i>
+          <span class="ic" id="hero-sync-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></span>
           Sync Latest Signals
         </button>
         <button class="ts-btn-ghost" onclick="showRankingModal()">
-          <i class="fa-solid fa-sliders"></i>
+          <span class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="6" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="4" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="8" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="17" y1="16" x2="23" y2="16"/></svg></span>
           Ranking Model
         </button>
       </div>
@@ -622,7 +623,7 @@ a{color:inherit;text-decoration:none;}
   <div class="ts-wrap">
     <div class="ts-ctrl-inner">
       <div class="ts-search-wrap">
-        <i class="fa-solid fa-magnifying-glass"></i>
+        <span class="icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
         <input id="ts-search" type="text" placeholder="Search stories, players..." class="ts-search" autocomplete="off">
       </div>
       <div class="ts-chips" id="ts-chips"></div>
@@ -633,7 +634,7 @@ a{color:inherit;text-decoration:none;}
           <option value="recency">Most Recent</option>
         </select>
         <button id="ts-sync-btn" class="ts-sync" onclick="refreshStories()">
-          <i class="fa-solid fa-rotate-right" id="ts-sync-icon"></i>
+          <span class="ic" id="ts-sync-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></span>
           <span>Sync</span>
         </button>
       </div>
@@ -697,7 +698,7 @@ a{color:inherit;text-decoration:none;}
         Not affiliated with the University of Texas. &nbsp;&middot;&nbsp; tower-report.vercel.app
       </p>
       <button class="ts-btn-ghost" onclick="refreshStories()">
-        <i class="fa-solid fa-rotate-right"></i> Sync
+        <span class="ic"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></span> Sync
       </button>
     </div>
   </div>
@@ -754,6 +755,34 @@ a{color:inherit;text-decoration:none;}
 // ══════════════════════════════════════════════════════
 
 const CATEGORIES = ['All','Analysis','Portal','Recruiting'];
+
+// Inline SVG icons — no Font Awesome dependency
+const IC = {
+  refresh: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:block"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>',
+  fire:    '<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style="display:block"><path d="M12 2C12 2 6 8 6 13a6 6 0 0012 0c0-5-6-11-6-11zm0 15a2 2 0 110-4 2 2 0 010 4z"/></svg>',
+  arrow:   '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:block"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>',
+  check:   '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:block"><polyline points="20 6 9 17 4 12"/></svg>',
+  warn:    '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:block"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+  info:    '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:block"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>',
+  chart:   '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:block"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>',
+  cal:     '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:block"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
+  clock:   '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:block"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+};
+
+// ── Client-side cache (stale-while-revalidate) ──
+const CACHE_KEY = 'tr_stories_v3';
+const CACHE_TTL = 15 * 60 * 1000; // 15 min
+
+function getCached() {
+  try {
+    var c = JSON.parse(localStorage.getItem(CACHE_KEY));
+    if (c && (Date.now() - c.ts < CACHE_TTL)) return c.data;
+  } catch(e) {}
+  return null;
+}
+function setCache(data) {
+  try { localStorage.setItem(CACHE_KEY, JSON.stringify({ts: Date.now(), data: data})); } catch(e) {}
+}
 
 // Cinematic gradient backgrounds per story category
 const CAT_GRAD = {
@@ -970,9 +999,9 @@ function augment(story, index) {
 function showToast(msg, type) {
   var wrap = document.getElementById('ts-toasts');
   var el = document.createElement('div');
-  var icons = {ok:'fa-check',err:'fa-triangle-exclamation',inf:'fa-circle-info'};
+  var icons = {ok: IC.check, err: IC.warn, inf: IC.info};
   el.className = 'ts-toast ' + (type||'inf');
-  el.innerHTML = '<i class="fa-solid ' + (icons[type]||'fa-circle-info') + '"></i><span>' + esc(msg) + '</span>';
+  el.innerHTML = '<span class="ic">' + (icons[type]||IC.info) + '</span><span>' + esc(msg) + '</span>';
   wrap.appendChild(el);
   setTimeout(function(){ el.remove(); }, 3300);
 }
@@ -1038,10 +1067,22 @@ function mergeStories(authored, ai) {
 async function loadStories(force) {
   if (isLoading) return;
   isLoading = true;
-  setSyncLoading(true);
   document.getElementById('ts-err').classList.remove('show');
 
-  // Always fetch newsroom stories in parallel — never blocks the main feed
+  // ── Show cached or fallback data IMMEDIATELY so the page never blanks ──
+  var cached = !force && getCached();
+  if (cached) {
+    allStories = cached;
+    updateHeroStats(allStories.length, 847, 'cached');
+    renderAll();
+  } else {
+    allStories = FALLBACK;
+    updateHeroStats(FALLBACK.length, 847, 'cached');
+    renderAll();
+  }
+
+  // ── Background: fetch live data ──
+  setSyncLoading(true);
   var newsroomPromise = fetchNewsroomStories();
 
   try {
@@ -1054,6 +1095,7 @@ async function loadStories(force) {
     var aiStories = data.stories.map(augment);
     var authored = await newsroomPromise;
     allStories = mergeStories(authored, aiStories);
+    setCache(allStories);
 
     var signals = data.totalSignals || 847;
     updateHeroStats(allStories.length, signals, data.lastUpdated ? timeAgo(data.lastUpdated) : 'just now');
@@ -1061,28 +1103,15 @@ async function loadStories(force) {
     if (force) showToast('Tower signals synced', 'ok');
 
   } catch (apiErr) {
-    // Fall back to authored stories.json + newsroom
+    // Merge any newsroom stories on top of what's already showing
     try {
-      var jsonRes = await fetch('/data/stories.json');
-      if (!jsonRes.ok) throw new Error('JSON fetch failed');
-      var jsonData = await jsonRes.json();
-      var jsonStories = (jsonData.stories || []).map(augment);
-      if (!jsonStories.length) throw new Error('Empty JSON');
-
       var authored = await newsroomPromise;
-      allStories = mergeStories(authored, jsonStories);
-      var ts = jsonData.lastUpdated ? timeAgo(jsonData.lastUpdated) : 'cached';
-      updateHeroStats(allStories.length, 847, ts);
-      renderAll();
-      if (force) showToast('Live sync unavailable — showing authored stories', 'err');
-
-    } catch (jsonErr) {
-      var authored = await newsroomPromise;
-      allStories = authored.length ? mergeStories(authored, FALLBACK) : FALLBACK;
-      updateHeroStats(allStories.length, 847, 'cached');
-      renderAll();
-      if (force) showToast('Showing cached intelligence', 'err');
-    }
+      if (authored.length) {
+        allStories = mergeStories(authored, cached ? cached : FALLBACK);
+        renderAll();
+      }
+    } catch(e) {}
+    if (force) showToast('Live sync unavailable', 'err');
   } finally {
     isLoading = false;
     setSyncLoading(false);
@@ -1138,7 +1167,7 @@ function renderFeatured() {
         '<div class="ts-feat-meta">' +
           '<div class="ts-feat-impact-row">' +
             '<div class="ts-impact-badge"><span class="ts-impact-n">' + s.impact + '</span><span class="ts-impact-l">Tower<br>Impact</span></div>' +
-            (s.trending ? '<div class="ts-trend-pill"><i class="fa-solid fa-fire"></i>Trending</div>' : '') +
+            (s.trending ? '<div class="ts-trend-pill"><span class="ic">' + IC.fire + '</span>Trending</div>' : '') +
           '</div>' +
           '<div class="ts-feat-date">' + esc(s.date||'') + '</div>' +
         '</div>' +
@@ -1152,7 +1181,7 @@ function renderFeatured() {
             (s.tags||[]).slice(0,3).map(function(t){ return '<span class="ts-feat-tag">' + esc(t) + '</span>'; }).join('') +
           '</div>' +
           '<button class="ts-read-btn" onclick="showStoryModal(\'' + s.id + '\');event.stopPropagation();">' +
-            'Full Analysis <i class="fa-solid fa-arrow-right"></i>' +
+            'Full Analysis <span class="ic">' + IC.arrow + '</span>' +
           '</button>' +
         '</div>' +
       '</div>' +
@@ -1229,7 +1258,7 @@ function buildCard(s, i) {
   card.innerHTML =
     '<div class="ts-card-img" style="background:' + grad + ';">' +
       '<div class="ts-card-rank">' + (s.rank||i+2) + '</div>' +
-      (s.trending ? '<div class="ts-card-fire"><i class="fa-solid fa-fire"></i> Trending</div>' : '') +
+      (s.trending ? '<div class="ts-card-fire"><span class="ic">' + IC.fire + '</span> Trending</div>' : '') +
       '<div class="ts-impact-circle ' + ic + '">' + s.impact + '</div>' +
       '<div class="ts-card-img-kicker">' + esc(s.kicker||s.category) + '</div>' +
     '</div>' +
@@ -1240,7 +1269,7 @@ function buildCard(s, i) {
     '</div>' +
     '<div class="ts-card-footer">' +
       '<div class="ts-card-meta-info">' + esc(s.date||'') + ' &nbsp;&middot;&nbsp; ' + (s.readTime||4) + ' min</div>' +
-      '<button class="ts-deepdive" onclick="showStoryModal(\'' + s.id + '\');event.stopPropagation();">Deep Analysis <i class="fa-solid fa-arrow-right"></i></button>' +
+      '<button class="ts-deepdive" onclick="showStoryModal(\'' + s.id + '\');event.stopPropagation();">Deep Analysis <span class="ic">' + IC.arrow + '</span></button>' +
     '</div>';
   card.onclick = function(){ showStoryModal(s.id); };
   return card;
@@ -1274,12 +1303,12 @@ function showStoryModal(id) {
       '</div>' +
     '</div>' +
     '<div class="ts-modal-meta">' +
-      '<div class="ts-modal-meta-item or"><i class="fa-solid fa-chart-line"></i>' + s.impact + ' Impact</div>' +
+      '<div class="ts-modal-meta-item or"><span class="ic">' + IC.chart + '</span>' + s.impact + ' Impact</div>' +
       '<div class="ts-modal-meta-div"></div>' +
-      '<div class="ts-modal-meta-item"><i class="fa-regular fa-calendar"></i>' + esc(s.date||'') + '</div>' +
+      '<div class="ts-modal-meta-item"><span class="ic">' + IC.cal + '</span>' + esc(s.date||'') + '</div>' +
       '<div class="ts-modal-meta-div"></div>' +
-      '<div class="ts-modal-meta-item"><i class="fa-regular fa-clock"></i>' + (s.readTime||4) + ' min read</div>' +
-      (s.trending ? '<div class="ts-modal-meta-div"></div><div class="ts-modal-meta-item" style="color:#fb923c;"><i class="fa-solid fa-fire"></i>Trending</div>' : '') +
+      '<div class="ts-modal-meta-item"><span class="ic">' + IC.clock + '</span>' + (s.readTime||4) + ' min read</div>' +
+      (s.trending ? '<div class="ts-modal-meta-div"></div><div class="ts-modal-meta-item" style="color:#fb923c;"><span class="ic">' + IC.fire + '</span>Trending</div>' : '') +
     '</div>' +
     '<div class="ts-modal-content-grid">' +
       '<div class="ts-modal-article">' +
@@ -1304,8 +1333,16 @@ function showStoryModal(id) {
 
   openModal('ts-modal');
 
-  // Defer chart init until DOM paints
-  setTimeout(function(){ initImpactChart(s.impactBreakdown||[]); }, 80);
+  // Lazy-load Chart.js then init chart
+  var breakdown = s.impactBreakdown || [];
+  if (window.Chart) {
+    setTimeout(function(){ initImpactChart(breakdown); }, 80);
+  } else {
+    var sc = document.createElement('script');
+    sc.src = 'https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js';
+    sc.onload = function(){ initImpactChart(breakdown); };
+    document.head.appendChild(sc);
+  }
 }
 
 function hideStoryModal() {
