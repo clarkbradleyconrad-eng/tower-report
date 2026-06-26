@@ -1361,15 +1361,11 @@ function updateStatusBar(meta) {
   const sourceText = meta.source === 'the-odds-api'
     ? `The Odds API · ${meta.liveGames} of ${meta.totalGames} games live`
     : meta.source === 'placeholder'
-      ? 'Pre-season consensus lines · Set ODDS_API_KEY for live data'
+      ? 'Pre-season consensus lines'
       : meta.source;
   if (source) source.textContent = sourceText;
 
-  if (meta.notice) {
-    if (notice) { notice.textContent = meta.notice; notice.style.display = ''; }
-  } else {
-    if (notice) notice.style.display = 'none';
-  }
+  if (notice) notice.style.display = 'none';
 }
 
 /**

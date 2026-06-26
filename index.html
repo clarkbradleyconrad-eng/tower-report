@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
 <script src="player-profile.js" defer></script>
 <style>
 /* ======================================================
@@ -17,12 +18,18 @@
   --orange:#BF5700;--orange-hi:#CF6210;--orange-lo:rgba(191,87,0,0.1);--orange-glow:rgba(191,87,0,0.06);
   --black:#080808;--surface:#0F0F0F;--surface2:#151515;--surface3:#1C1C1C;--surface4:#232323;
   --border:rgba(255,255,255,0.055);--border-mid:rgba(255,255,255,0.10);--border-strong:rgba(255,255,255,0.16);
-  --white:#F0EBE1;--white2:#C4BCB0;--muted:#5A5450;--secondary:#948C82;
+  --white:#F0EBE1;--white2:#C4BCB0;--muted:#5A5450;--secondary:#948C82;--text-muted:#5A5450;
   --green:#22c55e;--amber:#f59e0b;--red:#ef4444;--blue:#60a5fa;--purple:#c084fc;
+  --font-display:'Bebas Neue',sans-serif;--font-body:'Inter',sans-serif;
+  --bg-page:#0a0a0a;--ease-out:cubic-bezier(0.16,1,0.3,1);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
-body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);overflow-x:hidden;line-height:1.5;}
+body{font-family:'Inter',sans-serif;background:var(--bg-page);color:var(--white);overflow-x:hidden;line-height:1.5;background-image:radial-gradient(ellipse 90% 45% at 50% 0%,rgba(191,87,0,0.07) 0%,transparent 60%);background-attachment:fixed;}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--black);}
+::-webkit-scrollbar-thumb{background:var(--orange);}
+html{scrollbar-width:thin;scrollbar-color:var(--orange) var(--black);}
 
 /* ======================================================
    MASTHEAD
@@ -52,7 +59,7 @@ body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);
 /* ======================================================
    NAV
 ====================================================== */
-nav{position:sticky;top:0;z-index:200;background:rgba(8,8,8,0.97);backdrop-filter:blur(24px);border-bottom:1px solid var(--border-mid);}
+nav{position:sticky;top:0;z-index:200;background:rgba(8,8,8,0.97);backdrop-filter:blur(24px);border-bottom:1px solid var(--orange);}
 .nav-inner{display:flex;justify-content:space-between;align-items:center;padding:0 48px;max-width:1600px;margin:0 auto;}
 .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;padding:11px 0;}
 .nav-logo-text{display:flex;flex-direction:column;line-height:1;}
@@ -133,24 +140,24 @@ nav{position:sticky;top:0;z-index:200;background:rgba(8,8,8,0.97);backdrop-filte
 .live-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:blink 2s ease-in-out infinite;}
 .hero-kicker{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3.5px;text-transform:uppercase;color:var(--orange);}
 .hero-hed{
-  font-family:'Playfair Display',serif;font-size:clamp(52px,7vw,108px);
-  font-weight:900;line-height:.88;letter-spacing:-3.5px;color:var(--white);margin-bottom:22px;
+  font-family:'Playfair Display',serif;font-size:clamp(52px,6vw,88px);
+  font-weight:900;line-height:.88;letter-spacing:-3px;color:var(--white);margin-bottom:22px;
 }
 .hero-hed em{font-style:italic;color:var(--orange);}
 .hero-dek{font-size:15px;line-height:1.68;color:var(--secondary);max-width:520px;margin-bottom:32px;}
 .hero-btns{display:flex;gap:10px;flex-wrap:wrap;}
 .btn-primary{
-  font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
-  background:var(--orange);color:#fff;text-decoration:none;padding:12px 22px;
-  border:1px solid var(--orange);transition:all .2s;display:inline-block;cursor:pointer;
+  font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:0.1em;text-transform:uppercase;
+  background:var(--orange);color:#fff;text-decoration:none;padding:13px 26px;
+  border:1px solid var(--orange);transition:all 200ms var(--ease-out);display:inline-block;cursor:pointer;
 }
-.btn-primary:hover{background:var(--orange-hi);}
+.btn-primary:hover{background:var(--orange-hi);box-shadow:0 0 24px rgba(191,87,0,0.5);}
 .btn-ghost{
-  font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
-  background:transparent;color:var(--white2);text-decoration:none;padding:12px 22px;
-  border:1px solid var(--border-mid);transition:all .2s;display:inline-block;
+  font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:0.1em;text-transform:uppercase;
+  background:transparent;color:var(--white2);text-decoration:none;padding:13px 26px;
+  border:1px solid rgba(255,255,255,0.2);transition:all 200ms var(--ease-out);display:inline-block;
 }
-.btn-ghost:hover{border-color:var(--white2);color:var(--white);}
+.btn-ghost:hover{border-color:var(--white);color:var(--white);}
 
 /* --- Hero Stats Bar --- */
 .hero-stats-header{
@@ -164,7 +171,7 @@ nav{position:sticky;top:0;z-index:200;background:rgba(8,8,8,0.97);backdrop-filte
 .hero-stat{padding:14px 22px;border-right:1px solid var(--border);}
 .hero-stat:last-child{border-right:none;}
 .hs-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
-.hs-val{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;color:var(--white);letter-spacing:.3px;}
+.hs-val{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--white);letter-spacing:.5px;}
 .hs-val.orange{color:var(--orange);}
 a.hero-stat:hover{background:var(--surface2);}
 a.hero-stat:hover .hs-label{color:var(--orange);}
@@ -253,7 +260,7 @@ a.hero-stat:hover .hs-label{color:var(--orange);}
    SECTION RULES
 ====================================================== */
 .sr{display:flex;align-items:center;gap:16px;padding:28px 48px 0;margin-bottom:0;}
-.sr-label{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);white-space:nowrap;}
+.sr-label{font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-muted);white-space:nowrap;}
 .sr-line{flex:1;height:1px;background:var(--border);}
 .sr-meta{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);white-space:nowrap;}
 
@@ -318,7 +325,7 @@ a.hero-stat:hover .hs-label{color:var(--orange);}
 }
 .t-sep{color:var(--border-mid);}
 .thread-count{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0;}
-.tc-num{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:700;color:var(--white);line-height:1;}
+.tc-num{font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--white);line-height:1;}
 .tc-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);}
 .tc-views{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
 
@@ -366,7 +373,7 @@ a.hero-stat:hover .hs-label{color:var(--orange);}
 .intel-numbers{padding:32px 48px 44px;border-right:1px solid var(--border);}
 .numbers-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);margin-top:20px;}
 .num-cell{background:var(--surface);padding:26px 22px;}
-.num-big{font-family:'Playfair Display',serif;font-size:50px;font-weight:900;color:var(--orange);line-height:1;margin-bottom:5px;}
+.num-big{font-family:'Bebas Neue',sans-serif;font-size:60px;color:var(--orange);line-height:1;margin-bottom:5px;letter-spacing:.5px;}
 .num-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
 .num-sub{font-size:11px;color:var(--secondary);margin-top:3px;}
 a.num-cell:hover{background:var(--surface2);}
@@ -543,7 +550,7 @@ a.num-cell:hover .num-big{color:var(--orange-hi);}
 .gotw-prediction{display:flex;flex-direction:column;gap:10px;}
 .gotw-pred-pick{display:flex;align-items:baseline;gap:7px;flex-wrap:wrap;}
 .gotw-pred-team{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--white);}
-.gotw-pred-score{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:800;color:var(--orange);}
+.gotw-pred-score{font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--orange);}
 .gotw-pred-by{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:.5px;color:var(--muted);}
 .gotw-conf-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
 .gotw-conf-text{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
@@ -555,7 +562,7 @@ a.num-cell:hover .num-big{color:var(--orange-hi);}
 .gotw-cta-panel{padding:16px 18px;background:rgba(0,0,0,0.22);display:flex;flex-direction:column;gap:9px;}
 .gotw-countdown-row{display:flex;align-items:center;justify-content:center;gap:14px;padding-bottom:4px;}
 .gotw-cd-item{text-align:center;}
-.gotw-cd-num{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:800;letter-spacing:1px;color:var(--white);line-height:1;display:block;}
+.gotw-cd-num{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:1px;color:var(--white);line-height:1;display:block;}
 .gotw-cd-label{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
 .gotw-cd-sep{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;color:var(--border-mid);align-self:flex-start;margin-top:2px;}
 .gotw-cta-btn{
@@ -635,7 +642,7 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
 .proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);margin-top:20px;}
 .proj-cell{background:var(--surface);padding:28px 24px;position:relative;overflow:hidden;}
 .proj-cell.primary{border-top:2px solid var(--orange);}
-.proj-num{font-family:'Playfair Display',serif;font-size:52px;font-weight:900;color:var(--orange);line-height:1;margin-bottom:6px;}
+.proj-num{font-family:'Bebas Neue',sans-serif;font-size:96px;color:var(--orange);line-height:1;margin-bottom:4px;letter-spacing:-.5px;}
 .proj-num.green{color:var(--green);}
 .proj-num.amber{color:var(--amber);}
 .proj-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);}
@@ -741,7 +748,7 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
 .proj-leader-name{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--white);letter-spacing:.3px;}
 .proj-leader-pos{font-size:11px;color:var(--muted);margin-top:1px;}
 .proj-leader-stat{text-align:right;flex-shrink:0;}
-.proj-leader-num{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--orange);}
+.proj-leader-num{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--orange);}
 .proj-leader-unit{font-size:10px;color:var(--muted);}
 .proj-disclaimer{font-size:11px;color:var(--muted);font-style:italic;margin-top:14px;padding-top:12px;border-top:1px solid var(--border);line-height:1.6;}
 
@@ -782,6 +789,35 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
   .footer-right{text-align:left;}
   .footer-ai{align-self:flex-start;}
 }
+
+/* ======================================================
+   NAV — SCROLL STATE
+====================================================== */
+.nav-scrolled {
+  background: rgba(13, 13, 13, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.3s ease;
+}
+
+/* ======================================================
+   NAV — SLIDE-IN UNDERLINE HOVER
+====================================================== */
+.nav-link { position: relative; }
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--orange);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 200ms ease;
+}
+.nav-link:hover::after,
+.nav-link.active::after { transform: scaleX(1); }
 </style>
 </head>
 <body>
@@ -867,30 +903,30 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
       <div class="hero-stats-header h-anim-5">Program at a Glance · 2026</div>
       <div class="hero-stats h-anim-5">
         <a href="schedule.html" class="hero-stat" style="text-decoration:none;cursor:pointer;" title="2026 Season Hub"><div class="hs-label">Sark Record</div><div class="hs-val orange">48–20</div></a>
-        <a href="history.html" class="hero-stat" style="text-decoration:none;cursor:pointer;" title="Program History"><div class="hs-label">All-Time Wins</div><div class="hs-val">972</div></a>
-        <a href="history.html" class="hero-stat" style="text-decoration:none;cursor:pointer;" title="National Championships"><div class="hs-label">Natl. Titles</div><div class="hs-val">4</div></a>
-        <a href="players.html" class="hero-stat" style="text-decoration:none;cursor:pointer;" title="Player Profiles"><div class="hs-label">Active NFL</div><div class="hs-val">51</div></a>
+        <a href="history.html" class="hero-stat" style="text-decoration:none;cursor:pointer;" title="Program History"><div class="hs-label">All-Time Wins</div><div class="hs-val stat-counter" data-value="972">972</div></a>
+        <a href="history.html" class="hero-stat" style="text-decoration:none;cursor:pointer;" title="National Championships"><div class="hs-label">Natl. Titles</div><div class="hs-val stat-counter" data-value="4">4</div></a>
+        <a href="players.html" class="hero-stat" style="text-decoration:none;cursor:pointer;" title="Player Profiles"><div class="hs-label">Active NFL</div><div class="hs-val stat-counter" data-value="51">51</div></a>
         <a href="schedule.html" class="hero-stat" style="text-decoration:none;cursor:pointer;" title="2026 Schedule"><div class="hs-label">2026 Opener</div><div class="hs-val">Sep 5</div></a>
       </div>
     </div>
     <!-- 2×2 story grid -->
     <div class="hero-stories">
-      <a href="schedule.html" class="story-card">
+      <a href="schedule.html" class="story-card animate-in">
         <div class="sc-tag">2026 Schedule</div>
         <div class="sc-hed">Season Opens Sep 5 — Ohio State Home in Week 2</div>
         <div class="sc-meta">12 Games · SEC Regular Season · Nov 27 @ A&M</div>
       </a>
-      <a href="recruiting.html" class="story-card">
+      <a href="recruiting.html" class="story-card animate-in">
         <div class="sc-tag">Recruiting Intel</div>
         <div class="sc-hed">2027 Class Taking Shape — Texas Leads on 3 Five-Stars</div>
         <div class="sc-meta">247Sports Board · Portal Watch · NIL Tracker</div>
       </a>
-      <a href="depth-chart.html" class="story-card">
+      <a href="depth-chart.html" class="story-card animate-in">
         <div class="sc-tag">Depth Chart</div>
         <div class="sc-hed">Arch Manning Headlines Senior Year at Quarterback</div>
         <div class="sc-meta">Post-Spring Snapshot · Position Battles · 2026 Projections</div>
       </a>
-      <a href="history.html" class="story-card">
+      <a href="history.html" class="story-card animate-in">
         <div class="sc-tag">Program History</div>
         <div class="sc-hed">972 Wins, 4 Titles, The Greatest Game Ever Played</div>
         <div class="sc-meta">1893–2025 · VY · Ricky Williams · Mack Brown</div>
@@ -976,14 +1012,14 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
 </section>
 
 <!-- ===================== TOWER SEASON MODEL ===================== -->
-<div class="sr"><span class="sr-label">Tower Season Model</span><div class="sr-line"></div><span class="sr-meta">2026 Projection · Built on Returning Production, Schedule &amp; Roster Data</span></div>
+<div class="sr animate-in"><span class="sr-label">Tower Season Model</span><div class="sr-line"></div><span class="sr-meta">2026 Projection · Built on Returning Production, Schedule &amp; Roster Data</span></div>
 <div class="season-model">
   <div class="season-model-body">
 
     <!-- PROJECTIONS -->
     <div class="season-projections">
       <div class="proj-grid" id="proj-grid">
-        <div class="proj-cell primary">
+        <div class="proj-cell primary animate-in">
           <div class="proj-num" id="proj-wins">10.2</div>
           <div class="proj-label">Projected Wins</div>
           <div class="proj-sub">Most Likely: 10 wins</div>
@@ -992,24 +1028,24 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
             <div class="proj-range">Range: 8–12 wins · 12-game schedule</div>
           </div>
         </div>
-        <div class="proj-cell">
-          <div class="proj-num green" style="font-size:46px" id="proj-cfp">72%</div>
+        <div class="proj-cell animate-in">
+          <div class="proj-num green" id="proj-cfp">72%</div>
           <div class="proj-label">CFP Probability</div>
           <div class="proj-sub">12-team field, multiple SEC bids</div>
           <div class="proj-bar-row">
             <div class="proj-bar-bg"><div class="proj-bar-fill green" data-width="72" style="width:0"></div></div>
           </div>
         </div>
-        <div class="proj-cell">
-          <div class="proj-num amber" style="font-size:46px" id="proj-sec">24%</div>
+        <div class="proj-cell animate-in">
+          <div class="proj-num amber" id="proj-sec">24%</div>
           <div class="proj-label">SEC Championship</div>
           <div class="proj-sub">Top-2 SEC finish required in Atlanta</div>
           <div class="proj-bar-row">
             <div class="proj-bar-bg"><div class="proj-bar-fill amber" data-width="24" style="width:0"></div></div>
           </div>
         </div>
-        <div class="proj-cell">
-          <div class="proj-num" style="font-size:46px" id="proj-nc">12%</div>
+        <div class="proj-cell animate-in">
+          <div class="proj-num" id="proj-nc">12%</div>
           <div class="proj-label">National Championship</div>
           <div class="proj-sub">Requires elite performance on hardest path</div>
           <div class="proj-bar-row">
@@ -1063,13 +1099,13 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
 </div>
 
 <!-- ===================== GAME OF THE WEEK ===================== -->
-<div class="sr"><span class="sr-label">Game of the Week</span><div class="sr-line"></div><span class="sr-meta">Week 2 · Sep 12, 2026 · DKR Stadium</span></div>
+<div class="sr animate-in"><span class="sr-label">Game of the Week</span><div class="sr-line"></div><span class="sr-meta">Week 2 · Sep 12, 2026 · DKR Stadium</span></div>
 <section class="gotw-section">
   <div class="gotw-watermark" aria-hidden="true"></div>
   <div class="gotw-body">
 
     <!-- LEFT: MATCHUP CARD -->
-    <div class="gotw-card">
+    <div class="gotw-card animate-in">
       <div class="gotw-card-accent"></div>
       <div class="gotw-badge-row">
         <div class="gotw-badge-marquee"><span class="pulse-dot"></span>Marquee Matchup</div>
@@ -1131,7 +1167,7 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
     <div class="gotw-intel">
 
       <!-- KEY MATCHUP -->
-      <div class="gotw-intel-panel">
+      <div class="gotw-intel-panel animate-in">
         <div class="gotw-panel-head">
           <div class="gotw-panel-icon">⚔</div>
           <span class="gotw-panel-title">Key Matchup</span>
@@ -1167,7 +1203,7 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
       </div>
 
       <!-- PLAYERS TO WATCH -->
-      <div class="gotw-intel-panel">
+      <div class="gotw-intel-panel animate-in">
         <div class="gotw-panel-head">
           <div class="gotw-panel-icon">👁</div>
           <span class="gotw-panel-title">Players to Watch</span>
@@ -1201,7 +1237,7 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
       </div>
 
       <!-- TOWER PREDICTION -->
-      <div class="gotw-intel-panel">
+      <div class="gotw-intel-panel animate-in">
         <div class="gotw-panel-head">
           <div class="gotw-panel-icon">⚡</div>
           <span class="gotw-panel-title">Tower Prediction</span>
@@ -1245,12 +1281,12 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
 </section>
 
 <!-- ===================== PATHS TO THE PLAYOFF ===================== -->
-<div class="sr"><span class="sr-label">Paths to the Playoff</span><div class="sr-line"></div><span class="sr-meta">2026 Season Scenarios · How Texas Gets In</span></div>
+<div class="sr animate-in"><span class="sr-label">Paths to the Playoff</span><div class="sr-line"></div><span class="sr-meta">2026 Season Scenarios · How Texas Gets In</span></div>
 <div class="paths-section">
   <div class="paths-grid">
 
     <!-- SCENARIO A -->
-    <div class="path-card path-a">
+    <div class="path-card path-a animate-in">
       <div class="path-label">Scenario A — The Lock</div>
       <div class="path-title">Win the Marquee Games</div>
       <div class="path-games">
@@ -1272,7 +1308,7 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
     </div>
 
     <!-- SCENARIO B -->
-    <div class="path-card path-b">
+    <div class="path-card path-b animate-in">
       <div class="path-label">Scenario B — The Bubble</div>
       <div class="path-title">One Marquee Loss</div>
       <div class="path-games">
@@ -1294,7 +1330,7 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
     </div>
 
     <!-- SCENARIO C -->
-    <div class="path-card path-c">
+    <div class="path-card path-c animate-in">
       <div class="path-label">Scenario C — The Crisis</div>
       <div class="path-title">Two Losses</div>
       <div class="path-games">
@@ -1319,22 +1355,22 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
 </div>
 
 <!-- ===================== FEATURED STORIES ===================== -->
-<div class="sr"><span class="sr-label">Latest Analysis</span><div class="sr-line"></div><span class="sr-meta">Tower Report · AI-Sourced</span></div>
+<div class="sr animate-in"><span class="sr-label">Latest Analysis</span><div class="sr-line"></div><span class="sr-meta">Tower Report · AI-Sourced</span></div>
 <div class="stories-section">
   <div class="stories-grid" id="stories-grid">
-    <a href="stories.html" class="story-tile">
+    <a href="stories.html" class="story-tile animate-in">
       <div class="st-kicker">Tower Analysis</div>
       <div class="st-hed">Arch Manning's Moment Has Finally Arrived</div>
       <div class="st-dek">After two seasons behind Quinn Ewers, Manning enters 2026 as the consensus Heisman favorite. Every indicator points to a special year.</div>
       <div class="st-cat">Analysis · Quarterback</div>
     </a>
-    <a href="recruiting.html#portal" class="story-tile">
+    <a href="recruiting.html#portal" class="story-tile animate-in">
       <div class="st-kicker">Roster Move</div>
       <div class="st-hed">Coleman Addition Makes Texas WR Room a Problem</div>
       <div class="st-dek">Cam Coleman's arrival from Auburn gives Texas one of the deepest receiver groups in the SEC. No coordinator has a good answer.</div>
       <div class="st-cat">Portal · Wide Receiver</div>
     </a>
-    <a href="players.html" class="story-tile">
+    <a href="players.html" class="story-tile animate-in">
       <div class="st-kicker">Film Room</div>
       <div class="st-hed">Colin Simmons Is the Best Pass Rusher in College Football</div>
       <div class="st-dek">11 sacks, 17 TFLs as a sophomore. Simmons is the engine driving Texas's defensive identity — and Bednarik Award buzz is real.</div>
@@ -1344,7 +1380,7 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
 </div>
 
 <!-- ===================== PROJECTED DEPTH CHART ===================== -->
-<div class="sr"><span class="sr-label">Projected Depth Chart</span><div class="sr-line"></div><span class="sr-meta">Pre-Fall Camp · Starters, Battles &amp; Concerns</span></div>
+<div class="sr animate-in"><span class="sr-label">Projected Depth Chart</span><div class="sr-line"></div><span class="sr-meta">Pre-Fall Camp · Starters, Battles &amp; Concerns</span></div>
 <div class="depth-section">
   <div class="depth-body">
 
@@ -1509,7 +1545,7 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
 </div>
 
 <!-- ===================== TOWER PROJECTIONS ===================== -->
-<div class="sr"><span class="sr-label">Tower Projections</span><div class="sr-line"></div><span class="sr-meta">2026 Statistical Leaders · Pre-Season Projections</span></div>
+<div class="sr animate-in"><span class="sr-label">Tower Projections</span><div class="sr-line"></div><span class="sr-meta">2026 Statistical Leaders · Pre-Season Projections</span></div>
 <div class="projections-section">
   <div class="proj-leaders-grid">
 
@@ -1701,7 +1737,7 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
 </div>
 
 <!-- ===================== HOT ON THE BOARD ===================== -->
-<div class="sr"><span class="sr-label">Hot on the Board</span><div class="sr-line"></div><span class="sr-meta">Community · Fan Intel</span></div>
+<div class="sr animate-in"><span class="sr-label">Hot on the Board</span><div class="sr-line"></div><span class="sr-meta">Community · Fan Intel</span></div>
 <div class="threads-section">
   <div class="threads-toolbar">
     <div class="t-tabs">
@@ -1779,7 +1815,7 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
 </div>
 
 <!-- ===================== 2026 SEASON STRIP ===================== -->
-<div class="sr"><span class="sr-label">2026 Season Schedule</span><div class="sr-line"></div><span class="sr-meta">Opens Sep 5 · 12 Regular Season Games</span></div>
+<div class="sr animate-in"><span class="sr-label">2026 Season Schedule</span><div class="sr-line"></div><span class="sr-meta">Opens Sep 5 · 12 Regular Season Games</span></div>
 <div class="season-section">
   <div class="season-strip-wrap" style="padding:0 48px;">
     <div class="season-strip" id="season-strip"></div>
@@ -1788,7 +1824,7 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
 </div>
 
 <!-- ===================== PROGRAM INTELLIGENCE ===================== -->
-<div class="sr"><span class="sr-label">Program at a Glance</span><div class="sr-line"></div></div>
+<div class="sr animate-in"><span class="sr-label">Program at a Glance</span><div class="sr-line"></div></div>
 <div class="intel-grid">
   <div class="intel-numbers">
     <div class="numbers-grid">
@@ -2293,6 +2329,15 @@ document.addEventListener('DOMContentLoaded',()=>{
     });
   }
 });
+
+/* ---- NAV SCROLL STATE ---- */
+(function () {
+  var nav = document.querySelector('nav');
+  window.addEventListener('scroll', function () {
+    nav.classList.toggle('nav-scrolled', window.scrollY > 60);
+  }, { passive: true });
+})();
 </script>
+<script src="/js/animations.js"></script>
 </body>
 </html>

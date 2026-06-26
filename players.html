@@ -292,6 +292,12 @@ const OFFENSE_POS=['QB','RB','WR','TE','OT','OG','C','OL'];
 const DEFENSE_POS=['DE','DT','EDGE','LB','CB','DB','S'];
 
 function buildPage(players){
+  if(!players||!players.length){
+    document.getElementById('players-loading').style.display='none';
+    document.getElementById('players-main').style.display='block';
+    document.getElementById('players-main').innerHTML=`<div style="padding:60px 48px;text-align:center;"><p style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#6B6560;margin-bottom:10px;">Player Data Unavailable</p><p style="font-size:14px;color:#6B6560;font-style:italic;">Unable to load players — check console for details.</p></div>`;
+    return;
+  }
   const hero=players.find(p=>p.position==='QB')||players[0];
   const offense=players.filter(p=>p.slug!==hero.slug&&OFFENSE_POS.includes(p.position));
   const defense=players.filter(p=>DEFENSE_POS.includes(p.position));

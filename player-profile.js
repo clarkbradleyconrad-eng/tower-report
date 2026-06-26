@@ -14,7 +14,7 @@
         window._playerNames = new Set(_players.map(p => p.name));
         return _players;
       })
-      .catch(() => { _players = []; window._playerNames = new Set(); return []; });
+      .catch(err => { console.error('[Tower/players] load failed:', err); _players = []; window._playerNames = new Set(); return []; });
     return _loadPromise;
   }
 

@@ -4,6 +4,10 @@
     {
       "path": "/api/odds?cron=1",
       "schedule": "0 9 * * *"
+    },
+    {
+      "path": "/api/generate-story?cron=1",
+      "schedule": "0 8 * * *"
     }
   ],
   "headers": [
