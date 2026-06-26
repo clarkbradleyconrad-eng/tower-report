@@ -1,8 +1,9 @@
 /**
  * Tower Report — /api/stories-db
  *
- * CMS backend for newsroom-authored stories. Stores the full story array
- * as a JSON file in Vercel Blob.
+ * CMS backend for newsroom-authored stories. Stores the story array
+ * as a JSON file in Vercel Blob via the REST API (no npm package,
+ * edge-runtime safe).
  *
  * Methods:
  *   GET    — returns { stories: [...] }
@@ -14,11 +15,10 @@
  *   BLOB_READ_WRITE_TOKEN — Vercel Blob token (already configured)
  */
 
-import { put, list, del } from '@vercel/blob';
-
 export const config = { runtime: 'edge' };
 
-const BLOB_PATH = 'tower-stories.json';
+const BLOB_PATHNAME = 'tower-stories.json';
+const BLOB_API = 'https://blob.vercel-storage.com';
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
@@ -33,13 +33,21 @@ function json(data, status = 200) {
   });
 }
 
+async function blobList(token) {
+  const url = `${BLOB_API}?prefix=${encodeURIComponent(BLOB_PATHNAME)}&token=${encodeURIComponent(token)}&limit=1`;
+  const res = await fetch(url);
+  if (!res.ok) return null;
+  const data = await res.json();
+  return data.blobs?.[0] ?? null;
+}
+
 async function blobGet() {
   const token = process.env.BLOB_READ_WRITE_TOKEN;
   if (!token) return [];
   try {
-    const { blobs } = await list({ prefix: BLOB_PATH, token });
-    if (!blobs.length) return [];
-    const res = await fetch(blobs[0].downloadUrl || blobs[0].url);
+    const blob = await blobList(token);
+    if (!blob) return [];
+    const res = await fetch(blob.downloadUrl || blob.url);
     if (!res.ok) return [];
     return await res.json();
   } catch {
@@ -50,17 +58,34 @@ async function blobGet() {
 async function blobSet(stories) {
   const token = process.env.BLOB_READ_WRITE_TOKEN;
   if (!token) throw new Error('BLOB_READ_WRITE_TOKEN not configured');
-  // Delete the existing blob so we can overwrite at the same path
-  const { blobs } = await list({ prefix: BLOB_PATH, token });
-  if (blobs.length) {
-    await del(blobs.map(b => b.url), { token });
+
+  // Delete existing blob first (Blob storage is immutable; same path = new object)
+  const existing = await blobList(token);
+  if (existing) {
+    await fetch(BLOB_API, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ urls: [existing.url] }),
+    });
   }
-  await put(BLOB_PATH, JSON.stringify(stories), {
-    access: 'public',
-    contentType: 'application/json',
-    addRandomSuffix: false,
-    token,
+
+  // Upload new blob
+  const putUrl = `${BLOB_API}/${BLOB_PATHNAME}?addRandomSuffix=0`;
+  const res = await fetch(putUrl, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(stories),
   });
+  if (!res.ok) {
+    const err = await res.text().catch(() => res.status);
+    throw new Error(`Blob write failed: ${err}`);
+  }
 }
 
 export default async function handler(req) {
