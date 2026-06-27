@@ -103,7 +103,7 @@ nav{position:sticky;top:0;z-index:200;background:rgba(8,8,8,0.97);backdrop-filte
 /* --- Hero Lead (top of left col) --- */
 .hero-lead{
   flex:1;padding:40px 52px 32px;
-  background:var(--bg-page);
+  background:var(--bg-page) url('img/texas-osu-2026.png') center top / cover no-repeat;
   position:relative;overflow:hidden;
   display:flex;flex-direction:column;justify-content:flex-end;
   min-height:0;
@@ -112,21 +112,18 @@ nav{position:sticky;top:0;z-index:200;background:rgba(8,8,8,0.97);backdrop-filte
 .hero-lead::before{
   content:'';position:absolute;inset:0;
   background:
-    radial-gradient(ellipse 85% 75% at 0% 0%,rgba(191,87,0,0.10) 0%,transparent 60%),
-    radial-gradient(ellipse 50% 40% at 100% 100%,rgba(191,87,0,0.04) 0%,transparent 60%);
+    linear-gradient(to right, rgba(5,5,5,0.92) 0%, rgba(5,5,5,0.75) 50%, rgba(5,5,5,0.45) 100%),
+    linear-gradient(to top, rgba(5,5,5,0.97) 0%, rgba(5,5,5,0.55) 45%, rgba(5,5,5,0.1) 100%);
   pointer-events:none;
 }
 .hero-lead::after{
   content:'';position:absolute;inset:0;
-  background-image:radial-gradient(rgba(255,255,255,0.035) 1px,transparent 1px);
+  background-image:radial-gradient(rgba(255,255,255,0.018) 1px,transparent 1px);
   background-size:28px 28px;
   pointer-events:none;
 }
 .hero-longhorn{
-  position:absolute;left:50%;top:50%;transform:translate(-50%,-55%);
-  width:640px;height:640px;
-  opacity:.10;filter:sepia(1) saturate(8) hue-rotate(5deg) brightness(1.4);
-  pointer-events:none;z-index:0;
+  display:none;
 }
 .hero-inner{position:relative;z-index:1;}
 .hero-eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
@@ -1334,23 +1331,17 @@ nav{border-bottom:1px solid rgba(191,87,0,0.14);}
 .hs-label{font-size:9px;letter-spacing:1px;color:rgba(90,84,80,0.6);}
 .hs-val{font-size:21px;letter-spacing:.3px;}
 
-/* Hero: richer depth + stadium-inspired field lines */
+/* Hero: dark overlay preserves text readability over photo bg */
 .hero-lead::before{
   background:
-    radial-gradient(ellipse 80% 65% at -5% -5%,rgba(191,87,0,0.13) 0%,transparent 52%),
-    radial-gradient(ellipse 30% 25% at 108% -5%,rgba(191,87,0,0.06) 0%,transparent 50%),
-    radial-gradient(ellipse 50% 35% at 108% 108%,rgba(191,87,0,0.04) 0%,transparent 52%),
-    radial-gradient(ellipse 80% 20% at 50% 108%,rgba(191,87,0,0.04) 0%,transparent 60%);
+    linear-gradient(to right, rgba(5,5,5,0.92) 0%, rgba(5,5,5,0.75) 50%, rgba(5,5,5,0.45) 100%),
+    linear-gradient(to top, rgba(5,5,5,0.97) 0%, rgba(5,5,5,0.55) 45%, rgba(5,5,5,0.1) 100%);
 }
 .hero-lead::after{
-  background-image:
-    radial-gradient(rgba(255,255,255,0.028) 1px,transparent 1px),
-    repeating-linear-gradient(0deg,transparent,transparent 59px,rgba(191,87,0,0.013) 59px,rgba(191,87,0,0.013) 60px);
-  background-size:28px 28px,100% 60px;
+  background-image:radial-gradient(rgba(255,255,255,0.018) 1px,transparent 1px);
+  background-size:28px 28px;
 }
 
-/* Longhorn watermark: slightly warmer and more visible */
-.hero-longhorn{opacity:.12;filter:sepia(1) saturate(7) hue-rotate(5deg) brightness(1.5);}
 
 /* BRIEFING PANEL — premium, cleaner */
 .briefing-panel{
