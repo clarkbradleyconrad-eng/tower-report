@@ -17,7 +17,7 @@
 
 const BLOB_PATHNAME = 'tower-ai-stories.json';
 const BLOB_API = 'https://blob.vercel-storage.com';
-const MAX_STORED = 30;
+const MAX_STORED = 2000;
 
 const SYSTEM = `You are Tower Report's lead analyst — the sharpest Texas Longhorns intelligence engine on the internet. You are writing exactly 3 stories today. Not 12. Not 5. Three. These are the 3 most important Texas Longhorns football stories of the last 48-72 hours, written to the highest editorial standard.
 
