@@ -3170,28 +3170,60 @@ async function loadBriefing(){
     }else{
       list.innerHTML=BRIEFING_EMPTY;
     }
-    if(data.lastUpdated){
-      const d=new Date(data.lastUpdated);
-      const months=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
-      const h=d.getHours(),m=d.getMinutes(),ampm=h>=12?'PM':'AM';
-      upd.textContent='UPDATED '+months[d.getMonth()]+' '+d.getDate()+' · '+(h%12||12)+':'+String(m).padStart(2,'0')+' '+ampm+(data.stale?' · CACHED':'');
-    }
-    if(data.stories && data.stories.length){
-      const grid=document.getElementById('stories-grid');
-      if(grid){
-        grid.innerHTML=data.stories.map(s=>`
-          <a href="stories.html" class="story-tile">
-            <div class="st-top-row"><div class="st-kicker">${s.kicker||s.category}</div>${s.impact?`<div class="st-impact">${s.impact}</div>`:''}</div>
-            <div class="st-hed">${s.headline}</div>
-            <div class="st-dek">${s.summary}</div>
-            <div class="st-cat">${s.category}</div>
-            <div class="st-read-more">Read Analysis →</div>
-          </a>`).join('');
-      }
-    }
   }catch(e){
     list.innerHTML=BRIEFING_EMPTY;
   }
+}
+
+function relativeTime(date){
+  const diff=Date.now()-date.getTime();
+  const min=Math.floor(diff/60000);
+  const hr=Math.floor(diff/3600000);
+  if(min<1) return 'Just now';
+  if(min<60) return min+' min ago';
+  if(hr<24) return hr+'h ago';
+  const months=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  return months[date.getMonth()]+' '+date.getDate();
+}
+
+async function updateMostRecentTimestamp(briefingDate){
+  const upd=document.getElementById('briefing-updated');
+  if(!upd) return;
+  let latest=briefingDate||null;
+  const pick=t=>{ if(t&&(!latest||t>latest)) latest=t; };
+  const [aiRes,dbRes]=await Promise.allSettled([
+    fetch('/api/stories').then(r=>r.ok?r.json():null),
+    fetch('/api/stories-db').then(r=>r.ok?r.json():null),
+  ]);
+  if(aiRes.status==='fulfilled'&&aiRes.value?.stories?.[0]?._generated)
+    pick(new Date(aiRes.value.stories[0]._generated));
+  if(dbRes.status==='fulfilled'&&dbRes.value?.stories?.length){
+    for(const s of dbRes.value.stories){
+      const t=s.publishedAt||s.updatedAt||s.createdAt;
+      if(t) pick(new Date(t));
+    }
+  }
+  if(latest) upd.textContent='UPDATED · '+relativeTime(latest);
+}
+
+async function loadLatestAnalysis(){
+  const grid=document.getElementById('stories-grid');
+  if(!grid) return;
+  try{
+    const res=await fetch('/api/stories');
+    if(!res.ok) return;
+    const data=await res.json();
+    const stories=(data.stories||[]).slice(0,3);
+    if(!stories.length) return;
+    grid.innerHTML=stories.map(s=>`
+      <a href="stories.html" class="story-tile">
+        <div class="st-top-row"><div class="st-kicker">${s.kicker||s.category||''}</div>${s.impact?`<div class="st-impact">${s.impact}</div>`:''}</div>
+        <div class="st-hed">${s.headline||''}</div>
+        <div class="st-dek">${s.hook||s.overview||''}</div>
+        <div class="st-cat">${s.category||''}</div>
+        <div class="st-read-more">Read Analysis →</div>
+      </a>`).join('');
+  }catch(e){}
 }
 
 /* ---- THREAD TABS ---- */
@@ -3287,6 +3319,8 @@ document.addEventListener('DOMContentLoaded',()=>{
   buildTicker();
   buildStrip();
   loadBriefing();
+  loadLatestAnalysis();
+  updateMostRecentTimestamp(null);
   if(window.loadPlayers){
     window.loadPlayers().then(function(){
       window.linkPlayerNames&&window.linkPlayerNames('.hero-stories');

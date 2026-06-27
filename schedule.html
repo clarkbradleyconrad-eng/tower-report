@@ -7,7 +7,7 @@
 <meta name="description" content="2026 Texas Longhorns Season Hub — schedule, matchup intel, projections, player stats, and AI model readout."/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=Barlow+Condensed:wght@500;600;700;800&family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
 <style>
 /* ============================================================
    TOKENS
@@ -18,6 +18,8 @@
   --border:rgba(255,255,255,0.055);--border-mid:rgba(255,255,255,0.10);--border-strong:rgba(255,255,255,0.16);
   --white:#F0EBE1;--white2:#C4BCB0;--muted:#5A5450;--secondary:#948C82;
   --green:#22c55e;--amber:#f59e0b;--red:#ef4444;--blue:#60a5fa;--purple:#c084fc;
+  --ease-out:cubic-bezier(0.16,1,0.3,1);
+  --font-display:'Bebas Neue',sans-serif;--font-body:'Inter',sans-serif;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
@@ -371,6 +373,543 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
   .hub-stat-strip{grid-template-columns:1fr;}
   .gc-storyline{display:none;}
 }
+
+/* ============================================================
+   SEASON SIMULATOR
+============================================================ */
+@keyframes simRecordPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.06);}}
+@keyframes dangerPulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,0.5);}50%{box-shadow:0 0 0 6px rgba(239,68,68,0);}}
+@keyframes simCardIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+#season-simulator{
+  border-bottom:1px solid var(--border);
+  background:var(--black);
+  border-top:2px solid var(--orange);
+}
+.sim-layout{
+  display:grid;
+  grid-template-columns:58fr 42fr;
+}
+.sim-left{
+  padding:40px 40px 48px;
+  border-right:1px solid var(--border);
+  border-left:3px solid var(--orange);
+}
+.sim-header{
+  display:flex;
+  align-items:flex-start;
+  gap:16px;
+  margin-bottom:28px;
+}
+.sim-eyebrow-rule{
+  width:2px;
+  min-height:52px;
+  background:var(--orange);
+  flex-shrink:0;
+  margin-top:2px;
+}
+.sim-section-label{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:28px;
+  letter-spacing:2px;
+  color:var(--white);
+  line-height:1;
+  margin-bottom:8px;
+}
+.sim-section-sub{
+  font-family:'Inter',sans-serif;
+  font-size:13px;
+  line-height:1.6;
+  color:var(--secondary);
+  max-width:440px;
+}
+
+/* Auto-win cards */
+.sim-auto-card{
+  display:grid;
+  grid-template-columns:1fr auto;
+  align-items:center;
+  padding:10px 14px;
+  background:#111111;
+  border-bottom:1px solid var(--border);
+  margin-bottom:1px;
+  opacity:0.72;
+  animation:simCardIn 0.4s var(--ease-out) both;
+}
+.sim-auto-left{display:flex;align-items:center;gap:12px;}
+.sim-auto-week{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--muted);width:28px;flex-shrink:0;
+}
+.sim-auto-opp{
+  font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:var(--white2);
+}
+.sim-auto-date{
+  font-family:'Inter',sans-serif;font-size:11px;color:var(--muted);margin-top:2px;
+}
+.sim-auto-badge{display:flex;align-items:center;gap:6px;}
+.sim-win-badge{
+  font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:rgba(34,197,94,0.7);background:rgba(34,197,94,0.06);
+  border:1px solid rgba(34,197,94,0.2);padding:2px 8px;
+}
+.sim-lock-icon{font-size:9px;color:var(--muted);}
+
+/* Bye row */
+.sim-bye-row{
+  display:flex;align-items:center;gap:14px;
+  padding:10px 14px;margin-bottom:1px;
+  animation:simCardIn 0.4s var(--ease-out) both;
+}
+.sim-bye-line{flex:1;height:1px;background:var(--border);}
+.sim-bye-label{
+  font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);white-space:nowrap;
+}
+
+/* Swing game cards */
+.sim-swing-card{
+  border-bottom:1px solid var(--border);
+  margin-bottom:1px;
+  background:transparent;
+  border-left:3px solid transparent;
+  transition:background 200ms var(--ease-out),border-left-color 200ms var(--ease-out);
+  animation:simCardIn 0.4s var(--ease-out) both;
+}
+.sim-swing-card.state-win{
+  border-left-color:var(--orange);
+  background:rgba(191,87,0,0.04);
+}
+.sim-swing-card.state-loss{
+  border-left-color:#444;
+  background:rgba(255,255,255,0.02);
+}
+.sim-card-inner{padding:14px 16px 12px;}
+.sim-card-top{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.sim-week-badge{
+  font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;color:var(--muted);
+}
+.sim-tier-pill{
+  font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;padding:2px 8px;border-radius:2px;
+}
+.tier-MARQUEE{color:#CF6210;background:rgba(191,87,0,0.15);border:1px solid rgba(191,87,0,0.4);}
+.tier-SWING{color:#f59e0b;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);}
+.tier-RIVALRY{color:#ef4444;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.3);}
+.tier-TOUGH{color:var(--secondary);background:rgba(255,255,255,0.04);border:1px solid var(--border-mid);}
+.tier-DANGER{color:#ef4444;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.3);animation:dangerPulse 2s ease-in-out infinite;}
+
+.sim-card-middle{
+  display:grid;grid-template-columns:1fr auto;
+  align-items:center;gap:12px;
+}
+.sim-opp-name{
+  font-family:'Inter',sans-serif;font-size:20px;font-weight:700;
+  color:var(--white);line-height:1.1;
+}
+.sim-venue-row{display:flex;align-items:center;gap:7px;margin-top:5px;}
+.sim-venue-badge{
+  font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;border:1px solid;
+}
+.venue-HOME{color:var(--white);border-color:rgba(255,255,255,0.25);}
+.venue-AWAY{color:var(--orange);border-color:rgba(191,87,0,0.4);background:rgba(191,87,0,0.06);}
+.venue-NEUTRAL{color:var(--secondary);border-color:var(--border-mid);}
+.sim-date-text{font-family:'Inter',sans-serif;font-size:11px;color:var(--muted);}
+.sim-prob-row{margin-top:9px;display:flex;align-items:center;gap:10px;}
+.sim-prob-track{flex:1;height:4px;background:var(--border-mid);}
+.sim-prob-fill{height:100%;background:var(--orange);}
+.sim-prob-label{
+  font-family:'Inter',sans-serif;font-size:11px;color:var(--muted);
+  white-space:nowrap;flex-shrink:0;
+}
+.sim-toggle-btns{display:flex;flex-direction:column;gap:4px;}
+.sim-toggle-btn{
+  font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;
+  text-transform:uppercase;padding:7px 18px;border:1px solid;
+  cursor:pointer;transition:all 180ms var(--ease-out);background:transparent;
+}
+.sim-toggle-btn.btn-win{color:var(--muted);border-color:var(--border-mid);}
+.sim-toggle-btn.btn-win.active{color:#fff;background:var(--orange);border-color:var(--orange);}
+.sim-toggle-btn.btn-loss{color:var(--muted);border-color:var(--border);}
+.sim-toggle-btn.btn-loss.active{color:var(--white);background:#2a2a2a;border-color:#666;}
+
+/* RIGHT SIDEBAR */
+.sim-right{
+  padding:32px 28px 40px;
+  background:#0a0a0a;
+  position:sticky;
+  top:52px;
+  max-height:calc(100vh - 52px);
+  overflow-y:auto;
+  display:flex;flex-direction:column;gap:18px;
+}
+.sim-right::-webkit-scrollbar{width:3px;}
+.sim-right::-webkit-scrollbar-thumb{background:var(--orange);}
+
+.sim-record-block{
+  text-align:center;padding-bottom:18px;
+  border-bottom:1px solid var(--border);
+}
+.sim-record-num{
+  font-family:'Bebas Neue',sans-serif;font-size:72px;
+  color:var(--white);line-height:1;letter-spacing:2px;
+  display:inline-block;
+}
+.sim-record-num.pulse{animation:simRecordPulse 200ms var(--ease-out);}
+.sim-record-label{
+  font-family:'Inter',sans-serif;font-size:10px;font-weight:500;
+  letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-top:4px;
+}
+
+.sim-stats-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:1px;background:var(--border);
+}
+.sim-stat-block{background:#1a1a1a;padding:14px 14px 12px;}
+.sim-stat-label{
+  font-family:'Inter',sans-serif;font-size:9px;font-weight:600;
+  letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;
+}
+.sim-stat-val{
+  font-family:'Bebas Neue',sans-serif;font-size:32px;line-height:1;
+  color:var(--white);margin-bottom:6px;transition:color 300ms;
+}
+.sim-stat-val.hot{color:var(--orange);}
+.sim-stat-val.cold{color:var(--red);}
+.sim-bar-track{height:3px;background:var(--border-mid);}
+.sim-bar-fill{
+  height:100%;
+  background:linear-gradient(90deg,var(--orange),var(--orange-hi));
+  transition:width 500ms var(--ease-out);width:0%;
+}
+
+.sim-impact-block{
+  background:#111;border:1px solid var(--border);
+  border-left:3px solid var(--orange);padding:12px 14px;
+}
+.sim-impact-label{
+  font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:4px;
+}
+.sim-impact-val{
+  font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:var(--white);
+}
+
+.sim-narrative-block{
+  background:#111;border:1px solid var(--border);padding:16px;
+}
+.sim-narrative-eyebrow{
+  font-family:'Bebas Neue',sans-serif;font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;color:var(--orange);margin-bottom:8px;
+}
+.sim-narrative-text{
+  font-family:'Inter',sans-serif;font-size:12px;line-height:1.75;color:var(--secondary);
+}
+
+.sim-btn-primary{
+  display:block;width:100%;font-family:'Bebas Neue',sans-serif;font-size:15px;
+  letter-spacing:1px;text-transform:uppercase;text-align:center;
+  background:var(--orange);color:#fff;border:none;padding:16px;
+  cursor:pointer;text-decoration:none;transition:background 200ms var(--ease-out);
+}
+.sim-btn-primary:hover{background:var(--orange-hi);}
+.sim-btn-ghost{
+  display:block;width:100%;font-family:'Bebas Neue',sans-serif;font-size:14px;
+  letter-spacing:1px;text-transform:uppercase;text-align:center;
+  background:transparent;color:var(--white2);
+  border:1px solid rgba(255,255,255,0.2);padding:13px;
+  cursor:pointer;transition:all 200ms var(--ease-out);
+}
+.sim-btn-ghost:hover{border-color:var(--white);color:var(--white);}
+
+/* Full Schedule Table */
+#sim-schedule-table{
+  padding:0 48px 40px;
+  border-bottom:1px solid var(--border);
+}
+.sim-table-wrap{
+  margin-top:16px;border:1px solid var(--border);overflow-x:auto;
+}
+.sim-sched-table{width:100%;border-collapse:collapse;}
+.sim-sched-table th{
+  font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;color:var(--muted);
+  padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);
+  background:var(--surface);white-space:nowrap;
+}
+.sim-sched-table td{
+  font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;
+  color:var(--white2);padding:11px 14px;border-bottom:1px solid var(--border);
+}
+.sim-sched-table tr:last-child td{border-bottom:none;}
+.sim-sched-table tr:nth-child(odd) td{background:#0f0f0f;}
+.sim-sched-table tr:nth-child(even) td{background:#111111;}
+.sim-sched-table tr:hover td{background:rgba(191,87,0,0.04);}
+.sim-sched-table tr.sst-bye td{color:var(--muted);opacity:0.5;font-size:10px;letter-spacing:2px;text-align:center;}
+.sst-result-win{color:var(--green);font-weight:800;}
+.sst-result-loss{color:var(--red);font-weight:800;}
+.sst-result-proj{color:rgba(34,197,94,0.55);}
+
+/* Simulator responsive */
+@media(max-width:960px){
+  .sim-layout{grid-template-columns:1fr;}
+  .sim-right{position:static;max-height:none;overflow-y:visible;}
+  .sim-left{padding:24px 20px 32px;border-left:none;border-right:none;}
+  #sim-schedule-table{padding:0 20px 32px;}
+}
+@media(max-width:600px){
+  .sim-record-num{font-size:56px;}
+  .sim-toggle-btn{padding:6px 12px;}
+  .sim-opp-name{font-size:17px;}
+}
+
+/* ============================================================
+   FLOATING CHAT (Tower Intelligence)
+============================================================ */
+.fchat-btn{
+  position:fixed;bottom:24px;right:24px;z-index:900;
+  display:flex;align-items:center;gap:7px;
+  background:var(--orange);color:#fff;border:none;cursor:pointer;
+  padding:10px 16px;font-family:'Bebas Neue',sans-serif;font-size:14px;
+  letter-spacing:0.08em;text-transform:uppercase;
+  box-shadow:0 4px 18px rgba(191,87,0,0.4);
+  transition:all 200ms var(--ease-out);
+}
+.fchat-btn:hover{background:var(--orange-hi);box-shadow:0 6px 28px rgba(191,87,0,0.6);transform:translateY(-2px);}
+.fchat-btn-dot{width:6px;height:6px;border-radius:50%;background:#fff;opacity:.9;animation:blink 2s ease-in-out infinite;flex-shrink:0;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+.fchat-overlay{
+  position:fixed;inset:0;z-index:950;background:rgba(0,0,0,0.7);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  display:none;align-items:flex-end;justify-content:flex-end;padding:24px;
+}
+.fchat-overlay.open{display:flex;}
+.fchat-modal{
+  width:420px;max-height:82vh;background:#0a0a0a;
+  border:1px solid rgba(191,87,0,0.3);border-top:2px solid var(--orange);
+  display:flex;flex-direction:column;
+  box-shadow:0 24px 80px rgba(0,0,0,0.8);
+  animation:modalFadeIn 250ms var(--ease-out) both;
+}
+@keyframes modalFadeIn{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+.fchat-modal-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:13px 17px;border-bottom:1px solid rgba(191,87,0,0.15);
+  background:rgba(191,87,0,0.05);
+}
+.fchat-modal-title{display:flex;align-items:center;gap:8px;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:.1em;color:var(--white);}
+.fchat-modal-close{background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;padding:2px 6px;line-height:1;transition:color 150ms;}
+.fchat-modal-close:hover{color:var(--white);}
+.fchat-messages{flex:1;overflow-y:auto;padding:14px 17px;display:flex;flex-direction:column;gap:10px;min-height:200px;max-height:360px;}
+.fchat-msg{font-family:'Inter',sans-serif;font-size:13px;line-height:1.65;padding:10px 13px;}
+.fchat-msg.tower{background:rgba(191,87,0,0.07);border-left:2px solid var(--orange);color:var(--secondary);}
+.fchat-msg.tower strong{color:var(--white);}
+.fchat-msg.user{background:var(--surface2);border-left:2px solid var(--border-mid);color:var(--white);align-self:flex-end;max-width:90%;}
+.fchat-chips{padding:6px 17px 4px;display:flex;flex-wrap:wrap;gap:5px;}
+.fchat-chip{
+  font-family:'Inter',sans-serif;font-size:11px;font-weight:500;
+  color:var(--secondary);background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.08);
+  padding:4px 10px;cursor:pointer;transition:all 150ms;white-space:nowrap;
+}
+.fchat-chip:hover{border-color:rgba(191,87,0,0.4);color:var(--white);background:rgba(191,87,0,0.07);}
+.fchat-footer{display:flex;gap:0;border-top:1px solid rgba(191,87,0,0.15);}
+.fchat-input{
+  flex:1;background:transparent;border:none;border-left:3px solid var(--orange);
+  color:var(--white);font-family:'Inter',sans-serif;font-size:13px;padding:13px 14px;outline:none;
+}
+.fchat-input::placeholder{color:var(--muted);font-style:italic;}
+.fchat-send{
+  background:var(--orange);border:none;color:#fff;padding:13px 18px;cursor:pointer;
+  font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:.1em;
+  transition:background 200ms var(--ease-out);flex-shrink:0;
+}
+.fchat-send:hover{background:var(--orange-hi);}
+@media(max-width:480px){
+  .fchat-overlay{padding:0;}
+  .fchat-modal{width:100%;max-height:72vh;border-left:none;border-right:none;}
+  .fchat-btn{bottom:18px;right:16px;padding:9px 13px;font-size:12px;}
+}
+
+/* ============================================================
+   BUILD YOUR SEASON — ENTRY CARD
+============================================================ */
+.bys-entry{
+  margin:0 48px 0;border:1px solid var(--border);border-top:2px solid var(--orange);
+  background:var(--surface);cursor:pointer;
+  transition:background 200ms var(--ease-out),box-shadow 200ms var(--ease-out);
+  display:grid;grid-template-columns:1fr auto;align-items:center;gap:20px;
+  padding:22px 28px;
+}
+.bys-entry:hover{background:var(--surface2);box-shadow:0 0 0 1px rgba(191,87,0,0.3);}
+.bys-entry-left{display:flex;align-items:flex-start;gap:16px;}
+.bys-entry-icon{
+  width:38px;height:38px;background:var(--orange);display:flex;align-items:center;
+  justify-content:center;font-size:18px;flex-shrink:0;margin-top:2px;
+}
+.bys-entry-pill{
+  display:inline-flex;align-items:center;gap:4px;
+  font-family:'Bebas Neue',sans-serif;font-size:10px;letter-spacing:1.5px;
+  color:var(--orange);background:rgba(191,87,0,0.1);border:1px solid rgba(191,87,0,0.3);
+  padding:2px 8px;margin-bottom:6px;
+}
+.bys-entry-pill-dot{width:5px;height:5px;border-radius:50%;background:var(--orange);animation:blink 2s ease-in-out infinite;}
+.bys-entry-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;color:var(--white);line-height:1;margin-bottom:4px;}
+.bys-entry-sub{font-family:'Inter',sans-serif;font-size:12px;color:var(--secondary);line-height:1.5;}
+.bys-entry-cta{
+  font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;
+  color:var(--orange);white-space:nowrap;display:flex;align-items:center;gap:6px;
+  flex-shrink:0;
+}
+.bys-entry-arrow{font-size:18px;transition:transform 200ms var(--ease-out);}
+.bys-entry:hover .bys-entry-arrow{transform:translateX(4px);}
+@media(max-width:860px){.bys-entry{margin:0 20px;}.bys-entry-wrap{padding:16px 20px 36px !important;}}
+@media(max-width:600px){
+  .bys-entry{grid-template-columns:1fr;gap:12px;padding:18px 20px;}
+  .bys-entry-cta{display:none;}
+}
+
+/* ============================================================
+   BUILD YOUR SEASON — MODAL
+============================================================ */
+.bys-overlay{
+  position:fixed;inset:0;z-index:800;background:rgba(0,0,0,0.78);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  display:none;align-items:center;justify-content:center;padding:20px;
+  overflow-y:auto;
+}
+.bys-overlay.open{display:flex;}
+.bys-modal{
+  width:100%;max-width:680px;background:#0d0d0d;
+  border:1px solid var(--border-mid);border-top:3px solid var(--orange);
+  display:flex;flex-direction:column;
+  box-shadow:0 32px 100px rgba(0,0,0,0.9);
+  animation:modalFadeIn 280ms var(--ease-out) both;
+  margin:auto;
+}
+.bys-modal-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 22px;border-bottom:1px solid var(--border);
+  background:rgba(191,87,0,0.04);
+}
+.bys-modal-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;color:var(--white);}
+.bys-modal-sub{font-family:'Inter',sans-serif;font-size:11px;color:var(--muted);margin-top:2px;}
+.bys-modal-close{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:2px 8px;line-height:1;transition:color 150ms;}
+.bys-modal-close:hover{color:var(--white);}
+.bys-modal-body{padding:20px 22px;}
+.bys-scenarios{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);margin-bottom:1px;}
+.bys-scenario{
+  background:var(--surface);padding:18px 18px 16px;cursor:pointer;
+  border:2px solid transparent;
+  transition:background 200ms var(--ease-out),border-color 200ms var(--ease-out);
+  position:relative;
+}
+.bys-scenario:hover{background:var(--surface2);}
+.bys-scenario.selected{
+  background:rgba(191,87,0,0.05);border-color:var(--orange);z-index:1;
+}
+.bys-scenario-badge{
+  display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;padding:2px 7px;border:1px solid;margin-bottom:8px;
+}
+.bys-badge-green{color:var(--green);border-color:rgba(34,197,94,0.35);background:rgba(34,197,94,0.07);}
+.bys-badge-orange{color:var(--orange);border-color:rgba(191,87,0,0.4);background:rgba(191,87,0,0.08);}
+.bys-badge-amber{color:var(--amber);border-color:rgba(245,158,11,0.35);background:rgba(245,158,11,0.07);}
+.bys-badge-red{color:var(--red);border-color:rgba(239,68,68,0.35);background:rgba(239,68,68,0.07);}
+.bys-scenario-title{
+  font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:.5px;
+  color:var(--white);line-height:1;margin-bottom:6px;
+}
+.bys-scenario-desc{font-family:'Inter',sans-serif;font-size:11px;color:var(--secondary);line-height:1.55;margin-bottom:12px;}
+.bys-scenario-stats{display:flex;gap:12px;align-items:center;}
+.bys-scenario-record{
+  font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--white);letter-spacing:.5px;
+}
+.bys-cfp-shift{
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:.5px;padding:2px 8px;border-radius:2px;
+}
+.bys-cfp-green{color:var(--green);background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.25);}
+.bys-cfp-amber{color:var(--amber);background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.25);}
+.bys-cfp-red{color:var(--red);background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);}
+.bys-scenario-check{
+  position:absolute;top:10px;right:12px;width:18px;height:18px;
+  background:var(--orange);border-radius:50%;
+  display:none;align-items:center;justify-content:center;
+  font-size:10px;color:#fff;
+}
+.bys-scenario.selected .bys-scenario-check{display:flex;}
+
+/* Custom / live path tile */
+.bys-scenario.bys-custom{
+  grid-column:1/-1;border-top:1px solid var(--border);
+  display:flex;align-items:center;gap:20px;padding:14px 18px;
+}
+.bys-custom-left{flex:1;}
+.bys-custom-record{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--white);letter-spacing:.5px;}
+.bys-custom-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:2px;}
+
+/* Impact panel */
+.bys-impact-panel{
+  background:var(--surface);border:1px solid var(--border);
+  display:none;
+}
+.bys-impact-panel.visible{display:block;}
+.bys-impact-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);}
+.bys-impact-cell{background:#1a1a1a;padding:14px 16px;}
+.bys-impact-label{font-family:'Inter',sans-serif;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.bys-impact-val{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--white);line-height:1;}
+.bys-impact-val.orange{color:var(--orange);}
+.bys-impact-val.green{color:var(--green);}
+.bys-impact-val.amber{color:var(--amber);}
+.bys-impact-val.red{color:var(--red);}
+.bys-impact-bar-row{margin-top:6px;height:3px;background:var(--border-mid);}
+.bys-impact-bar{height:100%;background:linear-gradient(90deg,var(--orange),var(--orange-hi));transition:width 600ms var(--ease-out);}
+.bys-impact-key{
+  padding:12px 16px;border-top:1px solid var(--border);
+  font-family:'Inter',sans-serif;font-size:12px;color:var(--secondary);
+  display:flex;align-items:center;gap:8px;
+}
+.bys-impact-key-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);}
+
+/* Modal CTAs */
+.bys-ctas{
+  display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);
+  margin-top:1px;
+}
+.bys-cta-scroll{
+  background:var(--surface);padding:14px 18px;
+  font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;text-transform:uppercase;
+  color:var(--white2);border:none;cursor:pointer;text-align:center;
+  transition:background 200ms var(--ease-out);
+}
+.bys-cta-scroll:hover{background:var(--surface2);}
+.bys-cta-intel{
+  background:var(--orange);padding:14px 18px;
+  font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;text-transform:uppercase;
+  color:#fff;border:none;cursor:pointer;text-align:center;
+  transition:background 200ms var(--ease-out);
+}
+.bys-cta-intel:hover{background:var(--orange-hi);}
+.bys-cta-intel:disabled{opacity:.45;cursor:not-allowed;}
+
+/* Apply to simulator note */
+.bys-sim-note{
+  padding:10px 16px;border-top:1px solid var(--border);
+  font-family:'Inter',sans-serif;font-size:11px;color:var(--muted);
+  display:flex;align-items:center;gap:6px;
+}
+.bys-sim-note-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0;}
+
+@media(max-width:600px){
+  .bys-scenarios{grid-template-columns:1fr;}
+  .bys-ctas{grid-template-columns:1fr;}
+  .bys-impact-stats{grid-template-columns:1fr 1fr;}
+  .bys-impact-stats .bys-impact-cell:last-child{grid-column:1/-1;}
+}
 </style>
 </head>
 <body>
@@ -411,6 +950,98 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
     </div>
   </div>
 </nav>
+
+<!-- ====================================================
+     SEASON SIMULATOR
+==================================================== -->
+<section id="season-simulator">
+  <div class="sim-layout">
+
+    <!-- LEFT: GAME CARDS -->
+    <div class="sim-left">
+      <div class="sim-header">
+        <div class="sim-eyebrow-rule"></div>
+        <div>
+          <div class="sim-section-label">— Choose Your Season</div>
+          <p class="sim-section-sub">Texas has 7 games that decide everything. You control the outcomes.</p>
+        </div>
+      </div>
+      <div id="sim-cards"></div>
+    </div>
+
+    <!-- RIGHT: LIVE SIDEBAR -->
+    <div class="sim-right">
+      <div class="sim-record-block">
+        <div id="sim-record" class="sim-record-num">12-1</div>
+        <div class="sim-record-label">Projected Record</div>
+      </div>
+
+      <div class="sim-stats-grid">
+        <div class="sim-stat-block">
+          <div class="sim-stat-label">CFP Probability</div>
+          <div id="sim-cfp" class="sim-stat-val">—</div>
+          <div class="sim-bar-track"><div id="sim-bar-cfp" class="sim-bar-fill"></div></div>
+        </div>
+        <div class="sim-stat-block">
+          <div class="sim-stat-label">Top-4 Seed</div>
+          <div id="sim-top4" class="sim-stat-val">—</div>
+          <div class="sim-bar-track"><div id="sim-bar-top4" class="sim-bar-fill"></div></div>
+        </div>
+        <div class="sim-stat-block">
+          <div class="sim-stat-label">SEC Championship</div>
+          <div id="sim-sec" class="sim-stat-val">—</div>
+          <div class="sim-bar-track"><div id="sim-bar-sec" class="sim-bar-fill"></div></div>
+        </div>
+        <div class="sim-stat-block">
+          <div class="sim-stat-label">Natty Odds</div>
+          <div id="sim-natty" class="sim-stat-val">—</div>
+          <div class="sim-bar-track"><div id="sim-bar-natty" class="sim-bar-fill"></div></div>
+        </div>
+      </div>
+
+      <div class="sim-impact-block">
+        <div class="sim-impact-label">Biggest Impact</div>
+        <div id="sim-impact" class="sim-impact-val">—</div>
+      </div>
+
+      <div class="sim-narrative-block">
+        <div class="sim-narrative-eyebrow">Tower Reads This Timeline As:</div>
+        <div id="sim-narrative" class="sim-narrative-text"></div>
+      </div>
+
+      <a id="sim-intel-btn" href="intelligence.html" class="sim-btn-primary">Ask Tower Intel About This Path →</a>
+      <button id="sim-share-btn" class="sim-btn-ghost" onclick="simShare()">Share This Timeline</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- ====================================================
+     FULL SCHEDULE TABLE
+==================================================== -->
+<div class="sr" style="padding-top:24px;">
+  <span class="sr-label">Full 2026 Schedule</span>
+  <div class="sr-line"></div>
+  <span class="sr-meta">13 Weeks · All Games · Reflects Your Selections</span>
+</div>
+<section id="sim-schedule-table">
+  <div class="sim-table-wrap">
+    <table class="sim-sched-table">
+      <thead>
+        <tr>
+          <th>Week</th>
+          <th>Date</th>
+          <th>Opponent</th>
+          <th>Location</th>
+          <th>Spread</th>
+          <th>Win %</th>
+          <th>Result</th>
+        </tr>
+      </thead>
+      <tbody id="sim-table-body"></tbody>
+    </table>
+  </div>
+</section>
 
 <!-- ====================================================
      HERO
@@ -815,6 +1446,34 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
     <tr><td class="era-yr">2025</td><td class="era-rec">10–3</td><td>38.4</td><td>18.7</td><td>34</td><td class="era-rank">#18</td><td class="era-bowl">Citrus Bowl W</td></tr>
     <tr><td class="era-yr" style="color:var(--green)">2026 ↑</td><td class="era-rec" style="color:var(--green)">Proj. 9–3</td><td style="color:var(--green)">42.0</td><td style="color:var(--green)">17.5</td><td style="color:var(--green)">36</td><td class="era-rank" style="color:var(--green)">Top 10</td><td class="era-bowl" style="color:var(--green)">CFP Contender</td></tr>
   </table>
+</div>
+
+<!-- ====================================================
+     BUILD YOUR SEASON — ENTRY CARD
+==================================================== -->
+<div class="sr" style="padding-top:28px;">
+  <span class="sr-label">Build Your Season</span>
+  <div class="sr-line"></div>
+  <span class="sr-meta">4 Scenarios · Live CFP Outcomes</span>
+</div>
+<div style="padding:16px 48px 48px;" id="bys-entry-wrap" class="bys-entry-wrap">
+  <div class="bys-entry" onclick="openBuildSeason()" role="button" tabindex="0" aria-haspopup="dialog">
+    <div class="bys-entry-left">
+      <div class="bys-entry-icon">⚡</div>
+      <div>
+        <div class="bys-entry-pill">
+          <span class="bys-entry-pill-dot"></span>
+          Interactive
+        </div>
+        <div class="bys-entry-title">Build Your Season</div>
+        <div class="bys-entry-sub">Pick a scenario path. See how it shifts Texas' CFP outlook. Ask Tower Intel anything about it.</div>
+      </div>
+    </div>
+    <div class="bys-entry-cta">
+      Launch Scenarios
+      <span class="bys-entry-arrow">→</span>
+    </div>
+  </div>
 </div>
 
 <!-- ====================================================
@@ -1524,6 +2183,683 @@ document.addEventListener('DOMContentLoaded', () => {
   buildDifficultyList();
   animateBars();
   initOdds(); // fetch live odds and patch cards async
+});
+
+/* ============================================================
+   SEASON SIMULATOR ENGINE
+============================================================ */
+const SIM_SCHEDULE = [
+  { id:'sg-w1',  week:'W1',  date:'Sep 5',   opp:'Texas State',       venue:'HOME',    tier:null,      prob:98,  auto:true,  spread:'TX -38'   },
+  { id:'sg-w2',  week:'W2',  date:'Sep 12',  opp:'Ohio State',        venue:'HOME',    tier:'MARQUEE', prob:52,  auto:false, spread:'TX -3.5',  cfpWin:9,  cfpLoss:-7  },
+  { id:'sg-w3',  week:'W3',  date:'Sep 19',  opp:'UTSA',              venue:'HOME',    tier:null,      prob:97,  auto:true,  spread:'TX -35'   },
+  { id:'sg-w4',  week:'W4',  date:'Sep 26',  opp:'Tennessee',         venue:'AWAY',    tier:'SWING',   prob:55,  auto:false, spread:'TX -2.5',  cfpWin:6,  cfpLoss:-4  },
+  { id:'sg-bye', week:'W5',  date:'Oct 3',   opp:'BYE WEEK',          venue:null,      tier:null,      prob:null, auto:true,  bye:true          },
+  { id:'sg-w6',  week:'W6',  date:'Oct 10',  opp:'Oklahoma',          venue:'NEUTRAL', tier:'RIVALRY', prob:72,  auto:false, spread:'TX -6',    cfpWin:3,  cfpLoss:-4  },
+  { id:'sg-w7',  week:'W7',  date:'Oct 17',  opp:'Florida',           venue:'HOME',    tier:null,      prob:76,  auto:true,  spread:'TX -9.5'  },
+  { id:'sg-w8',  week:'W8',  date:'Oct 24',  opp:'Ole Miss',          venue:'HOME',    tier:'TOUGH',   prob:68,  auto:false, spread:'TX -7',    cfpWin:3,  cfpLoss:-3  },
+  { id:'sg-w9',  week:'W9',  date:'Oct 31',  opp:'Mississippi State', venue:'HOME',    tier:null,      prob:84,  auto:true,  spread:'TX -17'   },
+  { id:'sg-w10', week:'W10', date:'Nov 7',   opp:'Missouri',          venue:'AWAY',    tier:'SWING',   prob:63,  auto:false, spread:'TX -5',    cfpWin:3,  cfpLoss:-3  },
+  { id:'sg-w11', week:'W11', date:'Nov 14',  opp:'LSU',               venue:'AWAY',    tier:'DANGER',  prob:48,  auto:false, spread:'LSU -1',   cfpWin:8,  cfpLoss:-5  },
+  { id:'sg-w12', week:'W12', date:'Nov 21',  opp:'Arkansas',          venue:'HOME',    tier:null,      prob:91,  auto:true,  spread:'TX -24'   },
+  { id:'sg-w13', week:'W13', date:'Nov 27',  opp:'Texas A&M',         venue:'AWAY',    tier:'RIVALRY', prob:57,  auto:false, spread:'TX -2',    cfpWin:3,  cfpLoss:-5  },
+];
+
+// Toggle state — default all swing games to WIN
+const simState = {};
+SIM_SCHEDULE.filter(g => !g.auto && !g.bye).forEach(g => { simState[g.id] = 'win'; });
+
+let simCurrentCFP = 82;
+let simLastRecord = '';
+
+function simToggle(id, result) {
+  simState[id] = result;
+  // Update card border/bg
+  const card = document.getElementById(id);
+  if (card) {
+    card.classList.toggle('state-win',  result === 'win');
+    card.classList.toggle('state-loss', result === 'loss');
+  }
+  // Update button active states
+  document.querySelectorAll(`[data-sim-id="${id}"]`).forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.simResult === result);
+  });
+  // Update table row
+  const cell = document.getElementById(`sst-result-${id}`);
+  if (cell) {
+    cell.textContent = result === 'win' ? 'WIN' : 'LOSS';
+    cell.className = result === 'win' ? 'sst-result-win' : 'sst-result-loss';
+  }
+  simRecalculate();
+}
+
+function simGetSwingWins() {
+  return Object.values(simState).filter(v => v === 'win').length;
+}
+
+function simRecalculate() {
+  const swingWins = simGetSwingWins();
+  const totalWins = 5 + swingWins;
+
+  // Base CFP by total wins
+  const CFP_BASE = { 12:94, 11:82, 10:61, 9:34, 8:12, 7:3, 6:3, 5:3 };
+  let cfp = CFP_BASE[Math.min(12, Math.max(5, totalWins))] ?? 3;
+
+  const osuWin  = simState['sg-w2']  === 'win';
+  const osuLoss = simState['sg-w2']  === 'loss';
+  const lsuWin  = simState['sg-w11'] === 'win';
+  const lsuLoss = simState['sg-w11'] === 'loss';
+  const tnWin   = simState['sg-w4']  === 'win';
+  const amLoss  = simState['sg-w13'] === 'loss';
+  const amWin   = simState['sg-w13'] === 'win';
+  const oklaWin = simState['sg-w6']  === 'win';
+  const oleWin  = simState['sg-w8']  === 'win';
+
+  if (osuWin)  cfp = Math.min(97, cfp + 9);
+  if (osuLoss) cfp = Math.max(3,  cfp - 7);
+  if (lsuWin)  cfp = Math.min(97, cfp + 8);
+  if (lsuLoss) cfp = Math.max(3,  cfp - 5);
+  if (tnWin)   cfp = Math.min(97, cfp + 6);
+  if (amLoss)  cfp = Math.max(3,  cfp - 5);
+  if (oleWin)  cfp = Math.min(97, cfp + 3);
+  cfp = Math.min(97, Math.max(3, cfp));
+  simCurrentCFP = cfp;
+
+  // SEC championship: needs 11+ wins + TN + A&M + Oklahoma
+  const secQ = totalWins >= 11 && tnWin && amWin && oklaWin;
+  const secPct = secQ
+    ? Math.round(cfp * 0.58)
+    : Math.round(cfp * (totalWins >= 10 ? 0.28 : 0.12));
+
+  const top4  = Math.round(cfp * (osuWin ? 0.58 : 0.44));
+  const nattyMult = totalWins >= 11 ? 0.22 : totalWins >= 10 ? 0.12 : 0.06;
+  const natty = Math.round(cfp * nattyMult);
+
+  const losses    = 7 - swingWins;
+  const recordStr = `${totalWins}-${losses}`;
+
+  // Record hero with pulse
+  const recEl = document.getElementById('sim-record');
+  if (recEl) {
+    if (recordStr !== simLastRecord) {
+      recEl.classList.remove('pulse');
+      void recEl.offsetWidth;
+      recEl.classList.add('pulse');
+      setTimeout(() => recEl.classList.remove('pulse'), 220);
+    }
+    recEl.textContent = recordStr;
+    simLastRecord = recordStr;
+  }
+
+  // Stat blocks
+  simSetStat('sim-cfp',   'sim-bar-cfp',   cfp);
+  simSetStat('sim-top4',  'sim-bar-top4',  top4);
+  simSetStat('sim-sec',   'sim-bar-sec',   secPct);
+  simSetStat('sim-natty', 'sim-bar-natty', natty);
+
+  const cfpEl = document.getElementById('sim-cfp');
+  if (cfpEl) {
+    cfpEl.classList.toggle('hot',  cfp > 65);
+    cfpEl.classList.toggle('cold', cfp < 35);
+  }
+
+  // Biggest impact
+  const impactEl = document.getElementById('sim-impact');
+  if (impactEl) {
+    const impact = simFindBiggestImpact();
+    impactEl.textContent = impact ? `FLIP THIS GAME: ${impact}` : '—';
+  }
+
+  // Narrative
+  const narrativeEl = document.getElementById('sim-narrative');
+  if (narrativeEl) {
+    narrativeEl.textContent = simBuildNarrative(totalWins, swingWins, osuWin, osuLoss, lsuWin, lsuLoss, amLoss);
+  }
+
+  // Intel button deep link
+  const intelBtn = document.getElementById('sim-intel-btn');
+  if (intelBtn) intelBtn.href = `intelligence.html?q=${simBuildQuery()}`;
+}
+
+function simSetStat(valId, barId, pct) {
+  const v = document.getElementById(valId);
+  const b = document.getElementById(barId);
+  if (v) v.textContent = pct + '%';
+  if (b) b.style.width = Math.min(100, pct) + '%';
+}
+
+function simFindBiggestImpact() {
+  let best = null, bestSwing = 0;
+  SIM_SCHEDULE.filter(g => !g.auto && !g.bye).forEach(g => {
+    const r = simState[g.id];
+    const swing = r === 'win' ? Math.abs(g.cfpLoss) : g.cfpWin;
+    if (swing > bestSwing) { bestSwing = swing; best = { g, dir: r === 'loss' ? '+' : '-', swing }; }
+  });
+  if (!best) return null;
+  return `${best.g.opp} (${best.dir}${best.swing}% CFP)`;
+}
+
+function simBuildNarrative(totalWins, swingWins, osuWin, osuLoss, lsuWin, lsuLoss, amLoss) {
+  let text = '';
+  if (swingWins === 7) {
+    text = "Texas is running the table. A win over Ohio State at home sets the tone for the entire sport. The Longhorns are the story of college football. Arch Manning is the Heisman. This is a national championship path.";
+  } else if (swingWins === 6 && osuWin && lsuLoss) {
+    text = "The loss in Death Valley stings but Texas has done enough. An Ohio State win in September gives the committee everything they need. Texas is a top-4 seed and a legitimate title contender.";
+  } else if (swingWins === 6 && osuLoss) {
+    text = "Texas survived the Ohio State scare and ran the rest of the schedule. The committee will debate the Buckeye loss all season but an SEC championship berth answers every question. Still very much alive.";
+  } else if (swingWins === 6) {
+    text = "The loss in Death Valley stings but Texas has done enough. An Ohio State win in September gives the committee everything they need. Texas is a top-4 seed and a legitimate title contender.";
+  } else if (totalWins === 10) {
+    text = "On the right side of the bubble. Texas needs help and probably needs to win the SEC. The schedule strength is there — this comes down to the committee trusting the résumé. Don't panic yet.";
+  } else if (totalWins === 9 && osuWin) {
+    text = "The Ohio State win keeps hope alive but too many SEC losses pile up. Texas is fighting for an at-large bid with a weak case. Could get in — but needs chaos elsewhere and probably won't.";
+  } else if (totalWins === 9) {
+    text = "No marquee win. Losing record in the toughest games. Texas is watching the playoff from home. This is the nightmare scenario Sarkisian has to avoid.";
+  } else {
+    text = "The wheels have come off. This is the season that ends the Steve Sarkisian era of championship expectations. 8 wins is a good football team, not a Texas football team.";
+  }
+  if (amLoss) {
+    text += " And losing to A&M on Black Friday makes the offseason twice as long. That one will hurt until September.";
+  }
+  return text;
+}
+
+function simBuildQuery() {
+  const wins  = SIM_SCHEDULE.filter(g => !g.auto && !g.bye && simState[g.id] === 'win').map(g => g.opp);
+  const losses = SIM_SCHEDULE.filter(g => !g.auto && !g.bye && simState[g.id] === 'loss').map(g => g.opp);
+  const total = 5 + wins.length;
+  const ls    = 7 - wins.length;
+  let q = `Texas is ${total}-${ls}`;
+  if (wins.length)   q += ` after beating ${wins.join(' and ')}`;
+  if (losses.length) q += ` but losing at ${losses.join(' and ')}`;
+  q += `. What is their CFP outlook and what seed would they likely receive?`;
+  return encodeURIComponent(q);
+}
+
+function simShare() {
+  const total = 5 + simGetSwingWins();
+  const ls    = 7 - simGetSwingWins();
+  const keys  = [];
+  if (simState['sg-w2']  === 'win')  keys.push('Beat Ohio State');
+  if (simState['sg-w11'] === 'win')  keys.push('Won at LSU');
+  if (simState['sg-w11'] === 'loss') keys.push('Lost at LSU');
+  if (simState['sg-w13'] === 'loss') keys.push('Lost to Texas A&M on Black Friday');
+  const key  = keys[0] || '';
+  const text = `I just simulated the 2026 Texas season on Tower Report.\nFinal record: ${total}-${ls}\nCFP probability: ${simCurrentCFP}%\n${key ? key + '\n' : ''}The Tower Never Sleeps.\ntower-report.vercel.app`;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('sim-share-btn');
+    if (btn) { const orig = btn.textContent; btn.textContent = 'COPIED ✓'; setTimeout(() => { btn.textContent = orig; }, 2000); }
+  }).catch(() => { alert(text); });
+}
+
+/* Build game card HTML */
+function buildSimCards() {
+  const container = document.getElementById('sim-cards');
+  if (!container) return;
+  let html = '';
+  SIM_SCHEDULE.forEach((g, idx) => {
+    const delay = idx * 55;
+    if (g.bye) {
+      html += `<div class="sim-bye-row" style="animation-delay:${delay}ms">
+        <div class="sim-bye-line"></div>
+        <div class="sim-bye-label">BYE WEEK · OCT 3</div>
+        <div class="sim-bye-line"></div>
+      </div>`;
+      return;
+    }
+    if (g.auto) {
+      html += `<div class="sim-auto-card" style="animation-delay:${delay}ms">
+        <div class="sim-auto-left">
+          <div class="sim-auto-week">${g.week}</div>
+          <div>
+            <div class="sim-auto-opp">${g.opp}</div>
+            <div class="sim-auto-date">${g.date} · ${g.venue}</div>
+          </div>
+        </div>
+        <div class="sim-auto-badge">
+          <span class="sim-win-badge">WIN</span>
+          <span class="sim-lock-icon">&#x1F512;</span>
+        </div>
+      </div>`;
+      return;
+    }
+    const venueLabel = g.venue === 'HOME' ? 'Home' : g.venue === 'AWAY' ? 'Away' : 'Neutral';
+    html += `<div class="sim-swing-card state-win" id="${g.id}" style="animation-delay:${delay}ms">
+      <div class="sim-card-inner">
+        <div class="sim-card-top">
+          <span class="sim-week-badge">${g.week}</span>
+          <span class="sim-tier-pill tier-${g.tier}">${g.tier}</span>
+        </div>
+        <div class="sim-card-middle">
+          <div>
+            <div class="sim-opp-name">${g.opp}</div>
+            <div class="sim-venue-row">
+              <span class="sim-venue-badge venue-${g.venue}">${venueLabel}</span>
+              <span class="sim-date-text">${g.date}</span>
+            </div>
+            <div class="sim-prob-row">
+              <div class="sim-prob-track">
+                <div class="sim-prob-fill" style="width:${g.prob}%"></div>
+              </div>
+              <span class="sim-prob-label">Vegas Win Prob: ${g.prob}%</span>
+            </div>
+          </div>
+          <div class="sim-toggle-btns">
+            <button class="sim-toggle-btn btn-win active"
+              data-sim-id="${g.id}" data-sim-result="win"
+              onclick="simToggle('${g.id}','win')">WIN</button>
+            <button class="sim-toggle-btn btn-loss"
+              data-sim-id="${g.id}" data-sim-result="loss"
+              onclick="simToggle('${g.id}','loss')">LOSS</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+/* Build full schedule table */
+function buildSimTable() {
+  const tbody = document.getElementById('sim-table-body');
+  if (!tbody) return;
+  let rows = '';
+  SIM_SCHEDULE.forEach(g => {
+    if (g.bye) {
+      rows += `<tr class="sst-bye"><td colspan="7">— BYE WEEK · OCT 3 —</td></tr>`;
+      return;
+    }
+    const resultHTML = g.auto
+      ? `<span class="sst-result-proj">PROJ W</span>`
+      : `<span id="sst-result-${g.id}" class="sst-result-win">WIN</span>`;
+    rows += `<tr>
+      <td>${g.week}</td>
+      <td>${g.date}</td>
+      <td>${g.opp}</td>
+      <td>${g.venue || '—'}</td>
+      <td style="color:var(--orange)">${g.spread || '—'}</td>
+      <td>${g.prob != null ? g.prob + '%' : '—'}</td>
+      <td>${resultHTML}</td>
+    </tr>`;
+  });
+  tbody.innerHTML = rows;
+}
+
+/* Init simulator on load */
+document.addEventListener('DOMContentLoaded', () => {
+  buildSimCards();
+  buildSimTable();
+  simRecalculate();
+});
+</script>
+
+<!-- ====================================================
+     BUILD YOUR SEASON MODAL
+==================================================== -->
+<div class="bys-overlay" id="bys-overlay" onclick="if(event.target===this)closeBuildSeason()" role="dialog" aria-label="Build Your Season" aria-modal="true">
+  <div class="bys-modal">
+    <div class="bys-modal-head">
+      <div>
+        <div class="bys-modal-title">Build Your Season</div>
+        <div class="bys-modal-sub">Select a path — it syncs to the simulator above and powers your Tower Intel query.</div>
+      </div>
+      <button class="bys-modal-close" onclick="closeBuildSeason()" aria-label="Close">✕</button>
+    </div>
+    <div class="bys-modal-body">
+
+      <!-- 4 SCENARIO CARDS -->
+      <div class="bys-scenarios" id="bys-scenarios">
+
+        <div class="bys-scenario" id="bys-dominant" onclick="bysSelect('dominant')" tabindex="0">
+          <div class="bys-scenario-check">✓</div>
+          <div class="bys-scenario-badge bys-badge-green">Marquee Path</div>
+          <div class="bys-scenario-title">Dominant Start</div>
+          <div class="bys-scenario-desc">Beat Ohio State at home in Week 2. CFP narrative locked before October begins. The committee puts you in the top 3 and never looks back.</div>
+          <div class="bys-scenario-stats">
+            <span class="bys-scenario-record">11-1</span>
+            <span class="bys-cfp-shift bys-cfp-green">CFP Lock</span>
+          </div>
+        </div>
+
+        <div class="bys-scenario" id="bys-gauntlet" onclick="bysSelect('gauntlet')" tabindex="0">
+          <div class="bys-scenario-check">✓</div>
+          <div class="bys-scenario-badge bys-badge-orange">Road Warrior</div>
+          <div class="bys-scenario-title">The Gauntlet</div>
+          <div class="bys-scenario-desc">Conquer Neyland, Faurot Field, and Death Valley in the same season. Lose Ohio State but win the three hardest road tests in the SEC.</div>
+          <div class="bys-scenario-stats">
+            <span class="bys-scenario-record">11-1</span>
+            <span class="bys-cfp-shift bys-cfp-green">CFP Lock</span>
+          </div>
+        </div>
+
+        <div class="bys-scenario" id="bys-resilient" onclick="bysSelect('resilient')" tabindex="0">
+          <div class="bys-scenario-check">✓</div>
+          <div class="bys-scenario-badge bys-badge-amber">Bubble Path</div>
+          <div class="bys-scenario-title">Resilient Run</div>
+          <div class="bys-scenario-desc">Drop Ohio State and LSU. Win everything else — including a Black Friday statement at Kyle Field. Relying on strength of schedule to get in.</div>
+          <div class="bys-scenario-stats">
+            <span class="bys-scenario-record">10-2</span>
+            <span class="bys-cfp-shift bys-cfp-amber">CFP Bubble</span>
+          </div>
+        </div>
+
+        <div class="bys-scenario" id="bys-chaos" onclick="bysSelect('chaos')" tabindex="0">
+          <div class="bys-scenario-check">✓</div>
+          <div class="bys-scenario-badge bys-badge-red">High Variance</div>
+          <div class="bys-scenario-title">Chaos to Playoff</div>
+          <div class="bys-scenario-desc">Lose Ohio State and Texas A&M on Black Friday. Win at LSU. Needs committee chaos — other teams losing — to back into a bid. Not the plan.</div>
+          <div class="bys-scenario-stats">
+            <span class="bys-scenario-record">10-2</span>
+            <span class="bys-cfp-shift bys-cfp-red">Long Shot</span>
+          </div>
+        </div>
+
+        <!-- LIVE: YOUR CURRENT PATH from simulator -->
+        <div class="bys-scenario bys-custom" id="bys-custom" onclick="bysSelect('custom')" tabindex="0">
+          <div class="bys-scenario-check">✓</div>
+          <div class="bys-custom-left">
+            <div class="bys-scenario-badge bys-badge-orange" style="margin-bottom:4px;">Your Custom Path</div>
+            <div class="bys-custom-record" id="bys-custom-record">—</div>
+            <div class="bys-custom-label" id="bys-custom-label">Set your outcomes in the simulator above</div>
+          </div>
+          <div style="font-family:'Inter',sans-serif;font-size:11px;color:var(--muted);max-width:200px;line-height:1.5;">
+            Reflects exactly what you've toggled in the Choose Your Season simulator.
+          </div>
+        </div>
+
+      </div>
+
+      <!-- IMPACT PANEL (hidden until selection) -->
+      <div class="bys-impact-panel" id="bys-impact-panel">
+        <div class="bys-impact-stats">
+          <div class="bys-impact-cell">
+            <div class="bys-impact-label">Projected Record</div>
+            <div class="bys-impact-val orange" id="bys-out-record">—</div>
+          </div>
+          <div class="bys-impact-cell">
+            <div class="bys-impact-label">CFP Probability</div>
+            <div class="bys-impact-val" id="bys-out-cfp">—</div>
+            <div class="bys-impact-bar-row"><div class="bys-impact-bar" id="bys-out-cfp-bar" style="width:0%"></div></div>
+          </div>
+          <div class="bys-impact-cell">
+            <div class="bys-impact-label">Top-4 Seed</div>
+            <div class="bys-impact-val" id="bys-out-top4">—</div>
+            <div class="bys-impact-bar-row"><div class="bys-impact-bar" id="bys-out-top4-bar" style="width:0%"></div></div>
+          </div>
+        </div>
+        <div class="bys-impact-key">
+          <span class="bys-impact-key-label">Key Game</span>
+          <span style="color:var(--white);font-weight:600;" id="bys-out-key">—</span>
+          <span style="flex:1;"></span>
+          <span id="bys-out-note" style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--muted);"></span>
+        </div>
+        <div class="bys-sim-note">
+          <span class="bys-sim-note-dot"></span>
+          Scenario applied to the Choose Your Season simulator above — scroll up to see toggle states updated.
+        </div>
+      </div>
+
+      <!-- CTAs -->
+      <div class="bys-ctas">
+        <button class="bys-cta-scroll" onclick="closeBuildSeason();document.getElementById('season-simulator').scrollIntoView({behavior:'smooth'})">
+          ↑ See in Simulator
+        </button>
+        <button class="bys-cta-intel" id="bys-intel-btn" disabled onclick="bysAskIntel()">
+          Ask Tower Intel About This Path →
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ====================================================
+     FLOATING CHAT — TOWER INTELLIGENCE
+==================================================== -->
+<button class="fchat-btn" onclick="openFChat()" aria-label="Chat with Tower Intelligence">
+  <span class="fchat-btn-dot"></span>
+  Tower AI
+</button>
+
+<div class="fchat-overlay" id="fchat-overlay" onclick="if(event.target===this)closeFChat()">
+  <div class="fchat-modal" role="dialog" aria-label="Tower Intelligence Chat">
+    <div class="fchat-modal-head">
+      <div class="fchat-modal-title"><span>⚡</span> Tower Intelligence</div>
+      <button class="fchat-modal-close" onclick="closeFChat()" aria-label="Close">✕</button>
+    </div>
+    <div class="fchat-messages" id="fchat-messages">
+      <div class="fchat-msg tower">
+        <strong>Tower Intelligence is ready.</strong><br>
+        Ask me anything about Texas football — the 2026 schedule, CFP outlook, Arch Manning, or any matchup on the schedule.
+      </div>
+    </div>
+    <div class="fchat-chips" id="fchat-chips">
+      <div class="fchat-chip" onclick="fchatAsk('What are Texas CFP chances in 2026 and what is their most likely path?')">CFP path</div>
+      <div class="fchat-chip" onclick="fchatAsk('How important is the Ohio State game for Texas playoff chances?')">Ohio State</div>
+      <div class="fchat-chip" onclick="fchatAsk('How does Arch Manning perform in big road games and what should we expect at LSU?')">Arch at LSU</div>
+      <div class="fchat-chip" onclick="fchatAsk('What is the most dangerous game on the 2026 Texas schedule and why?')">Biggest threat</div>
+    </div>
+    <div class="fchat-footer">
+      <input class="fchat-input" id="fchat-input" type="text" placeholder="Ask about the 2026 season…" onkeydown="if(event.key==='Enter')fchatSend()"/>
+      <button class="fchat-send" onclick="fchatSend()">Ask →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====================================================
+     FLOATING CHAT + BUILD YOUR SEASON JS
+==================================================== -->
+<script>
+/* ---- FLOATING CHAT ENGINE ---- */
+function openFChat(){
+  document.getElementById('fchat-overlay').classList.add('open');
+  setTimeout(()=>document.getElementById('fchat-input').focus(),280);
+}
+function closeFChat(){
+  document.getElementById('fchat-overlay').classList.remove('open');
+}
+function fchatAppend(html,cls){
+  const msgs=document.getElementById('fchat-messages');
+  const div=document.createElement('div');
+  div.className='fchat-msg '+cls;
+  div.innerHTML=html;
+  msgs.appendChild(div);
+  msgs.scrollTop=msgs.scrollHeight;
+  return div;
+}
+function mdToHtml(text){
+  return text
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/^[-*] (.+)/gm,'<span style="display:block;padding-left:12px;margin-top:3px;">▸ $1</span>')
+    .replace(/\*(.+?)\*/g,'<em>$1</em>')
+    .replace(/\n\n/g,'<br><br>')
+    .replace(/\n/g,'<br>');
+}
+async function fchatAsk(q){
+  document.getElementById('fchat-chips').style.display='none';
+  fchatAppend(q,'user');
+  const thinking=fchatAppend('<em style="color:var(--muted)">Analyzing…</em>','tower');
+  try{
+    const res=await fetch('/api/chat',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({messages:[{role:'user',content:q}]})
+    });
+    if(!res.ok) throw new Error('API '+res.status);
+    const reader=res.body.getReader();
+    const dec=new TextDecoder();
+    let acc='',buf='';
+    thinking.innerHTML='';
+    while(true){
+      const{done,value}=await reader.read();
+      if(done) break;
+      buf+=dec.decode(value,{stream:true});
+      const lines=buf.split('\n');buf=lines.pop();
+      for(const line of lines){
+        if(!line.startsWith('data:')) continue;
+        const raw=line.slice(5).trim();
+        if(raw==='[DONE]') continue;
+        try{const ev=JSON.parse(raw);const c=ev.choices?.[0]?.delta?.content;if(c)acc+=c;}catch(_){}
+      }
+      thinking.innerHTML=mdToHtml(acc);
+      document.getElementById('fchat-messages').scrollTop=document.getElementById('fchat-messages').scrollHeight;
+    }
+  }catch(e){
+    thinking.innerHTML='<strong>Tower is analyzing…</strong><br>Check back shortly — intelligence is processing this path. In the meantime, the season simulator above shows the real-time CFP probability shift for your selection.';
+  }
+}
+function fchatSend(){
+  const inp=document.getElementById('fchat-input');
+  const q=inp.value.trim();
+  if(!q) return;
+  inp.value='';
+  fchatAsk(q);
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){closeFChat();closeBuildSeason();}
+});
+
+/* ---- BUILD YOUR SEASON ---- */
+const BYS_DATA = {
+  dominant:{
+    record:'11-1', cfp:94, top4:Math.round(94*0.58), key:'Ohio State (W2)',
+    note:'Beat the Buckeyes, own the narrative.',
+    toggles:{'sg-w2':'win','sg-w4':'win','sg-w6':'win','sg-w8':'win','sg-w10':'win','sg-w11':'loss','sg-w13':'win'},
+    prompt:'Texas finishes 11-1 in 2026 — beating Ohio State at home in Week 2, winning at Tennessee, sweeping the SEC home schedule, and closing with a Black Friday win at Texas A&M. Their only loss is at LSU in Death Valley. Analyze their CFP playoff seeding, committee positioning, Arch Manning\'s Heisman trajectory in this scenario, and what the path looks like in the College Football Playoff. Who do they likely draw in the first round?'
+  },
+  gauntlet:{
+    record:'11-1', cfp:90, top4:Math.round(90*0.58), key:'LSU @ Death Valley (W11)',
+    note:'Road résumé no committee can ignore.',
+    toggles:{'sg-w2':'loss','sg-w4':'win','sg-w6':'win','sg-w8':'win','sg-w10':'win','sg-w11':'win','sg-w13':'win'},
+    prompt:'Texas finishes 11-1 in 2026 — losing to Ohio State at home in Week 2 — but goes on to win every road game: at Tennessee, at Missouri, and the biggest road win of the season at LSU in Death Valley. They close with wins over Arkansas and Texas A&M on Black Friday. Analyze how the committee weighs a road résumé this strong against an early home loss to Ohio State. Does Texas make the CFP? What seed? Is this better or worse than an OSU win with an LSU loss?'
+  },
+  resilient:{
+    record:'10-2', cfp:58, top4:Math.round(58*0.44), key:'Texas A&M on Black Friday (W13)',
+    note:'Bubble. Schedule strength is the argument.',
+    toggles:{'sg-w2':'loss','sg-w4':'win','sg-w6':'win','sg-w8':'win','sg-w10':'win','sg-w11':'loss','sg-w13':'win'},
+    prompt:'Texas finishes 10-2 in 2026 — losses to Ohio State at home and at LSU in Death Valley — but wins every other game including road wins at Tennessee and Missouri and a Black Friday win at Texas A&M. Is 10-2 with losses to Ohio State and LSU enough for a CFP bid? What is their projected seed? What scenarios elsewhere help them — do they need Georgia to lose, Ohio State to lose a second time, or other top-10 chaos? What does the committee prioritize in evaluating their résumé?'
+  },
+  chaos:{
+    record:'10-2', cfp:42, top4:Math.round(42*0.44), key:'Ohio State (W2) + A&M (W13)',
+    note:'Needs chaos. Narrative is the problem.',
+    toggles:{'sg-w2':'loss','sg-w4':'win','sg-w6':'win','sg-w8':'win','sg-w10':'win','sg-w11':'win','sg-w13':'loss'},
+    prompt:'Texas finishes 10-2 in 2026 — losing to Ohio State at home in Week 2 and to Texas A&M on Black Friday at Kyle Field — but beats every other opponent including a major road win at LSU in Death Valley. Analyze the chaos path: does a win in Death Valley compensate for a Black Friday rivalry loss? How does the committee view losses to Ohio State and Texas A&M in the same season? What other results around the country would need to happen for Texas to make the CFP? What seed and path if they get in?'
+  },
+  custom:{
+    record:null, cfp:null, top4:null, key:null, note:'Your custom toggle selections from the simulator above.',
+    prompt:null
+  }
+};
+
+let bysActive = null;
+
+function openBuildSeason(){
+  bysUpdateCustomTile();
+  document.getElementById('bys-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+  document.getElementById('bys-modal')?.focus();
+}
+function closeBuildSeason(){
+  document.getElementById('bys-overlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+function bysUpdateCustomTile(){
+  // Read current simulator state
+  const swingWins = typeof simGetSwingWins === 'function' ? simGetSwingWins() : 7;
+  const total = 5 + swingWins;
+  const losses = 7 - swingWins;
+  const recordStr = `${total}-${losses}`;
+  const cfpEl = document.getElementById('sim-cfp');
+  const cfpVal = cfpEl ? cfpEl.textContent : '—';
+  document.getElementById('bys-custom-record').textContent = recordStr;
+  document.getElementById('bys-custom-label').textContent = `CFP ${cfpVal} · Based on your current simulator choices`;
+  // Store for use when custom selected
+  BYS_DATA.custom.record = recordStr;
+  BYS_DATA.custom.cfp = parseInt(cfpVal) || 0;
+  BYS_DATA.custom.top4 = Math.round((BYS_DATA.custom.cfp||0) * 0.5);
+  if(typeof simGetSwingWins === 'function'){
+    const wins = Object.keys(simState).filter(k=>simState[k]==='win').map(k=>{
+      const g=SIM_SCHEDULE.find(x=>x.id===k);return g?g.opp:'';
+    }).filter(Boolean);
+    const ls = Object.keys(simState).filter(k=>simState[k]==='loss').map(k=>{
+      const g=SIM_SCHEDULE.find(x=>x.id===k);return g?g.opp:'';
+    }).filter(Boolean);
+    BYS_DATA.custom.key = ls.length ? `Lost at ${ls[0]}` : wins[0] || '—';
+    BYS_DATA.custom.prompt = `Texas finishes ${recordStr} in 2026${wins.length ? ', beating '+wins.slice(0,3).join(', ') : ''}${ls.length ? ' but losing at '+ls.join(' and ') : ''}. Analyze their CFP outlook — do they make the playoff, what seed would they receive, and what are the key committee arguments for and against Texas in this scenario?`;
+  }
+}
+
+function bysSelect(id){
+  bysActive = id;
+  // Deselect all
+  document.querySelectorAll('.bys-scenario').forEach(el=>el.classList.remove('selected'));
+  document.getElementById(`bys-${id}`)?.classList.add('selected');
+
+  const d = BYS_DATA[id];
+  if(!d) return;
+
+  // Apply toggles to main simulator (if not custom)
+  if(id !== 'custom' && d.toggles && typeof simToggle === 'function'){
+    Object.entries(d.toggles).forEach(([gid,result])=>simToggle(gid,result));
+  }
+
+  // Update impact panel
+  const cfp = d.cfp ?? (parseInt(document.getElementById('sim-cfp')?.textContent)||0);
+  const top4 = d.top4 ?? Math.round(cfp*0.5);
+  document.getElementById('bys-out-record').textContent = d.record || document.getElementById('sim-record')?.textContent || '—';
+  document.getElementById('bys-out-record').className = 'bys-impact-val orange';
+  document.getElementById('bys-out-cfp').textContent = cfp+'%';
+  document.getElementById('bys-out-top4').textContent = top4+'%';
+  document.getElementById('bys-out-key').textContent = d.key || '—';
+  document.getElementById('bys-out-note').textContent = d.note || '';
+  // Color CFP by value
+  const cfpValEl = document.getElementById('bys-out-cfp');
+  cfpValEl.className = cfp>=70 ? 'bys-impact-val green' : cfp>=50 ? 'bys-impact-val amber' : 'bys-impact-val red';
+  // Animate bars
+  setTimeout(()=>{
+    document.getElementById('bys-out-cfp-bar').style.width = Math.min(100,cfp)+'%';
+    document.getElementById('bys-out-top4-bar').style.width = Math.min(100,top4)+'%';
+  },50);
+  // Show panel
+  document.getElementById('bys-impact-panel').classList.add('visible');
+  // Enable CTA
+  document.getElementById('bys-intel-btn').disabled = false;
+}
+
+function bysAskIntel(){
+  if(!bysActive) return;
+  const d = BYS_DATA[bysActive];
+  const prompt = d.prompt;
+  if(!prompt) return;
+  closeBuildSeason();
+  openFChat();
+  setTimeout(()=>fchatAsk(prompt), 350);
+}
+
+// Keyboard: Enter on scenario cards
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter' && e.target.classList.contains('bys-scenario')){
+    e.target.click();
+  }
+  if(e.key==='Enter' && e.target.classList.contains('bys-entry')){
+    openBuildSeason();
+  }
+});
+
+// Also wire the existing sim "Ask Tower Intel" button to use fchatAsk
+document.addEventListener('DOMContentLoaded',()=>{
+  const intelBtn = document.getElementById('sim-intel-btn');
+  if(intelBtn){
+    intelBtn.addEventListener('click', e => {
+      e.preventDefault();
+      const href = intelBtn.getAttribute('href')||'';
+      let q='Tell me about Texas CFP outlook for the 2026 season based on current projected results.';
+      if(href.includes('?q=')){
+        try{q=decodeURIComponent(href.split('?q=')[1]);}catch(_){}
+      }
+      openFChat();
+      setTimeout(()=>fchatAsk(q),350);
+    });
+  }
 });
 </script>
 </body>
