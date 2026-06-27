@@ -1592,6 +1592,144 @@ footer{padding:32px 48px;}
 /* Padding: normalize sections that were 44px bottom → 48px */
 .threads-section{padding-bottom:48px;}
 .roadmap-section{padding-bottom:48px;}
+
+/* ======================================================
+   TOWER REVEAL — TRIGGER BAR + FULL-SCREEN MODAL
+====================================================== */
+.ti-reveal-trigger{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 18px;
+  background:rgba(191,87,0,0.06);
+  border-top:1px solid rgba(191,87,0,0.2);
+  border-bottom:1px solid rgba(255,255,255,0.04);
+  cursor:pointer;transition:background 200ms var(--ease-out);
+  flex-shrink:0;
+}
+.ti-reveal-trigger:hover{background:rgba(191,87,0,0.13);}
+.ti-reveal-trigger-text{
+  font-family:'Inter',sans-serif;font-size:12px;font-weight:600;
+  letter-spacing:0.05em;color:var(--orange);
+}
+.ti-reveal-trigger-arr{font-size:15px;color:var(--orange);transition:transform 200ms var(--ease-out);}
+.ti-reveal-trigger:hover .ti-reveal-trigger-arr{transform:translate(2px,-2px);}
+
+.tr-reveal-overlay{
+  position:fixed;inset:0;z-index:2000;
+  background:rgba(0,0,0,0.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  display:none;align-items:center;justify-content:center;padding:24px;
+}
+.tr-reveal-overlay.open{display:flex;animation:tr-overlay-in 280ms var(--ease-out) both;}
+@keyframes tr-overlay-in{from{opacity:0;}to{opacity:1;}}
+
+.tr-reveal-modal{
+  width:100%;max-width:720px;max-height:90vh;
+  background:#0a0a0a;border:1px solid rgba(191,87,0,0.28);border-top:3px solid var(--orange);
+  display:flex;flex-direction:column;position:relative;
+  box-shadow:0 32px 120px rgba(0,0,0,0.9);
+  animation:tr-modal-in 300ms var(--ease-out) both;
+}
+@keyframes tr-modal-in{from{opacity:0;transform:translateY(18px) scale(0.985);}to{opacity:1;transform:translateY(0) scale(1);}}
+
+.tr-reveal-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 22px;border-bottom:1px solid rgba(191,87,0,0.15);
+  background:rgba(191,87,0,0.04);flex-shrink:0;
+}
+.tr-reveal-logo{display:flex;align-items:center;gap:10px;}
+.tr-reveal-logo-mark{
+  width:28px;height:28px;background:var(--orange);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Bebas Neue',sans-serif;font-size:16px;color:#fff;flex-shrink:0;
+}
+.tr-reveal-logo-text{display:flex;flex-direction:column;line-height:1;}
+.tr-reveal-logo-top{
+  font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;
+  letter-spacing:3px;text-transform:uppercase;color:var(--white);
+}
+.tr-reveal-logo-sub{
+  font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:5px;text-transform:uppercase;color:var(--orange);
+}
+.tr-reveal-close{
+  background:none;border:none;color:var(--muted);font-size:18px;
+  cursor:pointer;padding:4px 8px;line-height:1;transition:color 150ms;
+}
+.tr-reveal-close:hover{color:var(--white);}
+
+.tr-reveal-messages{
+  flex:1;overflow-y:auto;padding:24px;
+  display:flex;flex-direction:column;gap:12px;min-height:0;
+}
+.tr-reveal-messages::-webkit-scrollbar{width:3px;}
+.tr-reveal-messages::-webkit-scrollbar-track{background:transparent;}
+.tr-reveal-messages::-webkit-scrollbar-thumb{background:var(--orange);}
+
+.tr-reveal-ai-msg{
+  background:rgba(191,87,0,0.05);border-left:2px solid var(--orange);
+  padding:20px 22px;
+  font-family:'Inter',sans-serif;font-size:15px;line-height:1.78;color:#d0cbc4;
+}
+.tr-reveal-ai-msg strong{color:var(--white);}
+.tr-reveal-ai-msg em{color:var(--orange);font-style:normal;font-weight:600;}
+.tr-reveal-msg-label{
+  font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;color:var(--orange);
+  margin-bottom:10px;display:block;
+}
+.tr-reveal-rule{height:1px;background:rgba(191,87,0,0.3);margin:0 0 16px;}
+
+.tr-reveal-user-msg{
+  background:var(--surface2);border-left:2px solid var(--border-mid);
+  padding:12px 16px;font-family:'Inter',sans-serif;font-size:14px;
+  line-height:1.6;color:var(--white);align-self:flex-end;max-width:85%;
+}
+.tr-reveal-tower-msg{
+  background:rgba(191,87,0,0.05);border-left:2px solid var(--orange);
+  padding:14px 18px;font-family:'Inter',sans-serif;font-size:14px;line-height:1.75;color:#d0cbc4;
+}
+.tr-reveal-tower-msg strong{color:var(--white);}
+
+.tr-reveal-loading{
+  background:rgba(191,87,0,0.05);border-left:2px solid var(--orange);
+  padding:16px 18px;flex-direction:column;gap:10px;display:none;
+}
+.tr-reveal-loading.visible{display:flex;}
+.tr-reveal-loading-label{
+  font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:2px;
+}
+
+.tr-reveal-pills{
+  padding:12px 22px;display:flex;flex-wrap:wrap;gap:8px;
+  border-top:1px solid var(--border);flex-shrink:0;
+}
+.tr-reveal-pill{
+  font-family:'Inter',sans-serif;font-size:12px;font-weight:500;
+  color:var(--secondary);background:rgba(0,0,0,0.4);
+  border:1px solid rgba(255,255,255,0.09);padding:7px 14px;
+  cursor:pointer;transition:all 200ms var(--ease-out);white-space:nowrap;
+}
+.tr-reveal-pill:hover{border-color:rgba(191,87,0,0.4);color:var(--white);background:rgba(191,87,0,0.08);}
+
+.tr-reveal-footer{display:flex;border-top:1px solid rgba(191,87,0,0.2);flex-shrink:0;}
+.tr-reveal-input{
+  flex:1;background:transparent;border:none;border-left:3px solid var(--orange);
+  color:var(--white);font-family:'Inter',sans-serif;font-size:14px;padding:16px 18px;outline:none;
+}
+.tr-reveal-input::placeholder{color:var(--muted);font-style:italic;}
+.tr-reveal-send{
+  background:var(--orange);border:none;color:#fff;padding:0 24px;
+  font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:.08em;
+  cursor:pointer;transition:background 200ms var(--ease-out);flex-shrink:0;white-space:nowrap;
+}
+.tr-reveal-send:hover{background:var(--orange-hi);}
+
+@media(max-width:640px){
+  .tr-reveal-overlay{padding:0;}
+  .tr-reveal-modal{max-height:100vh;border-left:none;border-right:none;border-radius:0;}
+  .tr-reveal-ai-msg{font-size:14px;padding:16px 16px;}
+  .tr-reveal-pills{gap:6px;}
+}
 </style>
 </head>
 <body>
@@ -1800,6 +1938,12 @@ footer{padding:32px 48px;}
             <div class="ti-response-body" id="ai-text"></div>
           </div>
 
+        </div>
+
+        <!-- "What is Tower Report?" trigger bar -->
+        <div class="ti-reveal-trigger" id="ti-reveal-trigger" onclick="openTowerReveal()" role="button" aria-haspopup="dialog">
+          <span class="ti-reveal-trigger-text">What is Tower Report?</span>
+          <span class="ti-reveal-trigger-arr">↗</span>
         </div>
 
         <!-- Input bar — always visible at bottom -->
@@ -3475,6 +3619,182 @@ function toggleProj(cell){
   },{threshold:0.2});
   obs.observe(section);
 })();
+
+/* ---- TOWER REVEAL MODAL ---- */
+(function(){
+  const overlay = document.getElementById('tr-reveal-overlay');
+  const closeBtn = document.getElementById('tr-reveal-close');
+  const messagesEl = document.getElementById('tr-reveal-messages');
+  const loadingEl = document.getElementById('tr-reveal-loading');
+  const revealInput = document.getElementById('tr-reveal-input');
+  const triggerEl = document.getElementById('ti-reveal-trigger');
+
+  let trHistory = [];
+  let trBusy = false;
+
+  if(sessionStorage.getItem('tr-reveal-seen') && triggerEl){
+    triggerEl.style.display = 'none';
+  }
+
+  function openTowerReveal(){
+    if(!overlay) return;
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    if(triggerEl) triggerEl.style.display = 'none';
+    sessionStorage.setItem('tr-reveal-seen','1');
+    setTimeout(()=>{ if(revealInput) revealInput.focus(); }, 320);
+  }
+  function closeTowerReveal(){
+    if(!overlay) return;
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  window.openTowerReveal = openTowerReveal;
+
+  if(closeBtn) closeBtn.addEventListener('click', closeTowerReveal);
+  if(overlay) overlay.addEventListener('click', function(e){ if(e.target===overlay) closeTowerReveal(); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape' && overlay && overlay.classList.contains('open')) closeTowerReveal(); });
+
+  function appendMsg(cls, html){
+    const div = document.createElement('div');
+    div.className = cls;
+    if(html !== undefined) div.innerHTML = html;
+    messagesEl.insertBefore(div, loadingEl);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+    return div;
+  }
+
+  async function trRevealSubmit(){
+    if(trBusy) return;
+    const q = revealInput ? revealInput.value.trim() : '';
+    if(!q) return;
+    trBusy = true;
+    if(revealInput) revealInput.value = '';
+
+    trHistory.push({role:'user', content:q});
+    if(trHistory.length > 6) trHistory = trHistory.slice(-6);
+
+    appendMsg('tr-reveal-user-msg', null).textContent = q;
+    loadingEl.classList.add('visible');
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+
+    let firstChunk = true;
+    let accumulated = '';
+    let towerEl = null;
+
+    try{
+      const res = await fetch('/api/chat',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({messages:trHistory})
+      });
+      if(!res.ok) throw new Error('API '+res.status);
+
+      const reader = res.body.getReader();
+      const dec = new TextDecoder();
+      let buf = '';
+      while(true){
+        const {done,value} = await reader.read();
+        if(done) break;
+        buf += dec.decode(value,{stream:true});
+        const lines = buf.split('\n');
+        buf = lines.pop();
+        for(const line of lines){
+          if(!line.startsWith('data:')) continue;
+          const raw = line.slice(5).trim();
+          if(raw==='[DONE]') continue;
+          try{
+            const ev = JSON.parse(raw);
+            const chunk = ev.choices?.[0]?.delta?.content;
+            if(chunk){
+              if(firstChunk){
+                firstChunk = false;
+                loadingEl.classList.remove('visible');
+                towerEl = appendMsg('tr-reveal-tower-msg','');
+              }
+              accumulated += chunk;
+              if(towerEl) towerEl.innerHTML = mdToHtml(accumulated);
+              messagesEl.scrollTop = messagesEl.scrollHeight;
+            }
+          }catch(_){}
+        }
+      }
+      if(accumulated){
+        trHistory.push({role:'assistant', content:accumulated});
+        if(trHistory.length > 6) trHistory = trHistory.slice(-6);
+      }else if(firstChunk){ throw new Error('empty'); }
+    }catch(err){
+      loadingEl.classList.remove('visible');
+      if(!towerEl) towerEl = appendMsg('tr-reveal-tower-msg','');
+      towerEl.innerHTML = '<span style="color:var(--red)">Intelligence offline. Please try again in a moment.</span>';
+      trHistory.pop();
+    }finally{
+      trBusy = false;
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+  }
+
+  function trRevealAsk(q){
+    if(revealInput) revealInput.value = q;
+    trRevealSubmit();
+  }
+  window.trRevealAsk = trRevealAsk;
+  window.trRevealSubmit = trRevealSubmit;
+})();
 </script>
+
+<!-- Tower Reveal Modal -->
+<div class="tr-reveal-overlay" id="tr-reveal-overlay" role="dialog" aria-modal="true" aria-label="What is Tower Report?">
+  <div class="tr-reveal-modal">
+
+    <div class="tr-reveal-header">
+      <div class="tr-reveal-logo">
+        <div class="tr-reveal-logo-mark">T</div>
+        <div class="tr-reveal-logo-text">
+          <span class="tr-reveal-logo-top">TOWER</span>
+          <span class="tr-reveal-logo-sub">REPORT</span>
+        </div>
+      </div>
+      <button class="tr-reveal-close" id="tr-reveal-close" aria-label="Close">✕</button>
+    </div>
+
+    <div class="tr-reveal-messages" id="tr-reveal-messages">
+      <div class="tr-reveal-ai-msg">
+        <span class="tr-reveal-msg-label">Tower Intelligence</span>
+        <div class="tr-reveal-rule"></div>
+        The most important thing happening in Texas football — you've been reading it second-hand.<br><br>
+        Blogs that aggregate. Accounts that post screenshots. Forums full of noise. You're working too hard for too little signal.<br><br>
+        <strong>Tower Report</strong> changes that.<br><br>
+        This is the first <em>intelligence platform</em> built exclusively for the serious Longhorn fan. Real-time roster depth. Live recruiting signals. Game-week analysis powered by AI that actually <em>knows</em> Texas football.<br><br>
+        <strong>Tower Intelligence</strong> runs on Grok-4 — xAI's most advanced model — with live web search turned on. It knows what happened today. Who's on the two-deep. Who just entered the portal. Who's getting the nod on Saturday. What the spread means and whether to trust it.<br><br>
+        You don't search Texas football anymore. You ask Tower.<br><br>
+        <em>The Tower Never Sleeps.</em><br><br>
+        What do you want to know?
+      </div>
+      <div class="tr-reveal-loading" id="tr-reveal-loading">
+        <div class="tr-reveal-loading-label">Tower is thinking...</div>
+        <div class="ti-shimmer-bar" style="width:85%"></div>
+        <div class="ti-shimmer-bar" style="width:66%"></div>
+        <div class="ti-shimmer-bar" style="width:44%"></div>
+      </div>
+    </div>
+
+    <div class="tr-reveal-pills">
+      <button class="tr-reveal-pill" onclick="trRevealAsk('Who starts at QB?')">Who starts at QB?</button>
+      <button class="tr-reveal-pill" onclick="trRevealAsk('Latest recruiting news')">Latest recruiting news</button>
+      <button class="tr-reveal-pill" onclick="trRevealAsk('Texas vs Ohio State preview')">Texas vs Ohio State preview</button>
+      <button class="tr-reveal-pill" onclick="trRevealAsk('Who\'s transferring?')">Who's transferring?</button>
+    </div>
+
+    <div class="tr-reveal-footer">
+      <input class="tr-reveal-input" id="tr-reveal-input" type="text"
+        placeholder="Ask Tower Intelligence anything..."
+        onkeydown="if(event.key==='Enter')trRevealSubmit()"/>
+      <button class="tr-reveal-send" onclick="trRevealSubmit()">ASK →</button>
+    </div>
+
+  </div>
+</div>
+
 </body>
 </html>

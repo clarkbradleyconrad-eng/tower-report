@@ -21,22 +21,27 @@ nav{position:sticky;top:0;z-index:100;background:rgba(8,8,8,0.97);backdrop-filte
 .nav-cta{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;background:var(--orange);color:#fff;text-decoration:none;padding:9px 20px;margin-left:16px;border:1px solid var(--orange);transition:all .2s;}
 .nav-cta:hover{background:transparent;color:var(--orange);}
 
-.page-header{padding:48px 48px 36px;border-bottom:1px solid var(--border);}
-.breadcrumb{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
-.breadcrumb span{color:var(--orange);}
-.page-title{font-family:'Playfair Display',serif;font-size:clamp(40px,5vw,72px);font-weight:900;line-height:1;letter-spacing:-2px;color:var(--white);margin-bottom:10px;}
-.page-sub{font-size:15px;color:var(--secondary);font-style:italic;}
+/* ── PAGE HERO ── */
+.ph-hero{position:relative;background:#030303;overflow:hidden;border-bottom:1px solid var(--border);}
+.ph-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.013) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.013) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;}
+.ph-glow{position:absolute;left:0;top:0;bottom:0;width:60%;background:radial-gradient(ellipse 85% 100% at 8% 50%,rgba(191,87,0,0.24) 0%,transparent 70%);pointer-events:none;}
+.ph-ghost{position:absolute;right:-30px;top:50%;transform:translateY(-50%);font-family:'Playfair Display',serif;font-size:220px;font-weight:900;color:rgba(255,255,255,0.022);line-height:1;pointer-events:none;letter-spacing:-10px;user-select:none;}
+.ph-edge{position:absolute;left:0;top:18%;bottom:18%;width:3px;background:linear-gradient(to bottom,transparent 0%,var(--orange) 20%,var(--orange) 80%,transparent 100%);}
+.ph-inner{position:relative;z-index:2;padding:56px 56px 44px;}
+.ph-kicker{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:16px;}
+.ph-title{font-family:'Playfair Display',serif;font-size:clamp(52px,7vw,92px);font-weight:900;line-height:.92;letter-spacing:-4px;color:var(--white);margin-bottom:36px;}
+.ph-title em{font-style:normal;color:var(--orange);}
+.ph-divider{height:1px;background:var(--border);margin-bottom:28px;}
+.ph-stats{display:flex;gap:0;flex-wrap:wrap;}
+.ph-stat{padding:0 32px 0 0;margin-right:32px;border-right:1px solid var(--border);}
+.ph-stat:last-child{border-right:none;margin-right:0;padding-right:0;}
+.ph-snum{font-family:'Playfair Display',serif;font-size:30px;font-weight:900;color:var(--white);line-height:1;letter-spacing:-1px;}
+.ph-slabel{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:4px;}
 
-/* PROGRAM STATS ROW */
-.program-stats{display:grid;grid-template-columns:repeat(6,1fr);border-bottom:1px solid var(--border);}
-.ps-cell{padding:24px 16px;text-align:center;border-right:1px solid var(--border);}
-.ps-cell:last-child{border-right:none;}
-.ps-num{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--orange);line-height:1;}
-.ps-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:4px;}
-
-/* SECTION RULE */
-.sr{display:flex;align-items:center;gap:16px;padding:32px 48px 0;margin-bottom:24px;}
-.sr-label{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);white-space:nowrap;}
+/* ── SECTION HEADERS ── */
+.sr{display:flex;align-items:center;gap:20px;padding:48px 48px 20px;margin-bottom:0;}
+.sr-label{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--white);white-space:nowrap;letter-spacing:-.4px;}
+.sr-badge{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);border:1px solid rgba(191,87,0,0.3);padding:3px 10px;flex-shrink:0;}
 .sr-line{flex:1;height:1px;background:var(--border);}
 
 .content{padding:0 48px;}
@@ -117,6 +122,9 @@ footer{padding:32px 48px;border-top:1px solid var(--border);display:flex;justify
 .sum-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:4px;}
 .section-head{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:10px 0;border-bottom:1px solid var(--border);margin-bottom:2px;}
 .game-row{display:grid;grid-template-columns:60px 1fr 80px 160px 56px 1fr;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--border);}
+.row-clickable{transition:background .15s;}
+.row-clickable:hover{background:rgba(191,87,0,0.05);}
+.row-clickable:hover .opp-name{color:var(--orange);}
 .wk-num{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);}
 .wk-date{font-size:10px;color:var(--muted);}
 .opp-wrap{display:flex;align-items:center;gap:8px;}
@@ -145,26 +153,49 @@ footer{padding:32px 48px;border-top:1px solid var(--border);display:flex;justify
 .yt-link:hover{color:var(--white);border-color:rgba(255,255,255,0.2);}
 
 /* GAME VAULT */
-.vault-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:40px;}
-.vault-card{background:var(--surface);padding:15px 18px 14px;text-decoration:none;display:flex;flex-direction:column;justify-content:space-between;position:relative;border-left:2px solid transparent;overflow:hidden;min-height:96px;transition:background .15s,border-color .15s;}
+.vault-featured{display:block;text-decoration:none;background:var(--surface);border:1px solid var(--border);border-top:3px solid var(--orange);margin-bottom:1px;position:relative;overflow:hidden;height:168px;transition:background .2s;}
+.vault-featured:hover{background:var(--surface2);}
+.vault-fg-tx{position:absolute;left:0;top:0;bottom:0;width:52%;background:radial-gradient(ellipse 85% 100% at 14% 50%,rgba(191,87,0,0.22) 0%,transparent 70%);pointer-events:none;}
+.vault-fg-opp{position:absolute;right:0;top:0;bottom:0;width:52%;background:radial-gradient(ellipse 85% 100% at 86% 50%,rgba(153,0,0,0.16) 0%,transparent 70%);pointer-events:none;}
+.vault-fgy{position:absolute;right:-12px;top:50%;transform:translateY(-50%);font-family:'Playfair Display',serif;font-size:192px;font-weight:900;color:rgba(255,255,255,0.028);line-height:1;pointer-events:none;letter-spacing:-10px;user-select:none;}
+.vault-fi{position:relative;z-index:2;display:flex;align-items:center;gap:28px;padding:20px 28px;height:100%;}
+.vault-flogos{display:flex;align-items:center;gap:12px;flex-shrink:0;}
+.vault-flogo{width:80px;height:80px;object-fit:contain;filter:drop-shadow(0 6px 24px rgba(0,0,0,0.8));}
+.vault-flogo.tx{filter:drop-shadow(0 6px 24px rgba(0,0,0,0.8)) drop-shadow(0 0 28px rgba(191,87,0,0.4));}
+.vault-fvs{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:800;letter-spacing:2px;color:var(--muted);line-height:1;text-align:center;}
+.vault-ftxt{flex:1;min-width:0;}
+.vault-fkicker{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--orange);margin-bottom:7px;}
+.vault-ftitle{font-family:'Playfair Display',serif;font-size:38px;font-weight:900;color:var(--white);letter-spacing:-1.5px;line-height:1;margin-bottom:8px;}
+.vault-fscore{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;color:var(--secondary);}
+.vault-fscore .ws{color:#22c55e;}
+.vault-fcta{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);border:1px solid rgba(191,87,0,0.35);padding:9px 18px;flex-shrink:0;transition:all .2s;white-space:nowrap;}
+.vault-featured:hover .vault-fcta{background:var(--orange);color:#fff;border-color:var(--orange);}
+
+.vault-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-top:none;margin-bottom:40px;}
+.vault-card{background:var(--surface);padding:18px 20px 16px;text-decoration:none;display:flex;flex-direction:column;justify-content:space-between;position:relative;border-left:2px solid transparent;overflow:hidden;min-height:110px;transition:background .15s,border-color .15s;}
 .vault-card:hover{background:var(--surface2);border-left-color:var(--orange);}
-.vault-gy{position:absolute;right:10px;bottom:-10px;font-family:'Playfair Display',serif;font-size:72px;font-weight:900;color:rgba(255,255,255,0.025);line-height:1;pointer-events:none;user-select:none;letter-spacing:-2px;}
-.vault-opp-logo{position:absolute;right:14px;top:50%;transform:translateY(-50%);width:52px;height:52px;object-fit:contain;opacity:0.08;filter:grayscale(1) brightness(1.4);pointer-events:none;transition:opacity .2s;}
-.vault-card:hover .vault-opp-logo{opacity:0.13;}
-.vault-ctx{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:4px;}
-.vault-title{font-family:'Playfair Display',serif;font-size:19px;font-weight:900;color:var(--white);line-height:1.05;letter-spacing:-0.3px;}
-.vault-foot{display:flex;align-items:center;justify-content:space-between;margin-top:9px;}
+.vault-gy{position:absolute;right:8px;bottom:-14px;font-family:'Playfair Display',serif;font-size:96px;font-weight:900;color:rgba(255,255,255,0.03);line-height:1;pointer-events:none;user-select:none;letter-spacing:-4px;}
+.vault-opp-logo{position:absolute;right:16px;top:50%;transform:translateY(-50%);width:68px;height:68px;object-fit:contain;opacity:0.07;filter:grayscale(1) brightness(1.3);pointer-events:none;transition:opacity .25s,filter .25s;}
+.vault-card:hover .vault-opp-logo{opacity:0.22;filter:none;}
+.vault-ctx{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:5px;}
+.vault-title{font-family:'Playfair Display',serif;font-size:21px;font-weight:900;color:var(--white);line-height:1.05;letter-spacing:-0.4px;}
+.vault-foot{display:flex;align-items:center;justify-content:space-between;margin-top:10px;}
 .vault-score{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;color:var(--secondary);letter-spacing:0.3px;}
 .vault-score .ws{color:#22c55e;}
 .vault-arrow{font-size:14px;color:var(--muted);transition:color .15s,transform .15s;}
-.vault-card:hover .vault-arrow{color:var(--orange);transform:translateX(3px);}
+.vault-card:hover .vault-arrow{color:var(--orange);transform:translateX(4px);}
 
 @media(max-width:768px){
   .nav-inner{padding:0 20px;}.nav-link.hm{display:none;}
-  .page-header{padding:32px 20px 24px;}
-  .program-stats{grid-template-columns:repeat(3,1fr);}
-  .ps-cell:nth-child(3){border-right:none;}
-  .sr,.content{padding-left:20px;padding-right:20px;}
+  .ph-inner{padding:36px 24px 32px;}
+  .ph-title{font-size:44px;letter-spacing:-2px;}
+  .ph-ghost{font-size:130px;}
+  .ph-stats{gap:0;}
+  .ph-stat{padding:0 20px 0 0;margin-right:20px;}
+  .ph-snum{font-size:24px;}
+  .sr{padding:36px 20px 16px;}
+  .sr-label{font-size:17px;}
+  .content{padding-left:20px;padding-right:20px;}
   .champs-grid,.heisman-grid,.rival-grid{grid-template-columns:1fr;}
   .retired-grid{grid-template-columns:repeat(3,1fr);}
   .nfl-grid{grid-template-columns:1fr;}
@@ -177,8 +208,13 @@ footer{padding:32px 48px;border-top:1px solid var(--border);display:flex;justify
   .sum-cell:nth-child(4),.sum-cell:nth-child(5){display:none;}
   .game-row{grid-template-columns:44px 1fr 1fr;gap:8px;}
   .g-time,.g-venue,.g-tv{display:none;}
+  .vault-featured{height:auto;}
+  .vault-fi{flex-direction:column;align-items:flex-start;gap:14px;padding:18px 20px;}
+  .vault-flogo{width:52px;height:52px;}
+  .vault-ftitle{font-size:26px;}
+  .vault-fcta{display:none;}
   .vault-grid{grid-template-columns:1fr;}
-  .vault-gy{font-size:52px;}
+  .vault-gy{font-size:64px;}
   .vault-title{font-size:17px;}
 }
 </style>
@@ -472,23 +508,38 @@ footer{padding:32px 48px;border-top:1px solid var(--border);display:flex;justify
 <!-- GAME VAULT -->
 <div class="sr" id="vault"><span class="sr-label">Game Vault — Signature Wins</span><div class="sr-line"></div></div>
 <div class="content">
+
+  <!-- FEATURED: THE RUN -->
+  <a href="game-story.html?id=vy-run-2006" class="vault-featured">
+    <div class="vault-fg-tx"></div>
+    <div class="vault-fg-opp"></div>
+    <div class="vault-fgy">2006</div>
+    <div class="vault-fi">
+      <div class="vault-flogos">
+        <img class="vault-flogo tx" src="https://a.espncdn.com/i/teamlogos/ncaa/500/251.png" alt="Texas"/>
+        <div class="vault-fvs">VS</div>
+        <img class="vault-flogo" src="https://a.espncdn.com/i/teamlogos/ncaa/500/30.png" alt="USC" style="filter:drop-shadow(0 6px 24px rgba(0,0,0,0.8)) drop-shadow(0 0 24px rgba(153,0,0,0.3));"/>
+      </div>
+      <div class="vault-ftxt">
+        <div class="vault-fkicker">★ Featured · 2005 BCS National Championship · Rose Bowl · Pasadena, CA</div>
+        <div class="vault-ftitle">THE RUN</div>
+        <div class="vault-fscore">Texas <span class="ws">41</span> – #1 USC 38 · Vince Young 8-yd scramble seals a national title</div>
+      </div>
+      <div class="vault-fcta">Read the Story →</div>
+    </div>
+  </a>
+
   <div class="vault-grid">
-    <a href="game-story.html?id=vy-run-2006" class="vault-card">
-      <div class="vault-gy">2006</div>
-      <img class="vault-opp-logo" src="https://a.espncdn.com/i/teamlogos/ncaa/500/30.png" alt=""/>
-      <div><div class="vault-ctx">2005 · BCS National Championship</div><div class="vault-title">THE RUN</div></div>
-      <div class="vault-foot"><div class="vault-score">Texas <span class="ws">41</span> – USC 38</div><span class="vault-arrow">→</span></div>
-    </a>
     <a href="game-story.html?id=game-of-century-1969" class="vault-card">
       <div class="vault-gy">1969</div>
       <img class="vault-opp-logo" src="https://a.espncdn.com/i/teamlogos/ncaa/500/8.png" alt=""/>
-      <div><div class="vault-ctx">1969 · #1 vs #2 · Fayetteville</div><div class="vault-title">GAME OF THE CENTURY</div></div>
+      <div><div class="vault-ctx">1969 · #1 vs #2 · Fayetteville, AR</div><div class="vault-title">GAME OF THE CENTURY</div></div>
       <div class="vault-foot"><div class="vault-score">Texas <span class="ws">15</span> – Arkansas 14</div><span class="vault-arrow">→</span></div>
     </a>
     <a href="game-story.html?id=the-return-2022" class="vault-card">
       <div class="vault-gy">2022</div>
       <img class="vault-opp-logo" src="https://a.espncdn.com/i/teamlogos/ncaa/500/333.png" alt=""/>
-      <div><div class="vault-ctx">2022 · Sark Returns · Bryant-Denny</div><div class="vault-title">THE RETURN</div></div>
+      <div><div class="vault-ctx">2022 · Week 2 · Bryant-Denny Stadium</div><div class="vault-title">THE RETURN</div></div>
       <div class="vault-foot"><div class="vault-score">Texas <span class="ws">20</span> – #1 Alabama 19</div><span class="vault-arrow">→</span></div>
     </a>
     <a href="game-story.html?id=vy-ou-2005" class="vault-card">
@@ -518,19 +569,19 @@ footer{padding:32px 48px;border-top:1px solid var(--border);display:flex;justify
     <a href="game-story.html?id=cfp-breakthrough-2024" class="vault-card">
       <div class="vault-gy">2024</div>
       <img class="vault-opp-logo" src="https://a.espncdn.com/i/teamlogos/ncaa/500/228.png" alt=""/>
-      <div><div class="vault-ctx">2024 · CFP First Round · Austin</div><div class="vault-title">CFP BREAKTHROUGH</div></div>
+      <div><div class="vault-ctx">2024 · CFP First Round · Austin, TX</div><div class="vault-title">CFP BREAKTHROUGH</div></div>
       <div class="vault-foot"><div class="vault-score">Texas <span class="ws">38</span> – Clemson 31</div><span class="vault-arrow">→</span></div>
     </a>
     <a href="game-story.html?id=young-rose-bowl-2005" class="vault-card">
       <div class="vault-gy">2005</div>
       <img class="vault-opp-logo" src="https://a.espncdn.com/i/teamlogos/ncaa/500/130.png" alt=""/>
-      <div><div class="vault-ctx">2004 · Rose Bowl · Pasadena</div><div class="vault-title">YOUNG IN OVERTIME</div></div>
+      <div><div class="vault-ctx">2004 · Rose Bowl · Pasadena, CA</div><div class="vault-title">YOUNG IN OVERTIME</div></div>
       <div class="vault-foot"><div class="vault-score">Texas <span class="ws">38</span> – Michigan 37 OT</div><span class="vault-arrow">→</span></div>
     </a>
     <a href="game-story.html?id=royals-dynasty-1970" class="vault-card">
       <div class="vault-gy">1970</div>
       <img class="vault-opp-logo" src="https://a.espncdn.com/i/teamlogos/ncaa/500/87.png" alt=""/>
-      <div><div class="vault-ctx">1969 · Cotton Bowl · Dallas</div><div class="vault-title">ROYAL'S DYNASTY</div></div>
+      <div><div class="vault-ctx">1969 · Cotton Bowl · Dallas, TX</div><div class="vault-title">ROYAL'S DYNASTY</div></div>
       <div class="vault-foot"><div class="vault-score">Texas <span class="ws">21</span> – Notre Dame 17</div><span class="vault-arrow">→</span></div>
     </a>
   </div>
@@ -556,27 +607,26 @@ footer{padding:32px 48px;border-top:1px solid var(--border);display:flex;justify
 <!-- 2025 -->
 <div id="yr-2025" class="season-panel active">
   <div class="season-summary">
-    <div class="sum-cell"><div class="sum-num g">11</div><div class="sum-label">Wins</div></div>
+    <div class="sum-cell"><div class="sum-num g">10</div><div class="sum-label">Wins</div></div>
     <div class="sum-cell"><div class="sum-num r">3</div><div class="sum-label">Losses</div></div>
     <div class="sum-cell"><div class="sum-num o">6-2</div><div class="sum-label">SEC Record</div></div>
     <div class="sum-cell"><div class="sum-num o">#12</div><div class="sum-label">Final AP Rank</div></div>
     <div class="sum-cell"><div class="sum-num w">Citrus Bowl W</div><div class="sum-label">Bowl Result</div></div>
   </div>
-  <div class="section-head">2025 Regular Season</div>
-  <div class="game-row"><div><div class="wk-num">W1</div><div class="wk-date">Aug 30</div></div><div class="opp-wrap"><div class="opp-init">OSU</div><div><div class="opp-name"><span class="opp-rank">#3</span> at Ohio State</div><div class="opp-meta"><span class="tag tag-a">Away</span> Ohio Stadium · Columbus, OH</div></div></div><div class="g-time">Aug 30</div><div class="g-venue">Ohio Stadium · Columbus, OH</div><div class="g-tv tv-fox">FOX</div><div class="g-result"><div class="res-letter res-l">L</div><span class="res-score">10–31</span></div></div>
-  <div class="game-row"><div><div class="wk-num">W2</div><div class="wk-date">Sep 6</div></div><div class="opp-wrap"><div class="opp-init">SJS</div><div><div class="opp-name">San Jose State</div><div class="opp-meta"><span class="tag tag-h">Home</span> DKR · Austin, TX</div></div></div><div class="g-time">Sep 6</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-abc">ABC/ESPN</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">45–7</span></div></div>
-  <div class="game-row"><div><div class="wk-num">W3</div><div class="wk-date">Sep 13</div></div><div class="opp-wrap"><div class="opp-init">UTEP</div><div><div class="opp-name">UTEP</div><div class="opp-meta"><span class="tag tag-h">Home</span> DKR · Austin, TX</div></div></div><div class="g-time">Sep 13</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-sec">SEC Network</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">52–10</span></div></div>
-  <div class="game-row"><div><div class="wk-num">W4</div><div class="wk-date">Sep 20</div></div><div class="opp-wrap"><div class="opp-init">SHU</div><div><div class="opp-name">Sam Houston</div><div class="opp-meta"><span class="tag tag-h">Home</span> DKR · Austin, TX</div></div></div><div class="g-time">Sep 20</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-sec">ESPN+</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">49–3</span></div></div>
-  <div class="game-row"><div><div class="wk-num">W5</div><div class="wk-date">Sep 27</div></div><div class="opp-wrap"><div class="opp-init">UF</div><div><div class="opp-name">at Florida</div><div class="opp-meta"><span class="tag tag-a">Away</span> Ben Hill Griffin Stadium · Gainesville, FL</div></div></div><div class="g-time">Sep 27</div><div class="g-venue">Ben Hill Griffin Stadium · Gainesville, FL</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">35–14</span></div></div>
-  <div class="game-row"><div><div class="wk-num">W6</div><div class="wk-date">Oct 11</div></div><div class="opp-wrap"><div class="opp-init">OU</div><div><div class="opp-name">Oklahoma <span class="badge">Red River</span></div><div class="opp-meta"><span class="tag tag-n">Neutral</span> Cotton Bowl · Dallas, TX</div></div></div><div class="g-time">Oct 11</div><div class="g-venue">Cotton Bowl · Dallas, TX</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">23–6</span></div></div>
-  <div class="game-row"><div><div class="wk-num">W7</div><div class="wk-date">Oct 16</div></div><div class="opp-wrap"><div class="opp-init">UK</div><div><div class="opp-name">at Kentucky</div><div class="opp-meta"><span class="tag tag-a">Away</span> Kroger Field · Lexington, KY</div></div></div><div class="g-time">Oct 16</div><div class="g-venue">Kroger Field · Lexington, KY</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">38–21</span></div></div>
-  <div class="game-row"><div><div class="wk-num">W8</div><div class="wk-date">Oct 25</div></div><div class="opp-wrap"><div class="opp-init">VU</div><div><div class="opp-name">Vanderbilt</div><div class="opp-meta"><span class="tag tag-h">Home</span> DKR · Austin, TX</div></div></div><div class="g-time">Oct 25</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-sec">SEC Network</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">42–14</span></div></div>
-  <div class="game-row"><div><div class="wk-num">W9</div><div class="wk-date">Nov 1</div></div><div class="opp-wrap"><div class="opp-init">MISS</div><div><div class="opp-name">Ole Miss</div><div class="opp-meta"><span class="tag tag-h">Home</span> DKR · Austin, TX</div></div></div><div class="g-time">Nov 1</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">28–17</span></div></div>
-  <div class="game-row"><div><div class="wk-num">W10</div><div class="wk-date">Nov 8</div></div><div class="opp-wrap"><div class="opp-init">ARK</div><div><div class="opp-name">at Arkansas</div><div class="opp-meta"><span class="tag tag-a">Away</span> Razorback Stadium · Fayetteville, AR</div></div></div><div class="g-time">Nov 8</div><div class="g-venue">Razorback Stadium · Fayetteville, AR</div><div class="g-tv tv-sec">SEC Network</div><div class="g-result"><div class="res-letter res-l">L</div><span class="res-score">21–28</span></div></div>
-  <div class="game-row"><div><div class="wk-num">W11</div><div class="wk-date">Nov 15</div></div><div class="opp-wrap"><div class="opp-init">MSU</div><div><div class="opp-name">Mississippi State</div><div class="opp-meta"><span class="tag tag-h">Home</span> DKR · Austin, TX</div></div></div><div class="g-time">Nov 15</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-sec">SEC Network</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">41–7</span></div></div>
-  <div class="game-row"><div><div class="wk-num">W12</div><div class="wk-date">Nov 22</div></div><div class="opp-wrap"><div class="opp-init">LSU</div><div><div class="opp-name"><span class="opp-rank">#14</span> at LSU</div><div class="opp-meta"><span class="tag tag-a">Away</span> Tiger Stadium · Baton Rouge, LA</div></div></div><div class="g-time">Nov 22</div><div class="g-venue">Tiger Stadium · Baton Rouge, LA</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">29–26</span></div></div>
-  <div class="game-row"><div><div class="wk-num">W13</div><div class="wk-date">Nov 28</div></div><div class="opp-wrap"><div class="opp-init">A&M</div><div><div class="opp-name"><span class="opp-rank">#3</span> at Texas A&M <span class="badge">Lone Star</span></div><div class="opp-meta"><span class="tag tag-a">Away</span> Kyle Field · College Station, TX</div></div></div><div class="g-time">Nov 28</div><div class="g-venue">Kyle Field · College Station, TX</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-l">L</div><span class="res-score">13–26</span></div></div>
-  <div class="section-head">2025 Bowl Game</div>
+  <div class="section-head">2025 Regular Season — #1 preseason · Ohio State Week 1 · 10-3 final</div>
+  <div class="game-row"><div><div class="wk-num">W1</div><div class="wk-date">Aug 30</div></div><div class="opp-wrap"><div class="opp-init">OSU</div><div><div class="opp-name"><span class="opp-rank">#3</span> at Ohio State</div><div class="opp-meta"><span class="tag tag-a">Away</span> Ohio Stadium · Columbus, OH</div></div></div><div class="g-time">Aug 30</div><div class="g-venue">Ohio Stadium · Columbus, OH</div><div class="g-tv tv-fox">FOX</div><div class="g-result"><div class="res-letter res-l">L</div><span class="res-score">7–14</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W2</div><div class="wk-date">Sep 6</div></div><div class="opp-wrap"><div class="opp-init">SJS</div><div><div class="opp-name">San Jose State</div><div class="opp-meta"><span class="tag tag-h">Home</span> DKR · Austin, TX</div></div></div><div class="g-time">Sep 6</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">45–7</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W3</div><div class="wk-date">Sep 13</div></div><div class="opp-wrap"><div class="opp-init">UTEP</div><div><div class="opp-name">UTEP</div><div class="opp-meta"><span class="tag tag-h">Home</span> DKR · Austin, TX</div></div></div><div class="g-time">Sep 13</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">52–10</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W4</div><div class="wk-date">Sep 20</div></div><div class="opp-wrap"><div class="opp-init">SHU</div><div><div class="opp-name">Sam Houston</div><div class="opp-meta"><span class="tag tag-h">Home</span> DKR · Austin, TX</div></div></div><div class="g-time">Sep 20</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-espn">ESPN+</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">49–3</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W5</div><div class="wk-date">Oct 4</div></div><div class="opp-wrap"><div class="opp-init">UF</div><div><div class="opp-name">at Florida</div><div class="opp-meta"><span class="tag tag-a">Away</span> Ben Hill Griffin Stadium · Gainesville, FL</div></div></div><div class="g-time">Oct 4</div><div class="g-venue">Ben Hill Griffin Stadium · Gainesville, FL</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-l">L</div><span class="res-score">21–29</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W6</div><div class="wk-date">Oct 11</div></div><div class="opp-wrap"><div class="opp-init">OU</div><div><div class="opp-name"><span class="opp-rank">#6</span> Oklahoma <span class="badge">Red River</span></div><div class="opp-meta"><span class="tag tag-n">Neutral</span> Cotton Bowl · Dallas, TX</div></div></div><div class="g-time">Oct 11</div><div class="g-venue">Cotton Bowl · Dallas, TX</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">23–6</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W7</div><div class="wk-date">Oct 18</div></div><div class="opp-wrap"><div class="opp-init">UK</div><div><div class="opp-name">at Kentucky</div><div class="opp-meta"><span class="tag tag-a">Away</span> Kroger Field · Lexington, KY</div></div></div><div class="g-time">Oct 18</div><div class="g-venue">Kroger Field · Lexington, KY</div><div class="g-tv tv-sec">SEC Network</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">16–13 OT</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W8</div><div class="wk-date">Oct 25</div></div><div class="opp-wrap"><div class="opp-init">MSU</div><div><div class="opp-name">at Mississippi State</div><div class="opp-meta"><span class="tag tag-a">Away</span> Davis Wade Stadium · Starkville, MS</div></div></div><div class="g-time">Oct 25</div><div class="g-venue">Davis Wade Stadium · Starkville, MS</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">45–38</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W9</div><div class="wk-date">Nov 1</div></div><div class="opp-wrap"><div class="opp-init">VU</div><div><div class="opp-name">Vanderbilt</div><div class="opp-meta"><span class="tag tag-h">Home</span> DKR · Austin, TX</div></div></div><div class="g-time">Nov 1</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-sec">SEC Network</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">34–31</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W10</div><div class="wk-date">Nov 15</div></div><div class="opp-wrap"><div class="opp-init">UGA</div><div><div class="opp-name"><span class="opp-rank">#5</span> at Georgia</div><div class="opp-meta"><span class="tag tag-a">Away</span> Sanford Stadium · Athens, GA</div></div></div><div class="g-time">Nov 15</div><div class="g-venue">Sanford Stadium · Athens, GA</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-l">L</div><span class="res-score">10–35</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W11</div><div class="wk-date">Nov 22</div></div><div class="opp-wrap"><div class="opp-init">ARK</div><div><div class="opp-name">Arkansas</div><div class="opp-meta"><span class="tag tag-h">Home</span> DKR · Austin, TX</div></div></div><div class="g-time">Nov 22</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-sec">SEC Network</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">52–37</span></div></div>
+  <div class="game-row"><div><div class="wk-num">W12</div><div class="wk-date">Nov 28</div></div><div class="opp-wrap"><div class="opp-init">A&M</div><div><div class="opp-name"><span class="opp-rank">#3</span> Texas A&M <span class="badge">Lone Star Rivalry</span></div><div class="opp-meta"><span class="tag tag-h">Home</span> DKR · Austin, TX</div></div></div><div class="g-time">Nov 28</div><div class="g-venue">DKR · Austin, TX</div><div class="g-tv tv-espn">ESPN</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">27–17</span></div></div>
+  <div class="section-head">2025 Bowl Game — Cheez-It Citrus Bowl · Orlando, FL</div>
   <div class="game-row bowl-row"><div><div class="wk-num">Bowl</div><div class="wk-date">Dec 31</div></div><div class="opp-wrap"><div class="opp-init">MICH</div><div><div class="opp-name"><span class="opp-rank">#18</span> Michigan <span class="badge">Citrus Bowl ✓</span></div><div class="opp-meta"><span class="tag tag-n">Neutral</span> Camping World Stadium · Orlando, FL</div></div></div><div class="g-time">Dec 31</div><div class="g-venue">Camping World Stadium · Orlando, FL</div><div class="g-tv tv-abc">ABC</div><div class="g-result"><div class="res-letter res-w">W</div><span class="res-score">41–27</span></div></div>
 </div>
 
@@ -873,6 +923,51 @@ document.addEventListener('DOMContentLoaded',function(){
       link.className='yt-link';
       link.textContent='▶ YouTube';
       result.appendChild(link);
+    });
+  });
+
+  // Make every game row with a result clickable → game-story.html
+  document.querySelectorAll('.season-panel').forEach(function(panel){
+    var season=panel.id.replace('yr-','');
+    panel.querySelectorAll('.game-row').forEach(function(row){
+      var resLetterEl=row.querySelector('.res-letter');
+      var scoreEl=row.querySelector('.res-score');
+      if(!resLetterEl||!scoreEl)return;
+
+      var result=resLetterEl.classList.contains('res-w')?'W':'L';
+      var rawScore=scoreEl.textContent.trim();
+      // score format: "41–38" or "41-38" or "24–17 OT"
+      var parts=rawScore.split(/–|—|-/);
+      var ts=(parts[0]||'').replace(/\D.*$/,'').trim();
+      var os=(parts[1]||'').replace(/[^\d]/g,'').trim();
+
+      var abbrEl=row.querySelector('.opp-init');
+      var abbr=abbrEl?abbrEl.textContent.trim():'';
+
+      var oppNameEl=row.querySelector('.opp-name');
+      var opp=oppNameEl?oppNameEl.textContent.replace(/#\d+\s*/g,'').trim():'';
+
+      var dateEl=row.querySelector('.wk-date')||row.querySelector('.g-time');
+      var date=dateEl?dateEl.textContent.trim():'';
+
+      var venueEl=row.querySelector('.g-venue');
+      var venue=venueEl?venueEl.textContent.trim():'';
+
+      var weekEl=row.querySelector('.wk-num');
+      var week=weekEl?weekEl.textContent.trim():'';
+
+      if(!opp)return;
+
+      row.style.cursor='pointer';
+      row.classList.add('row-clickable');
+      row.addEventListener('click',function(e){
+        if(e.target.closest('a'))return;
+        var p=new URLSearchParams({
+          season:season,week:week,opp:opp,abbr:abbr,
+          date:date,venue:venue,result:result,ts:ts,os:os
+        });
+        window.location.href='game-story.html?'+p.toString();
+      });
     });
   });
 });
