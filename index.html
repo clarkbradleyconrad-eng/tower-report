@@ -520,34 +520,41 @@ a.num-cell:hover .num-big{color:var(--orange-hi);}
 ====================================================== */
 .gotw-section{
   position:relative;overflow:hidden;border-bottom:1px solid var(--border);
-  background:var(--surface);
+  background:#030303;
+}
+.gotw-hero-art{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center top;
+  pointer-events:none;z-index:0;
+  opacity:0.55;
+  filter:saturate(1.15) brightness(0.75);
 }
 .gotw-section::before{
-  content:'';position:absolute;inset:0;pointer-events:none;
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:1;
   background:
-    radial-gradient(ellipse 90% 55% at 50% 110%,rgba(191,87,0,0.14) 0%,transparent 55%),
-    radial-gradient(ellipse 35% 45% at 12% 50%,rgba(191,87,0,0.05) 0%,transparent 60%),
-    radial-gradient(ellipse 28% 38% at 88% 25%,rgba(191,87,0,0.04) 0%,transparent 60%);
+    linear-gradient(to right, rgba(3,3,3,0.18) 0%, transparent 40%, transparent 60%, rgba(3,3,3,0.45) 100%),
+    linear-gradient(to bottom, rgba(3,3,3,0.3) 0%, transparent 30%, transparent 60%, rgba(3,3,3,0.92) 100%),
+    radial-gradient(ellipse 55% 80% at 30% 50%,rgba(191,87,0,0.22) 0%,transparent 65%);
 }
 .gotw-section::after{
-  content:'';position:absolute;inset:0;pointer-events:none;
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:1;
   background-image:
-    repeating-linear-gradient(0deg,transparent,transparent 47px,rgba(255,255,255,0.011) 47px,rgba(255,255,255,0.011) 48px),
-    repeating-linear-gradient(90deg,transparent,transparent 47px,rgba(255,255,255,0.007) 47px,rgba(255,255,255,0.007) 48px);
+    repeating-linear-gradient(0deg,transparent,transparent 47px,rgba(255,255,255,0.008) 47px,rgba(255,255,255,0.008) 48px),
+    repeating-linear-gradient(90deg,transparent,transparent 47px,rgba(255,255,255,0.005) 47px,rgba(255,255,255,0.005) 48px);
 }
 .gotw-watermark{
-  position:absolute;right:-80px;top:-60px;width:560px;height:560px;
-  background:url('https://a.espncdn.com/i/teamlogos/ncaa/500/251.png') center/contain no-repeat;
-  opacity:0.04;pointer-events:none;z-index:1;
+  display:none;
 }
 .gotw-body{
   position:relative;z-index:2;
   display:grid;grid-template-columns:1fr 420px;
   padding:20px 48px 48px;gap:24px;
+  min-height:520px;
 }
 /* --- matchup card --- */
 .gotw-card{
-  background:rgba(0,0,0,0.32);border:1px solid var(--border-mid);
+  background:rgba(3,3,3,0.62);border:1px solid rgba(191,87,0,0.2);
+  backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);
   display:flex;flex-direction:column;position:relative;overflow:hidden;
 }
 .gotw-card-accent{
@@ -1963,7 +1970,7 @@ footer{padding:32px 48px;}
 <!-- ===================== GAME OF THE WEEK ===================== -->
 <div class="sr animate-in"><span class="sr-label">Game of the Week</span><div class="sr-line"></div><span class="sr-meta">Week 2 · Sep 12, 2026 · DKR Stadium</span></div>
 <section class="gotw-section">
-  <div class="gotw-watermark" aria-hidden="true"></div>
+  <img class="gotw-hero-art" src="img/texas-osu-2026.png" alt="" aria-hidden="true"/>
   <div class="gotw-body">
 
     <!-- LEFT: MATCHUP CARD -->
