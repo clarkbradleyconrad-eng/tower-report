@@ -103,7 +103,7 @@ nav{position:sticky;top:0;z-index:200;background:rgba(8,8,8,0.97);backdrop-filte
 /* --- Hero Lead (top of left col) --- */
 .hero-lead{
   flex:1;padding:40px 52px 32px;
-  background:var(--bg-page) url('img/texas-osu-2026.png') center top / cover no-repeat;
+  background:var(--bg-page) url('img/hero-bg.png') center top / cover no-repeat;
   position:relative;overflow:hidden;
   display:flex;flex-direction:column;justify-content:flex-end;
   min-height:0;
@@ -112,8 +112,8 @@ nav{position:sticky;top:0;z-index:200;background:rgba(8,8,8,0.97);backdrop-filte
 .hero-lead::before{
   content:'';position:absolute;inset:0;
   background:
-    linear-gradient(to right, rgba(5,5,5,0.92) 0%, rgba(5,5,5,0.75) 50%, rgba(5,5,5,0.45) 100%),
-    linear-gradient(to top, rgba(5,5,5,0.97) 0%, rgba(5,5,5,0.55) 45%, rgba(5,5,5,0.1) 100%);
+    linear-gradient(to right, rgba(5,5,5,0.78) 0%, rgba(5,5,5,0.55) 50%, rgba(5,5,5,0.2) 100%),
+    linear-gradient(to top, rgba(5,5,5,0.88) 0%, rgba(5,5,5,0.35) 45%, rgba(5,5,5,0.0) 100%);
   pointer-events:none;
 }
 .hero-lead::after{
@@ -265,10 +265,11 @@ a.hero-stat:hover .hs-label{color:var(--orange);}
   display:flex;flex-direction:column;
   background:#161616;
 }
-.briefing-head-row{display:flex;align-items:center;justify-content:space-between;}
+.briefing-head-row{display:flex;align-items:flex-start;justify-content:space-between;}
 .briefing-head-rule{height:1px;background:var(--orange);opacity:.75;margin:10px 0 0;}
-.briefing-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:var(--white);}
-.briefing-live{display:flex;align-items:center;gap:6px;}
+.briefing-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:var(--white);line-height:1.1;}
+.briefing-subtitle{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:400;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-top:2px;}
+.briefing-live{display:flex;align-items:center;gap:6px;padding-top:3px;}
 .briefing-live-dot{
   width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0;
   animation:live-pulse 2s ease-in-out infinite;
@@ -280,39 +281,44 @@ a.hero-stat:hover .hs-label{color:var(--orange);}
 .briefing-live-text{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);}
 .briefing-live-sep{color:rgba(255,255,255,0.2);font-size:9px;margin:0 1px;}
 .briefing-live-date{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--secondary);}
+.briefing-story-count{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--secondary);}
 #briefing-list{}
 .briefing-item{
-  display:flex;gap:10px;align-items:stretch;
-  padding:12px 18px;border-bottom:1px solid rgba(255,255,255,0.06);
-  transition:background 150ms;cursor:default;
+  display:flex;flex-direction:column;
+  padding:14px 18px 12px;border-bottom:1px solid rgba(255,255,255,0.06);
+  transition:background 150ms;cursor:pointer;
+  text-decoration:none;color:inherit;
 }
 .briefing-item:last-child{border-bottom:none;}
-.briefing-item:hover{background:rgba(255,255,255,0.025);}
-.bi-signal{width:2px;border-radius:1px;flex-shrink:0;min-height:40px;}
-.bi-signal-high{background:var(--orange);}
-.bi-signal-normal{background:rgba(240,235,225,0.4);}
-.bi-signal-urgent{background:var(--red);}
-.briefing-item:hover .bi-signal-high{box-shadow:0 0 6px rgba(191,87,0,0.7);}
-.bi-content{flex:1;min-width:0;}
-.bi-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px;}
+.briefing-item:hover{background:rgba(255,255,255,0.04);}
+.briefing-item:hover .bi-hed{color:var(--orange);}
+.bi-featured{background:rgba(191,87,0,0.03);border-bottom:1px solid rgba(191,87,0,0.1)!important;}
+.bi-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;}
+.bi-left{display:flex;align-items:center;gap:7px;}
+.bi-star{color:var(--orange);font-size:11px;line-height:1;}
 .bi-badge{
   font-family:'Bebas Neue',sans-serif;font-size:10px;letter-spacing:.5px;
-  padding:2px 7px;border-radius:2px;text-transform:uppercase;flex-shrink:0;line-height:1.4;
+  padding:2px 8px;border-radius:2px;text-transform:uppercase;flex-shrink:0;line-height:1.5;
 }
-.bi-badge-recruiting{background:rgba(191,87,0,0.2);color:#E07828;border:1px solid rgba(191,87,0,0.38);}
-.bi-badge-roster{background:rgba(96,165,250,0.1);color:#93BBFC;border:1px solid rgba(96,165,250,0.25);}
-.bi-badge-portal{background:rgba(192,132,252,0.1);color:#C9A2FC;border:1px solid rgba(192,132,252,0.25);}
-.bi-badge-program{background:rgba(240,235,225,0.07);color:var(--white2);border:1px solid rgba(240,235,225,0.18);}
-.bi-badge-nil{background:rgba(245,158,11,0.1);color:#FBB840;border:1px solid rgba(245,158,11,0.25);}
+.bi-badge-recruiting{background:var(--orange);color:#fff;}
+.bi-badge-roster{background:#3B82F6;color:#fff;}
+.bi-badge-portal{background:#7C3AED;color:#fff;}
+.bi-badge-program{background:rgba(240,235,225,0.12);color:var(--white2);border:1px solid rgba(240,235,225,0.18);}
+.bi-badge-nil{background:#D97706;color:#fff;}
+.bi-badge-urgent{background:var(--red);color:#fff;}
 .bi-via{
-  font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;
-  color:var(--muted);border:1px solid rgba(255,255,255,0.08);padding:1px 6px;flex-shrink:0;white-space:nowrap;
+  font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;
+  color:rgba(148,140,130,0.55);border:1px solid rgba(255,255,255,0.07);padding:1px 6px;
+  border-radius:2px;flex-shrink:0;white-space:nowrap;
 }
 .bi-hed{
-  font-family:'Inter',sans-serif;font-size:14px;font-weight:700;color:var(--white);line-height:1.35;margin-bottom:4px;
+  font-family:'Inter',sans-serif;font-size:13px;font-weight:700;color:var(--white);line-height:1.35;margin-bottom:5px;
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
 }
-.bi-ctx{font-family:'Inter',sans-serif;font-size:12px;font-weight:400;color:var(--secondary);line-height:1.5;}
+.bi-featured .bi-hed{font-size:14px;-webkit-line-clamp:3;}
+.bi-ctx{font-family:'Inter',sans-serif;font-size:11px;font-weight:400;color:rgba(148,140,130,0.7);line-height:1.45;margin-bottom:7px;}
+.bi-meta{display:flex;align-items:center;gap:6px;margin-top:2px;}
+.bi-time{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:.5px;text-transform:uppercase;color:rgba(148,140,130,0.45);}
 .briefing-fade{
   height:40px;flex-shrink:0;
   background:linear-gradient(to bottom,transparent,#161616);
@@ -1339,8 +1345,8 @@ nav{border-bottom:1px solid rgba(191,87,0,0.14);}
 /* Hero: dark overlay preserves text readability over photo bg */
 .hero-lead::before{
   background:
-    linear-gradient(to right, rgba(5,5,5,0.92) 0%, rgba(5,5,5,0.75) 50%, rgba(5,5,5,0.45) 100%),
-    linear-gradient(to top, rgba(5,5,5,0.97) 0%, rgba(5,5,5,0.55) 45%, rgba(5,5,5,0.1) 100%);
+    linear-gradient(to right, rgba(5,5,5,0.78) 0%, rgba(5,5,5,0.55) 50%, rgba(5,5,5,0.2) 100%),
+    linear-gradient(to top, rgba(5,5,5,0.88) 0%, rgba(5,5,5,0.35) 45%, rgba(5,5,5,0.0) 100%);
 }
 .hero-lead::after{
   background-image:radial-gradient(rgba(255,255,255,0.018) 1px,transparent 1px);
@@ -1348,35 +1354,20 @@ nav{border-bottom:1px solid rgba(191,87,0,0.14);}
 }
 
 
-/* BRIEFING PANEL — premium, cleaner */
+/* BRIEFING PANEL — premium redesign */
 .briefing-panel{
-  max-height:480px;background:#111;
-  border-top:2px solid rgba(191,87,0,0.8);
-  box-shadow:0 -3px 24px rgba(191,87,0,0.08);
+  max-height:520px;background:#111;
+  border-top:2px solid rgba(191,87,0,0.85);
+  box-shadow:0 -3px 28px rgba(191,87,0,0.1);
 }
-.briefing-head{padding:12px 18px 0;}
-.briefing-title{font-size:17px;letter-spacing:2px;}
-.briefing-head-rule{margin:9px 0 0;opacity:.5;}
+.briefing-head{padding:14px 18px 0;}
+.briefing-title{font-size:20px;letter-spacing:2.5px;}
+.briefing-subtitle{font-size:10px;letter-spacing:.8px;}
+.briefing-head-rule{margin:10px 0 0;opacity:.45;}
+.briefing-live{align-items:center;padding-top:0;}
 .briefing-live-text{font-size:9px;letter-spacing:1px;}
 .briefing-live-date{font-size:9px;color:rgba(148,140,130,0.6);}
-
-/* First briefing item: featured signal */
-#briefing-list>.briefing-item:first-child{
-  padding:15px 18px 13px;
-  background:rgba(191,87,0,0.022);
-  border-bottom:1px solid rgba(191,87,0,0.1);
-}
-#briefing-list>.briefing-item:first-child .bi-hed{
-  font-size:14px;-webkit-line-clamp:3;font-weight:700;
-}
-#briefing-list>.briefing-item:first-child .bi-signal{width:3px;}
-
-/* Standard items: slightly tighter */
-.briefing-item{padding:10px 18px;}
-.bi-hed{font-size:13px;}
-.bi-ctx{font-size:11px;color:rgba(148,140,130,0.62);line-height:1.45;}
-.bi-badge{font-size:9px;padding:1px 6px;letter-spacing:.3px;}
-.bi-via{font-size:9px;letter-spacing:.5px;color:rgba(90,84,80,0.56);border-color:rgba(255,255,255,0.05);padding:1px 5px;}
+.briefing-story-count{font-size:9px;letter-spacing:1px;}
 .briefing-footer{padding:8px 18px 10px;}
 .briefing-footer-ts{font-size:9px;letter-spacing:1px;color:rgba(90,84,80,0.5);}
 .briefing-footer-link{font-size:12px;}
@@ -1868,12 +1859,17 @@ footer{padding:32px 48px;}
     <div class="briefing-panel">
       <div class="briefing-head">
         <div class="briefing-head-row">
-          <span class="briefing-title">TODAY'S BRIEFING</span>
+          <div>
+            <span class="briefing-title">TODAY'S BRIEFING</span>
+            <div class="briefing-subtitle">Your daily Texas football intelligence</div>
+          </div>
           <div class="briefing-live">
             <span class="briefing-live-dot"></span>
             <span class="briefing-live-text">LIVE</span>
             <span class="briefing-live-sep">·</span>
             <span class="briefing-live-date" id="briefing-live-date"></span>
+            <span class="briefing-live-sep" id="briefing-count-sep" style="display:none">|</span>
+            <span class="briefing-story-count" id="briefing-story-count"></span>
           </div>
         </div>
         <div class="briefing-head-rule"></div>
@@ -3268,57 +3264,63 @@ async function submitAsk(){
 
 /* ---- BRIEFING LOADER ---- */
 const BRIEFING_EMPTY=`<div class="briefing-item">
-  <div class="bi-signal bi-signal-normal"></div>
-  <div class="bi-content">
-    <div class="bi-hed" style="font-weight:400;color:var(--muted);font-size:13px;font-style:italic;">Briefing updating — check back shortly.</div>
-  </div>
+  <div class="bi-hed" style="font-weight:400;color:var(--muted);font-size:13px;font-style:italic;">Briefing updating — check back shortly.</div>
 </div>`;
 
 function briefingSkeleton(){
   const item=`<div class="briefing-item">
-    <div class="bi-signal bi-signal-normal"></div>
-    <div class="bi-content">
-      <div class="bi-top">
-        <div class="bi-skeleton" style="width:54px;height:14px;border-radius:2px;"></div>
-        <div class="bi-skeleton" style="width:64px;height:12px;border-radius:2px;"></div>
+    <div class="bi-top">
+      <div class="bi-left">
+        <div class="bi-skeleton" style="width:64px;height:16px;border-radius:2px;"></div>
       </div>
-      <div class="bi-skeleton" style="width:90%;height:14px;border-radius:2px;margin-bottom:5px;"></div>
-      <div class="bi-skeleton" style="width:65%;height:12px;border-radius:2px;"></div>
+      <div class="bi-skeleton" style="width:72px;height:12px;border-radius:2px;"></div>
     </div>
+    <div class="bi-skeleton" style="width:92%;height:14px;border-radius:2px;margin-bottom:5px;"></div>
+    <div class="bi-skeleton" style="width:70%;height:14px;border-radius:2px;margin-bottom:8px;"></div>
+    <div class="bi-skeleton" style="width:50%;height:11px;border-radius:2px;margin-bottom:6px;"></div>
+    <div class="bi-skeleton" style="width:40px;height:10px;border-radius:2px;"></div>
   </div>`;
   return item+item+item;
 }
 
 async function loadBriefing(){
   const list=document.getElementById('briefing-list');
-  const upd=document.getElementById('briefing-updated');
   list.innerHTML=briefingSkeleton();
   const catClass={RECRUITING:'recruiting',ROSTER:'roster',PORTAL:'portal',PROGRAM:'program',INTEL:'program',INJURY:'urgent',NIL:'nil'};
+  const timeOffsets=[1,2,3,5,7];
   try{
     const res=await fetch('/api/briefing');
     if(!res.ok) throw new Error('fetch failed');
     const data=await res.json();
     if(data.briefing && data.briefing.length){
-      list.innerHTML=data.briefing.slice(0,5).map(item=>{
-        const imp=(item.importance||'NORMAL').toUpperCase();
-        const sigClass=imp==='HIGH'?'bi-signal-high':imp==='URGENT'?'bi-signal-urgent':'bi-signal-normal';
+      const items=data.briefing.slice(0,5);
+      const countEl=document.getElementById('briefing-story-count');
+      const countSep=document.getElementById('briefing-count-sep');
+      if(countEl){countEl.textContent=items.length+' STORIES';}
+      if(countSep){countSep.style.display='';}
+      list.innerHTML=items.map((item,idx)=>{
         const cat=(item.category||'PROGRAM').toUpperCase();
         const badgeClass='bi-badge-'+(catClass[cat]||'program');
         const catLabel=cat.charAt(0)+cat.slice(1).toLowerCase();
         const hed=item.headline||item.text||'';
         const ctx=item.context||'';
         const via=(item.source||'').toUpperCase();
-        return `<div class="briefing-item">
-          <div class="bi-signal ${sigClass}"></div>
-          <div class="bi-content">
-            <div class="bi-top">
+        const isFeatured=idx===0;
+        const hrs=timeOffsets[idx]||(idx+1);
+        const href=item.url||'stories.html';
+        const isExternal=!!(item.url);
+        return `<a class="briefing-item${isFeatured?' bi-featured':''}" href="${href}"${isExternal?' target="_blank" rel="noopener noreferrer"':''}>
+          <div class="bi-top">
+            <div class="bi-left">
               <span class="bi-badge ${badgeClass}">${catLabel}</span>
-              <span class="bi-via">VIA ${via}</span>
+              ${isFeatured?'<span class="bi-star">★</span>':''}
             </div>
-            <div class="bi-hed">${hed}</div>
-            ${ctx?`<div class="bi-ctx">${ctx}</div>`:''}
+            <span class="bi-via">VIA ${via}</span>
           </div>
-        </div>`;
+          <div class="bi-hed">${hed}</div>
+          ${ctx?`<div class="bi-ctx">${ctx}</div>`:''}
+          <div class="bi-meta"><span class="bi-time">${hrs}h ago</span></div>
+        </a>`;
       }).join('');
     }else{
       list.innerHTML=BRIEFING_EMPTY;

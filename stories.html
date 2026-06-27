@@ -34,17 +34,17 @@ button{cursor:pointer;}
 
 /* ── HERO ─────────────────────────────────────── */
 .ts-hero{
-  position:relative;background:var(--black);
+  position:relative;background:var(--black) url('img/stories-hero-bg.png') center center / cover no-repeat;
   display:flex;align-items:center;border-bottom:1px solid var(--border-mid);
   overflow:hidden;padding:56px 0 32px;
 }
 .ts-hero::before{
   content:'';position:absolute;inset:0;pointer-events:none;
   background:
-    radial-gradient(ellipse 65% 55% at 88% 12%,rgba(191,87,0,.10),transparent 55%),
-    radial-gradient(ellipse 45% 65% at 8%  90%,rgba(191,87,0,.05),transparent 55%);
+    linear-gradient(to right, rgba(5,5,5,0.88) 0%, rgba(5,5,5,0.65) 45%, rgba(5,5,5,0.15) 100%),
+    linear-gradient(to top, rgba(5,5,5,0.85) 0%, rgba(5,5,5,0.2) 60%, rgba(5,5,5,0.0) 100%);
 }
-.ts-hero-bg{position:absolute;inset:0;background:url('img/stadium-hero.jpg') center 35%/cover no-repeat;opacity:.07;pointer-events:none;}
+.ts-hero-bg{display:none;}
 .ts-hero-inner{position:relative;z-index:1;max-width:720px;}
 .ts-hero-eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
 .ts-hero-rule{width:20px;height:2px;background:var(--orange);flex-shrink:0;}

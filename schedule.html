@@ -44,12 +44,12 @@ nav{position:sticky;top:0;z-index:200;background:rgba(8,8,8,0.97);backdrop-filte
 /* ============================================================
    HERO
 ============================================================ */
-.hub-hero{padding:52px 48px 0;border-bottom:1px solid var(--border);position:relative;overflow:hidden;background:var(--surface);}
+.hub-hero{padding:52px 48px 0;border-bottom:none;position:relative;overflow:hidden;background:#030303 url('img/schedule-hero-bg.png') center top / cover no-repeat;}
 .hub-hero::before{content:'';position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(ellipse 70% 80% at 90% -10%,rgba(191,87,0,0.14) 0%,transparent 55%),
-             radial-gradient(ellipse 40% 60% at 0% 100%,rgba(191,87,0,0.07) 0%,transparent 60%);}
+  background:linear-gradient(to right,rgba(3,3,3,0.70) 0%,rgba(3,3,3,0.35) 40%,rgba(3,3,3,0.0) 100%),
+             linear-gradient(to top,rgba(3,3,3,1.0) 0%,rgba(3,3,3,0.6) 25%,rgba(3,3,3,0.0) 60%);}
 .hub-hero::after{content:'';position:absolute;inset:0;pointer-events:none;
-  background-image:radial-gradient(rgba(255,255,255,0.025) 1px,transparent 1px);
+  background-image:radial-gradient(rgba(255,255,255,0.015) 1px,transparent 1px);
   background-size:28px 28px;}
 .hub-hero-inner{position:relative;z-index:1;}
 .hub-eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
@@ -379,35 +379,41 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
 ============================================================ */
 @keyframes dangerPulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,0.5);}50%{box-shadow:0 0 0 6px rgba(239,68,68,0);}}
 .pyp-inline{
-  border-bottom:1px solid var(--border);background:var(--surface);
-  cursor:pointer;transition:background 180ms var(--ease-out);
+  border-top:2px solid var(--orange);border-bottom:1px solid rgba(191,87,0,0.15);
+  background:linear-gradient(to right,rgba(191,87,0,0.10) 0%,rgba(191,87,0,0.04) 50%,rgba(191,87,0,0.0) 100%);
+  cursor:pointer;transition:all 200ms var(--ease-out);position:relative;overflow:hidden;
 }
-.pyp-inline:hover{background:var(--surface2);}
+.pyp-inline::before{content:'';position:absolute;inset:0;background:linear-gradient(to right,rgba(191,87,0,0.0),rgba(191,87,0,0.08) 100%);opacity:0;transition:opacity 200ms;}
+.pyp-inline:hover{background:linear-gradient(to right,rgba(191,87,0,0.16) 0%,rgba(191,87,0,0.07) 50%,rgba(191,87,0,0.0) 100%);}
+.pyp-inline:hover::before{opacity:1;}
 .pyp-inline-inner{
-  display:flex;align-items:center;gap:24px;padding:20px 48px;
+  display:flex;align-items:center;gap:28px;padding:22px 48px;
 }
 .pyp-inline-left{flex-shrink:0;}
 .pyp-inline-tag{
-  font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:2px;
-  color:var(--orange);background:rgba(191,87,0,0.1);border:1px solid rgba(191,87,0,0.3);
-  padding:3px 10px;display:inline-flex;align-items:center;gap:5px;margin-bottom:6px;
+  font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:2.5px;
+  color:var(--orange);background:rgba(191,87,0,0.12);border:1px solid rgba(191,87,0,0.4);
+  padding:3px 10px;display:inline-flex;align-items:center;gap:6px;margin-bottom:8px;
 }
 .pyp-inline-title{
-  font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;
-  color:var(--white);line-height:1;margin-bottom:3px;
+  font-family:'Playfair Display',serif;font-size:26px;font-weight:900;
+  color:var(--white);line-height:1;margin-bottom:5px;letter-spacing:-.5px;
 }
-.pyp-inline-sub{font-family:'Inter',sans-serif;font-size:11px;color:var(--muted);}
-.pyp-inline-games{display:flex;flex-wrap:wrap;gap:5px;flex:1;}
+.pyp-inline-sub{font-family:'Inter',sans-serif;font-size:12px;color:rgba(191,87,0,0.75);font-weight:500;}
+.pyp-inline-games{display:flex;flex-wrap:wrap;gap:6px;flex:1;}
 .pyp-inline-games span{
   font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;
-  letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);
-  border:1px solid var(--border-mid);padding:2px 7px;
+  letter-spacing:1.5px;text-transform:uppercase;color:var(--secondary);
+  border:1px solid rgba(191,87,0,0.25);padding:3px 8px;background:rgba(191,87,0,0.05);
+  transition:all 150ms;
 }
+.pyp-inline:hover .pyp-inline-games span{color:var(--white2);border-color:rgba(191,87,0,0.45);}
 .pyp-inline-cta{
-  font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:1px;
-  color:var(--orange);flex-shrink:0;transition:transform 180ms var(--ease-out);
+  font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:1.5px;
+  color:#fff;flex-shrink:0;background:var(--orange);padding:10px 22px;
+  border:1px solid var(--orange);transition:all 200ms var(--ease-out);white-space:nowrap;
 }
-.pyp-inline:hover .pyp-inline-cta{transform:translateX(5px);}
+.pyp-inline:hover .pyp-inline-cta{background:var(--orange-hi);box-shadow:0 0 20px rgba(191,87,0,0.4);}
 @media(max-width:860px){
   .pyp-inline-inner{padding:18px 20px;gap:16px;}
   .pyp-inline-games{display:none;}
@@ -827,33 +833,6 @@ button.gd-player-chip:hover{border-color:rgba(191,87,0,0.5);color:var(--orange);
     <h1 class="hub-title">2026 Season<br><em>Hub</em></h1>
     <p class="hub-sub">Schedule, matchup intelligence, AI projections, and weekly scouting data for Texas football. Built on the Tower Model.</p>
   </div>
-  <div class="hub-stat-strip">
-    <div class="hub-stat">
-      <div class="hub-stat-val orange">9.2</div>
-      <div class="hub-stat-label">Projected Wins</div>
-      <div class="hub-stat-sub">Range: 7–12 wins</div>
-    </div>
-    <div class="hub-stat">
-      <div class="hub-stat-val green">62%</div>
-      <div class="hub-stat-label">CFP Probability</div>
-      <div class="hub-stat-sub">Top 5 nationally</div>
-    </div>
-    <div class="hub-stat">
-      <div class="hub-stat-val amber">31%</div>
-      <div class="hub-stat-label">SEC Title Odds</div>
-      <div class="hub-stat-sub">Arch + Simmons core</div>
-    </div>
-    <div class="hub-stat">
-      <div class="hub-stat-val white">W10 @ LSU</div>
-      <div class="hub-stat-label">Toughest Stretch</div>
-      <div class="hub-stat-sub">W9–W12 road-heavy</div>
-    </div>
-    <div class="hub-stat">
-      <div class="hub-stat-val orange">Sep 12</div>
-      <div class="hub-stat-label">Marquee Game</div>
-      <div class="hub-stat-sub">Ohio State · DKR · W2</div>
-    </div>
-  </div>
 </section>
 
 <!-- ====================================================
@@ -862,9 +841,9 @@ button.gd-player-chip:hover{border-color:rgba(191,87,0,0.5);color:var(--orange);
 <div class="pyp-inline" onclick="openPYP()" role="button" tabindex="0" aria-haspopup="dialog" aria-label="Pick Your Path — build the season game by game">
   <div class="pyp-inline-inner">
     <div class="pyp-inline-left">
-      <div class="pyp-inline-tag"><span class="pyp-tag-dot"></span>PICK YOUR PATH</div>
+      <div class="pyp-inline-tag"><span class="pyp-tag-dot"></span>INTERACTIVE · PICK YOUR PATH</div>
       <div class="pyp-inline-title">Build the 2026 Season Game by Game</div>
-      <div class="pyp-inline-sub">7 swing matchups · Real Vegas odds · Live CFP probability</div>
+      <div class="pyp-inline-sub">7 swing matchups · Real Vegas odds · Live CFP probability tracker</div>
     </div>
     <div class="pyp-inline-games">
       <span>Ohio State</span>
@@ -875,7 +854,7 @@ button.gd-player-chip:hover{border-color:rgba(191,87,0,0.5);color:var(--orange);
       <span>@ LSU</span>
       <span>@ Texas A&M</span>
     </div>
-    <div class="pyp-inline-cta">Start →</div>
+    <div class="pyp-inline-cta">BUILD YOUR SEASON →</div>
   </div>
 </div>
 

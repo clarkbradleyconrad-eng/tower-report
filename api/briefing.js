@@ -112,6 +112,7 @@ Each item must have:
 - headline: max 12 words, written like a confident beat reporter, include specific names and numbers
 - context: one sentence, the single most important supporting detail, specific not vague
 - source: actual outlet name (ON3, 247SPORTS, INSIDE TEXAS, RIVALS, BLEACHER REPORT, etc)
+- url: the direct URL to the specific article or page you sourced this from (must be a real link you found via web search)
 Only include real verified news. Never invent facts. Return valid JSON array only, no other text.`;
 
 async function fetchFromGrok() {

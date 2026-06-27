@@ -385,6 +385,24 @@ function buildHero(h) {
   document.getElementById('gs-glow-opp').style.background =
     'radial-gradient(ellipse 78% 95% at 85% 50%,'+h.oppColor+' 0%,transparent 68%)';
 
+  /* Game-specific hero background images */
+  var heroBgs = {
+    'vy-run-2006': 'img/gs-vy-run-2006.png'
+  };
+  var heroEl = document.getElementById('gs-hero');
+  var urlParams = new URLSearchParams(window.location.search);
+  var currentId = urlParams.get('id') || urlParams.get('vault');
+  if(currentId && heroBgs[currentId]) {
+    heroEl.style.backgroundImage = "url('" + heroBgs[currentId] + "')";
+    heroEl.style.backgroundSize = 'cover';
+    heroEl.style.backgroundPosition = 'center top';
+    heroEl.querySelector('.gs-hero-grid').style.display = 'none';
+    heroEl.querySelector('.gs-glow-tx').style.opacity = '0.4';
+    document.getElementById('gs-glow-opp').style.opacity = '0.35';
+    heroEl.querySelector('.gs-hero-fade').style.background =
+      'linear-gradient(to bottom,rgba(3,3,3,0.1) 0%,transparent 25%,transparent 50%,rgba(3,3,3,0.85) 85%,#030303 100%)';
+  }
+
   var navTitle = document.getElementById('gs-nav-title');
   if(navTitle) navTitle.textContent = h.title || 'Tower Report';
 }
