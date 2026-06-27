@@ -567,6 +567,7 @@
   (function () {
     var messages = []; // { role: 'user'|'assistant', content: string }
     var isStreaming = false;
+    var pendingContext = null; // set when routed from another page via sessionStorage
 
     var messagesEl = document.getElementById('messages');
     var emptyState = document.getElementById('empty-state');
@@ -690,10 +691,12 @@
       var accumulated = '';
 
       try {
+        var reqBody = { messages: messages };
+        if (pendingContext) { reqBody.context = pendingContext; pendingContext = null; }
         var res = await fetch('/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ messages: messages }),
+          body: JSON.stringify(reqBody),
         });
 
         if (!res.ok) {
@@ -772,6 +775,46 @@
       var area = document.getElementById('chat-area');
       area.scrollTop = area.scrollHeight;
     }
+
+    // ── Handle cross-page context (from stories, schedule, etc.) ──
+    // When TowerIntel.openWithContext() is called on a page without an fchat modal,
+    // it stores the query + context in sessionStorage and navigates here.
+    (function () {
+      try {
+        var incomingPrompt  = sessionStorage.getItem('ti_prompt');
+        var incomingLabel   = sessionStorage.getItem('ti_label');
+        var incomingContext = sessionStorage.getItem('ti_context');
+        if (!incomingPrompt) return;
+        sessionStorage.removeItem('ti_prompt');
+        sessionStorage.removeItem('ti_label');
+        sessionStorage.removeItem('ti_context');
+        // Parse context
+        try { if (incomingContext) pendingContext = JSON.parse(incomingContext); } catch (_) {}
+        // Show context banner in chat area
+        emptyState.style.display = 'none';
+        if (incomingLabel) {
+          var banner = document.createElement('div');
+          banner.className = 'message';
+          banner.innerHTML =
+            '<div class="message-header">' +
+              '<div class="avatar avatar-assistant">TR</div>' +
+              '<span class="message-role">Longhorn Intelligence</span>' +
+            '</div>' +
+            '<div class="message-body" style="font-size:12px;color:var(--text-muted);font-style:italic;">' +
+              '⚡ Analyzing: <strong style="color:var(--orange)">' + escapeHtml(incomingLabel) + '</strong>' +
+              '<span style="display:block;font-size:11px;color:var(--text-muted);margin-top:2px;">Building context-aware response…</span>' +
+            '</div>';
+          messagesEl.appendChild(banner);
+        }
+        // Fire query after a brief moment so the page has settled
+        setTimeout(function () {
+          inputEl.value = incomingPrompt;
+          inputEl.dispatchEvent(new Event('input'));
+          handleSend();
+        }, 400);
+      } catch (_) {}
+    })();
+
   })();
 </script>
 </body>

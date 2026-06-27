@@ -424,6 +424,28 @@ button{cursor:pointer;}
 .ts-footer-copy{font-size:12px;color:var(--muted);line-height:1.65;}
 .ts-footer-copy strong{color:var(--secondary);}
 
+/* ── Tower Intel Button ── */
+.ti-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--font-display);font-size:10px;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--orange);background:rgba(191,87,0,0.08);
+  border:1px solid rgba(191,87,0,0.3);padding:6px 12px;
+  cursor:pointer;transition:all .15s;flex-shrink:0;
+}
+.ti-btn:hover{background:rgba(191,87,0,0.18);border-color:rgba(191,87,0,0.6);}
+.ti-btn-dot{width:5px;height:5px;border-radius:50%;background:var(--orange);flex-shrink:0;animation:blink 2s ease-in-out infinite;}
+/* Tower Intel sidebar block */
+.ts-intel-block{
+  background:rgba(191,87,0,0.05);border:1px solid rgba(191,87,0,0.2);
+  border-left:3px solid var(--orange);padding:14px 16px;margin-top:0;
+}
+.ts-intel-block-lbl{
+  font-family:var(--font-display);font-size:9px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:6px;
+}
+.ts-intel-block-desc{font-size:11px;color:var(--secondary);line-height:1.6;margin-bottom:10px;}
+
 /* ── RESPONSIVE ───────────────────────────────── */
 @media(max-width:900px){
   .ts-hero-hed{letter-spacing:-1.5px;}
@@ -1069,6 +1091,7 @@ function buildCard(s, i) {
       '</div>' +
       '<div class="ts-card-actions">' +
         '<button class="ts-share-icon" title="Share story"><span class="ic">'+IC.share+'</span></button>' +
+        '<button class="ts-intel-btn ti-btn" title="Ask Tower Intel about this story"><span class="ti-btn-dot"></span>Ask Intel</button>' +
         '<button class="ts-deepdive">Read <span class="ic">'+IC.arrow+'</span></button>' +
       '</div>' +
     '</div>';
@@ -1076,6 +1099,7 @@ function buildCard(s, i) {
   card.onclick = function(){ showStoryModal(s.id); };
   card.querySelector('.ts-deepdive').onclick = function(e){ e.stopPropagation(); showStoryModal(s.id); };
   card.querySelector('.ts-share-icon').onclick = function(e){ e.stopPropagation(); shareStory(s.id, s.headline||s.title||''); };
+  card.querySelector('.ts-intel-btn').onclick = function(e){ e.stopPropagation(); storyAskIntel(s.id); };
   return card;
 }
 
@@ -1249,6 +1273,17 @@ function renderSidebar(s) {
     out += '<div class="ts-sidebar-sec"><div class="ts-sidebar-lbl">Championship Path</div><p class="ts-related-impact">'+esc(s.relatedImpact)+'</p></div>';
   }
 
+  // Tower Intel CTA — always show at bottom of sidebar
+  var playerCtx = (s.players && s.players.length) ? s.players.slice(0,2).join(' + ') : (s.category || 'this signal');
+  out +=
+    '<div class="ts-sidebar-sec ts-intel-block">' +
+      '<div class="ts-intel-block-lbl">⚡ Ask Tower Intel</div>' +
+      '<div class="ts-intel-block-desc">Get deep, context-aware analysis on ' + esc(playerCtx) + ' — CFP implications, roster fit, and Arch Manning\'s trajectory.</div>' +
+      '<button class="ti-btn" style="width:100%;justify-content:center;" onclick="storyAskIntel(\'' + s.id + '\')">' +
+        '<span class="ti-btn-dot"></span>Ask Tower Intel About This Signal' +
+      '</button>' +
+    '</div>';
+
   return out;
 }
 
@@ -1354,6 +1389,33 @@ document.addEventListener('click', function(e) {
 // BOOT
 // ═══════════════════════════════════════════════
 loadStories();
+
+// ═══════════════════════════════════════════════
+// TOWER INTEL — CONTEXT INTEGRATION
+// ═══════════════════════════════════════════════
+function storyAskIntel(storyId) {
+  var s = allStories.find(function(x){ return x.id === String(storyId); });
+  if (!s || !window.TowerIntel) return;
+  var ctx = TowerIntel.buildContext('story', {
+    headline: s.headline || s.title || '',
+    category: s.category || '',
+    impact: s.impact || 0,
+    players: s.players || [],
+    summary: s.whyItMatters || s.hook || s.summary || ''
+  });
+  var playerNote = (s.players && s.players.length)
+    ? ' involving ' + s.players.slice(0, 2).join(' and ')
+    : '';
+  var prompt =
+    'Analyze this Tower Report signal in full depth: "' + (s.headline || s.title || '') + '" — ' +
+    'a ' + (s.category || '') + ' development' + playerNote + ' with a ' + (s.impact || 0) + '/100 impact score. ' +
+    'What does this mean for the 2026 CFP path? How does it shift the roster dynamic, affect Arch Manning\'s Heisman case, ' +
+    'and connect to the key swing games (Ohio State, LSU, Texas A&M)? Give insider-level analysis of the real downstream implications ' +
+    'and what Tower Report readers should watch for next.';
+  var label = (s.headline || s.title || 'Story').substring(0, 60);
+  TowerIntel.openWithContext(label, prompt, ctx);
+}
 </script>
+<script src="js/tower-intel.js"></script>
 </body>
 </html>

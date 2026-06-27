@@ -16,7 +16,7 @@
 body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);}
 
 /* ── HERO ── */
-.gs-hero{position:relative;height:480px;background:#030303;overflow:hidden;display:flex;flex-direction:column;}
+.gs-hero{position:relative;height:434px;background:#030303;overflow:hidden;display:flex;flex-direction:column;}
 .gs-hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.013) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.013) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;}
 .gs-glow-tx{position:absolute;left:0;top:0;bottom:0;width:55%;background:radial-gradient(ellipse 80% 95% at 15% 50%,rgba(191,87,0,0.32) 0%,transparent 68%);pointer-events:none;}
 .gs-glow-opp{position:absolute;right:0;top:0;bottom:0;width:55%;pointer-events:none;}
@@ -141,6 +141,20 @@ footer{padding:28px 52px;display:flex;align-items:center;justify-content:space-b
 .gs-err-num{font-family:'Playfair Display',serif;font-size:80px;font-weight:900;color:var(--surface2);line-height:1;margin-bottom:14px;}
 .gs-err a{color:var(--orange);text-decoration:none;}
 
+/* ── FIXED NAV BAR ── */
+.gs-nav-bar{position:fixed;top:0;left:0;right:0;z-index:200;height:46px;background:rgba(8,8,8,0.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:space-between;padding:0 28px;}
+.gs-nav-back{display:flex;align-items:center;gap:8px;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .15s;}
+.gs-nav-back:hover{color:var(--white);}
+.gs-nav-back svg{flex-shrink:0;}
+.gs-nav-title{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(245,240,232,0.3);position:absolute;left:50%;transform:translateX(-50%);white-space:nowrap;}
+.gs-nav-right{display:flex;align-items:center;gap:10px;}
+.gs-nav-share{display:flex;align-items:center;gap:7px;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);background:transparent;border:1px solid rgba(191,87,0,0.35);padding:6px 14px;cursor:pointer;transition:all .15s;}
+.gs-nav-share:hover{background:var(--orange);color:#fff;border-color:var(--orange);}
+
+/* ── TOAST ── */
+.gs-toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--surface2);border:1px solid var(--border);border-left:3px solid var(--orange);padding:11px 22px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--white);transition:transform .3s cubic-bezier(0.34,1.56,0.64,1);z-index:300;white-space:nowrap;pointer-events:none;}
+.gs-toast.show{transform:translateX(-50%) translateY(0);}
+
 /* ── RESPONSIVE ── */
 @media(max-width:960px){
   .gs-hero{height:360px;}
@@ -169,9 +183,23 @@ footer{padding:28px 52px;display:flex;align-items:center;justify-content:space-b
 </head>
 <body>
 
-<div id="gs-hero" class="gs-hero"></div>
+<div class="gs-nav-bar">
+  <a class="gs-nav-back" href="history.html">
+    <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M5 1L1 5l4 4M1 5h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    History
+  </a>
+  <span class="gs-nav-title" id="gs-nav-title">Tower Report</span>
+  <div class="gs-nav-right">
+    <button class="gs-nav-share" onclick="shareGame()">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="10" cy="2" r="1.5" stroke="currentColor" stroke-width="1.2"/><circle cx="2" cy="6" r="1.5" stroke="currentColor" stroke-width="1.2"/><circle cx="10" cy="10" r="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M3.5 5.25L8.5 2.75M3.5 6.75L8.5 9.25" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      Share
+    </button>
+  </div>
+</div>
+<div id="gs-hero" class="gs-hero" style="margin-top:46px;"></div>
 <div id="gs-outer"></div>
 <div id="gs-related"></div>
+<div class="gs-toast" id="gs-toast">Link copied to clipboard</div>
 <footer><div class="footer-logo">TOWER<span>REPORT</span></div><div class="footer-text">The Tower Never Sleeps · © 2026</div></footer>
 
 <script>
@@ -214,6 +242,23 @@ var TX_LOGO = 'https://a.espncdn.com/i/teamlogos/ncaa/500/251.png';
 function espnLogo(id){ return 'https://a.espncdn.com/i/teamlogos/ncaa/500/'+id+'.png'; }
 function teamInfo(abbr){ return TEAMS[abbr] || {id:null,color:'rgba(120,120,120,0.2)',name:abbr}; }
 function cleanOpp(s){ return s.replace(/^at\s+/i,'').replace(/#\d+\s*/g,'').replace(/\s+/g,' ').trim(); }
+
+/* ── SHARE ── */
+function shareGame(){
+  var title = document.getElementById('page-title').textContent;
+  var url   = window.location.href;
+  if(navigator.share){
+    navigator.share({title:title, url:url}).catch(function(){});
+    return;
+  }
+  navigator.clipboard.writeText(url).then(function(){
+    var t = document.getElementById('gs-toast');
+    t.classList.add('show');
+    setTimeout(function(){t.classList.remove('show');}, 2600);
+  }).catch(function(){
+    window.prompt('Copy this link:', url);
+  });
+}
 
 /* ── BOOT ── */
 document.addEventListener('DOMContentLoaded', function(){
@@ -339,6 +384,9 @@ function buildHero(h) {
 
   document.getElementById('gs-glow-opp').style.background =
     'radial-gradient(ellipse 78% 95% at 85% 50%,'+h.oppColor+' 0%,transparent 68%)';
+
+  var navTitle = document.getElementById('gs-nav-title');
+  if(navTitle) navTitle.textContent = h.title || 'Tower Report';
 }
 
 /* ── BUILD OUTER ── */

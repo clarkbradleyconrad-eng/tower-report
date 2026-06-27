@@ -500,8 +500,8 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
 }
 .pyp-overlay.open{display:flex;}
 .pyp-box{
-  width:100%;max-width:480px;background:#0c0c0c;
-  border:1px solid rgba(255,255,255,0.1);border-top:3px solid var(--orange);
+  width:100%;max-width:540px;background:#0c0c0c;
+  border:1px solid rgba(255,255,255,0.08);border-top:none;
   box-shadow:0 40px 120px rgba(0,0,0,0.95);
   animation:pypFadeIn 260ms var(--ease-out) both;
   position:relative;overflow:hidden;
@@ -511,35 +511,41 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
 .pyp-head{
   display:flex;align-items:center;justify-content:space-between;
   padding:12px 18px;border-bottom:1px solid var(--border);
+  background:rgba(0,0,0,0.4);
 }
-.pyp-progress{display:flex;align-items:center;gap:8px;}
+.pyp-progress{display:flex;align-items:center;gap:10px;}
 .pyp-dots{display:flex;gap:5px;}
 .pyp-dot{
-  width:7px;height:7px;border-radius:50%;background:var(--border-mid);
-  transition:background 250ms;
+  width:8px;height:8px;border-radius:50%;background:var(--border-mid);
+  transition:background 250ms,transform 200ms;
 }
 .pyp-dot.done{background:var(--orange);}
-.pyp-dot.current{background:var(--white);}
+.pyp-dot.current{background:var(--white);transform:scale(1.3);}
 .pyp-step-counter{
   font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;
   letter-spacing:2px;text-transform:uppercase;color:var(--muted);
 }
 .pyp-close{
   background:none;border:none;color:var(--muted);font-size:18px;
-  cursor:pointer;padding:2px 6px;line-height:1;transition:color 150ms;
+  cursor:pointer;padding:4px 8px;line-height:1;transition:color 150ms;
 }
 .pyp-close:hover{color:var(--white);}
 
-/* Game step */
-.pyp-game{padding:22px 22px 18px;}
-.pyp-game-meta{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+/* Tier accent bar */
+.pyp-accent-bar{height:3px;width:100%;transition:background 300ms;}
+
+/* Game meta row */
+.pyp-game-meta{
+  display:flex;align-items:center;gap:8px;
+  padding:12px 18px 0;
+}
 .pyp-game-week{
   font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;
   letter-spacing:2px;text-transform:uppercase;color:var(--muted);
 }
 .pyp-game-tier{
   font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;
-  letter-spacing:1.5px;text-transform:uppercase;padding:2px 8px;border-radius:2px;
+  letter-spacing:1.5px;text-transform:uppercase;padding:2px 8px;
 }
 .pyp-tier-MARQUEE{color:#CF6210;background:rgba(191,87,0,0.15);border:1px solid rgba(191,87,0,0.4);}
 .pyp-tier-SWING{color:#f59e0b;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);}
@@ -549,52 +555,107 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
 .pyp-game-venue{
   font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;
   letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;border:1px solid;
+  margin-left:auto;
 }
 .pyp-venue-HOME{color:var(--white2);border-color:rgba(255,255,255,0.2);}
 .pyp-venue-AWAY{color:var(--orange);border-color:rgba(191,87,0,0.4);background:rgba(191,87,0,0.06);}
 .pyp-venue-NEUTRAL{color:var(--secondary);border-color:var(--border-mid);}
 
-.pyp-opp{
-  font-family:'Bebas Neue',sans-serif;font-size:52px;color:var(--white);
-  line-height:.9;letter-spacing:1px;margin-bottom:12px;
+/* VS block */
+.pyp-vs{
+  display:flex;align-items:flex-end;gap:16px;
+  padding:16px 20px 14px;
 }
-.pyp-opp-date{font-family:'Inter',sans-serif;font-size:11px;color:var(--muted);margin-top:2px;}
+.pyp-vs-tx{flex-shrink:0;}
+.pyp-vs-tx-name{
+  font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:3px;
+  color:var(--orange);margin-bottom:2px;
+}
+.pyp-vs-tx-hook{
+  font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--orange);
+  line-height:.85;letter-spacing:1px;
+}
+.pyp-vs-sep{
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:3px;color:var(--muted);padding-bottom:6px;flex-shrink:0;
+}
+.pyp-vs-opp-wrap{flex:1;}
+.pyp-vs-opp-name{
+  font-family:'Bebas Neue',sans-serif;font-size:42px;color:var(--white);
+  line-height:.9;letter-spacing:1px;margin-bottom:5px;
+}
+.pyp-vs-venue-tag{
+  font-family:'Inter',sans-serif;font-size:10px;color:var(--muted);
+}
 
+/* Odds strip */
+.pyp-odds-strip{
+  display:flex;background:#111;
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+}
+.pyp-odds-cell{flex:1;padding:10px 14px;text-align:center;}
+.pyp-odds-cell+.pyp-odds-cell{border-left:1px solid var(--border);}
+.pyp-odds-label{
+  font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;
+}
+.pyp-odds-val{
+  font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--white);line-height:1;
+}
+.pyp-odds-val.orange{color:var(--orange);}
+.pyp-odds-prob-bar{height:3px;background:var(--border-mid);margin-top:5px;}
+.pyp-odds-prob-fill{height:100%;background:var(--orange);}
+
+/* Context */
 .pyp-context{
-  font-family:'Inter',sans-serif;font-size:12px;line-height:1.65;color:var(--secondary);
-  padding:10px 12px;background:rgba(255,255,255,0.025);border-left:2px solid rgba(191,87,0,0.4);
-  margin-bottom:14px;
+  font-family:'Inter',sans-serif;font-size:12px;line-height:1.7;color:var(--secondary);
+  padding:12px 18px;border-left:3px solid rgba(191,87,0,0.5);
+  margin:12px 18px;background:rgba(255,255,255,0.02);
 }
-.pyp-prob-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
-.pyp-prob-track{flex:1;height:4px;background:var(--border-mid);}
-.pyp-prob-bar{height:100%;background:var(--orange);}
-.pyp-prob-label{font-family:'Inter',sans-serif;font-size:11px;color:var(--muted);white-space:nowrap;flex-shrink:0;}
-.pyp-impact-line{
-  font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;
-  letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:16px;
+
+/* CFP Impact bars */
+.pyp-impact-section{padding:4px 18px 6px;}
+.pyp-impact-header{
+  font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;
 }
-.pyp-impact-win{color:var(--green);}
-.pyp-impact-loss{color:var(--red);}
+.pyp-impact-row{display:flex;align-items:center;gap:10px;margin-bottom:7px;}
+.pyp-impact-tag{
+  font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:1px;
+  width:34px;flex-shrink:0;
+}
+.pyp-impact-tag.win-tag{color:var(--green);}
+.pyp-impact-tag.loss-tag{color:var(--red);}
+.pyp-impact-track{flex:1;height:6px;background:rgba(255,255,255,0.06);}
+.pyp-impact-fill{height:100%;width:0%;transition:width 500ms var(--ease-out);}
+.pyp-impact-fill.green{background:linear-gradient(90deg,rgba(34,197,94,0.6),var(--green));}
+.pyp-impact-fill.red{background:linear-gradient(90deg,rgba(239,68,68,0.6),var(--red));}
+.pyp-impact-delta{
+  font-family:'Bebas Neue',sans-serif;font-size:14px;
+  width:36px;flex-shrink:0;text-align:right;
+}
+.pyp-impact-delta.green{color:var(--green);}
+.pyp-impact-delta.red{color:var(--red);}
 
 /* WIN / LOSS buttons */
-.pyp-btns{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);}
+.pyp-btns{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);margin-top:12px;}
 .pyp-btn{
-  padding:18px;font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;
+  padding:20px;font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;
   border:none;cursor:pointer;transition:all 180ms var(--ease-out);
   position:relative;overflow:hidden;
 }
 .pyp-btn::before{
   content:'';position:absolute;inset:0;
-  background:linear-gradient(45deg,transparent 30%,rgba(255,255,255,0.06) 50%,transparent 70%);
-  transform:translateX(-120%);transition:transform 400ms ease;
+  background:linear-gradient(45deg,transparent 30%,rgba(255,255,255,0.07) 50%,transparent 70%);
+  transform:translateX(-120%);transition:transform 450ms ease;
 }
 .pyp-btn:hover::before{transform:translateX(120%);}
 .pyp-btn-win{background:#1a1a1a;color:var(--white2);}
 .pyp-btn-win:hover{background:var(--orange);color:#fff;}
-.pyp-btn-loss{background:#111;color:var(--muted);}
+.pyp-btn-loss{background:#0e0e0e;color:var(--muted);}
 .pyp-btn-loss:hover{background:#2a2a2a;color:var(--white);}
 .pyp-btn-win.picked{background:var(--orange);color:#fff;}
-.pyp-btn-loss.picked{background:#2a2a2a;color:var(--white);border-left:2px solid #555;}
+.pyp-btn-loss.picked{background:#2a2a2a;color:var(--white);}
 
 /* Impact flash overlay */
 .pyp-flash{
@@ -602,72 +663,115 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
   pointer-events:none;z-index:10;
 }
 .pyp-flash-num{
-  font-family:'Bebas Neue',sans-serif;font-size:80px;letter-spacing:2px;
-  opacity:0;
+  font-family:'Bebas Neue',sans-serif;font-size:96px;letter-spacing:2px;
+  opacity:0;text-shadow:0 0 60px currentColor;
 }
 .pyp-flash-num.go{animation:pypFlash 600ms var(--ease-out) both;}
 
 /* Results screen */
 .pyp-result{
-  padding:28px 24px 22px;text-align:center;
+  padding:24px 24px 20px;text-align:center;
   animation:pypResultIn 350ms var(--ease-out) both;
 }
 .pyp-result-eyebrow{
   font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;
-  letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:12px;
+  letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:10px;
 }
 .pyp-result-record{
-  font-family:'Bebas Neue',sans-serif;font-size:80px;color:var(--white);
-  line-height:1;letter-spacing:2px;margin-bottom:6px;
+  font-family:'Bebas Neue',sans-serif;font-size:88px;color:var(--white);
+  line-height:1;letter-spacing:2px;margin-bottom:4px;
 }
 .pyp-result-record-label{
   font-family:'Inter',sans-serif;font-size:10px;font-weight:500;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--muted);margin-bottom:20px;
+  text-transform:uppercase;color:var(--muted);margin-bottom:18px;
 }
 .pyp-result-stats{
   display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);
-  margin:0 -24px 18px;
+  margin:0 -24px 14px;
 }
-.pyp-result-stat{background:#1a1a1a;padding:12px 10px;}
+.pyp-result-stat{background:#1a1a1a;padding:14px 10px;}
 .pyp-result-stat-val{
-  font-family:'Bebas Neue',sans-serif;font-size:26px;line-height:1;
+  font-family:'Bebas Neue',sans-serif;font-size:28px;line-height:1;
   margin-bottom:4px;transition:color 300ms;
 }
 .pyp-result-stat-label{font-family:'Inter',sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
-.pyp-result-narrative{
-  font-family:'Inter',sans-serif;font-size:12px;line-height:1.72;color:var(--secondary);
-  text-align:left;padding:12px 14px;background:rgba(255,255,255,0.025);
-  border-left:2px solid rgba(191,87,0,0.4);margin-bottom:18px;
-}
 .pyp-result-wins{
-  display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin-bottom:16px;
+  display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin-bottom:14px;
 }
 .pyp-result-chip{
   font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;
-  letter-spacing:1.5px;text-transform:uppercase;padding:2px 8px;border:1px solid;
+  letter-spacing:1.5px;text-transform:uppercase;padding:3px 9px;border:1px solid;
 }
 .pyp-result-chip.w{color:var(--green);border-color:rgba(34,197,94,0.3);background:rgba(34,197,94,0.07);}
 .pyp-result-chip.l{color:var(--red);border-color:rgba(239,68,68,0.3);background:rgba(239,68,68,0.07);}
-.pyp-result-btns{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);margin:0 -24px -22px;}
+
+/* Story teaser */
+.pyp-story-wrap{
+  background:rgba(191,87,0,0.04);border:1px solid rgba(191,87,0,0.2);
+  border-left:3px solid var(--orange);
+  padding:14px 16px;margin-bottom:14px;text-align:left;
+}
+.pyp-story-eyebrow{
+  font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:8px;
+}
+.pyp-story-teaser{
+  font-family:'Inter',sans-serif;font-size:12px;line-height:1.72;
+  color:var(--secondary);margin-bottom:10px;
+}
+.pyp-story-dots{
+  font-family:'Barlow Condensed',sans-serif;font-size:18px;letter-spacing:4px;
+  color:rgba(191,87,0,0.4);margin-bottom:8px;
+}
+.pyp-story-btn{
+  font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:1.5px;
+  text-transform:uppercase;background:none;border:none;
+  color:var(--orange);cursor:pointer;padding:0;
+  transition:opacity 150ms;text-decoration:underline;text-underline-offset:3px;
+}
+.pyp-story-btn:hover{opacity:.75;}
+
+.pyp-result-btns{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);margin:0 -24px -20px;}
 .pyp-result-replay{
-  background:var(--surface2);padding:15px;font-family:'Bebas Neue',sans-serif;font-size:14px;
+  background:var(--surface2);padding:16px;font-family:'Bebas Neue',sans-serif;font-size:14px;
   letter-spacing:1px;color:var(--white2);border:none;cursor:pointer;
   transition:background 200ms var(--ease-out);
 }
 .pyp-result-replay:hover{background:var(--surface3);}
 .pyp-result-intel{
-  background:var(--orange);padding:15px;font-family:'Bebas Neue',sans-serif;font-size:14px;
+  background:var(--orange);padding:16px;font-family:'Bebas Neue',sans-serif;font-size:14px;
   letter-spacing:1px;color:#fff;border:none;cursor:pointer;
   transition:background 200ms var(--ease-out);
 }
 .pyp-result-intel:hover{background:var(--orange-hi);}
 
-@media(max-width:480px){
-  .pyp-opp{font-size:40px;}
-  .pyp-result-record{font-size:64px;}
+@media(max-width:540px){
+  .pyp-vs-tx-hook{font-size:38px;}
+  .pyp-vs-opp-name{font-size:32px;}
+  .pyp-result-record{font-size:68px;}
   .pyp-result-stats{grid-template-columns:1fr 1fr;}
   .pyp-result-stats .pyp-result-stat:last-child{grid-column:1/-1;}
 }
+
+/* ── Clickable player chips & stat names ── */
+button.gd-player-chip{cursor:pointer;transition:all .12s;}
+button.gd-player-chip:hover{border-color:rgba(191,87,0,0.5);color:var(--orange);background:rgba(191,87,0,0.07);}
+.psr-name{cursor:pointer;transition:color .12s;}
+.psr-name:hover{color:var(--orange);}
+.psr-name::after{content:' ↗';font-size:8px;opacity:0;transition:opacity .12s;}
+.psr-name:hover::after{opacity:0.6;}
+
+/* ── Tower Intel Button ── */
+.ti-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--orange);background:rgba(191,87,0,0.08);
+  border:1px solid rgba(191,87,0,0.3);padding:7px 13px;
+  cursor:pointer;transition:all .15s;flex-shrink:0;
+}
+.ti-btn:hover{background:rgba(191,87,0,0.18);border-color:rgba(191,87,0,0.6);}
+.ti-btn-dot{width:5px;height:5px;border-radius:50%;background:var(--orange);flex-shrink:0;animation:blink 2s ease-in-out infinite;}
 </style>
 </head>
 <body>
@@ -1587,8 +1691,8 @@ function renderGame(g) {
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);margin-top:1px;">
         <div style="background:var(--surface);padding:14px 18px;">
-          <div class="gd-cell-label">Players to Watch</div>
-          <div class="gd-players">${g.analysis.watch.map(p=>`<span class="gd-player-chip">${p}</span>`).join('')}</div>
+          <div class="gd-cell-label">Players to Watch — <span style="font-size:8px;letter-spacing:1px;color:var(--muted)">CLICK FOR INTEL</span></div>
+          <div class="gd-players">${g.analysis.watch.map(p=>`<button class="gd-player-chip" onclick="askIntelPlayer('${p}','${g.id}');event.stopPropagation()" title="Ask Tower Intel about ${p}">${p}</button>`).join('')}</div>
         </div>
         <div style="background:var(--surface);padding:14px 18px;">
           <div class="gd-cell-label">CFP Impact</div>
@@ -1598,6 +1702,9 @@ function renderGame(g) {
             <span style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;color:var(--red);">L: ${g.analysis.cfpLoss} CFP</span>
           </div>
         </div>
+      </div>
+      <div style="padding:11px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;align-items:center;background:rgba(0,0,0,0.25);">
+        <button class="ti-btn" onclick="askIntelGame('${g.id}');event.stopPropagation()"><span class="ti-btn-dot"></span>Ask Tower Intel About This Game</button>
       </div>
     </div>
   </div>
@@ -1936,26 +2043,66 @@ function pypCalcResult(choices) {
 
     <!-- GAME STEP -->
     <div id="pyp-step">
-      <div class="pyp-game">
-        <div class="pyp-game-meta">
-          <span class="pyp-game-week" id="pyp-game-week"></span>
-          <span id="pyp-game-tier" class="pyp-game-tier"></span>
-          <span id="pyp-game-venue" class="pyp-game-venue"></span>
+
+      <!-- Tier accent bar -->
+      <div class="pyp-accent-bar" id="pyp-accent-bar"></div>
+
+      <!-- Meta row -->
+      <div class="pyp-game-meta">
+        <span class="pyp-game-week" id="pyp-game-week"></span>
+        <span id="pyp-game-tier" class="pyp-game-tier"></span>
+        <span id="pyp-game-venue" class="pyp-game-venue"></span>
+      </div>
+
+      <!-- VS display -->
+      <div class="pyp-vs">
+        <div class="pyp-vs-tx">
+          <div class="pyp-vs-tx-name">TEXAS</div>
+          <div class="pyp-vs-tx-hook">TX</div>
         </div>
-        <div class="pyp-opp" id="pyp-game-opp"></div>
-        <div class="pyp-opp-date" id="pyp-game-date"></div>
-        <div class="pyp-context" id="pyp-game-context"></div>
-        <div class="pyp-prob-row">
-          <div class="pyp-prob-track"><div class="pyp-prob-bar" id="pyp-prob-bar"></div></div>
-          <span class="pyp-prob-label" id="pyp-prob-label"></span>
-        </div>
-        <div class="pyp-impact-line">
-          CFP IMPACT&nbsp;&nbsp;
-          <span class="pyp-impact-win" id="pyp-impact-win"></span>
-          &nbsp;·&nbsp;
-          <span class="pyp-impact-loss" id="pyp-impact-loss"></span>
+        <div class="pyp-vs-sep">VS</div>
+        <div class="pyp-vs-opp-wrap">
+          <div class="pyp-vs-opp-name" id="pyp-vs-opp-name"></div>
+          <div class="pyp-vs-venue-tag" id="pyp-vs-venue-tag"></div>
         </div>
       </div>
+
+      <!-- Odds strip -->
+      <div class="pyp-odds-strip">
+        <div class="pyp-odds-cell">
+          <div class="pyp-odds-label">Spread</div>
+          <div class="pyp-odds-val orange" id="pyp-odds-spread"></div>
+        </div>
+        <div class="pyp-odds-cell">
+          <div class="pyp-odds-label">Win Prob</div>
+          <div class="pyp-odds-val" id="pyp-odds-prob"></div>
+          <div class="pyp-odds-prob-bar"><div class="pyp-odds-prob-fill" id="pyp-odds-prob-fill"></div></div>
+        </div>
+        <div class="pyp-odds-cell">
+          <div class="pyp-odds-label">Date</div>
+          <div class="pyp-odds-val" id="pyp-odds-date"></div>
+        </div>
+      </div>
+
+      <!-- Context note -->
+      <div class="pyp-context" id="pyp-game-context"></div>
+
+      <!-- CFP Impact bars -->
+      <div class="pyp-impact-section">
+        <div class="pyp-impact-header">CFP Probability Impact</div>
+        <div class="pyp-impact-row">
+          <span class="pyp-impact-tag win-tag">WIN</span>
+          <div class="pyp-impact-track"><div class="pyp-impact-fill green" id="pyp-impact-fill-win"></div></div>
+          <span class="pyp-impact-delta green" id="pyp-impact-win"></span>
+        </div>
+        <div class="pyp-impact-row">
+          <span class="pyp-impact-tag loss-tag">LOSS</span>
+          <div class="pyp-impact-track"><div class="pyp-impact-fill red" id="pyp-impact-fill-loss"></div></div>
+          <span class="pyp-impact-delta red" id="pyp-impact-loss"></span>
+        </div>
+      </div>
+
+      <!-- Buttons -->
       <div class="pyp-btns">
         <button class="pyp-btn pyp-btn-win" id="pyp-btn-win" onclick="pypPick('win')">WIN</button>
         <button class="pyp-btn pyp-btn-loss" id="pyp-btn-loss" onclick="pypPick('loss')">LOSS</button>
@@ -1985,10 +2132,18 @@ function pypCalcResult(choices) {
         </div>
       </div>
       <div class="pyp-result-wins" id="pyp-result-chips"></div>
-      <div class="pyp-result-narrative" id="pyp-result-narrative"></div>
+
+      <!-- Story teaser -->
+      <div class="pyp-story-wrap">
+        <div class="pyp-story-eyebrow">Tower Intel Reads This Season As</div>
+        <div class="pyp-story-teaser" id="pyp-story-teaser"></div>
+        <div class="pyp-story-dots">· · · · · · · · · · · · · ·</div>
+        <button class="pyp-story-btn" onclick="pypReadMore()">Read the Full Story →</button>
+      </div>
+
       <div class="pyp-result-btns">
         <button class="pyp-result-replay" onclick="pypReplay()">↩ Play Again</button>
-        <button class="pyp-result-intel" onclick="pypAskIntel()">Ask Tower Intel →</button>
+        <button class="pyp-result-intel" onclick="pypAskIntel()">Ask Follow-Up →</button>
       </div>
     </div>
 
@@ -2057,14 +2212,16 @@ function mdToHtml(text){
     .replace(/\n\n/g,'<br><br>')
     .replace(/\n/g,'<br>');
 }
-async function fchatAsk(q){
+async function fchatAsk(q, ctx){
   document.getElementById('fchat-chips').style.display='none';
   fchatAppend(q,'user');
   const thinking=fchatAppend('<em style="color:var(--muted)">Analyzing…</em>','tower');
   try{
+    const body={messages:[{role:'user',content:q}]};
+    if(ctx) body.context=ctx;
     const res=await fetch('/api/chat',{
       method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({messages:[{role:'user',content:q}]})
+      body:JSON.stringify(body)
     });
     if(!res.ok) throw new Error('API '+res.status);
     const reader=res.body.getReader();
@@ -2096,6 +2253,43 @@ function fchatSend(){
   inp.value='';
   fchatAsk(q);
 }
+
+function askIntelGame(gameId) {
+  const g = GAMES.find(x => x.id === gameId);
+  if (!g) return;
+  const ctx = window.TowerIntel ? TowerIntel.buildContext('game', {
+    opponent: g.opp,
+    date: g.date,
+    week: g.week,
+    venue: g.type,
+    location: g.location,
+    winProb: g.winProb,
+    spread: g.spread,
+    keyPlayers: g.analysis.watch,
+    analysis: g.analysis.matchupEdge + ' ' + g.analysis.matters,
+    cfpWin: g.analysis.cfpWin,
+    cfpLoss: g.analysis.cfpLoss,
+    tier: (g.tags && g.tags[0]) || null
+  }) : null;
+  const prompt = `Deep matchup breakdown — Texas vs. ${g.opp} (${g.week}, ${g.date}). Texas is ${g.spread} with a ${g.winProb}% win probability. Cover: (1) the 3 critical matchup keys, (2) what Arch Manning must execute to win this game specifically, (3) how Colin Simmons changes the defensive equation, and (4) exactly what this result means for Texas's CFP path. Give insider-level analysis — specific schemes, personnel matchups, and real stakes.`;
+  const label = `Texas vs. ${g.opp} · ${g.week}`;
+  openFChat();
+  const msgs = document.getElementById('fchat-messages');
+  if (msgs) {
+    msgs.innerHTML = '';
+    const div = document.createElement('div');
+    div.className = 'fchat-msg tower';
+    div.innerHTML =
+      '<span style="display:block;font-family:\'Barlow Condensed\',sans-serif;font-size:9px;font-weight:700;' +
+      'letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:5px;">⚡ Game Analysis · Context Mode</span>' +
+      '<strong>' + label + '</strong>' +
+      '<span style="display:block;color:var(--muted);font-size:11px;font-style:italic;margin-top:3px;">Building context-aware matchup analysis…</span>';
+    msgs.appendChild(div);
+    const chips = document.getElementById('fchat-chips');
+    if (chips) chips.style.display = 'none';
+  }
+  setTimeout(() => fchatAsk(prompt, ctx), 480);
+}
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){closeFChat();closePYP();}
 });
@@ -2116,6 +2310,8 @@ const PYP_CONTEXT = {
 let pypStep = 0;
 let pypChoices = {};
 let pypResultPrompt = '';
+let pypResultNarrative = '';
+let pypResultRecord = '';
 
 function pypBuildDots(){
   const wrap = document.getElementById('pyp-dots');
@@ -2137,6 +2333,8 @@ function openPYP(){
   pypStep = 0;
   pypChoices = {};
   pypResultPrompt = '';
+  pypResultNarrative = '';
+  pypResultRecord = '';
   document.getElementById('pyp-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
   document.getElementById('pyp-step').style.display = '';
@@ -2157,11 +2355,15 @@ function pypRender(){
   pypUpdateDots();
   document.getElementById('pyp-step-counter').textContent = `${pypStep + 1} OF ${PYP_GAMES.length}`;
 
-  document.getElementById('pyp-game-week').textContent = `${game.week} · ${game.date}`;
-  document.getElementById('pyp-game-opp').textContent = game.opp;
-  document.getElementById('pyp-game-date').textContent = `${game.date}, 2026`;
-  document.getElementById('pyp-game-context').textContent = PYP_CONTEXT[game.id] || '';
+  // Accent bar color by tier
+  const accentBar = document.getElementById('pyp-accent-bar');
+  if(accentBar){
+    const accentMap = { MARQUEE:'var(--orange)', SWING:'#f59e0b', DANGER:'#ef4444', RIVALRY:'#ef4444', TOUGH:'rgba(255,255,255,0.1)' };
+    accentBar.style.background = accentMap[game.tier] || 'var(--orange)';
+  }
 
+  // Meta row
+  document.getElementById('pyp-game-week').textContent = `${game.week} · ${game.date}`;
   const tierEl = document.getElementById('pyp-game-tier');
   if(game.tier){
     tierEl.textContent = game.tier;
@@ -2170,23 +2372,38 @@ function pypRender(){
   } else {
     tierEl.style.display = 'none';
   }
-
   const venueEl = document.getElementById('pyp-game-venue');
   venueEl.textContent = game.venue;
   venueEl.className = `pyp-game-venue pyp-venue-${game.venue}`;
 
-  document.getElementById('pyp-prob-bar').style.width = game.prob + '%';
-  document.getElementById('pyp-prob-label').textContent = `Win Prob · ${game.prob}%  ·  ${game.spread}`;
+  // VS display
+  document.getElementById('pyp-vs-opp-name').textContent = game.opp;
+  const venueTagMap = { HOME:'DKR · Austin, TX', AWAY:`${game.opp} territory`, NEUTRAL:'Neutral Site' };
+  document.getElementById('pyp-vs-venue-tag').textContent = venueTagMap[game.venue] || '';
 
-  const wDelta = game.cfpWin > 0 ? `+${game.cfpWin}%` : `${game.cfpWin}%`;
-  const lDelta = game.cfpLoss < 0 ? `${game.cfpLoss}%` : `+${game.cfpLoss}%`;
-  document.getElementById('pyp-impact-win').textContent = `WIN  ${wDelta} CFP`;
-  document.getElementById('pyp-impact-loss').textContent = `LOSS  ${lDelta} CFP`;
+  // Odds strip
+  document.getElementById('pyp-odds-spread').textContent = game.spread;
+  document.getElementById('pyp-odds-prob').textContent = game.prob + '%';
+  document.getElementById('pyp-odds-date').textContent = game.date;
+  const probFill = document.getElementById('pyp-odds-prob-fill');
+  if(probFill) probFill.style.width = game.prob + '%';
 
+  // Context note
+  document.getElementById('pyp-game-context').textContent = PYP_CONTEXT[game.id] || '';
+
+  // CFP impact bars — reset first, then animate in
+  document.getElementById('pyp-impact-fill-win').style.width = '0%';
+  document.getElementById('pyp-impact-fill-loss').style.width = '0%';
+  document.getElementById('pyp-impact-win').textContent = `+${game.cfpWin}%`;
+  document.getElementById('pyp-impact-loss').textContent = `${game.cfpLoss}%`;
+  setTimeout(() => {
+    document.getElementById('pyp-impact-fill-win').style.width = Math.min(100, (game.cfpWin / 10) * 100) + '%';
+    document.getElementById('pyp-impact-fill-loss').style.width = Math.min(100, (Math.abs(game.cfpLoss) / 10) * 100) + '%';
+  }, 80);
+
+  // Buttons
   document.getElementById('pyp-btn-win').classList.remove('picked');
   document.getElementById('pyp-btn-loss').classList.remove('picked');
-
-  // disable buttons during flash advance
   document.getElementById('pyp-btn-win').disabled = false;
   document.getElementById('pyp-btn-loss').disabled = false;
 }
@@ -2200,7 +2417,6 @@ function pypPick(result){
   document.getElementById('pyp-btn-win').disabled = true;
   document.getElementById('pyp-btn-loss').disabled = true;
 
-  // Flash CFP impact
   const delta = result === 'win' ? game.cfpWin : game.cfpLoss;
   const flashNum = document.getElementById('pyp-flash-num');
   flashNum.textContent = (delta > 0 ? '+' : '') + delta + '% CFP';
@@ -2219,8 +2435,27 @@ function pypPick(result){
   }, 680);
 }
 
+let pypResultContext = null;
+
 function pypShowResult(){
   const { cfp, top4, natty, record, narrative } = pypCalcResult(pypChoices);
+  pypResultNarrative = narrative;
+  pypResultRecord = record;
+
+  // Build rich context object for Tower Intel
+  const swingWins  = PYP_GAMES.filter(g => pypChoices[g.id] === 'win').map(g => g.opp);
+  const swingLosses = PYP_GAMES.filter(g => pypChoices[g.id] === 'loss').map(g => g.opp);
+  const keyMarquee = ['Ohio State','Tennessee','LSU','Texas A&M'];
+  pypResultContext = window.TowerIntel ? TowerIntel.buildContext('season_path', {
+    record,
+    results: PYP_GAMES.map(g => (pypChoices[g.id]==='win'?'W':'L') + ' ' + g.opp).join(', '),
+    cfp, top4, natty,
+    wins: swingWins,
+    losses: swingLosses,
+    keyWins: swingWins.filter(o => keyMarquee.some(k => o.includes(k))),
+    cfpProjectedSeed: cfp >= 80 ? 'Top-4 seed' : cfp >= 60 ? 'Seed 5–8 (at-large)' : cfp >= 30 ? 'Bubble — needs help' : 'Out of CFP'
+  }) : null;
+
   const cfpColor = cfp >= 70 ? 'var(--green)' : cfp >= 50 ? 'var(--amber)' : cfp >= 25 ? 'var(--orange)' : 'var(--red)';
 
   document.getElementById('pyp-result-record').textContent = record;
@@ -2234,11 +2469,15 @@ function pypShowResult(){
     return `<span class="pyp-result-chip ${r==='win'?'w':'l'}">${r==='win'?'W':'L'} ${g.opp}</span>`;
   }).join('');
   document.getElementById('pyp-result-chips').innerHTML = chips;
-  document.getElementById('pyp-result-narrative').textContent = narrative;
+
+  // Story teaser — first sentence only
+  const firstPeriod = narrative.indexOf('. ');
+  const teaser = firstPeriod > 0 ? narrative.slice(0, firstPeriod + 1) : narrative.slice(0, 120);
+  document.getElementById('pyp-story-teaser').textContent = teaser;
 
   const wins = PYP_GAMES.filter(g => pypChoices[g.id] === 'win').map(g => g.opp);
   const losses = PYP_GAMES.filter(g => pypChoices[g.id] === 'loss').map(g => g.opp);
-  pypResultPrompt = `Texas finishes ${record} in 2026, beating ${wins.join(', ') || 'none of the key swing games'} and losing to ${losses.join(', ') || 'none'}. Their CFP probability is ${cfp}%. Analyze their playoff outlook in detail — where would they be seeded, what does their quarterfinal matchup look like, and what are the CFP committee's strongest arguments both for and against selecting Texas at this record?`;
+  pypResultPrompt = `Texas finishes ${record} in 2026, beating ${wins.join(', ') || 'none of the key swing games'} and losing to ${losses.join(', ') || 'none'}. Their CFP probability is ${cfp}%. Write a detailed playoff story: where are they seeded, who do they face in the first round, what does Arch Manning's performance look like in this scenario, and what are the CFP committee's three strongest arguments for and against selecting Texas? Be vivid and specific.`;
 
   PYP_GAMES.forEach((_,i) => {
     const dot = document.getElementById(`pyp-dot-${i}`);
@@ -2249,17 +2488,54 @@ function pypShowResult(){
   document.getElementById('pyp-result').style.display = '';
 }
 
+function pypReadMore(){
+  if(!pypResultNarrative) return;
+  closePYP();
+  openFChat();
+  const msgs = document.getElementById('fchat-messages');
+  if(msgs){
+    msgs.innerHTML = '';
+    const seed = document.createElement('div');
+    seed.className = 'fchat-msg tower';
+    seed.innerHTML =
+      '<span style="display:block;font-family:\'Barlow Condensed\',sans-serif;font-size:9px;font-weight:700;' +
+      'letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:5px;">⚡ Season Path · Context Mode</span>' +
+      '<strong>Your ' + pypResultRecord + ' Season — Tower Intel Overview:</strong><br><br>' +
+      pypResultNarrative +
+      '<br><br><em style="color:rgba(191,87,0,0.7)">Generating full playoff analysis…</em>';
+    msgs.appendChild(seed);
+  }
+  document.getElementById('fchat-chips').style.display = 'none';
+  setTimeout(() => fchatAsk(pypResultPrompt, pypResultContext), 600);
+}
+
 function pypAskIntel(){
   if(!pypResultPrompt) return;
   closePYP();
   openFChat();
-  setTimeout(() => fchatAsk(pypResultPrompt), 350);
+  const label = pypResultRecord + ' Season Path';
+  const msgs = document.getElementById('fchat-messages');
+  if(msgs){
+    msgs.innerHTML = '';
+    const div = document.createElement('div');
+    div.className = 'fchat-msg tower';
+    div.innerHTML =
+      '<span style="display:block;font-family:\'Barlow Condensed\',sans-serif;font-size:9px;font-weight:700;' +
+      'letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:5px;">⚡ Season Path Analysis · Context Mode</span>' +
+      '<strong>' + label + '</strong>' +
+      '<span style="display:block;color:var(--muted);font-size:11px;font-style:italic;margin-top:3px;">Simulating playoff implications with full context…</span>';
+    msgs.appendChild(div);
+    document.getElementById('fchat-chips').style.display = 'none';
+  }
+  setTimeout(() => fchatAsk(pypResultPrompt, pypResultContext), 480);
 }
 
 function pypReplay(){
   pypStep = 0;
   pypChoices = {};
   pypResultPrompt = '';
+  pypResultNarrative = '';
+  pypResultRecord = '';
   document.getElementById('pyp-step').style.display = '';
   document.getElementById('pyp-result').style.display = 'none';
   pypBuildDots();
@@ -2270,6 +2546,48 @@ function pypReplay(){
 document.addEventListener('keydown',e=>{
   if(e.key==='Enter' && e.target.classList.contains('pyp-inline')) openPYP();
 });
+
+/* ── Player chip → contextual Intel query ──
+   Called from gd-player-chip buttons inside game detail panels.
+   Also called by the psr-name click handler below for stat row names. */
+function askIntelPlayer(name, gameId) {
+  const g = gameId ? GAMES.find(x => x.id === gameId) : null;
+  const ctx = window.TowerIntel ? TowerIntel.buildContext('player', {
+    name,
+    status: '2026 Texas Longhorns key player',
+    ...(g ? { gameContext: `Texas vs. ${g.opp}, ${g.week} (${g.date})` } : {})
+  }) : null;
+  const prompt = g
+    ? `What specifically does ${name} need to do in the Texas vs. ${g.opp} game (${g.week}, ${g.date}) to swing the outcome? Break down: their exact role in this matchup, the personnel battle they need to win, what a dominant performance looks like vs. a quiet game, and how their result in this game directly changes Texas's CFP probability.`
+    : `Full 2026 projection for ${name}: key statistical targets, what must happen for a breakout season, the biggest matchup he'll face in the swing games (Ohio State, LSU, Texas A&M), and exactly what his performance means for the CFP path and Arch Manning's Heisman case.`;
+  const label = g ? `${name} · Texas vs. ${g.opp}` : `${name} · 2026 Season`;
+  openFChat();
+  const msgs = document.getElementById('fchat-messages');
+  if (msgs) {
+    msgs.innerHTML = '';
+    const div = document.createElement('div');
+    div.className = 'fchat-msg tower';
+    div.innerHTML =
+      '<span style="display:block;font-family:\'Barlow Condensed\',sans-serif;font-size:9px;font-weight:700;' +
+      'letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:5px;">⚡ Player Analysis · Context Mode</span>' +
+      '<strong>' + label + '</strong>' +
+      '<span style="display:block;color:var(--muted);font-size:11px;font-style:italic;margin-top:3px;">Building player-specific analysis…</span>';
+    msgs.appendChild(div);
+    document.getElementById('fchat-chips').style.display = 'none';
+  }
+  setTimeout(() => fchatAsk(prompt, ctx), 480);
+}
+
+/* ── Delegated click: psr-name in stat leader rows ── */
+document.addEventListener('click', function(e) {
+  const el = e.target.closest('.psr-name');
+  if (!el) return;
+  const meta = el.closest('.psr-info')?.querySelector('.psr-meta');
+  const name = el.textContent.replace('↗', '').trim();
+  if (!name) return;
+  askIntelPlayer(name, null);
+});
 </script>
+<script src="js/tower-intel.js"></script>
 </body>
 </html>

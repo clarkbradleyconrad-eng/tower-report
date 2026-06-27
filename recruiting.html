@@ -252,6 +252,18 @@ footer{padding:26px 48px;display:flex;align-items:center;justify-content:space-b
   .filter-bar input,.filter-bar select{min-width:0;}
   .commit-cards,.target-grid,.needs-grid{grid-template-columns:1fr;}
 }
+/* Tower Intel integration */
+.ti-recruit-btn{
+  display:inline-flex;align-items:center;gap:5px;margin-top:10px;width:100%;
+  font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--orange);background:rgba(191,87,0,0.07);
+  border:1px solid rgba(191,87,0,0.25);padding:6px 10px;
+  cursor:pointer;transition:all .15s;justify-content:center;
+}
+.ti-recruit-btn:hover{background:rgba(191,87,0,0.16);border-color:rgba(191,87,0,0.5);}
+.ti-recruit-dot{width:4px;height:4px;border-radius:50%;background:var(--orange);flex-shrink:0;animation:tiPulse 2s ease-in-out infinite;}
+@keyframes tiPulse{0%,100%{opacity:1;}50%{opacity:.3;}}
 </style>
 </head>
 <body>
@@ -745,6 +757,7 @@ function renderTargets() {
         <span class="vtag vtag-public">Public Report</span>
       </div>
       <div style="font-size:10px;color:var(--muted);margin-top:7px;">Source: ${t.source}</div>
+      <button class="ti-recruit-btn" onclick="recruitAskIntel(${JSON.stringify(t)})"><span class="ti-recruit-dot"></span>What If They Commit?</button>
     </div>`;
   }).join('');
 }
@@ -851,6 +864,26 @@ document.addEventListener('DOMContentLoaded', () => {
   const valid = ['overview','hs','portal','commits','targets','offers','needs'];
   if (valid.includes(hash)) switchTab(hash);
 });
+
+function recruitAskIntel(t) {
+  if (!window.TowerIntel) return;
+  const statusLabel = t.status === 'trending' ? 'trending toward Texas' : t.status === 'target' ? 'a high-priority target' : 'being monitored';
+  const ctx = TowerIntel.buildContext('player', {
+    name: t.name,
+    position: t.pos,
+    status: `Recruiting target — ${statusLabel} · ${t.info}`,
+    depthPosition: `${t.pos} prospect — 2027 class`
+  });
+  const prompt =
+    `Recruiting analysis for ${t.name} (${t.pos}, ${t.info}) — currently ${statusLabel} for Texas. ` +
+    `Answer: (1) What depth chart hole does he fill and who does he compete with or replace? ` +
+    `(2) How does he fit with Arch Manning's offense or Will Muschamp's defense? ` +
+    `(3) What does committing to Texas look like for his development vs. other options? ` +
+    `(4) On a scale of 1–10, how much does landing him improve Texas's 2027–2028 CFP outlook? ` +
+    `Be direct and specific — sell the recruit and grade the fit.`;
+  TowerIntel.openWithContext(`${t.name} · ${t.pos} Recruiting Analysis`, prompt, ctx);
+}
 </script>
+<script src="js/tower-intel.js"></script>
 </body>
 </html>

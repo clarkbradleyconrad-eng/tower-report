@@ -84,6 +84,15 @@ body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);
 .pce-link:hover{color:var(--white);border-color:var(--white);}
 .pce-link.primary{background:var(--orange);border-color:var(--orange);color:#fff;}
 .pce-link.primary:hover{background:transparent;color:var(--orange);}
+.pce-link.intel{color:var(--orange);border-color:rgba(191,87,0,0.35);background:rgba(191,87,0,0.06);}
+.pce-link.intel:hover{background:rgba(191,87,0,0.16);border-color:var(--orange);}
+.ph-intel-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--orange);background:rgba(191,87,0,0.08);border:1px solid rgba(191,87,0,0.35);
+  padding:8px 16px;cursor:pointer;transition:all .15s;margin-top:8px;
+}
+.ph-intel-btn:hover{background:rgba(191,87,0,0.18);border-color:var(--orange);}
 .pc-chevron{margin-left:auto;font-size:11px;color:var(--muted);transition:transform .2s;display:inline-block;}
 .player-card.open .pc-chevron{transform:rotate(90deg);color:var(--orange);}
 
@@ -194,8 +203,9 @@ function heroHTML(p){
       <div>
         ${statsHTML?`<div class="ph-stats">${statsHTML}</div>`:''}
         <div class="ph-tags">${allTags}</div>
-        <div style="margin-top:12px;">
+        <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;">
           <button onclick="event.stopPropagation();openPlayerProfile('${p.slug}')" style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:8px 18px;background:#BF5700;border:none;color:#fff;cursor:pointer;">★ Full Deep Profile →</button>
+          <button class="ph-intel-btn" onclick="event.stopPropagation();playerAskIntel('${p.slug}')">⚡ Ask Tower Intel</button>
         </div>
       </div>
     </div>
@@ -249,6 +259,7 @@ function cardHTML(p){
         <a href="schedule.html" class="pce-link">Stats →</a>
         ${p.links&&p.links.utBio?`<a href="${p.links.utBio}" class="pce-link" target="_blank" rel="noopener">UT Bio →</a>`:''}
         ${p.links&&p.links.youtube?`<a href="${p.links.youtube}" class="pce-link" target="_blank" rel="noopener">▶ Highlights</a>`:''}
+        <button class="pce-link intel" onclick="event.stopPropagation();playerAskIntel('${p.slug}')">⚡ Ask Intel</button>
       </div>
     </div>
   </div>`;
@@ -292,6 +303,7 @@ const OFFENSE_POS=['QB','RB','WR','TE','OT','OG','C','OL'];
 const DEFENSE_POS=['DE','DT','EDGE','LB','CB','DB','S'];
 
 function buildPage(players){
+  window._towerPlayers = players || [];
   if(!players||!players.length){
     document.getElementById('players-loading').style.display='none';
     document.getElementById('players-main').style.display='block';
@@ -352,6 +364,31 @@ if(document.readyState==='loading'){
 } else {
   initPlayers();
 }
+
+function playerAskIntel(slug) {
+  if (!window.TowerIntel) return;
+  const p = (window._towerPlayers || []).find(x => x.slug === slug);
+  if (!p) return;
+  const ds = (p.stats && p.stats.displayStats) || [];
+  const statsStr = ds.slice(0,3).map(d => d.season + ' ' + d.label).join(' · ');
+  const draft = p.draft || {};
+  const ctx = TowerIntel.buildContext('player', {
+    name: p.name,
+    position: p.position,
+    status: p.year + ' · ' + (p.recruiting && p.recruiting.transferFrom ? p.recruiting.transferFrom + ' Transfer' : p.hometown),
+    stats: statsStr || null,
+    projection: draft.notes || null,
+    depthPosition: draft.roundProjection || null
+  });
+  const prompt =
+    `Give me elite-level analysis of ${p.name} (${p.position}) for the 2026 Texas season. ` +
+    `Cover: (1) What his ceiling and floor look like, (2) the two or three games where he\'ll have the most impact on the CFP path, ` +
+    `(3) how he fits into the Arch Manning-led offense/Will Muschamp defense, ` +
+    `(4) NFL draft trajectory and what 2026 must look like for his stock, ` +
+    `and (5) the single biggest question mark heading into the season. Be specific and opinionated — don\'t hedge.`;
+  TowerIntel.openWithContext(p.name + ' · 2026 Season Preview', prompt, ctx);
+}
 </script>
+<script src="js/tower-intel.js"></script>
 </body>
 </html>

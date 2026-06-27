@@ -109,46 +109,51 @@ footer{padding:32px 48px;border-top:1px solid var(--border);display:flex;justify
 .footer-text{font-size:12px;color:var(--muted);}
 
 /* SEASON BROWSER */
-.year-tabs{display:flex;flex-wrap:wrap;gap:2px;padding:0 48px 24px;}
-.year-tab{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;background:var(--surface);color:var(--muted);border:1px solid var(--border);padding:8px 14px;cursor:pointer;transition:all .15s;}
-.year-tab:hover,.year-tab.active{background:var(--orange);color:#fff;border-color:var(--orange);}
+.year-tabs{display:flex;flex-wrap:wrap;gap:0;padding:0 48px;border-bottom:1px solid var(--border);margin-bottom:0;}
+.year-tab{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;background:transparent;color:var(--muted);border:none;border-bottom:2px solid transparent;padding:15px 20px;cursor:pointer;transition:all .15s;margin-bottom:-1px;}
+.year-tab:hover{color:var(--white);}
+.year-tab.active{color:var(--orange);border-bottom-color:var(--orange);}
 .season-panel{display:none;padding:0 48px 60px;}
 .season-panel.active{display:block;}
-.season-summary{display:grid;grid-template-columns:repeat(5,1fr);border:1px solid var(--border);margin-bottom:20px;}
-.sum-cell{padding:14px;text-align:center;border-right:1px solid var(--border);}
-.sum-cell:last-child{border-right:none;}
-.sum-num{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;line-height:1;}
-.sum-num.g{color:#22c55e;}.sum-num.r{color:#ef4444;}.sum-num.o{color:var(--orange);}.sum-num.w{color:var(--white);}
-.sum-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:4px;}
-.section-head{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:10px 0;border-bottom:1px solid var(--border);margin-bottom:2px;}
-.game-row{display:grid;grid-template-columns:60px 1fr 80px 160px 56px 1fr;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--border);}
+.season-summary{display:flex;gap:0;border-bottom:1px solid var(--border);padding:22px 0;margin-bottom:0;}
+.sum-cell{padding:0 36px 0 0;margin-right:36px;border-right:1px solid var(--border);}
+.sum-cell:last-child{border-right:none;padding-right:0;margin-right:0;}
+.sum-num{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;line-height:1;letter-spacing:-1px;}
+.sum-num.g{color:#22c55e;}.sum-num.r{color:#ef4444;}.sum-num.o{color:var(--orange);}.sum-num.w{color:var(--white);font-size:18px;letter-spacing:0;}
+.sum-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:5px;}
+.section-head{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);padding:16px 0 11px;border-bottom:1px solid var(--border);margin-bottom:0;}
+.game-row{display:grid;grid-template-columns:44px 1fr 56px 44px 108px;align-items:center;gap:16px;padding:11px 0 11px 14px;border-bottom:1px solid var(--border);border-left:3px solid rgba(255,255,255,0.03);}
+.game-row:has(.res-w){border-left-color:rgba(34,197,94,0.5);}
+.game-row:has(.res-l){border-left-color:rgba(239,68,68,0.22);}
 .row-clickable{transition:background .15s;}
-.row-clickable:hover{background:rgba(191,87,0,0.05);}
+.row-clickable:hover{background:rgba(191,87,0,0.04);}
 .row-clickable:hover .opp-name{color:var(--orange);}
-.wk-num{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);}
+.wk-num{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);}
 .wk-date{font-size:10px;color:var(--muted);}
-.opp-wrap{display:flex;align-items:center;gap:8px;}
-.opp-init{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:800;letter-spacing:1px;background:var(--surface2);padding:4px 7px;min-width:40px;text-align:center;color:var(--white);}
-.opp-name{font-size:13px;font-weight:600;color:var(--white);}
-.opp-meta{font-size:11px;color:var(--muted);margin-top:1px;}
-.opp-rank{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;color:var(--orange);margin-right:3px;}
-.g-time{font-size:12px;color:var(--secondary);}
-.g-venue{font-size:11px;color:var(--muted);line-height:1.4;}
+.gr-logo{width:36px;height:36px;object-fit:contain;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.8));flex-shrink:0;display:block;}
+.opp-wrap{display:flex;align-items:center;gap:10px;}
+.opp-wrap.has-logo .opp-init{display:none;}
+.opp-init{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;letter-spacing:1px;background:var(--surface2);padding:3px 6px;min-width:36px;text-align:center;color:var(--white);}
+.opp-name{font-size:13px;font-weight:600;color:var(--white);line-height:1.2;}
+.opp-meta{font-size:10px;color:var(--muted);margin-top:2px;display:flex;align-items:center;flex-wrap:wrap;gap:2px;}
+.opp-rank{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;color:var(--orange);margin-right:2px;}
+.g-time{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.5px;color:var(--secondary);}
+.g-venue{display:none;}
 .g-tv{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;padding:2px 6px;border-radius:2px;text-align:center;}
 .tv-espn,.tv-sec{background:rgba(191,87,0,0.15);color:var(--orange);}
 .tv-fox,.tv-tbd{background:var(--surface2);color:var(--muted);}
 .tv-abc{background:rgba(34,197,94,0.1);color:#22c55e;}
-.g-result{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
-.res-letter{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;width:20px;height:20px;display:flex;align-items:center;justify-content:center;border-radius:2px;flex-shrink:0;}
+.g-result{display:flex;align-items:center;gap:8px;justify-content:flex-end;}
+.res-letter{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:800;width:22px;height:22px;display:flex;align-items:center;justify-content:center;border-radius:2px;flex-shrink:0;}
 .res-w{background:rgba(34,197,94,0.15);color:#22c55e;}
 .res-l{background:rgba(239,68,68,0.15);color:#ef4444;}
-.res-score{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;color:var(--white);}
-.tag{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:1px 4px;border-radius:1px;margin-right:3px;}
+.res-score{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--white);letter-spacing:0.3px;}
+.tag{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:1px 4px;border-radius:1px;margin-right:2px;}
 .tag-h{background:rgba(191,87,0,0.15);color:var(--orange);}
 .tag-a{background:rgba(255,255,255,0.05);color:var(--muted);}
 .tag-n{background:rgba(96,165,250,0.1);color:#60a5fa;}
 .badge{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:1px;background:rgba(191,87,0,0.15);color:var(--orange);padding:1px 5px;border-radius:2px;margin-left:3px;}
-.bowl-row{background:rgba(191,87,0,0.04);}
+.bowl-row{background:rgba(191,87,0,0.04);border-left-color:rgba(191,87,0,0.5)!important;}
 .yt-link{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;color:var(--muted);text-decoration:none;border:1px solid var(--border);padding:2px 6px;border-radius:2px;transition:all .15s;white-space:nowrap;}
 .yt-link:hover{color:var(--white);border-color:rgba(255,255,255,0.2);}
 
@@ -202,12 +207,14 @@ footer{padding:32px 48px;border-top:1px solid var(--border);display:flex;justify
   .coaches-table{font-size:12px;}
   .stadium-card{grid-template-columns:1fr;}
   footer{padding:20px;flex-direction:column;gap:8px;}
-  .year-tabs{padding:0 20px 16px;}
+  .year-tabs{padding:0 20px;}
+  .year-tab{padding:12px 14px;letter-spacing:1.5px;}
   .season-panel{padding:0 20px 40px;}
-  .season-summary{grid-template-columns:repeat(3,1fr);}
-  .sum-cell:nth-child(4),.sum-cell:nth-child(5){display:none;}
-  .game-row{grid-template-columns:44px 1fr 1fr;gap:8px;}
+  .season-summary{flex-wrap:wrap;}
+  .sum-cell{padding:0 20px 0 0;margin-right:20px;margin-bottom:12px;}
+  .game-row{grid-template-columns:36px 1fr auto;gap:10px;padding-left:10px;}
   .g-time,.g-venue,.g-tv{display:none;}
+  .gr-logo{width:30px;height:30px;}
   .vault-featured{height:auto;}
   .vault-fi{flex-direction:column;align-items:flex-start;gap:14px;padding:18px 20px;}
   .vault-flogo{width:52px;height:52px;}
@@ -255,20 +262,24 @@ footer{padding:32px 48px;border-top:1px solid var(--border);display:flex;justify
   </div>
 </nav>
 
-<div class="page-header">
-  <div class="breadcrumb">Tower Report <span>/ Football / Program History</span></div>
-  <h1 class="page-title">Texas Longhorns<br>Football</h1>
-  <p class="page-sub">Founded 1893 · 133 seasons · One of the most storied programs in college football history</p>
-</div>
-
-<!-- PROGRAM STATS -->
-<div class="program-stats">
-  <div class="ps-cell"><div class="ps-num">972</div><div class="ps-label">All-Time Wins</div></div>
-  <div class="ps-cell"><div class="ps-num">.705</div><div class="ps-label">Win Pct</div></div>
-  <div class="ps-cell"><div class="ps-num">4</div><div class="ps-label">Natl Champs</div></div>
-  <div class="ps-cell"><div class="ps-num">34</div><div class="ps-label">Conf Titles</div></div>
-  <div class="ps-cell"><div class="ps-num">2</div><div class="ps-label">Heismans</div></div>
-  <div class="ps-cell"><div class="ps-num">51</div><div class="ps-label">Active NFL</div></div>
+<div class="ph-hero">
+  <div class="ph-bg"></div>
+  <div class="ph-glow"></div>
+  <div class="ph-ghost">TEXAS</div>
+  <div class="ph-edge"></div>
+  <div class="ph-inner">
+    <div class="ph-kicker">Tower Report · Program History · Est. 1893</div>
+    <h1 class="ph-title">Texas<br>Longhorns<br><em>Football</em></h1>
+    <div class="ph-divider"></div>
+    <div class="ph-stats">
+      <div class="ph-stat"><div class="ph-snum">972</div><div class="ph-slabel">All-Time Wins</div></div>
+      <div class="ph-stat"><div class="ph-snum">.705</div><div class="ph-slabel">Win Pct</div></div>
+      <div class="ph-stat"><div class="ph-snum">4</div><div class="ph-slabel">Natl Champs</div></div>
+      <div class="ph-stat"><div class="ph-snum">34</div><div class="ph-slabel">Conf Titles</div></div>
+      <div class="ph-stat"><div class="ph-snum">2</div><div class="ph-slabel">Heismans</div></div>
+      <div class="ph-stat"><div class="ph-snum">51</div><div class="ph-slabel">Active NFL</div></div>
+    </div>
+  </div>
 </div>
 
 <!-- NATIONAL CHAMPIONSHIPS -->
@@ -506,7 +517,7 @@ footer{padding:32px 48px;border-top:1px solid var(--border);display:flex;justify
 </div>
 
 <!-- GAME VAULT -->
-<div class="sr" id="vault"><span class="sr-label">Game Vault — Signature Wins</span><div class="sr-line"></div></div>
+<div class="sr" id="vault"><span class="sr-badge">Vault</span><span class="sr-label">Game Vault — Signature Wins</span><div class="sr-line"></div></div>
 <div class="content">
 
   <!-- FEATURED: THE RUN -->
@@ -588,7 +599,7 @@ footer{padding:32px 48px;border-top:1px solid var(--border);display:flex;justify
 </div>
 
 <!-- SEASON BROWSER -->
-<div class="sr"><span class="sr-label">Season Results</span><div class="sr-line"></div></div>
+<div class="sr"><span class="sr-badge">Browser</span><span class="sr-label">Season Results</span><div class="sr-line"></div></div>
 
 <div class="year-tabs">
   <button class="year-tab active" onclick="showYear('2025',this)">2025</button>
@@ -908,6 +919,23 @@ function showYear(yr,btn){
   if(btn)btn.classList.add('active');
 }
 document.addEventListener('DOMContentLoaded',function(){
+  // Move Game Vault + Season Browser to top, right after the hero
+  (function(){
+    var hero=document.querySelector('.ph-hero');
+    if(!hero)return;
+    var vaultSr=document.getElementById('vault');
+    if(!vaultSr)return;
+    var vaultContent=vaultSr.nextElementSibling;
+    var seasonSr=vaultContent?vaultContent.nextElementSibling:null;
+    var yearTabs=document.querySelector('.year-tabs');
+    var panels=Array.from(document.querySelectorAll('.season-panel'));
+    var toMove=[vaultSr,vaultContent,seasonSr,yearTabs].concat(panels);
+    var anchor=hero;
+    toMove.forEach(function(el){
+      if(el){anchor.insertAdjacentElement('afterend',el);anchor=el;}
+    });
+  })();
+
   document.querySelectorAll('.season-panel').forEach(function(panel){
     var yr=panel.id.replace('yr-','');
     panel.querySelectorAll('.game-row').forEach(function(row){
@@ -924,6 +952,31 @@ document.addEventListener('DOMContentLoaded',function(){
       link.textContent='▶ YouTube';
       result.appendChild(link);
     });
+  });
+
+  // Inject opponent logos into every game row
+  var LOGOS={
+    'ALA':333,'ARK':8,'AZ':9,'BAY':239,'BYU':252,'CLEM':228,
+    'COL':38,'CSU':36,'ISU':66,'KSU':2306,'KU':2305,'LA':309,
+    'LAL':309,'LSU':99,'LT':2348,'MD':120,'MICH':130,'MO':142,
+    'MSST':344,'MSU':344,'ND':87,'NEB':158,'OKST':197,'OSU':194,
+    'OU':201,'RICE':242,'RIC':242,'SJS':23,'TCU':2628,
+    'TTU':2641,'TUL':202,'UF':57,'UGA':61,'UK':96,'ULM':2433,
+    'USC':30,'UTA':254,'UTEP':2638,'UTSA':2636,'VU':238,
+    'WASH':264,'WVU':277,'WYO':2751
+  };
+  document.querySelectorAll('.game-row').forEach(function(row){
+    var initEl=row.querySelector('.opp-init');
+    if(!initEl)return;
+    var abbr=initEl.textContent.trim();
+    var id=LOGOS[abbr];
+    if(!id)return;
+    var img=document.createElement('img');
+    img.className='gr-logo';
+    img.src='https://a.espncdn.com/i/teamlogos/ncaa/500/'+id+'.png';
+    img.alt=abbr;
+    var wrap=row.querySelector('.opp-wrap');
+    if(wrap){wrap.insertBefore(img,wrap.firstChild);wrap.classList.add('has-logo');}
   });
 
   // Make every game row with a result clickable → game-story.html

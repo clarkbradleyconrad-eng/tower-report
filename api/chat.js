@@ -11,6 +11,68 @@
 
 export const config = { runtime: 'edge' };
 
+/**
+ * Build a context block appended to the system prompt when a UI entity triggers
+ * a contextual query. The block tells Grok exactly what entity is being analyzed
+ * so responses feel like insider analysis, not generic answers.
+ */
+function buildContextBlock(ctx) {
+  if (!ctx || !ctx.type || !ctx.data) return '';
+  const d = ctx.data;
+  const lines = [
+    '\n\n---\n## ACTIVE ANALYSIS CONTEXT',
+    'The user clicked "Ask Tower Intel" on a specific entity. Reference these details directly — do NOT ask for clarification, just use this context to deliver a deeply specific, relationship-aware response.\n',
+  ];
+
+  switch (ctx.type) {
+    case 'game':
+      lines.push(`**Matchup:** Texas vs. ${d.opponent || 'opponent'}`);
+      if (d.week)      lines.push(`**Game:** ${d.week} · ${d.date || ''} · ${d.venue || ''} · ${d.location || ''}`);
+      if (d.winProb)   lines.push(`**Win Probability:** ${d.winProb}% (Tower Model)`);
+      if (d.spread)    lines.push(`**Spread:** ${d.spread}`);
+      if (d.keyPlayers?.length) lines.push(`**Key Players:** ${d.keyPlayers.join(', ')}`);
+      if (d.analysis)  lines.push(`**Scout Notes:** ${d.analysis}`);
+      if (d.cfpWin || d.cfpLoss) lines.push(`**CFP Impact:** Win ${d.cfpWin} | Loss ${d.cfpLoss}`);
+      if (d.tier)      lines.push(`**Game Tier:** ${d.tier}`);
+      lines.push('\n*Analysis mode: Matchup Scout + CFP Impact Analyst. Reference Colin Simmons\'s role in the outcome, what Arch Manning must do specifically, and the exact CFP implications of each result.*');
+      break;
+
+    case 'season_path':
+      lines.push(`**Simulation:** Texas ${d.record || ''} season path`);
+      if (d.results)    lines.push(`**Game-by-game:** ${d.results}`);
+      if (d.cfp  != null) lines.push(`**CFP Probability:** ${d.cfp}%`);
+      if (d.top4 != null) lines.push(`**Top-4 Seed Probability:** ${d.top4}%`);
+      if (d.natty != null) lines.push(`**National Title Probability:** ${d.natty}%`);
+      if (d.wins?.length)      lines.push(`**Swing wins:** ${d.wins.join(', ')}`);
+      if (d.losses?.length)    lines.push(`**Swing losses:** ${d.losses.join(', ')}`);
+      if (d.keyWins?.length)   lines.push(`**Key résumé wins:** ${d.keyWins.join(', ')}`);
+      if (d.cfpProjectedSeed)  lines.push(`**Projected CFP seeding:** ${d.cfpProjectedSeed}`);
+      lines.push('\n*Analysis mode: Season Path Simulator + CFP Committee Analyst. Be vivid and specific — describe the bracket, Arch Manning\'s Heisman case in this scenario, the committee\'s exact debate, and the fan/media narrative arc. Paint the picture.*');
+      break;
+
+    case 'story':
+      lines.push(`**Signal:** ${d.headline || 'Story'}`);
+      if (d.category)        lines.push(`**Category:** ${d.category}`);
+      if (d.impact)          lines.push(`**Impact Score:** ${d.impact}/100`);
+      if (d.players?.length) lines.push(`**Players involved:** ${d.players.join(', ')}`);
+      if (d.summary)         lines.push(`**Why it matters:** ${d.summary}`);
+      lines.push('\n*Analysis mode: Intelligence Analyst. Reference how this development shifts the 2026 CFP probability, affects Arch Manning\'s trajectory, and connects to the depth chart and key swing games.*');
+      break;
+
+    case 'player':
+      lines.push(`**Player:** ${d.name || 'Unknown'}`);
+      if (d.position)      lines.push(`**Position:** ${d.position}`);
+      if (d.status)        lines.push(`**Status:** ${d.status}`);
+      if (d.stats)         lines.push(`**2025 Stats:** ${d.stats}`);
+      if (d.projection)    lines.push(`**2026 Projection:** ${d.projection}`);
+      if (d.depthPosition) lines.push(`**Depth Chart:** ${d.depthPosition}`);
+      lines.push('\n*Analysis mode: Film/Projection Analyst + Recruiting Scout. Reference specific matchups, teammates, and what this player means for the CFP path and Arch Manning\'s Heisman campaign.*');
+      break;
+  }
+
+  return lines.join('\n');
+}
+
 const CORS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -76,10 +138,11 @@ export default async function handler(req) {
     );
   }
 
-  let messages;
+  let messages, context;
   try {
     const body = await req.json();
     messages = body.messages;
+    context = body.context || null;
     if (!Array.isArray(messages) || !messages.length) throw new Error('bad');
   } catch {
     return new Response(
@@ -87,6 +150,9 @@ export default async function handler(req) {
       { status: 400, headers: { ...CORS, 'Content-Type': 'application/json' } }
     );
   }
+
+  // Enrich system prompt when a UI entity context is present
+  const systemPrompt = context ? SYSTEM + buildContextBlock(context) : SYSTEM;
 
   try {
     const xaiRes = await fetch('https://api.x.ai/v1/responses', {
@@ -99,7 +165,7 @@ export default async function handler(req) {
         model: 'grok-4',
         stream: true,
         temperature: 0.7,
-        instructions: SYSTEM,
+        instructions: systemPrompt,
         input: messages,
         tools: [{ type: 'web_search' }],
       }),
