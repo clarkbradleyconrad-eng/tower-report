@@ -1,5 +1,8 @@
 {
   "version": 2,
+  "rewrites": [
+    { "source": "/story", "destination": "/api/story" }
+  ],
   "crons": [
     {
       "path": "/api/odds?cron=1",

@@ -265,6 +265,12 @@ button{cursor:pointer;}
 }
 .ts-meta-item .ic{opacity:.6;}
 .ts-meta-sep{color:var(--border-mid);font-size:10px;line-height:1;}
+.ts-card-actions{display:flex;align-items:center;gap:10px;}
+.ts-share-icon{
+  background:none;border:none;padding:2px;color:var(--muted);transition:color .12s;
+  display:flex;align-items:center;
+}
+.ts-share-icon:hover{color:var(--white2);}
 .ts-deepdive{
   background:none;border:none;padding:0;
   font-family:var(--font-display);font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;
@@ -595,6 +601,7 @@ var IC = {
   chart:  '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:block"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>',
   cal:    '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:block"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
   clock:  '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:block"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+  share:  '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" style="display:block"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>',
 };
 
 // ═══════════════════════════════════════════════
@@ -1060,11 +1067,15 @@ function buildCard(s, i) {
         '<span class="ts-meta-item"><span class="ic">'+IC.clock+'</span>'+readMins+'</span>' +
         (ago ? '<span class="ts-meta-sep">·</span><span class="ts-meta-item">'+ago+'</span>' : '') +
       '</div>' +
-      '<button class="ts-deepdive">Read <span class="ic">'+IC.arrow+'</span></button>' +
+      '<div class="ts-card-actions">' +
+        '<button class="ts-share-icon" title="Share story"><span class="ic">'+IC.share+'</span></button>' +
+        '<button class="ts-deepdive">Read <span class="ic">'+IC.arrow+'</span></button>' +
+      '</div>' +
     '</div>';
 
   card.onclick = function(){ showStoryModal(s.id); };
   card.querySelector('.ts-deepdive').onclick = function(e){ e.stopPropagation(); showStoryModal(s.id); };
+  card.querySelector('.ts-share-icon').onclick = function(e){ e.stopPropagation(); shareStory(s.id, s.headline||s.title||''); };
   return card;
 }
 
@@ -1106,6 +1117,8 @@ function showStoryModal(id) {
       '<div class="ts-modal-meta-div"></div>' +
       '<div class="ts-modal-meta-item"><span class="ic">'+IC.clock+'</span>'+(s.readTime||4)+' min read</div>' +
       (s.trending ? '<div class="ts-modal-meta-div"></div><div class="ts-modal-meta-item hot"><span class="ic">'+IC.fire+'</span>Trending Now</div>' : '') +
+      '<div class="ts-modal-meta-div"></div>' +
+      '<button class="ts-modal-share" onclick="shareStory(\''+s.id+'\',\''+esc(s.headline||'').replace(/'/g,"\\'")+'\')" style="display:inline-flex;align-items:center;gap:5px;background:transparent;border:none;color:var(--secondary);font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:color .15s;padding:0;"><span class="ic">'+IC.share+'</span>Share</button>' +
     '</div>' +
     '<div class="ts-modal-grid">' +
       '<div class="ts-modal-article">'+renderArticle(s)+'</div>' +
@@ -1242,6 +1255,26 @@ function renderSidebar(s) {
 function hideStoryModal() {
   closeModal('ts-modal');
   if (activeChart) { activeChart.destroy(); activeChart=null; }
+}
+
+function shareStory(id, headline) {
+  var url = window.location.origin + '/story?id=' + encodeURIComponent(id);
+  if (navigator.share) {
+    navigator.share({ title: headline + ' — Tower Report', url: url }).catch(function(){});
+  } else {
+    navigator.clipboard.writeText(url).then(function() {
+      var toast = document.getElementById('ts-share-toast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'ts-share-toast';
+        toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#BF5700;color:#fff;font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:10px 20px;z-index:9999;opacity:0;transition:opacity .2s;pointer-events:none;';
+        document.body.appendChild(toast);
+      }
+      toast.textContent = 'Link copied!';
+      toast.style.opacity = '1';
+      setTimeout(function(){ toast.style.opacity = '0'; }, 2200);
+    }).catch(function(){ window.prompt('Copy this link:', url); });
+  }
 }
 
 // ═══════════════════════════════════════════════
