@@ -3,11 +3,10 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>2026 Roster — Tower Report</title>
+<title>2025 Roster — Tower Report</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet"/>
-<script src="player-profile.js" defer></script>
 <style>
 :root{--orange:#BF5700;--black:#080808;--surface:#111;--surface2:#181818;--surface3:#202020;--border:rgba(255,255,255,0.07);--border-strong:rgba(255,255,255,0.12);--white:#F5F0E8;--muted:#6B6560;--secondary:#A09890;}
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -64,8 +63,6 @@ nav{position:sticky;top:0;z-index:200;background:rgba(8,8,8,0.97);backdrop-filte
 .card-meta{font-size:11px;color:var(--muted);margin-top:2px;}
 .card-overlay{position:absolute;inset:0;background:rgba(191,87,0,0.12);opacity:0;transition:opacity .15s;display:flex;align-items:center;justify-content:center;}
 .card-overlay-text{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#fff;background:var(--orange);padding:6px 14px;}
-.card-scout-badge{position:absolute;bottom:6px;right:6px;font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 6px;background:rgba(191,87,0,0.85);color:#fff;}
-.player-card.featured .card-num{background:rgba(191,87,0,0.9);}
 
 /* TABLE VIEW */
 .player-table{width:100%;border-collapse:collapse;display:none;}
@@ -155,12 +152,8 @@ footer{padding:24px 48px;border-top:1px solid var(--border);display:flex;justify
     </a>
     <div class="nav-links">
       <a href="index.html" class="nav-link hm">Home</a>
-      <a href="schedule.html" class="nav-link hm">Season Hub</a>
-      <a href="depth-chart.html" class="nav-link hm">Depth Chart</a>
-      <a href="recruiting.html" class="nav-link hm">Recruiting</a>
-      <a href="portal.html" class="nav-link hm">Portal</a>
-      <a href="stories.html" class="nav-link hm">Stories</a>
-      <a href="players.html" class="nav-link hm">Players</a>
+      <a href="schedule.html" class="nav-link hm">Schedule</a>
+      <a href="roster.html" class="nav-link active">Roster</a>
       <a href="history.html" class="nav-link hm">History</a>
       <a href="index.html#waitlist" class="nav-cta">Join Waitlist</a>
     </div>
@@ -169,7 +162,7 @@ footer{padding:24px 48px;border-top:1px solid var(--border);display:flex;justify
 
 <div class="page-header">
   <div class="breadcrumb">Tower Report <span>/ Football / Roster</span></div>
-  <h1 class="page-title">2026 Longhorns Roster</h1>
+  <h1 class="page-title">2025 Longhorns Roster</h1>
   <p class="page-sub">Steve Sarkisian · SEC · Darrell K Royal–Texas Memorial Stadium · <span style="color: #4ade80; display: flex; align-items: center; gap: 6px; font-size: 12px;"><span style="width: 6px; height: 6px; border-radius: 50%; background: #4ade80; animation: pulse 2s ease-in-out infinite;"></span><span id="live-status">Live Data</span></span></p>
 </div>
 <style>
@@ -321,8 +314,6 @@ function photoEl(p, size='card'){
   return `<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; background: var(--surface2); font-family: 'Playfair Display', serif; font-size: ${fontSize}; font-weight:900; color:var(--orange); opacity:0.3;">${initials}</div>`;
 }
 
-const v = x => (x != null && x !== 'null') ? x : '—';
-
 function renderRoster(){
   const players = getFiltered();
   const grid = document.getElementById('roster-grid');
@@ -349,23 +340,20 @@ function renderRoster(){
       return `<div class="position-section">
         <div class="pos-label">${posGroups[g]} <span class="pos-count">${byGroup[g].length}</span></div>
         <div class="player-grid">
-          ${byGroup[g].map(p => {
-            const featured = window._playerNames && window._playerNames.has(p.name);
-            return `
-            <div class="player-card${featured ? ' featured' : ''}" onclick="openModal('${p.name.replace(/'/g,"\\'")}')">
+          ${byGroup[g].map(p => `
+            <div class="player-card" onclick="openModal('${p.name.replace(/'/g,"\\'")}')">
               <div class="card-photo">
                 ${photoEl(p,'card')}
                 <div class="card-num">#${p.num}</div>
-                ${featured ? '<div class="card-scout-badge">★ Scouted</div>' : ''}
               </div>
               <div class="card-info">
                 <div class="card-name">${p.name}</div>
                 <div class="card-pos" style="color:${posColor(p.pos)}">${p.pos}</div>
-                <div class="card-meta">${p.yr}${p.ht && p.ht !== 'null' ? ' · '+p.ht : ''}${p.wt && p.wt !== 'null' ? ' · '+p.wt+'lbs' : ''}</div>
+                <div class="card-meta">${p.yr} · ${p.ht} · ${p.wt}lbs</div>
               </div>
-              <div class="card-overlay"><div class="card-overlay-text">${featured ? '★ Deep Profile' : 'View Profile'}</div></div>
-            </div>`;
-          }).join('')}
+              <div class="card-overlay"><div class="card-overlay-text">View Profile</div></div>
+            </div>
+          `).join('')}
         </div>
       </div>`;
     }).join('');
@@ -378,8 +366,8 @@ function renderRoster(){
         <td><span class="tbl-num">${p.num}</span></td>
         <td><span class="tbl-name">${p.name}</span></td>
         <td><span class="tbl-pos" style="color:${posColor(p.pos)}">${p.pos}</span></td>
-        <td style="color:var(--secondary)">${v(p.ht)}</td>
-        <td style="color:var(--secondary)">${v(p.wt)}</td>
+        <td style="color:var(--secondary)">${p.ht}</td>
+        <td style="color:var(--secondary)">${p.wt}</td>
         <td style="color:var(--secondary)">${p.yr}</td>
         <td style="color:var(--muted);font-size:12px">${p.home}</td>
       </tr>
@@ -388,10 +376,6 @@ function renderRoster(){
 }
 
 function openModal(name){
-  if(window.openPlayerProfile && window._playerNames && window._playerNames.has(name)){
-    window.openPlayerProfile(name);
-    return;
-  }
   const p = roster.find(r => r.name === name);
   if(!p) return;
 
@@ -407,8 +391,8 @@ function openModal(name){
           <div class="modal-name">${p.name}</div>
           <div class="modal-pos-yr" style="color:${posColor(p.pos)}">${p.pos} · ${p.yr}</div>
           <div class="modal-vitals">
-            <div class="modal-vital"><div class="modal-vital-val">${v(p.ht)}</div><div class="modal-vital-label">Height</div></div>
-            <div class="modal-vital"><div class="modal-vital-val">${v(p.wt)}</div><div class="modal-vital-label">Weight</div></div>
+            <div class="modal-vital"><div class="modal-vital-val">${p.ht}</div><div class="modal-vital-label">Height</div></div>
+            <div class="modal-vital"><div class="modal-vital-val">${p.wt}</div><div class="modal-vital-label">Weight</div></div>
             <div class="modal-vital"><div class="modal-vital-val">${p.num}</div><div class="modal-vital-label">Jersey</div></div>
           </div>
         </div>
