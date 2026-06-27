@@ -1037,6 +1037,10 @@ function buildCard(s, i) {
   card.className = 'ts-card ts-card-in';
   card.style.cssText = 'animation-delay:'+delay+'ms;--cat:'+cfg.c+';--cat-lo:'+cfg.lo;
 
+  var storyTime = s._generated || s.date || '';
+  var readMins = (s.readTime||4)+' min';
+  var ago = storyTime ? timeAgo(storyTime) : '';
+
   card.innerHTML =
     '<div class="ts-card-header">' +
       '<span class="ts-cat-badge">'+esc(s.category)+'</span>' +
@@ -1052,8 +1056,11 @@ function buildCard(s, i) {
       (chips ? '<div class="ts-card-chips">'+chips+'</div>' : '') +
     '</div>' +
     '<div class="ts-card-footer">' +
-      '<span class="ts-card-meta">'+esc(s.date||'')+' &middot; '+(s.readTime||4)+' min</span>' +
-      '<button class="ts-deepdive">Deep Dive <span class="ic">'+IC.arrow+'</span></button>' +
+      '<div class="ts-card-meta-row">' +
+        '<span class="ts-meta-item"><span class="ic">'+IC.clock+'</span>'+readMins+'</span>' +
+        (ago ? '<span class="ts-meta-sep">·</span><span class="ts-meta-item">'+ago+'</span>' : '') +
+      '</div>' +
+      '<button class="ts-deepdive">Read <span class="ic">'+IC.arrow+'</span></button>' +
     '</div>';
 
   card.onclick = function(){ showStoryModal(s.id); };
