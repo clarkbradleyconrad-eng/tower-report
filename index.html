@@ -786,24 +786,29 @@ a.num-cell:hover .num-big{color:var(--orange-hi);}
 /* ======================================================
    WAITLIST
 ====================================================== */
-.waitlist{padding:60px 48px;text-align:center;position:relative;overflow:hidden;background:var(--surface);border-bottom:1px solid var(--border);}
-.wl-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 50% 50%,rgba(191,87,0,0.07) 0%,transparent 70%);pointer-events:none;}
-.wl-ghost{
+.waitlist{padding:60px 48px;text-align:center;position:relative;overflow:hidden;background:#080808;border-bottom:1px solid var(--border);}
+.wl-bg-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center center;pointer-events:none;z-index:0;opacity:0.55;filter:brightness(0.85) saturate(1.1);}
+.wl-bg{position:absolute;inset:0;pointer-events:none;z-index:1;
+  background:
+    linear-gradient(to bottom, rgba(8,8,8,0.35) 0%, rgba(8,8,8,0.1) 30%, rgba(8,8,8,0.1) 60%, rgba(8,8,8,0.75) 100%),
+    linear-gradient(to right, rgba(8,8,8,0.4) 0%, transparent 25%, transparent 75%, rgba(8,8,8,0.4) 100%);
+}
+.wl-ghost{display:none;
   position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
   font-family:'Playfair Display',serif;font-size:clamp(100px,18vw,200px);font-weight:900;
   color:rgba(191,87,0,0.035);letter-spacing:-10px;pointer-events:none;white-space:nowrap;line-height:1;user-select:none;
 }
-.wl-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--orange);margin-bottom:16px;position:relative;}
-.wl-hed{font-family:'Playfair Display',serif;font-size:clamp(32px,5vw,64px);font-weight:900;line-height:.9;letter-spacing:-2px;color:var(--white);margin-bottom:16px;position:relative;}
-.wl-sub{font-size:15px;color:var(--secondary);font-style:italic;margin-bottom:36px;position:relative;}
-.wl-form{display:flex;gap:0;max-width:420px;margin:0 auto 14px;position:relative;border:1px solid var(--border-strong);}
-.wl-email{flex:1;padding:15px 18px;font-size:14px;font-family:'Barlow',sans-serif;background:var(--black);border:none;color:var(--white);outline:none;}
+.wl-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--orange);margin-bottom:16px;position:relative;z-index:2;}
+.wl-hed{font-family:'Playfair Display',serif;font-size:clamp(32px,5vw,64px);font-weight:900;line-height:.9;letter-spacing:-2px;color:var(--white);margin-bottom:16px;position:relative;z-index:2;}
+.wl-sub{font-size:15px;color:var(--secondary);font-style:italic;margin-bottom:36px;position:relative;z-index:2;}
+.wl-form{display:flex;gap:0;max-width:420px;margin:0 auto 14px;position:relative;z-index:2;border:1px solid var(--border-strong);}
+.wl-email{flex:1;padding:15px 18px;font-size:14px;font-family:'Barlow',sans-serif;background:rgba(0,0,0,0.7);border:none;color:var(--white);outline:none;}
 .wl-email::placeholder{color:var(--muted);}
 .wl-btn{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;background:var(--orange);color:#fff;border:none;padding:15px 22px;cursor:pointer;white-space:nowrap;transition:background .2s;}
 .wl-btn:hover{background:var(--orange-hi);}
-.wl-success{display:none;font-size:14px;color:var(--green);font-weight:600;margin-bottom:16px;position:relative;}
-.wl-social{display:flex;justify-content:center;gap:28px;position:relative;margin-top:16px;}
-.wl-social a{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s;}
+.wl-success{display:none;font-size:14px;color:var(--green);font-weight:600;margin-bottom:16px;position:relative;z-index:2;}
+.wl-social{display:flex;justify-content:center;gap:28px;position:relative;z-index:2;margin-top:16px;}
+.wl-social a{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--secondary);text-decoration:none;transition:color .2s;}
 .wl-social a:hover{color:var(--orange);}
 
 /* ======================================================
@@ -1221,7 +1226,7 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
 .qa-label{font-size:16px;letter-spacing:-.01em;}
 
 /* Waitlist feature chips */
-.wl-features{display:flex;justify-content:center;gap:20px;margin:0 auto 30px;position:relative;flex-wrap:wrap;max-width:640px;}
+.wl-features{display:flex;justify-content:center;gap:20px;margin:0 auto 30px;position:relative;z-index:2;flex-wrap:wrap;max-width:640px;}
 .wl-feature{display:flex;align-items:center;gap:7px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--secondary);}
 .wl-dot{width:4px;height:4px;border-radius:50%;background:var(--orange);flex-shrink:0;}
 
@@ -2892,8 +2897,8 @@ footer{padding:32px 48px;}
 
 <!-- ===================== WAITLIST ===================== -->
 <section class="waitlist" id="waitlist">
+  <img class="wl-bg-img" src="img/tower-bg.png" alt="" aria-hidden="true"/>
   <div class="wl-bg"></div>
-  <div class="wl-ghost">TOWER</div>
   <div class="wl-eyebrow">Early Access · Tower Report</div>
   <h2 class="wl-hed">Be First In.</h2>
   <p class="wl-sub">The full platform is coming. Get notified when Tower Report launches.</p>
