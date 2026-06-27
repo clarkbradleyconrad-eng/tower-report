@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title id="page-title">Game Story — Tower Report</title>
+<meta id="page-desc" name="description" content="Historic Texas Longhorns game story — Tower Report"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet"/>
+<script src="nav.js" defer></script>
+<script src="js/game-data.js"></script>
+<style>
+:root{--orange:#BF5700;--black:#080808;--white:#F5F0E8;--surface:#111;--surface2:#181818;--surface3:#202020;--border:rgba(255,255,255,0.07);--border-strong:rgba(255,255,255,0.13);--muted:#6B6560;--secondary:#A09890;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);}
+
+/* HERO */
+.gs-hero{position:relative;min-height:420px;background:#040404;overflow:hidden;display:flex;align-items:flex-end;}
+.gs-hero-bg{position:absolute;inset:0;pointer-events:none;}
+.gs-hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);background-size:52px 52px;}
+.gs-hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 0%,rgba(4,4,4,0.5) 40%,rgba(4,4,4,0.95) 80%,#040404 100%);}
+.gs-hero-edge{position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,transparent 5%,var(--orange) 25%,var(--orange) 75%,transparent 95%);}
+.gs-logo-tx{position:absolute;right:4%;top:50%;transform:translateY(-50%);width:32vw;height:32vw;max-width:320px;max-height:320px;background:url('https://a.espncdn.com/i/teamlogos/ncaa/500/251.png') center/contain no-repeat;opacity:0.06;}
+.gs-logo-opp{position:absolute;left:4%;top:50%;transform:translateY(-50%);width:32vw;height:32vw;max-width:320px;max-height:320px;object-fit:contain;opacity:0.05;filter:grayscale(1);}
+.gs-hero-content{position:relative;z-index:15;padding:0 52px 44px;max-width:900px;}
+.gs-breadcrumb{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:18px;}
+.gs-breadcrumb a{color:var(--muted);text-decoration:none;transition:color .15s;}
+.gs-breadcrumb a:hover{color:var(--white);}
+.gs-breadcrumb .sep{color:rgba(107,101,96,0.35);margin:0 7px;}
+.gs-breadcrumb .cur{color:var(--orange);}
+.gs-kicker{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:10px;}
+.gs-title{font-family:'Playfair Display',serif;font-size:clamp(36px,5.5vw,76px);font-weight:900;line-height:0.92;letter-spacing:-2px;color:var(--white);margin-bottom:14px;}
+.gs-deck{font-size:16px;line-height:1.55;color:rgba(245,240,232,0.55);font-style:italic;margin-bottom:22px;max-width:680px;}
+.gs-score-bar{display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
+.gs-score{display:flex;align-items:center;gap:12px;}
+.gs-score-team{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.gs-score-num{font-family:'Playfair Display',serif;font-size:38px;font-weight:900;line-height:1;color:var(--white);}
+.gs-score-num.winner{color:#22c55e;}
+.gs-score-sep{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;color:var(--muted);}
+.gs-result-badge{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:2px;}
+.gs-result-badge.win{background:rgba(34,197,94,0.12);color:#22c55e;border:1px solid rgba(34,197,94,0.22);}
+.gs-result-badge.loss{background:rgba(239,68,68,0.12);color:#ef4444;border:1px solid rgba(239,68,68,0.22);}
+.gs-hero-meta{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px;}
+.gs-hero-meta .dot{width:3px;height:3px;border-radius:50%;background:var(--muted);flex-shrink:0;}
+
+/* MAIN LAYOUT */
+.gs-outer{max-width:1160px;margin:0 auto;padding:40px 52px 60px;display:grid;grid-template-columns:1fr 300px;gap:56px;}
+.gs-main{}
+.gs-sidebar{}
+
+/* ARTICLE BODY */
+.gs-story{font-size:16.5px;line-height:1.86;color:#BEB9B2;}
+.gs-story p{margin-bottom:22px;}
+.gs-story strong{color:var(--white);}
+
+/* SECTION LABELS */
+.gs-section-lbl{display:flex;align-items:center;gap:14px;margin:32px 0 16px;}
+.gs-section-lbl-text{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);white-space:nowrap;}
+.gs-section-lbl-line{flex:1;height:1px;background:var(--border);}
+
+/* KEY MOMENTS */
+.gs-moments{display:flex;flex-direction:column;gap:0;border:1px solid var(--border);}
+.gs-moment{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:14px;font-size:14px;line-height:1.5;color:var(--white);}
+.gs-moment:last-child{border-bottom:none;}
+.gs-moment-num{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;color:var(--orange);flex-shrink:0;width:20px;padding-top:1px;}
+
+/* YOUTUBE SECTION */
+.gs-yt-section{background:var(--surface);border:1px solid var(--border);padding:24px 28px;margin-top:32px;}
+.gs-yt-top{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.gs-yt-icon{width:28px;height:20px;flex-shrink:0;}
+.gs-yt-lbl{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--white);}
+.gs-yt-sub{font-size:13px;color:var(--secondary);line-height:1.5;margin-bottom:18px;}
+.gs-yt-btn{display:inline-flex;align-items:center;gap:10px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;background:var(--orange);color:#fff;text-decoration:none;padding:11px 22px;border:1px solid var(--orange);transition:all .2s;}
+.gs-yt-btn:hover{background:transparent;color:var(--orange);}
+
+/* SIDEBAR */
+.gs-sidebar-sticky{position:sticky;top:82px;display:flex;flex-direction:column;gap:16px;}
+.gs-box{background:var(--surface);border:1px solid var(--border);}
+.gs-box-hd{padding:11px 16px;border-bottom:1px solid var(--border);background:var(--surface2);}
+.gs-box-hd-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.gs-box-hd-title{font-size:13px;font-weight:700;color:var(--white);margin-top:3px;}
+.gs-stat-row{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1px solid var(--border);}
+.gs-stat-row:last-child{border-bottom:none;}
+.gs-stat-lbl{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
+.gs-stat-val{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;color:var(--orange);}
+.gs-stat-val.sm{font-size:13px;color:var(--white);}
+.gs-score-box{padding:20px 16px;text-align:center;}
+.gs-score-box-ctx{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.gs-score-box-main{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:8px;}
+.gs-score-box-team{display:flex;flex-direction:column;align-items:center;gap:5px;}
+.gs-score-box-logo{width:44px;height:44px;object-fit:contain;}
+.gs-score-box-abbr{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);}
+.gs-score-box-num{font-family:'Playfair Display',serif;font-size:36px;font-weight:900;line-height:1;color:var(--white);}
+.gs-score-box-num.w{color:#22c55e;}
+.gs-score-box-vsep{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:var(--muted);margin-top:-4px;}
+.gs-score-box-result{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:3px 10px;border-radius:2px;}
+.gs-score-box-result.win{background:rgba(34,197,94,0.12);color:#22c55e;}
+.gs-info-row{padding:9px 16px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:2px;}
+.gs-info-row:last-child{border-bottom:none;}
+.gs-info-lbl{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);}
+.gs-info-val{font-size:13px;color:var(--white);font-weight:500;}
+
+/* RELATED VAULT GAMES */
+.gs-related{max-width:1160px;margin:0 auto;padding:0 52px 72px;}
+.gs-related-hd{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);padding-bottom:14px;border-bottom:1px solid var(--border);margin-bottom:0;}
+.gs-related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-top:none;}
+.gs-rel-card{background:var(--surface);padding:22px 20px;text-decoration:none;display:block;transition:background .15s;border-left:2px solid transparent;}
+.gs-rel-card:hover{background:var(--surface2);border-left-color:var(--orange);}
+.gs-rel-kicker{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:7px;}
+.gs-rel-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;line-height:1.2;color:var(--white);margin-bottom:7px;}
+.gs-rel-score{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;color:var(--secondary);}
+.gs-rel-score .ws{color:#22c55e;}
+
+/* ARTICLE FOOTER */
+.gs-article-footer{display:flex;align-items:center;gap:10px;margin-top:30px;padding-top:20px;border-top:1px solid var(--border);flex-wrap:wrap;}
+.gs-tag{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 9px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);}
+
+/* FOOTER */
+footer{padding:28px 52px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);}
+.footer-logo{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;letter-spacing:3px;color:var(--muted);}
+.footer-logo span{color:var(--orange);}
+.footer-text{font-size:12px;color:var(--muted);}
+
+/* NOT FOUND */
+.gs-not-found{padding:80px 52px;text-align:center;}
+.gs-not-found-title{font-family:'Playfair Display',serif;font-size:48px;font-weight:900;color:var(--muted);margin-bottom:16px;}
+.gs-not-found-sub{font-size:15px;color:var(--muted);margin-bottom:24px;}
+.gs-not-found a{color:var(--orange);text-decoration:none;}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .gs-hero-content{padding:0 24px 36px;}
+  .gs-title{font-size:clamp(32px,8vw,52px);}
+  .gs-outer{grid-template-columns:1fr;padding:28px 24px 48px;gap:32px;}
+  .gs-sidebar{order:-1;}
+  .gs-sidebar-sticky{position:static;}
+  .gs-related{padding:0 24px 48px;}
+  .gs-related-grid{grid-template-columns:1fr;}
+  footer{padding:20px 24px;flex-direction:column;gap:8px;text-align:center;}
+}
+</style>
+</head>
+<body>
+
+<div id="gs-root"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var params = new URLSearchParams(window.location.search);
+  var gameId = params.get('id');
+  var game = (typeof HISTORIC_GAMES !== 'undefined')
+    ? HISTORIC_GAMES.find(function(g){ return g.id === gameId; })
+    : null;
+
+  var root = document.getElementById('gs-root');
+
+  if (!game) {
+    document.getElementById('page-title').textContent = 'Game Not Found — Tower Report';
+    root.innerHTML = '<div class="gs-not-found"><div class="gs-not-found-title">Game Not Found</div><div class="gs-not-found-sub">This game story doesn\'t exist in the vault yet.</div><a href="history.html">← Back to History &amp; Game Vault</a></div><footer><div class="footer-logo">TOWER<span>REPORT</span></div><div class="footer-text">The Tower Never Sleeps · © 2026</div></footer>';
+    return;
+  }
+
+  document.getElementById('page-title').textContent = game.title + ' | ' + game.season + ' Texas Longhorns | Tower Report';
+  document.getElementById('page-desc').content = game.headline + ' — ' + game.context + ', ' + game.date + '. ' + game.venue + '. Texas ' + game.texas + ', ' + game.oppAbbr + ' ' + game.opp + '.';
+
+  var isWin = game.result === 'W';
+  var txScore = isWin
+    ? '<span class="gs-score-num winner">' + game.texas + '</span>'
+    : '<span class="gs-score-num">' + game.texas + '</span>';
+  var oppScore = !isWin
+    ? '<span class="gs-score-num winner">' + game.opp + '</span>'
+    : '<span class="gs-score-num">' + game.opp + '</span>';
+
+  var statsHTML = game.stats.map(function(s){
+    return '<div class="gs-stat-row"><span class="gs-stat-lbl">' + s.l + '</span><span class="gs-stat-val">' + s.v + '</span></div>';
+  }).join('');
+
+  var momentsHTML = game.moments.map(function(m, i){
+    return '<div class="gs-moment"><span class="gs-moment-num">' + (i+1) + '</span><span>' + m + '</span></div>';
+  }).join('');
+
+  var ytSearch = encodeURIComponent(game.youtubeSearch);
+  var ytURL = 'https://www.youtube.com/results?search_query=' + ytSearch;
+
+  var relatedGames = HISTORIC_GAMES.filter(function(g){ return g.id !== game.id; });
+  var picks = [];
+  var pool = relatedGames.slice();
+  for (var i = 0; i < 3 && pool.length; i++) {
+    var idx = Math.floor(Math.random() * pool.length);
+    picks.push(pool.splice(idx, 1)[0]);
+  }
+  var relatedHTML = picks.map(function(g){
+    var gs = g.result === 'W'
+      ? 'Texas <span class="ws">' + g.texas + '</span> · ' + g.oppAbbr + ' ' + g.opp
+      : 'Texas ' + g.texas + ' · ' + g.oppAbbr + ' ' + g.opp;
+    return '<a href="game-story.html?id=' + g.id + '" class="gs-rel-card"><div class="gs-rel-kicker">' + g.season + ' · ' + g.context + '</div><div class="gs-rel-title">' + g.title + '</div><div class="gs-rel-score">' + gs + '</div></a>';
+  }).join('');
+
+  var sbNum1 = isWin ? '<span class="gs-score-box-num w">' + game.texas + '</span>' : '<span class="gs-score-box-num">' + game.texas + '</span>';
+  var sbNum2 = !isWin ? '<span class="gs-score-box-num w">' + game.opp + '</span>' : '<span class="gs-score-box-num">' + game.opp + '</span>';
+
+  root.innerHTML = [
+    '<div class="gs-hero">',
+      '<div class="gs-hero-bg">',
+        '<div class="gs-hero-grid"></div>',
+        '<div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 15% 50%,' + game.oppColor + ' 0%,transparent 65%);"></div>',
+        '<div class="gs-hero-overlay"></div>',
+        '<div class="gs-hero-edge"></div>',
+        '<div class="gs-logo-tx"></div>',
+        '<img class="gs-logo-opp" src="' + game.oppLogo + '" alt="' + game.oppAbbr + '" onerror="this.style.display=\'none\'"/>',
+      '</div>',
+      '<div class="gs-hero-content">',
+        '<div class="gs-breadcrumb">',
+          '<a href="index.html">Tower Report</a>',
+          '<span class="sep">/</span>',
+          '<a href="history.html">History</a>',
+          '<span class="sep">/</span>',
+          '<a href="history.html#vault">Game Vault</a>',
+          '<span class="sep">/</span>',
+          '<span class="cur">' + game.title + '</span>',
+        '</div>',
+        '<div class="gs-kicker">' + game.season + ' · ' + game.context + '</div>',
+        '<h1 class="gs-title">' + game.title + '</h1>',
+        '<p class="gs-deck">' + game.headline + '</p>',
+        '<div class="gs-score-bar">',
+          '<div class="gs-score">',
+            '<span class="gs-score-team">Texas</span>',
+            txScore,
+            '<span class="gs-score-sep">–</span>',
+            oppScore,
+            '<span class="gs-score-team">' + game.oppAbbr + '</span>',
+          '</div>',
+          '<span class="gs-result-badge ' + (isWin ? 'win' : 'loss') + '">' + (isWin ? 'Texas Win' : 'Texas Loss') + '</span>',
+        '</div>',
+        '<div class="gs-hero-meta">',
+          '<span>' + game.date + '</span>',
+          '<span class="dot"></span>',
+          '<span>' + game.venue + '</span>',
+        '</div>',
+      '</div>',
+    '</div>',
+
+    '<div class="gs-outer">',
+      '<div class="gs-main">',
+        '<div class="gs-story">' + game.story + '</div>',
+
+        '<div class="gs-section-lbl"><span class="gs-section-lbl-text">Key Moments</span><div class="gs-section-lbl-line"></div></div>',
+        '<div class="gs-moments">' + momentsHTML + '</div>',
+
+        '<div class="gs-section-lbl"><span class="gs-section-lbl-text">Watch the Highlights</span><div class="gs-section-lbl-line"></div></div>',
+        '<div class="gs-yt-section">',
+          '<div class="gs-yt-top">',
+            '<svg class="gs-yt-icon" viewBox="0 0 28 20" fill="none"><rect width="28" height="20" rx="4" fill="#FF0000"/><path d="M11.5 6l8 4-8 4V6z" fill="#fff"/></svg>',
+            '<span class="gs-yt-lbl">YouTube Highlights</span>',
+          '</div>',
+          '<p class="gs-yt-sub">Search YouTube for full game footage, key play breakdowns, and highlight reels from this game.</p>',
+          '<a href="' + ytURL + '" target="_blank" rel="noopener noreferrer" class="gs-yt-btn">',
+            '<svg viewBox="0 0 16 12" width="14" height="10" fill="#fff"><path d="M1 1l7 5-7 5V1z"/></svg>',
+            'Search for Highlights',
+          '</a>',
+        '</div>',
+
+        '<div class="gs-article-footer">',
+          '<span class="gs-tag">Texas Longhorns</span>',
+          '<span class="gs-tag">' + game.season + ' Season</span>',
+          '<span class="gs-tag">' + game.context + '</span>',
+          '<span class="gs-tag">Game Vault</span>',
+        '</div>',
+      '</div>',
+
+      '<div class="gs-sidebar">',
+        '<div class="gs-sidebar-sticky">',
+          '<div class="gs-box">',
+            '<div class="gs-score-box">',
+              '<div class="gs-score-box-ctx">' + game.context + '</div>',
+              '<div class="gs-score-box-main">',
+                '<div class="gs-score-box-team">',
+                  '<img class="gs-score-box-logo" src="https://a.espncdn.com/i/teamlogos/ncaa/500/251.png" alt="Texas"/>',
+                  '<span class="gs-score-box-abbr">Texas</span>',
+                '</div>',
+                '<div style="display:flex;flex-direction:column;align-items:center;gap:6px;">',
+                  sbNum1,
+                  '<span class="gs-score-box-vsep">–</span>',
+                  sbNum2,
+                '</div>',
+                '<div class="gs-score-box-team">',
+                  '<img class="gs-score-box-logo" src="' + game.oppLogo + '" alt="' + game.oppAbbr + '" onerror="this.src=\'\'"/>',
+                  '<span class="gs-score-box-abbr">' + game.oppAbbr + '</span>',
+                '</div>',
+              '</div>',
+              '<span class="gs-score-box-result ' + (isWin ? 'win' : 'loss') + '">' + (isWin ? 'Texas Win' : 'Texas Loss') + '</span>',
+            '</div>',
+            '<div class="gs-info-row"><span class="gs-info-lbl">Date</span><span class="gs-info-val">' + game.date + '</span></div>',
+            '<div class="gs-info-row"><span class="gs-info-lbl">Venue</span><span class="gs-info-val">' + game.venue + '</span></div>',
+            '<div class="gs-info-row"><span class="gs-info-lbl">Season</span><span class="gs-info-val">' + game.season + '</span></div>',
+            '<div class="gs-info-row"><span class="gs-info-lbl">Opponent</span><span class="gs-info-val">' + game.oppName + '</span></div>',
+          '</div>',
+
+          '<div class="gs-box">',
+            '<div class="gs-box-hd"><div class="gs-box-hd-label">Key Stats</div></div>',
+            statsHTML,
+          '</div>',
+
+          '<div class="gs-box">',
+            '<div class="gs-box-hd"><div class="gs-box-hd-label">Archive</div><div class="gs-box-hd-title">Texas Football Vault</div></div>',
+            '<div style="padding:14px 16px;">',
+              '<a href="history.html#vault" style="display:block;font-family:\'Barlow Condensed\',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);text-decoration:none;margin-bottom:10px;">← All Vault Games</a>',
+              '<a href="history.html" style="display:block;font-family:\'Barlow Condensed\',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-decoration:none;">Program History →</a>',
+            '</div>',
+          '</div>',
+        '</div>',
+      '</div>',
+    '</div>',
+
+    '<div class="gs-related">',
+      '<div class="gs-related-hd">More from the Vault</div>',
+      '<div class="gs-related-grid">' + relatedHTML + '</div>',
+    '</div>',
+
+    '<footer><div class="footer-logo">TOWER<span>REPORT</span></div><div class="footer-text">The Tower Never Sleeps · © 2026</div></footer>'
+  ].join('');
+});
+</script>
+
+</body>
+</html>
