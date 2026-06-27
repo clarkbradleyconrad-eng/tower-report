@@ -3622,61 +3622,74 @@ function toggleProj(cell){
 
 /* ---- TOWER REVEAL MODAL ---- */
 (function(){
-  const overlay = document.getElementById('tr-reveal-overlay');
-  const closeBtn = document.getElementById('tr-reveal-close');
-  const messagesEl = document.getElementById('tr-reveal-messages');
-  const loadingEl = document.getElementById('tr-reveal-loading');
-  const revealInput = document.getElementById('tr-reveal-input');
-  const triggerEl = document.getElementById('ti-reveal-trigger');
-
   let trHistory = [];
   let trBusy = false;
 
-  if(sessionStorage.getItem('tr-reveal-seen') && triggerEl){
-    triggerEl.style.display = 'none';
-  }
+  function el(id){ return document.getElementById(id); }
+
+  /* Lazy init — elements are parsed after this script block runs */
+  setTimeout(function(){
+    const trigger = el('ti-reveal-trigger');
+    if(sessionStorage.getItem('tr-reveal-seen') && trigger) trigger.style.display='none';
+    const closeBtn = el('tr-reveal-close');
+    const overlay = el('tr-reveal-overlay');
+    if(closeBtn) closeBtn.addEventListener('click', closeTowerReveal);
+    if(overlay) overlay.addEventListener('click', function(e){ if(e.target===overlay) closeTowerReveal(); });
+  }, 0);
+
+  document.addEventListener('keydown', function(e){
+    const overlay = el('tr-reveal-overlay');
+    if(e.key==='Escape' && overlay && overlay.classList.contains('open')) closeTowerReveal();
+  });
 
   function openTowerReveal(){
+    const overlay = el('tr-reveal-overlay');
+    const trigger = el('ti-reveal-trigger');
+    const input = el('tr-reveal-input');
     if(!overlay) return;
     overlay.classList.add('open');
-    document.body.style.overflow = 'hidden';
-    if(triggerEl) triggerEl.style.display = 'none';
+    document.body.style.overflow='hidden';
+    if(trigger) trigger.style.display='none';
     sessionStorage.setItem('tr-reveal-seen','1');
-    setTimeout(()=>{ if(revealInput) revealInput.focus(); }, 320);
+    setTimeout(()=>{ if(input) input.focus(); }, 320);
   }
   function closeTowerReveal(){
+    const overlay = el('tr-reveal-overlay');
     if(!overlay) return;
     overlay.classList.remove('open');
-    document.body.style.overflow = '';
+    document.body.style.overflow='';
   }
   window.openTowerReveal = openTowerReveal;
 
-  if(closeBtn) closeBtn.addEventListener('click', closeTowerReveal);
-  if(overlay) overlay.addEventListener('click', function(e){ if(e.target===overlay) closeTowerReveal(); });
-  document.addEventListener('keydown', function(e){ if(e.key==='Escape' && overlay && overlay.classList.contains('open')) closeTowerReveal(); });
-
-  function appendMsg(cls, html){
+  function appendMsg(cls, text){
+    const msgs = el('tr-reveal-messages');
+    const loading = el('tr-reveal-loading');
+    if(!msgs) return null;
     const div = document.createElement('div');
     div.className = cls;
-    if(html !== undefined) div.innerHTML = html;
-    messagesEl.insertBefore(div, loadingEl);
-    messagesEl.scrollTop = messagesEl.scrollHeight;
+    if(text !== undefined) div.innerHTML = text;
+    msgs.insertBefore(div, loading);
+    msgs.scrollTop = msgs.scrollHeight;
     return div;
   }
 
   async function trRevealSubmit(){
+    const input = el('tr-reveal-input');
+    const msgs = el('tr-reveal-messages');
+    const loading = el('tr-reveal-loading');
     if(trBusy) return;
-    const q = revealInput ? revealInput.value.trim() : '';
+    const q = input ? input.value.trim() : '';
     if(!q) return;
     trBusy = true;
-    if(revealInput) revealInput.value = '';
+    if(input) input.value='';
 
     trHistory.push({role:'user', content:q});
     if(trHistory.length > 6) trHistory = trHistory.slice(-6);
 
-    appendMsg('tr-reveal-user-msg', null).textContent = q;
-    loadingEl.classList.add('visible');
-    messagesEl.scrollTop = messagesEl.scrollHeight;
+    const userEl = appendMsg('tr-reveal-user-msg','');
+    if(userEl) userEl.textContent = q;
+    if(loading) loading.classList.add('visible');
+    if(msgs) msgs.scrollTop = msgs.scrollHeight;
 
     let firstChunk = true;
     let accumulated = '';
@@ -3689,7 +3702,6 @@ function toggleProj(cell){
         body:JSON.stringify({messages:trHistory})
       });
       if(!res.ok) throw new Error('API '+res.status);
-
       const reader = res.body.getReader();
       const dec = new TextDecoder();
       let buf = '';
@@ -3709,12 +3721,14 @@ function toggleProj(cell){
             if(chunk){
               if(firstChunk){
                 firstChunk = false;
-                loadingEl.classList.remove('visible');
+                const ld = el('tr-reveal-loading');
+                if(ld) ld.classList.remove('visible');
                 towerEl = appendMsg('tr-reveal-tower-msg','');
               }
               accumulated += chunk;
               if(towerEl) towerEl.innerHTML = mdToHtml(accumulated);
-              messagesEl.scrollTop = messagesEl.scrollHeight;
+              const m = el('tr-reveal-messages');
+              if(m) m.scrollTop = m.scrollHeight;
             }
           }catch(_){}
         }
@@ -3724,18 +3738,21 @@ function toggleProj(cell){
         if(trHistory.length > 6) trHistory = trHistory.slice(-6);
       }else if(firstChunk){ throw new Error('empty'); }
     }catch(err){
-      loadingEl.classList.remove('visible');
+      const ld = el('tr-reveal-loading');
+      if(ld) ld.classList.remove('visible');
       if(!towerEl) towerEl = appendMsg('tr-reveal-tower-msg','');
-      towerEl.innerHTML = '<span style="color:var(--red)">Intelligence offline. Please try again in a moment.</span>';
+      if(towerEl) towerEl.innerHTML='<span style="color:var(--red)">Intelligence offline. Please try again in a moment.</span>';
       trHistory.pop();
     }finally{
       trBusy = false;
-      messagesEl.scrollTop = messagesEl.scrollHeight;
+      const m = el('tr-reveal-messages');
+      if(m) m.scrollTop = m.scrollHeight;
     }
   }
 
   function trRevealAsk(q){
-    if(revealInput) revealInput.value = q;
+    const input = el('tr-reveal-input');
+    if(input) input.value = q;
     trRevealSubmit();
   }
   window.trRevealAsk = trRevealAsk;
