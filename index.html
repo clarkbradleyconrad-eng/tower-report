@@ -254,7 +254,7 @@ a.hero-stat:hover .hs-label{color:var(--orange);}
   border:1px solid rgba(255,255,255,0.06);border-top:2px solid var(--orange);
   box-shadow:0 -2px 20px rgba(191,87,0,0.15);
   display:flex;flex-direction:column;
-  max-height:520px;position:relative;
+  position:relative;
 }
 .briefing-scroll{flex:1;overflow-y:auto;min-height:0;}
 .briefing-scroll::-webkit-scrollbar{width:3px;}
@@ -319,12 +319,7 @@ a.hero-stat:hover .hs-label{color:var(--orange);}
 .bi-ctx{font-family:'Inter',sans-serif;font-size:11px;font-weight:400;color:rgba(148,140,130,0.7);line-height:1.45;margin-bottom:7px;}
 .bi-meta{display:flex;align-items:center;gap:6px;margin-top:2px;}
 .bi-time{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:.5px;text-transform:uppercase;color:rgba(148,140,130,0.45);}
-.briefing-fade{
-  height:40px;flex-shrink:0;
-  background:linear-gradient(to bottom,transparent,#161616);
-  pointer-events:none;margin-top:-40px;
-  position:relative;z-index:3;
-}
+.briefing-fade{display:none;}
 .briefing-footer{
   padding:9px 18px 11px;border-top:1px solid rgba(255,255,255,0.06);
   display:flex;align-items:center;justify-content:space-between;
@@ -972,7 +967,8 @@ footer{padding:36px 48px;border-top:1px solid var(--border);display:grid;grid-te
   .nav-link{display:none;}
   .nav-link.keep{display:flex;}
   .hero{grid-template-columns:1fr;}
-  .hero-right,.hero-stories{display:none;}
+  .hero-stories{display:none;}
+  .hero-left{border-right:none;}
   .hero-lead{min-height:auto;padding:36px 20px 36px;}
   .hero-stats{flex-wrap:wrap;}
   .sr,.threads-section,.stories-section{padding-left:20px;padding-right:20px;}
@@ -1356,7 +1352,7 @@ nav{border-bottom:1px solid rgba(191,87,0,0.14);}
 
 /* BRIEFING PANEL — premium redesign */
 .briefing-panel{
-  max-height:520px;background:#111;
+  background:#111;
   border-top:2px solid rgba(191,87,0,0.85);
   box-shadow:0 -3px 28px rgba(191,87,0,0.1);
 }
