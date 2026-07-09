@@ -35,8 +35,10 @@ export default async function handler(req) {
   if (!token) return json({ ok: false, error: 'Storage not configured' }, 503);
 
   try {
+    // no-store: edge fetch caching would pin this fixed list URL to an old blob
     const listRes = await fetch(`${BLOB_API}?prefix=${encodeURIComponent(LOG_PREFIX)}&limit=50`, {
       headers: { Authorization: `Bearer ${token}` },
+      cache: 'no-store',
     });
     if (!listRes.ok) throw new Error(`Blob list ${listRes.status}`);
     const { blobs = [] } = await listRes.json();

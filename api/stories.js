@@ -36,8 +36,11 @@ export default async function handler(req) {
 
   try {
     const listUrl = `${BLOB_API}?prefix=${encodeURIComponent(BLOB_PREFIX)}&limit=10`;
+    // no-store: the edge runtime caches outbound fetches; this list URL is
+    // identical every call, so a cached response pins readers to an old blob
     const listRes = await fetch(listUrl, {
       headers: { Authorization: `Bearer ${token}` },
+      cache: 'no-store',
     });
 
     if (!listRes.ok) {
@@ -60,7 +63,7 @@ export default async function handler(req) {
     }
 
     // Fetch the stored stories
-    const dataRes = await fetch(blob.downloadUrl || blob.url);
+    const dataRes = await fetch(blob.downloadUrl || blob.url, { cache: 'no-store' });
     if (!dataRes.ok) throw new Error(`Blob fetch ${dataRes.status}`);
 
     const stories = await dataRes.json();
