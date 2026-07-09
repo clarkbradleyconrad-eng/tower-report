@@ -41,15 +41,16 @@ Pages whose content is currently inline in the HTML (schedule, depth-chart, recr
 
 ### 2. Vercel Blob — live AI content (Vercel cron)
 
-`vercel.json` schedules `/api/daily-refresh?slot=am` at 06:00 and `?slot=pm` at 18:00 UTC (distinct query strings — Vercel collapses cron entries whose paths are identical). It orchestrates, in order: `briefing?cron=1` → `generate-story` → `stories-refresh` → `verify-recruiting` → `odds?cron=1`, each step individually try/caught, with a heartbeat written per run. The former `tiktok-drafts` step (and its Supabase table + `desk.html` UI) was removed 2026-07-09.
+`vercel.json` schedules `/api/orchestrator?slot=am` at 06:00 and `?slot=pm` at 18:00 UTC (distinct query strings — Vercel collapses cron entries whose paths are identical), plus a GitHub Actions watchdog (`.github/workflows/bot-watchdog.yml`, 10:05 UTC) that alerts + catches up if the morning run never fired. The orchestrator (2026-07-09, replaces `daily-refresh.js`) is registry-driven: it reads `bots/registry.json`, resolves `dependsOn` order, and runs each enabled bot with its own timeout — `briefing` → `story-generator` → `stories-refresh` → `verify-recruiting` → `odds` → `social-drafter` → `alerts`, each individually try/caught. Every Grok prompt lives in `bots/prompts/{botId}.md` (hash logged per output), every scoreable output gets a 0-100 quality grade (`bots/lib/score.js`, <60 rejected to a review queue), and `ops.html?key={OPS_KEY}` is the control room. The former `tiktok-drafts` step (and its Supabase table + `desk.html` UI) was removed 2026-07-09.
 
 | Blob | Written by | Served by | Rendered client-side on |
 |------|-----------|-----------|--------------------------|
 | `tower-briefing.json` | `api/briefing.js` | `GET /api/briefing` | `index.html` briefing panel |
 | `tower-ai-stories.json` | `api/stories-refresh.js` | `GET /api/stories` | `stories.html`, `index.html` analysis grid |
 | `tower-stories.json` | `api/stories-db.js` (newsroom CMS) | `GET /api/stories-db` | `stories.html`, `newsroom.html` |
-| `tower-refresh-log.json` | `api/daily-refresh.js` (heartbeat) | `GET /api/health` | `stories.html` footer status |
+| `tower-refresh-log.json` | `api/orchestrator.js` (heartbeat) | `GET /api/health` | `stories.html` footer status |
 | `tower-recruiting-live.json` | `api/verify-recruiting.js` (Grok daily class-rank check) | `GET /api/verify-recruiting` | `recruiting.html` "Live · via Grok" block (labeled, never overwrites `data/recruiting.json`) |
+| `tower-bot-runs.json`, `tower-bot-stats.json`, `tower-bot-rejected.json`, `tower-bot-overrides.json`, `tower-social-drafts.json` | `api/orchestrator.js` / bot libs (`bots/lib/`) | `GET /api/ops` | `ops.html` control room (key-gated, not in nav) |
 
 `/story?id=…` (`api/story.js`) is the one server-rendered surface — an edge function that renders a story/briefing item to HTML **at request time** for OG/share tags. It renders from Blob; it never writes any file.
 
@@ -62,7 +63,7 @@ The Supabase plane (TikTok `tiktok_drafts` table + `desk.html`) was deleted 2026
 | Actor | data/*.json | Vercel Blob | *.html |
 |-------|-------------|-------------|--------|
 | GitHub Actions bot | ✅ `roster.json` only (guard-enforced) | ❌ | ❌ **never** |
-| Vercel crons (`daily-refresh` chain) | ❌ (read-only for grounding) | ✅ | ❌ **never** |
+| Vercel crons (`orchestrator` bot chain) | ❌ (read-only for grounding) | ✅ | ❌ **never** |
 | Newsroom editors (authed endpoints) | ❌ | ✅ via `stories-db` | ❌ |
 | Humans (you / designer) | ✅ | — | ✅ sole owners |
 

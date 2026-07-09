@@ -1,0 +1,28 @@
+name: Bot Watchdog
+
+# Vercel Hobby allows only 2 cron jobs and both are the am/pm orchestrator
+# runs, so the "did the morning run actually fire?" check lives here.
+# At 10:05 UTC it hits the orchestrator's watchdog slot: if no run has
+# fired since 06:00 UTC, the orchestrator alerts Slack (SLACK_OPS_WEBHOOK)
+# and runs a catch-up cycle itself.
+
+on:
+  schedule:
+    - cron: '5 10 * * *'  # 10:05 UTC daily
+  workflow_dispatch:
+
+jobs:
+  watchdog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping orchestrator watchdog slot
+        run: |
+          # OPS_KEY repo secret is optional — only needed once CRON_SECRET/OPS_KEY
+          # enforcement is enabled on the Vercel side.
+          response=$(curl -sS -m 290 "https://tower-report.vercel.app/api/orchestrator?slot=watchdog${OPS_KEY:+&key=$OPS_KEY}")
+          echo "$response"
+          echo "$response" | grep -q '"watchdog":"pass"\|"watchdog": "pass"' \
+            && echo "Morning run verified." \
+            || echo "Watchdog triggered a catch-up run (or errored) — see response above."
+        env:
+          OPS_KEY: ${{ secrets.OPS_KEY }}

@@ -5,20 +5,21 @@
   ],
   "crons": [
     {
-      "path": "/api/daily-refresh?slot=am",
+      "path": "/api/orchestrator?slot=am",
       "schedule": "0 6 * * *"
     },
     {
-      "path": "/api/daily-refresh?slot=pm",
+      "path": "/api/orchestrator?slot=pm",
       "schedule": "0 18 * * *"
     }
   ],
   "functions": {
-    "api/daily-refresh.js": { "maxDuration": 300 },
-    "api/stories-refresh.js": { "maxDuration": 90, "includeFiles": "data/**" },
-    "api/verify-recruiting.js": { "maxDuration": 90, "includeFiles": "data/**" },
-    "api/briefing.js": { "maxDuration": 90 },
-    "api/generate-story.js": { "maxDuration": 90, "includeFiles": "data/**" }
+    "api/orchestrator.js": { "maxDuration": 300, "includeFiles": "{data,bots}/**" },
+    "api/ops.js": { "maxDuration": 30, "includeFiles": "{data/**,bots/**,NEEDS-VERIFICATION.md}" },
+    "api/stories-refresh.js": { "maxDuration": 90, "includeFiles": "{data,bots}/**" },
+    "api/verify-recruiting.js": { "maxDuration": 90, "includeFiles": "{data,bots}/**" },
+    "api/briefing.js": { "maxDuration": 90, "includeFiles": "{data,bots}/**" },
+    "api/generate-story.js": { "maxDuration": 90, "includeFiles": "{data,bots}/**" }
   },
   "headers": [
     {

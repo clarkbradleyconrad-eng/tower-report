@@ -66,3 +66,10 @@ These stay live (removing them is your call) but contain claims the new gate wou
 - `defensiveCoordinator` — null (item 1)
 
 Everything else in facts.json (Sarkisian, SEC, DKR–Texas Memorial Stadium, 2026 signed / 2027 active cycle, Arch Manning QB1) matches the hand-maintained repo data (`roster.json`, `db.json`, depth chart) — sanity-check it once.
+
+## 9. Bot ops — env vars for you to provision
+
+- **`SLACK_OPS_WEBHOOK`** — not set. The alerts bot runs last in every orchestrator cycle and evaluates all four conditions (bot failure, quality drop >15, missed 10:00 UTC run, review queue >10), but it cannot post until you create a Slack incoming webhook and add it: `npx vercel env add SLACK_OPS_WEBHOOK production`. Until then each run's alerts summary shows `posted:false, reason:"SLACK_OPS_WEBHOOK not set"` with the alerts it would have sent.
+- **`OPS_KEY`** — set on 2026-07-09 by the bot-system build (gates ops.html + /api/ops + manual orchestrator triggers). Retrieve it with `npx vercel env pull` if you need the value; rotate it any time with `npx vercel env rm OPS_KEY production && npx vercel env add OPS_KEY production`.
+- **`CRON_SECRET`** — still unset (pre-existing). Cron-triggered runs authenticate via the x-vercel-cron header; setting CRON_SECRET additionally locks the individual bot endpoints (briefing?cron=1, stories-refresh, …) which remain publicly triggerable without it.
+- **(Optional) GitHub repo secret `OPS_KEY`** — add the same key at github.com/{repo}/settings/secrets so the 10:05 UTC bot-watchdog workflow can authenticate once you enforce keys.

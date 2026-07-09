@@ -1812,16 +1812,18 @@ async function initOdds() {
 
 /**
  * Admin helper — call from the browser dev console to force a live refresh.
- * Usage: window.towerAdminRefresh('YOUR_ADMIN_TOKEN')
- * Requires ADMIN_REFRESH_TOKEN set in Vercel env vars.
+ * Usage: window.towerAdminRefresh('YOUR_OPS_KEY')
+ * Triggers the odds bot via the orchestrator (see bots/registry.json),
+ * then re-fetches the odds cache. Requires OPS_KEY once configured.
  */
 window.towerAdminRefresh = async function(token) {
-  if (!token) { console.warn('[Tower] Usage: towerAdminRefresh("YOUR_TOKEN")'); return; }
-  console.log('[Tower] Requesting admin odds refresh…');
+  console.log('[Tower] Triggering odds bot via orchestrator…');
   try {
-    const res = await fetch(`/api/admin-refresh?token=${encodeURIComponent(token)}`);
+    const run = await fetch(`/api/orchestrator?bot=odds${token ? `&key=${encodeURIComponent(token)}` : ''}`);
+    const runData = await run.json();
+    if (!run.ok) { console.error('[Tower] Refresh failed:', runData.error); return; }
+    const res = await fetch('/api/odds');
     const data = await res.json();
-    if (!res.ok) { console.error('[Tower] Refresh failed:', data.error); return; }
     if (data.odds) {
       Object.entries(data.odds).forEach(([id, oddData]) => patchGameOdds(id, oddData));
     }

@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Bot Ops · Tower Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --orange:#BF5700;--orange-hi:#CF6210;--orange-lo:rgba(191,87,0,0.12);
+  --black:#080808;--surface:#0F0F0F;--s2:#141414;--s3:#1A1A1A;--s4:#222222;
+  --border:rgba(255,255,255,0.055);--border-mid:rgba(255,255,255,0.10);
+  --white:#F0EBE1;--white2:#C4BCB0;--muted:#5A5450;--secondary:#948C82;
+  --green:#22c55e;--red:#ef4444;--amber:#f59e0b;
+  --font-display:'Barlow Condensed',sans-serif;
+  --font-ed:'Playfair Display',serif;
+  --font-body:'Barlow',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font-body);background:var(--black);color:var(--white);line-height:1.55;}
+a{color:inherit;text-decoration:none;}
+button{cursor:pointer;font-family:inherit;}
+.op-wrap{max-width:1280px;margin:0 auto;padding:0 40px;}
+@media(max-width:900px){.op-wrap{padding:0 20px;}}
+
+/* ── HERO ── */
+.op-hero{border-bottom:1px solid var(--border-mid);padding:38px 0 26px;background:var(--surface);}
+.op-eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.op-rule{width:20px;height:2px;background:var(--orange);}
+.op-kicker{font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:3.5px;text-transform:uppercase;color:var(--orange);}
+.op-hed{font-family:var(--font-ed);font-size:clamp(22px,3vw,34px);font-weight:700;color:var(--white);margin-bottom:6px;}
+.op-hed em{font-style:italic;color:var(--orange);}
+.op-dek{font-size:13px;color:var(--secondary);max-width:560px;}
+.op-hero-row{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+.op-hero-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.op-btn{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:9px 16px;display:inline-flex;align-items:center;gap:7px;transition:all .15s;border:1px solid;}
+.op-btn.primary{background:var(--orange);color:#fff;border-color:var(--orange);}
+.op-btn.primary:hover{background:var(--orange-hi);}
+.op-btn.ghost{background:transparent;color:var(--white2);border-color:var(--border-mid);}
+.op-btn.ghost:hover{border-color:var(--white2);color:var(--white);}
+.op-btn:disabled{opacity:.45;cursor:not-allowed;}
+.op-dry{display:flex;align-items:center;gap:6px;font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--secondary);cursor:pointer;user-select:none;}
+.op-dry input{accent-color:var(--orange);}
+
+/* pills */
+.op-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border:1px solid;font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
+.op-pill .dot{width:5px;height:5px;border-radius:50%;}
+.op-pill.ok{background:rgba(34,197,94,.07);border-color:rgba(34,197,94,.25);color:var(--green);}
+.op-pill.ok .dot{background:var(--green);animation:blink 2s ease-in-out infinite;}
+.op-pill.warn{background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.3);color:var(--amber);}
+.op-pill.warn .dot{background:var(--amber);}
+.op-pill.bad{background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.3);color:#fca5a5;}
+.op-pill.bad .dot{background:var(--red);}
+.op-pill.idle{background:rgba(255,255,255,.04);border-color:var(--border-mid);color:var(--secondary);}
+.op-pill.idle .dot{background:var(--secondary);}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+
+/* ── SECTIONS ── */
+.op-section{padding:34px 0 6px;}
+.op-sec-lbl{font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--orange);}
+.op-sec-title{font-family:var(--font-display);font-size:18px;font-weight:800;text-transform:uppercase;color:var(--white);margin:2px 0 16px;}
+.op-sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;}
+.op-sec-meta{font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+
+/* ── BOT ROSTER GRID ── */
+.op-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px;}
+.op-bot{background:var(--s2);border:1px solid var(--border);border-left:3px solid var(--orange);padding:16px 18px;display:flex;flex-direction:column;gap:10px;}
+.op-bot.disabled{border-left-color:var(--muted);opacity:.72;}
+.op-bot-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+.op-bot-name{font-family:var(--font-display);font-size:15px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--white);}
+.op-bot-id{font-family:var(--font-display);font-size:9px;font-weight:600;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;}
+.op-bot-purpose{font-size:12px;color:var(--secondary);line-height:1.5;min-height:36px;}
+.op-bot-stats{display:flex;gap:16px;flex-wrap:wrap;}
+.op-stat{display:flex;flex-direction:column;}
+.op-stat-v{font-family:var(--font-display);font-size:17px;font-weight:800;color:var(--white);font-variant-numeric:tabular-nums;line-height:1.1;}
+.op-stat-v.or{color:var(--orange);}
+.op-stat-v.gn{color:var(--green);}
+.op-stat-v.rd{color:#fca5a5;}
+.op-stat-l{font-family:var(--font-display);font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:1px;}
+.op-spark{height:34px;width:100%;background:var(--s3);border:1px solid var(--border);position:relative;}
+.op-spark svg{display:block;width:100%;height:100%;}
+.op-spark-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.op-bot-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;border-top:1px solid var(--border);padding-top:10px;flex-wrap:wrap;}
+.op-bot-actions{display:flex;gap:6px;}
+.op-mini{font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:5px 10px;border:1px solid var(--border-mid);background:var(--s3);color:var(--white2);transition:all .14s;}
+.op-mini:hover{border-color:var(--orange);color:var(--orange);}
+.op-mini.danger:hover{border-color:var(--red);color:#fca5a5;}
+.op-mini:disabled{opacity:.4;cursor:not-allowed;}
+.op-prompt-tag{font-family:var(--font-display);font-size:9px;letter-spacing:1px;color:var(--muted);text-transform:none;}
+
+/* ── TIMELINE ── */
+.op-run{background:var(--s2);border:1px solid var(--border);margin-bottom:8px;}
+.op-run summary{list-style:none;display:flex;align-items:center;gap:12px;padding:12px 16px;cursor:pointer;flex-wrap:wrap;}
+.op-run summary::-webkit-details-marker{display:none;}
+.op-run-when{font-family:var(--font-display);font-size:12px;font-weight:700;color:var(--white);min-width:150px;}
+.op-run-trigger{font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:2px 7px;border:1px solid var(--border);background:var(--s3);}
+.op-run-chips{display:flex;gap:5px;flex-wrap:wrap;flex:1;}
+.op-chip{font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border:1px solid;}
+.op-chip.ok{color:var(--green);border-color:rgba(34,197,94,.25);background:rgba(34,197,94,.06);}
+.op-chip.fail{color:#fca5a5;border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.07);}
+.op-chip.skip{color:var(--muted);border-color:var(--border);background:var(--s3);}
+.op-run-body{border-top:1px solid var(--border);padding:14px 16px;display:flex;flex-direction:column;gap:10px;}
+.op-run-bot{background:var(--s3);border:1px solid var(--border);border-left:3px solid var(--green);padding:10px 13px;}
+.op-run-bot.fail{border-left-color:var(--red);}
+.op-run-bot.skip{border-left-color:var(--muted);}
+.op-run-bot-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-family:var(--font-display);font-size:12px;font-weight:700;text-transform:uppercase;color:var(--white);}
+.op-run-bot-meta{font-family:var(--font-display);font-size:10px;font-weight:600;letter-spacing:1px;color:var(--muted);}
+.op-run-bot pre{margin-top:7px;font-size:11px;line-height:1.5;color:var(--white2);background:var(--black);border:1px solid var(--border);padding:9px 11px;overflow-x:auto;white-space:pre-wrap;word-break:break-word;max-height:220px;overflow-y:auto;}
+.op-err-line{color:#fca5a5;font-size:12px;margin-top:5px;}
+
+/* ── REVIEW QUEUE ── */
+.op-review{background:var(--s2);border:1px solid var(--border);border-left:3px solid var(--amber);padding:14px 16px;margin-bottom:8px;}
+.op-review.rej{border-left-color:var(--red);}
+.op-review-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.op-review-title{font-family:var(--font-ed);font-size:15px;font-weight:700;color:var(--white);line-height:1.25;}
+.op-review-sub{font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:3px;}
+.op-review-body{font-size:12.5px;color:var(--secondary);line-height:1.6;margin-top:8px;}
+.op-review-reasons{margin-top:7px;padding:8px 11px;background:rgba(239,68,68,.06);border-left:2px solid rgba(239,68,68,.4);font-size:12px;color:var(--white2);line-height:1.55;}
+.op-review-actions{display:flex;gap:6px;flex-shrink:0;}
+.op-empty{padding:26px;text-align:center;font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);background:var(--s2);border:1px dashed var(--border-mid);}
+
+/* ── SOCIAL DRAFTS ── */
+.op-social{background:var(--s2);border:1px solid var(--border);border-left:3px solid var(--orange);padding:14px 16px;margin-bottom:8px;}
+.op-social-style{font-family:var(--font-display);font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:5px;}
+.op-social-text{font-size:13.5px;color:var(--white);line-height:1.6;}
+.op-social-meta{display:flex;align-items:center;justify-content:space-between;margin-top:9px;padding-top:9px;border-top:1px solid var(--border);flex-wrap:wrap;gap:8px;}
+.op-social-count{font-family:var(--font-display);font-size:9px;font-weight:600;letter-spacing:1px;color:var(--muted);text-transform:uppercase;}
+
+/* ── SKELETON ── */
+@keyframes _shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+.op-skel{background:linear-gradient(90deg,#141414 25%,#1e1e1e 50%,#141414 75%);background-size:200% 100%;animation:_shimmer 1.6s infinite;border:1px solid var(--border);}
+.op-skel-card{height:200px;}
+.op-skel-row{height:46px;margin-bottom:8px;}
+
+/* ── TOAST ── */
+.op-toasts{position:fixed;bottom:20px;right:20px;z-index:600;display:flex;flex-direction:column;gap:7px;align-items:flex-end;pointer-events:none;}
+.op-toast{display:flex;align-items:center;gap:8px;padding:9px 13px;border:1px solid;font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;pointer-events:auto;animation:_tin .3s cubic-bezier(.16,1,.3,1),_tout .3s cubic-bezier(.16,1,.3,1) 3.2s both;}
+.op-toast.ok{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.3);color:#86efac;}
+.op-toast.err{background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.3);color:#fca5a5;}
+.op-toast.inf{background:var(--s3);border-color:var(--border-mid);color:var(--white2);}
+@keyframes _tin{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+@keyframes _tout{from{opacity:1;}to{opacity:0;transform:translateY(4px);}}
+
+/* ── LOCK / BANNER ── */
+.op-banner{background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.25);color:var(--amber);font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:9px 14px;margin:16px 0 0;}
+.op-lock{min-height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;padding:24px;text-align:center;}
+.op-lock input{background:var(--s2);border:1px solid var(--border-mid);color:var(--white);padding:10px 14px;font-family:var(--font-body);font-size:14px;width:min(320px,80vw);outline:none;}
+.op-lock input:focus{border-color:var(--orange);}
+.op-footer{border-top:1px solid var(--border);margin-top:44px;padding:20px 0 34px;font-size:12px;color:var(--muted);}
+</style>
+</head>
+<body>
+
+<div id="lock" class="op-lock" style="display:none;">
+  <div class="op-kicker">Tower Report · Bot Ops</div>
+  <div class="op-hed" style="font-size:24px;">Access <em>key required</em></div>
+  <input id="lock-key" type="password" placeholder="Ops key" autocomplete="off">
+  <button class="op-btn primary" onclick="unlock()">Enter</button>
+</div>
+
+<div id="app" style="display:none;">
+  <header class="op-hero">
+    <div class="op-wrap">
+      <div class="op-hero-row">
+        <div>
+          <div class="op-eyebrow"><span class="op-rule"></span><span class="op-kicker">Bot Ops · Control Room</span><span id="hero-pill" class="op-pill idle"><span class="dot"></span>Loading</span></div>
+          <h1 class="op-hed">Every bot. <em>One brain.</em></h1>
+          <p class="op-dek">Registry-driven orchestration — enable, trigger, grade, and review every automated pipeline from here. Bots write data and Blob only, never page HTML.</p>
+        </div>
+        <div class="op-hero-actions">
+          <label class="op-dry"><input type="checkbox" id="dry-run">Dry run</label>
+          <button class="op-btn ghost" onclick="loadDashboard(true)" id="btn-refresh">↻ Refresh</button>
+          <button class="op-btn primary" onclick="triggerRun(null)" id="btn-full-run">▶ Run all bots</button>
+        </div>
+      </div>
+      <div id="banners"></div>
+    </div>
+  </header>
+
+  <main class="op-wrap">
+    <section class="op-section">
+      <div class="op-sec-head">
+        <div><div class="op-sec-lbl">Roster</div><div class="op-sec-title">Bots</div></div>
+        <div class="op-sec-meta" id="roster-meta"></div>
+      </div>
+      <div class="op-grid" id="roster"><div class="op-skel op-skel-card"></div><div class="op-skel op-skel-card"></div><div class="op-skel op-skel-card"></div></div>
+    </section>
+
+    <section class="op-section">
+      <div class="op-sec-head">
+        <div><div class="op-sec-lbl">History</div><div class="op-sec-title">Run timeline</div></div>
+        <div class="op-sec-meta" id="runs-meta"></div>
+      </div>
+      <div id="runs"><div class="op-skel op-skel-row"></div><div class="op-skel op-skel-row"></div></div>
+    </section>
+
+    <section class="op-section">
+      <div class="op-sec-head">
+        <div><div class="op-sec-lbl">Review</div><div class="op-sec-title">Rejected outputs</div></div>
+        <div class="op-sec-meta" id="rejected-meta"></div>
+      </div>
+      <div id="rejected"><div class="op-skel op-skel-row"></div></div>
+    </section>
+
+    <section class="op-section">
+      <div class="op-sec-head">
+        <div><div class="op-sec-lbl">Review</div><div class="op-sec-title">Needs verification</div></div>
+        <div class="op-sec-meta">from NEEDS-VERIFICATION.md — resolve by editing data/facts.json in git</div>
+      </div>
+      <div id="nv"><div class="op-skel op-skel-row"></div></div>
+    </section>
+
+    <section class="op-section">
+      <div class="op-sec-head">
+        <div><div class="op-sec-lbl">Social</div><div class="op-sec-title">X post drafts</div></div>
+        <div class="op-sec-meta">written by social-drafter — never auto-posted</div>
+      </div>
+      <div id="social"><div class="op-skel op-skel-row"></div></div>
+    </section>
+
+    <footer class="op-footer">
+      Tower Report bot operations. Orchestrator crons: 06:00 &amp; 18:00 UTC (Vercel) · watchdog 10:05 UTC (GitHub Actions). Add a bot: registry entry + prompt file — see README.
+    </footer>
+  </main>
+</div>
+
+<div class="op-toasts" id="toasts"></div>
+
+<script>
+'use strict';
+var KEY = new URLSearchParams(location.search).get('key') || sessionStorage.getItem('towerOpsKey') || '';
+var DATA = null;
+var esc = function (s) { var d = document.createElement('div'); d.textContent = s == null ? '' : String(s); return d.innerHTML; };
+
+function api(path) { return path + (path.indexOf('?') >= 0 ? '&' : '?') + 'key=' + encodeURIComponent(KEY); }
+
+function toast(msg, type) {
+  var wrap = document.getElementById('toasts');
+  var el = document.createElement('div');
+  el.className = 'op-toast ' + (type || 'inf');
+  el.textContent = msg;
+  wrap.appendChild(el);
+  setTimeout(function () { el.remove(); }, 3800);
+}
+
+function unlock() {
+  KEY = document.getElementById('lock-key').value.trim();
+  sessionStorage.setItem('towerOpsKey', KEY);
+  boot();
+}
+
+function fmtAgo(iso) {
+  if (!iso) return 'never';
+  var m = (Date.now() - new Date(iso).getTime()) / 60000;
+  if (m < 1) return 'just now';
+  if (m < 60) return Math.round(m) + 'm ago';
+  if (m < 48 * 60) return (m / 60).toFixed(1) + 'h ago';
+  return Math.round(m / 1440) + 'd ago';
+}
+function fmtMs(ms) { return ms == null ? '—' : ms >= 1000 ? (ms / 1000).toFixed(1) + 's' : ms + 'ms'; }
+
+function sparkline(points) {
+  if (!points || points.filter(function (p) { return p.score != null; }).length < 2) {
+    return '<div class="op-spark"><div class="op-spark-empty">No score history</div></div>';
+  }
+  var w = 100, h = 34, pad = 3;
+  var xs = points.length > 1 ? (w - pad * 2) / (points.length - 1) : 0;
+  var line = points.map(function (p, i) {
+    var y = p.score == null ? h - pad : h - pad - ((p.score / 100) * (h - pad * 2));
+    return (pad + i * xs).toFixed(1) + ',' + y.toFixed(1);
+  }).join(' ');
+  var dots = points.map(function (p, i) {
+    if (p.ok !== false) return '';
+    var y = p.score == null ? h - pad : h - pad - ((p.score / 100) * (h - pad * 2));
+    return '<circle cx="' + (pad + i * xs).toFixed(1) + '" cy="' + y.toFixed(1) + '" r="2.4" fill="#ef4444"/>';
+  }).join('');
+  return '<div class="op-spark"><svg viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="none">' +
+    '<polyline points="' + line + '" fill="none" stroke="#BF5700" stroke-width="1.6"/>' + dots + '</svg></div>';
+}
+
+/* ── RENDER ── */
+
+function renderRoster(d) {
+  var el = document.getElementById('roster');
+  document.getElementById('roster-meta').textContent = d.bots.length + ' registered · ' + d.bots.filter(function (b) { return b.enabled; }).length + ' enabled';
+  el.innerHTML = d.bots.map(function (b) {
+    var last = b.lastRun;
+    var streak = b.streak ? (b.streak.ok ? b.streak.count + '× pass' : b.streak.count + '× fail') : '—';
+    var streakCls = b.streak ? (b.streak.ok ? 'gn' : 'rd') : '';
+    var pill = !b.enabled ? '<span class="op-pill idle"><span class="dot"></span>Disabled</span>'
+      : !last ? '<span class="op-pill idle"><span class="dot"></span>No runs</span>'
+      : last.ok ? '<span class="op-pill ok"><span class="dot"></span>Healthy</span>'
+      : '<span class="op-pill bad"><span class="dot"></span>Failing</span>';
+    return '<div class="op-bot' + (b.enabled ? '' : ' disabled') + '">' +
+      '<div class="op-bot-top"><div><div class="op-bot-name">' + esc(b.name) + '</div>' +
+      '<div class="op-bot-id">' + esc(b.id) + ' · ' + esc(b.kind) + (b.dependsOn && b.dependsOn.length ? ' · after ' + esc(b.dependsOn.join(', ')) : '') + '</div></div>' + pill + '</div>' +
+      '<div class="op-bot-purpose">' + esc(b.purpose) + '</div>' +
+      '<div class="op-bot-stats">' +
+      '<div class="op-stat"><span class="op-stat-v or">' + (b.avgScore != null ? b.avgScore : '—') + '</span><span class="op-stat-l">Avg quality 30d</span></div>' +
+      '<div class="op-stat"><span class="op-stat-v">' + fmtMs(b.avgMs) + '</span><span class="op-stat-l">Avg duration</span></div>' +
+      '<div class="op-stat"><span class="op-stat-v ' + streakCls + '">' + streak + '</span><span class="op-stat-l">Streak</span></div>' +
+      '<div class="op-stat"><span class="op-stat-v">' + (last ? fmtAgo(last.t) : '—') + '</span><span class="op-stat-l">Last run</span></div>' +
+      (b.rejectedCount ? '<div class="op-stat"><span class="op-stat-v rd">' + b.rejectedCount + '</span><span class="op-stat-l">Rejected</span></div>' : '') +
+      '</div>' +
+      sparkline(b.spark) +
+      '<div class="op-bot-foot">' +
+      '<span class="op-prompt-tag">' + (b.promptFile ? esc(b.promptFile.replace('bots/prompts/', '')) + (last && last.promptHash ? ' @ ' + esc(last.promptHash) : '') : 'no prompt') + '</span>' +
+      '<div class="op-bot-actions">' +
+      '<button class="op-mini" onclick="triggerRun(\'' + b.id + '\')">▶ Run</button>' +
+      '<button class="op-mini' + (b.enabled ? ' danger' : '') + '" onclick="toggleBot(\'' + b.id + '\',' + !b.enabled + ')">' + (b.enabled ? 'Disable' : 'Enable') + '</button>' +
+      '</div></div></div>';
+  }).join('');
+}
+
+function renderRuns(d) {
+  var el = document.getElementById('runs');
+  document.getElementById('runs-meta').textContent = d.runs.length ? 'latest ' + d.runs.length + ' runs' : '';
+  if (!d.runs.length) { el.innerHTML = '<div class="op-empty">No orchestrator runs recorded yet — trigger one above</div>'; return; }
+  el.innerHTML = d.runs.map(function (run, idx) {
+    var chips = (run.bots || []).map(function (b) {
+      var cls = b.skipped ? 'skip' : b.ok ? 'ok' : 'fail';
+      var label = b.id + (b.skipped ? ' ⊘' : b.ok ? (b.score != null ? ' ' + b.score : ' ✓') : ' ✗');
+      return '<span class="op-chip ' + cls + '">' + esc(label) + '</span>';
+    }).join('');
+    var body = (run.bots || []).map(function (b) {
+      var cls = b.skipped ? 'skip' : b.ok ? '' : 'fail';
+      var detail = b.summary ? JSON.stringify(b.summary, null, 2) : null;
+      return '<div class="op-run-bot ' + cls + '">' +
+        '<div class="op-run-bot-head">' + esc(b.name || b.id) +
+        '<span class="op-run-bot-meta">' + (b.skipped ? 'skipped — ' + esc(b.reason || '') : fmtMs(b.ms) + (b.score != null ? ' · quality ' + b.score : '') + (b.promptHash ? ' · prompt ' + esc(b.promptHash) : '') + (b.rejected ? ' · REJECTED' : '')) + '</span></div>' +
+        (b.error ? '<div class="op-err-line">' + esc(b.error) + '</div>' : '') +
+        (detail ? '<pre>' + esc(detail) + '</pre>' : '') +
+        '</div>';
+    }).join('');
+    return '<details class="op-run"' + (idx === 0 ? ' open' : '') + '><summary>' +
+      '<span class="op-run-when">' + esc(new Date(run.startedAt).toLocaleString()) + '</span>' +
+      '<span class="op-run-trigger">' + esc(run.trigger) + (run.dryRun ? ' · dry' : '') + (run.forceFail ? ' · forceFail=' + esc(run.forceFail) : '') + '</span>' +
+      '<span class="op-run-chips">' + chips + '</span>' +
+      '</summary><div class="op-run-body">' + body + '</div></details>';
+  }).join('');
+}
+
+function renderRejected(d) {
+  var el = document.getElementById('rejected');
+  var entries = [];
+  Object.keys(d.rejected || {}).forEach(function (botId) {
+    (d.rejected[botId] || []).forEach(function (e) { entries.push({ botId: botId, e: e }); });
+  });
+  entries.sort(function (a, b) { return new Date(b.e.ts) - new Date(a.e.ts); });
+  document.getElementById('rejected-meta').textContent = entries.length + ' in queue (capped 50/bot)';
+  if (!entries.length) { el.innerHTML = '<div class="op-empty">Nothing rejected — the quality gate is quiet</div>'; return; }
+  el.innerHTML = entries.slice(0, 25).map(function (x) {
+    var out = x.e.output || {};
+    var title = out.headline || out.title || (out.story && out.story.title) || (Array.isArray(out) ? out.length + ' briefing items' : 'output');
+    var canApprove = x.botId === 'stories-refresh' || x.botId === 'story-generator';
+    return '<div class="op-review rej"><div class="op-review-head"><div>' +
+      '<div class="op-review-title">' + esc(title) + '</div>' +
+      '<div class="op-review-sub">' + esc(x.botId) + ' · ' + fmtAgo(x.e.ts) + (x.e.score != null ? ' · scored ' + x.e.score + '/100' : ' · failed validation') + (x.e.promptHash ? ' · prompt ' + esc(x.e.promptHash) : '') + '</div></div>' +
+      '<div class="op-review-actions">' +
+      (canApprove ? '<button class="op-mini" onclick="reviewAction(\'rejected-approve\',\'' + x.botId + '\',\'' + esc(x.e.ts) + '\')">✓ Approve</button>' : '') +
+      '<button class="op-mini danger" onclick="reviewAction(\'rejected-dismiss\',\'' + x.botId + '\',\'' + esc(x.e.ts) + '\')">✗ Dismiss</button>' +
+      '</div></div>' +
+      (x.e.reasons && x.e.reasons.length ? '<div class="op-review-reasons">' + x.e.reasons.slice(0, 6).map(esc).join('<br>') + '</div>' : '') +
+      '</div>';
+  }).join('');
+}
+
+function renderNV(d) {
+  var el = document.getElementById('nv');
+  var items = (d.needsVerification || []).filter(function (i) { return !i.dismissed; });
+  if (!items.length) { el.innerHTML = '<div class="op-empty">No open verification items</div>'; return; }
+  el.innerHTML = items.map(function (i) {
+    return '<div class="op-review"><div class="op-review-head"><div>' +
+      '<div class="op-review-title">' + esc(i.title) + '</div></div>' +
+      '<div class="op-review-actions"><button class="op-mini danger" onclick="nvDismiss(\'' + esc(i.id) + '\')">Acknowledge</button></div></div>' +
+      '<div class="op-review-body">' + esc(i.excerpt) + '…</div></div>';
+  }).join('');
+}
+
+function renderSocial(d) {
+  var el = document.getElementById('social');
+  var s = d.social;
+  if (!s || !s.drafts || !s.drafts.length || s.dismissed) {
+    el.innerHTML = '<div class="op-empty">No social drafts yet — the social-drafter runs after stories-refresh</div>';
+    return;
+  }
+  var head = '<div class="op-review" style="border-left-color:var(--orange);"><div class="op-review-title">' + esc(s.storyHeadline || 'Top story') + '</div>' +
+    '<div class="op-review-sub">drafted ' + fmtAgo(s.updatedAt) + (s.score != null ? ' · quality ' + s.score : '') + (s.promptHash ? ' · prompt ' + esc(s.promptHash) : '') + '</div></div>';
+  el.innerHTML = head + s.drafts.map(function (dft) {
+    return '<div class="op-social"><div class="op-social-style">' + esc(dft.style) + '</div>' +
+      '<div class="op-social-text">' + esc(dft.text) + '</div>' +
+      '<div class="op-social-meta"><span class="op-social-count">' + (dft.text || '').length + '/280 chars</span>' +
+      '<button class="op-mini" onclick="copyDraft(this)" data-text="' + esc(dft.text) + '">Copy</button></div></div>';
+  }).join('') +
+  '<div style="margin-top:8px;display:flex;gap:6px;"><button class="op-mini danger" onclick="socialDismiss()">Dismiss batch</button></div>';
+}
+
+function renderBanners(d) {
+  var b = [];
+  if (!d.secured) b.push('OPS_KEY is not set — this dashboard and the orchestrator are publicly triggerable. Add OPS_KEY in Vercel env.');
+  if (!d.slackConfigured) b.push('SLACK_OPS_WEBHOOK is not set — the alerts bot evaluates but cannot post to Slack.');
+  document.getElementById('banners').innerHTML = b.map(function (t) { return '<div class="op-banner">⚠ ' + esc(t) + '</div>'; }).join('');
+  var latest = d.runs[0];
+  var pill = document.getElementById('hero-pill');
+  if (!latest) { pill.className = 'op-pill idle'; pill.innerHTML = '<span class="dot"></span>No runs yet'; }
+  else {
+    var fails = (latest.bots || []).filter(function (x) { return !x.ok && !x.skipped; }).length;
+    var ago = fmtAgo(latest.finishedAt);
+    if (fails) { pill.className = 'op-pill bad'; pill.innerHTML = '<span class="dot"></span>' + fails + ' failing · ' + ago; }
+    else { pill.className = 'op-pill ok'; pill.innerHTML = '<span class="dot"></span>All passing · ' + ago; }
+  }
+}
+
+/* ── ACTIONS ── */
+
+function loadDashboard(showToast) {
+  return fetch(api('/api/ops'))
+    .then(function (r) { if (r.status === 401) throw new Error('unauthorized'); return r.json(); })
+    .then(function (d) {
+      if (d.error) throw new Error(d.error);
+      DATA = d;
+      renderBanners(d); renderRoster(d); renderRuns(d); renderRejected(d); renderNV(d); renderSocial(d);
+      if (showToast) toast('Dashboard refreshed', 'ok');
+    })
+    .catch(function (e) {
+      if (e.message === 'unauthorized') { sessionStorage.removeItem('towerOpsKey'); showLock(); return; }
+      toast('Load failed: ' + e.message, 'err');
+    });
+}
+
+function triggerRun(botId) {
+  var dry = document.getElementById('dry-run').checked;
+  var url = '/api/orchestrator?' + (botId ? 'bot=' + encodeURIComponent(botId) + '&' : '') + (dry ? 'dryRun=true&' : '') + 'key=' + encodeURIComponent(KEY);
+  var btn = document.getElementById('btn-full-run');
+  btn.disabled = true;
+  toast((botId ? botId : 'Full run') + (dry ? ' (dry) ' : ' ') + 'started — this can take minutes', 'inf');
+  fetch(url)
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      if (d.error) throw new Error(d.error);
+      var ran = (d.bots || []).filter(function (b) { return !b.skipped; });
+      var fails = ran.filter(function (b) { return !b.ok; });
+      toast('Run finished: ' + (ran.length - fails.length) + '/' + ran.length + ' ok' + (fails.length ? ' — ' + fails.map(function (f) { return f.id; }).join(', ') + ' failed' : ''), fails.length ? 'err' : 'ok');
+      return loadDashboard(false);
+    })
+    .catch(function (e) { toast('Run failed: ' + e.message, 'err'); })
+    .finally(function () { btn.disabled = false; });
+}
+
+function post(body) {
+  return fetch(api('/api/ops'), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  }).then(function (r) { return r.json(); }).then(function (d) {
+    if (d.error) throw new Error(d.error);
+    return d;
+  });
+}
+
+function toggleBot(botId, enabled) {
+  post({ action: 'toggle', botId: botId, enabled: enabled })
+    .then(function () { toast(botId + (enabled ? ' enabled' : ' disabled'), 'ok'); return loadDashboard(false); })
+    .catch(function (e) { toast('Toggle failed: ' + e.message, 'err'); });
+}
+
+function reviewAction(action, botId, ts) {
+  post({ action: action, botId: botId, ts: ts })
+    .then(function () { toast(action.indexOf('approve') >= 0 ? 'Approved & published' : 'Dismissed', 'ok'); return loadDashboard(false); })
+    .catch(function (e) { toast('Failed: ' + e.message, 'err'); });
+}
+
+function nvDismiss(id) {
+  post({ action: 'nv-dismiss', id: id })
+    .then(function () { toast('Acknowledged', 'ok'); return loadDashboard(false); })
+    .catch(function (e) { toast('Failed: ' + e.message, 'err'); });
+}
+
+function socialDismiss() {
+  post({ action: 'social-dismiss' })
+    .then(function () { toast('Draft batch dismissed', 'ok'); return loadDashboard(false); })
+    .catch(function (e) { toast('Failed: ' + e.message, 'err'); });
+}
+
+function copyDraft(btn) {
+  navigator.clipboard.writeText(btn.getAttribute('data-text'))
+    .then(function () { toast('Draft copied', 'ok'); })
+    .catch(function () { toast('Copy failed', 'err'); });
+}
+
+/* ── BOOT ── */
+
+function showLock() {
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('lock').style.display = 'flex';
+}
+
+function boot() {
+  document.getElementById('lock').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  loadDashboard(false);
+}
+
+document.getElementById('lock-key').addEventListener('keydown', function (e) { if (e.key === 'Enter') unlock(); });
+if (KEY) sessionStorage.setItem('towerOpsKey', KEY);
+boot(); // /api/ops 401s if the key is wrong, which flips to the lock screen
+</script>
+</body>
+</html>

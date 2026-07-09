@@ -20,32 +20,15 @@
 
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
+import { loadPromptWithFacts } from '../bots/lib/prompts.js';
+import { scoreRecruitingLive } from '../bots/lib/score.js';
 
 const BLOB_API = 'https://blob.vercel-storage.com';
 const BLOB_PATHNAME = 'tower-recruiting-live.json';
 const BLOB_PREFIX = 'tower-recruiting-live'; // REST API appends a hash to the path
 
-const SYSTEM = `You are Tower Report's recruiting fact-checker. Your only job is to verify, via live web search, the CURRENT state of the Texas Longhorns 2027 football recruiting class. You report numbers, not takes.
-
-Search On3 (on3.com team recruiting rankings) and 247Sports (247sports.com team rankings composite) for the Texas Longhorns 2027 class RIGHT NOW, plus any Texas 2027 commitment or decommitment news from the last 7 days.
-
-ACCURACY RULES — ABSOLUTE:
-- Report a number ONLY if a web search result states it. If you cannot confirm a value, use null. A null is correct; a guess is a failure.
-- recentMoves may only contain real, named prospects found in search results, with the reporting outlet named. No placeholders. If there are no confirmed moves in the last 7 days, return an empty array.
-- The "sources" array must name every outlet you actually used (e.g. "On3", "247Sports", "Inside Texas"). If you verified nothing, return an empty sources array and nulls.
-- The 2026 class is signed and closed — only 2027-cycle news belongs here.
-
-Return ONLY this JSON object — no markdown, no commentary:
-
-{
-  "on3TeamRank": <integer national team rank of the Texas 2027 class per On3, or null>,
-  "sports247TeamRank": <integer national team rank per 247Sports, or null>,
-  "commitCount": <integer count of publicly named Texas 2027 commits, or null>,
-  "recentMoves": [
-    { "date": "<Month D, YYYY>", "type": "<commit | decommit>", "player": "<First Last>", "pos": "<position>", "note": "<one factual sentence with the reporting outlet named>" }
-  ],
-  "sources": ["<outlet 1>", "<outlet 2>"]
-}`;
+/* System prompt lives in bots/prompts/verify-recruiting.md (versioned; its
+   hash is logged with every output so quality changes trace to prompt edits). */
 
 /* ---- Blob helpers ---- */
 
@@ -150,6 +133,16 @@ export default async function handler(req, res) {
   if (!apiKey) return res.status(503).json({ error: 'XAI_API_KEY not configured' });
   if (!process.env.BLOB_READ_WRITE_TOKEN) return res.status(503).json({ error: 'BLOB_READ_WRITE_TOKEN not configured' });
 
+  // ?dryRun=1 (orchestrator dry runs): full check, nothing stored
+  const dryRun = url.searchParams.get('dryRun') === '1';
+
+  let SYSTEM, promptHash;
+  try {
+    ({ text: SYSTEM, hash: promptHash } = await loadPromptWithFacts('verify-recruiting'));
+  } catch (err) {
+    return res.status(503).json({ error: 'Prompt load failed', message: err.message });
+  }
+
   // Hand-verified baseline for the prompt (never overwritten by this endpoint)
   let verified = null;
   try {
@@ -197,10 +190,11 @@ export default async function handler(req, res) {
       return res.status(200).json({ ok: false, note: 'Grok returned no verifiable sources; previous snapshot kept', live: prev?.live || null, updatedAt: prev?.updatedAt || null });
     }
 
-    const payload = { ok: true, updatedAt: new Date().toISOString(), via: 'Grok web search', live };
-    await blobSet(payload);
-    console.log(`[tower/verify-recruiting] on3=${live.on3TeamRank} 247=${live.sports247TeamRank} commits=${live.commitCount} moves=${live.recentMoves.length} sources=${live.sources.join(',')}`);
-    return res.status(200).json(payload);
+    const { score } = scoreRecruitingLive(live);
+    const payload = { ok: true, updatedAt: new Date().toISOString(), via: 'Grok web search', live, _score: score, _promptHash: promptHash };
+    if (!dryRun) await blobSet(payload);
+    console.log(`[tower/verify-recruiting] on3=${live.on3TeamRank} 247=${live.sports247TeamRank} commits=${live.commitCount} moves=${live.recentMoves.length} sources=${live.sources.join(',')} score=${score} dryRun=${dryRun}`);
+    return res.status(200).json(dryRun ? { ...payload, dryRun: true } : payload);
   } catch (err) {
     console.error('[tower/verify-recruiting]', err.message);
     return res.status(500).json({ error: err.message });

@@ -7,8 +7,8 @@
  * and caps the archive at 60 stories sorted newest-first. The /api/stories
  * endpoint reads from this archive — instant, no AI latency at page load.
  *
- * Triggered by: /api/daily-refresh orchestrator (cron, twice daily) or
- * manual call (GET/POST). Node.js runtime for the 60-second Grok timeout.
+ * Triggered by: /api/orchestrator (cron, twice daily; see bots/registry.json)
+ * or manual call (GET/POST). Node.js runtime for the long Grok timeout.
  *
  * Env vars:
  *   XAI_API_KEY           — xAI API key
@@ -239,7 +239,7 @@ export default async function handler(req, res) {
     (grounding
       ? `VERIFIED TEAM CONTEXT (from Tower Report's own database — treat as ground truth for roster, coaching staff, and schedule):\n${grounding}\n\n`
       : '') +
-    `Search the web for the latest Texas Longhorns football news from the past 48-72 hours. Select the 3 most important stories by program impact. Write each one to the full 500-700 word standard. Vary the categories — do not write 3 recruiting stories.\n\n` +
+    `Search the web for the latest Texas Longhorns football news from the past 48-72 hours. Select the 2 most important stories by program impact. Write each one to the full 900-1,300 word elite-analysis standard — every section budget, the second-order effects chain, the opponent-specific application, the roster math, the historical precedent, the contrarian angle, and the falsifiable prediction. Vary the categories — do not write 2 recruiting stories.\n\n` +
     `GROUNDING RULES: If web search does not confirm a fact from the last 72 hours, do not state it. Never invent statistics, odds, forty times, or NIL figures. If breaking news contradicts the verified context above, trust the newer sourced report and state what changed — but never contradict the HAND-VERIFIED PROGRAM FACTS.\n\n` +
     `Return ONLY the JSON object.`;
 

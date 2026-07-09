@@ -3,7 +3,7 @@
  *
  * Pipeline observability. Returns the last refresh run and the last
  * successful run time per step, read from the tower-refresh-log.json
- * heartbeat blob written by /api/daily-refresh.
+ * heartbeat blob written by /api/orchestrator.
  *
  * Env vars:
  *   BLOB_READ_WRITE_TOKEN — Vercel Blob token
