@@ -1,0 +1,21 @@
+{
+  "_comment": "Ground-truth program facts. Hand-verified only — bots and AI prompts read this file, never write it. null = not yet verified (see NEEDS-VERIFICATION.md). Every generated story is checked against these facts and rejected on contradiction.",
+  "lastVerified": "2026-07-09",
+  "program": "Texas Longhorns Football",
+  "conference": "SEC",
+  "stadium": "Darrell K Royal–Texas Memorial Stadium (Austin, TX)",
+  "headCoach": "Steve Sarkisian",
+  "offensiveCoordinator": null,
+  "defensiveCoordinator": null,
+  "unverified": {
+    "defensiveCoordinator": ["Pete Kwiatkowski", "Will Muschamp"],
+    "note": "Live stories name two different DCs; data/roster.json says Kwiatkowski, most AI stories say Muschamp. Field stays null until hand-confirmed. Until then no story may attribute the DC (or OC) role to any named person."
+  },
+  "recruiting": {
+    "signedClass": 2026,
+    "signedClassStatus": "signed and closed — no active 2026 recruiting",
+    "activeCycle": 2027
+  },
+  "season": 2026,
+  "quarterback": "Arch Manning"
+}

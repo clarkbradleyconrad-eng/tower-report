@@ -377,6 +377,9 @@ button{cursor:pointer;}
 .ts-watchnext{margin-bottom:18px;padding:14px 16px;background:var(--s2);border:1px solid var(--border);border-left:3px solid var(--muted);}
 .ts-watchnext-lbl{font-family:var(--font-display);font-size:8px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
 .ts-watchnext p{font-size:13.5px;line-height:1.62;color:var(--secondary);}
+.ts-watchnext ul{list-style:none;display:flex;flex-direction:column;gap:7px;}
+.ts-watchnext li{display:flex;gap:9px;font-size:13.5px;line-height:1.55;color:var(--secondary);}
+.ts-watchnext li::before{content:'▸';color:var(--muted);font-size:10px;flex-shrink:0;margin-top:2px;}
 .ts-modal-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:14px;}
 .ts-modal-tag{padding:3px 8px;background:var(--s3);border:1px solid var(--border);font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--secondary);}
 
@@ -813,6 +816,14 @@ function mapNewsroomStory(s, index) {
     overview: overview,
     sources: s.sources||['Tower Report'],
     readTime: s.readTime||3,
+    // Sidebar graphics + intel modules — pass through when the generator
+    // provided sourced data (required on all stories generated after 2026-07-09)
+    impactBreakdown: s.impactBreakdown||null,
+    seasonModel: s.seasonModel||null,
+    affectedPositions: s.affectedPositions||[],
+    takeaways: s.takeaways||s.keySignals||[],
+    watchNext: s.watchNext||null,
+    relatedImpact: s.relatedImpact||'',
     _published: s.publishedAt || s.createdAt || null,
     _authored: true,
   };
@@ -1215,9 +1226,12 @@ function renderArticle(s) {
     '</ul></div>';
   }
 
-  // Watch List
-  if (s.watchNext) {
-    out += '<div class="ts-watchnext"><div class="ts-watchnext-lbl">Watch List</div><p>'+esc(s.watchNext)+'</p></div>';
+  // Watch List — array of signals renders as a list, legacy string as prose
+  if (s.watchNext && s.watchNext.length) {
+    var wnBody = Array.isArray(s.watchNext)
+      ? '<ul>'+s.watchNext.map(function(w){ return '<li>'+esc(w)+'</li>'; }).join('')+'</ul>'
+      : '<p>'+esc(s.watchNext)+'</p>';
+    out += '<div class="ts-watchnext"><div class="ts-watchnext-lbl">Watch List</div>'+wnBody+'</div>';
   }
 
   // Tags

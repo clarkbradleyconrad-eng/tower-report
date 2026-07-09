@@ -400,6 +400,31 @@ let currentStory = null;
 let currentSocialPosts = null;
 let db = { stories: [] };
 let queueFilter = 'all';
+
+/* ── AUTH ──────────────────────────────────
+   Mutating API calls carry the desk key (same localStorage slot the
+   Content Desk uses). If the server rejects with 401, prompt once for
+   the password, store it, and retry. */
+const DESK_KEY_STORE = 'tr_desk_key';
+
+async function deskFetch(url, init = {}) {
+  const call = () => fetch(url, {
+    ...init,
+    headers: {
+      ...(init.headers || {}),
+      'X-Desk-Key': localStorage.getItem(DESK_KEY_STORE) || '',
+    },
+  });
+  let res = await call();
+  if (res.status === 401) {
+    const key = window.prompt('Newsroom password:');
+    if (key) {
+      localStorage.setItem(DESK_KEY_STORE, key.trim());
+      res = await call();
+    }
+  }
+  return res;
+}
 let previousView = 'generate';
 
 const EVENT_TYPES = [
@@ -513,7 +538,7 @@ async function generateStory() {
   document.getElementById('generate-error').textContent = '';
 
   try {
-    const res = await fetch('/api/generate-story', {
+    const res = await deskFetch('/api/generate-story', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -710,7 +735,7 @@ async function saveCurrentStory(status) {
   story.isStoryOfTheDay = false;
 
   try {
-    const res = await fetch('/api/stories-db', {
+    const res = await deskFetch('/api/stories-db', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ story }),
@@ -821,7 +846,7 @@ function renderQueue() {
 async function quickPublish(id) {
   if (!confirm('Publish this story to the live Stories page?')) return;
   try {
-    const res = await fetch('/api/stories-db', {
+    const res = await deskFetch('/api/stories-db', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id, updates: { status: 'published', publishedAt: new Date().toISOString() } }),
@@ -837,7 +862,7 @@ async function quickPublish(id) {
 async function quickUnpublish(id) {
   if (!confirm('Unpublish this story? It will move back to draft status and be removed from the Stories page.')) return;
   try {
-    const res = await fetch('/api/stories-db', {
+    const res = await deskFetch('/api/stories-db', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id, updates: { status: 'draft', publishedAt: null } }),
@@ -866,7 +891,7 @@ async function deleteStory(id) {
   const title = story?.title || 'this story';
   if (!confirm(`Delete "${title.slice(0,60)}"? This cannot be undone.`)) return;
   try {
-    const res = await fetch(`/api/stories-db?id=${encodeURIComponent(id)}`, { method: 'DELETE' });
+    const res = await deskFetch(`/api/stories-db?id=${encodeURIComponent(id)}`, { method: 'DELETE' });
     if (!res.ok) throw new Error(`Status ${res.status}`);
     toast('Deleted');
     await loadQueue();

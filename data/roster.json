@@ -4,7 +4,9 @@
   "team": {
     "name": "Texas Longhorns",
     "conference": "SEC",
-    "headCoach": "Steve Sarkisian"
+    "headCoach": "Steve Sarkisian",
+    "offensiveCoordinator": null,
+    "defensiveCoordinator": "Pete Kwiatkowski"
   },
   "positions": {
     "RB": [

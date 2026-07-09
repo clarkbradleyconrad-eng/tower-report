@@ -116,14 +116,20 @@ def build_roster_json(players):
     for pos in positions:
         positions[pos].sort(key=lambda x: x["number"])
 
+    # Preserve manually-maintained team metadata (coordinators, etc.) —
+    # the stories-refresh grounding reads fields this scraper doesn't know about.
+    existing = load_existing() or {}
+    team = dict(existing.get("team") or {})
+    team.update({
+        "name": "Texas Longhorns",
+        "conference": "SEC",
+        "headCoach": "Steve Sarkisian",
+    })
+
     return {
         "season": 2026,
         "lastUpdated": datetime.now(timezone.utc).isoformat(),
-        "team": {
-            "name": "Texas Longhorns",
-            "conference": "SEC",
-            "headCoach": "Steve Sarkisian",
-        },
+        "team": team,
         "positions": positions,
     }
 

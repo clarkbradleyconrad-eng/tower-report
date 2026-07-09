@@ -5,22 +5,19 @@
   ],
   "crons": [
     {
-      "path": "/api/odds?cron=1",
-      "schedule": "0 9 * * *"
-    },
-    {
-      "path": "/api/generate-story?cron=1",
-      "schedule": "0 8 * * *"
-    },
-    {
-      "path": "/api/briefing?cron=1",
-      "schedule": "0 7 * * *"
-    },
-    {
-      "path": "/api/stories-refresh",
+      "path": "/api/daily-refresh?slot=am",
       "schedule": "0 6 * * *"
+    },
+    {
+      "path": "/api/daily-refresh?slot=pm",
+      "schedule": "0 18 * * *"
     }
   ],
+  "functions": {
+    "api/daily-refresh.js": { "maxDuration": 300 },
+    "api/stories-refresh.js": { "maxDuration": 90, "includeFiles": "data/**" },
+    "api/verify-recruiting.js": { "maxDuration": 90, "includeFiles": "data/**" }
+  },
   "headers": [
     {
       "source": "/api/(.*)",

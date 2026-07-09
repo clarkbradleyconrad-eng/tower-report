@@ -36,6 +36,25 @@ body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);
 .chip-commits{color:var(--green);border-color:rgba(34,197,94,0.3);background:rgba(34,197,94,0.05);}
 .chip-portal{color:var(--blue);border-color:rgba(59,130,246,0.3);background:rgba(59,130,246,0.05);}
 .chip-date{color:var(--muted);border-color:var(--border-mid);}
+.chip-fresh-ok{color:var(--green);border-color:rgba(34,197,94,0.35);background:rgba(34,197,94,0.06);}
+.chip-fresh-stale{color:var(--amber);border-color:rgba(245,158,11,0.4);background:rgba(245,158,11,0.08);}
+/* Live · via Grok block */
+.live-grok{border:1px solid rgba(191,87,0,0.35);background:rgba(191,87,0,0.05);padding:16px 18px;}
+.live-grok-head{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.live-grok-dot{width:6px;height:6px;border-radius:50%;background:var(--orange);animation:tiPulse 2s ease-in-out infinite;}
+.live-grok-lbl{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);}
+.live-grok-meta{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-left:auto;}
+.live-grok-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);}
+.lg-cell{background:var(--surface);padding:12px 14px;}
+.lg-num{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:800;color:var(--white);}
+.lg-lbl{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);margin-top:2px;}
+.lg-delta{font-size:10px;color:var(--amber);margin-top:3px;}
+.live-grok-moves{margin-top:10px;font-size:12px;color:var(--white);line-height:1.5;}
+.live-grok-src{margin-top:10px;font-size:10px;color:var(--muted);letter-spacing:0.5px;}
+.live-grok-note{margin-top:8px;font-size:10px;color:var(--muted);font-style:italic;}
+/* Recruiting stories in the activity feed */
+.feed-item.story{border-left-color:var(--orange);cursor:pointer;}
+.tag-story{background:rgba(191,87,0,0.07);border-color:rgba(191,87,0,0.22);color:var(--orange);}
 .source-bar{font-size:11px;color:var(--muted);border-left:2px solid var(--border-hi);padding-left:12px;line-height:1.7;max-width:640px;}
 
 /* ─── INTERNAL TAB BAR ─── */
@@ -277,11 +296,11 @@ footer{padding:26px 48px;display:flex;align-items:center;justify-content:space-b
     </div>
     <h1 class="hero-title">Texas Recruiting<br><em>&amp; Transfer Portal</em></h1>
     <div class="hero-chips">
-      <div class="chip chip-rank">#15 On3 · 2027 Class</div>
-      <div class="chip chip-rank">#26 247Sports · 2027 Class</div>
-      <div class="chip chip-commits">8 Verified Commits · 2027</div>
-      <div class="chip chip-portal">11 Incoming Transfers · 2026</div>
-      <div class="chip chip-date">Updated June 3, 2026</div>
+      <div class="chip chip-rank" id="chip-on3">On3 · 2027 Class</div>
+      <div class="chip chip-rank" id="chip-247">247Sports · 2027 Class</div>
+      <div class="chip chip-commits" id="chip-commits">Verified Commits · 2027</div>
+      <div class="chip chip-portal" id="chip-portal">Incoming Transfers · 2026</div>
+      <div class="chip chip-date" id="fresh-pill">Loading…</div>
     </div>
     <p class="source-bar">All data sourced from public records: 247Sports, On3, Rivals, ESPN Recruiting, and verified reporter posts. No commitments, visits, rankings, or quotes are invented. Uncertain items are labeled <strong>Public Report</strong>. Position analysis is labeled <strong>Editorial</strong>.</p>
   </div>
@@ -308,13 +327,25 @@ footer{padding:26px 48px;display:flex;align-items:center;justify-content:space-b
   <div class="sec">
     <div class="sec-head">
       <div class="sec-title">2027 Class At-a-Glance</div>
-      <div class="sec-meta">Sources: On3 · 247Sports · June 3, 2026</div>
+      <div class="sec-meta" id="ov-verified-meta">Hand-verified · Sources: On3 · 247Sports</div>
     </div>
     <div class="stat-grid">
-      <div class="stat-cell"><div class="stat-num" style="color:var(--green)">8</div><div class="stat-lbl">Public Commits</div></div>
-      <div class="stat-cell"><div class="stat-num" style="color:var(--amber)">#15</div><div class="stat-lbl">On3 Team Rank</div></div>
-      <div class="stat-cell"><div class="stat-num" style="color:var(--amber)">#26</div><div class="stat-lbl">247Sports Rank</div></div>
-      <div class="stat-cell"><div class="stat-num">21</div><div class="stat-lbl">2026 Signed</div></div>
+      <div class="stat-cell"><div class="stat-num" style="color:var(--green)" id="ov-commits">—</div><div class="stat-lbl">Public Commits</div></div>
+      <div class="stat-cell"><div class="stat-num" style="color:var(--amber)" id="ov-on3">—</div><div class="stat-lbl">On3 Team Rank</div></div>
+      <div class="stat-cell"><div class="stat-num" style="color:var(--amber)" id="ov-247">—</div><div class="stat-lbl">247Sports Rank</div></div>
+      <div class="stat-cell"><div class="stat-num" id="ov-signed">—</div><div class="stat-lbl">2026 Signed</div></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="live-grok" id="live-grok-block">
+      <div class="live-grok-head">
+        <span class="live-grok-dot"></span>
+        <span class="live-grok-lbl">Live · via Grok</span>
+        <span class="live-grok-meta" id="live-grok-updated">checking…</span>
+      </div>
+      <div id="live-grok-body"><div class="live-grok-note">Loading the latest Grok web-search check of the 2027 class…</div></div>
+      <div class="live-grok-note">Automated daily web-search check (On3 + 247Sports). Shown alongside — never replacing — Tower's hand-verified data above.</div>
     </div>
   </div>
 
@@ -323,18 +354,13 @@ footer{padding:26px 48px;display:flex;align-items:center;justify-content:space-b
       <div class="sec-title">2026 Transfer Portal Summary</div>
       <div class="sec-meta">Source: Public Reports</div>
     </div>
-    <div class="portal-stat-grid">
-      <div class="psg-cell"><div class="psg-num" style="color:var(--green)">11</div><div class="psg-lbl">Incoming</div></div>
-      <div class="psg-cell"><div class="psg-num" style="color:var(--red)">8</div><div class="psg-lbl">Outgoing / Departed</div></div>
-      <div class="psg-cell"><div class="psg-num" style="color:var(--orange)">+3</div><div class="psg-lbl">Net Roster Change</div></div>
-      <div class="psg-cell"><div class="psg-num">4</div><div class="psg-lbl">Immediate Impact</div></div>
-    </div>
+    <div class="portal-stat-grid" id="ov-portal-stats"></div>
   </div>
 
   <div class="sec">
     <div class="sec-head">
       <div class="sec-title">Recent Activity</div>
-      <div class="sec-meta">Newest First</div>
+      <div class="sec-meta">Newest First · Includes Tower Recruiting Stories</div>
     </div>
     <div class="feed" id="overview-feed"></div>
   </div>
@@ -347,7 +373,7 @@ footer{padding:26px 48px;display:flex;align-items:center;justify-content:space-b
   <div class="sec">
     <div class="sec-head">
       <div class="sec-title">2027 Commits</div>
-      <div class="sec-meta" id="hs-count">8 Publicly Named · Click row to expand</div>
+      <div class="sec-meta" id="hs-count">Click row to expand</div>
     </div>
     <div class="filter-bar">
       <input type="text" id="hs-search" placeholder="Search player, school, or city…" oninput="applyHsFilter()"/>
@@ -407,31 +433,9 @@ footer{padding:26px 48px;display:flex;align-items:center;justify-content:space-b
   <div class="sec">
     <div class="sec-head">
       <div class="sec-title">2026 Signed Class</div>
-      <div class="sec-meta">21 Players · ESD + NSD · <button class="toggle-btn" id="signed-btn" onclick="toggleSigned()">Show Class</button></div>
+      <div class="sec-meta" id="signed-meta"><span id="signed-count"></span> ESD + NSD · <button class="toggle-btn" id="signed-btn" onclick="toggleSigned()">Show Class</button></div>
     </div>
-    <div class="signed-grid" id="signed-grid" style="display:none">
-      <div class="signed-card"><div class="sc-pos">QB</div><div class="sc-name">Dia Bell</div><div class="sc-stars">★★★★</div><div class="sc-home">Fort Lauderdale, Fla.</div><div class="sc-badge">Signed</div></div>
-      <div class="signed-card"><div class="sc-pos">RB</div><div class="sc-name">Derrek Cooper</div><div class="sc-stars">★★★★</div><div class="sc-home">Lauderhill, Fla.</div><div class="sc-badge">Signed</div></div>
-      <div class="signed-card"><div class="sc-pos">RB</div><div class="sc-name">Jett Walker</div><div class="sc-stars">★★★</div><div class="sc-home">Georgetown, Texas</div><div class="sc-badge">Signed</div></div>
-      <div class="signed-card"><div class="sc-pos">WR</div><div class="sc-name">Jermaine Bishop Jr.</div><div class="sc-stars">★★★★</div><div class="sc-home">Willis, Texas</div><div class="sc-badge">Signed</div></div>
-      <div class="signed-card"><div class="sc-pos">WR</div><div class="sc-name">Kohen Brown</div><div class="sc-stars">★★★★</div><div class="sc-home">Dallas, Texas</div><div class="sc-badge">Signed</div></div>
-      <div class="signed-card"><div class="sc-pos">WR</div><div class="sc-name">Chris Stewart</div><div class="sc-stars">★★★</div><div class="sc-home">Missouri City, Texas</div><div class="sc-badge">Signed</div></div>
-      <div class="signed-card"><div class="sc-pos">TE</div><div class="sc-name">Charlie Jilek</div><div class="sc-stars">★★★</div><div class="sc-home">Portage, Mich.</div><div class="sc-badge">Signed</div></div>
-      <div class="signed-card"><div class="sc-pos">OL</div><div class="sc-name">John Turntine III</div><div class="sc-stars">★★★★</div><div class="sc-home">Fort Worth, Texas</div><div class="sc-badge">Signed</div></div>
-      <div class="signed-card"><div class="sc-pos">OL</div><div class="sc-name">Kaden Scherer</div><div class="sc-stars">★★★</div><div class="sc-home">Georgetown, Texas</div><div class="sc-badge">Signed</div></div>
-      <div class="signed-card"><div class="sc-pos">DL</div><div class="sc-name">James Johnson</div><div class="sc-stars">★★★★</div><div class="sc-home">Fort Myers, Fla.</div><div class="sc-badge">Signed</div></div>
-      <div class="signed-card"><div class="sc-pos">DL</div><div class="sc-name">Jamarion Carlton</div><div class="sc-stars">★★★</div><div class="sc-home">Temple, Texas</div><div class="sc-badge">Signed</div></div>
-      <div class="signed-card"><div class="sc-pos">DL</div><div class="sc-name">Richard Wesley</div><div class="sc-stars">★★★★</div><div class="sc-home">Sylmar, Calif.</div><div class="sc-badge">Signed</div></div>
-      <div class="signed-card"><div class="sc-pos">LB</div><div class="sc-name">Tyler Atkinson</div><div class="sc-stars">★★★</div><div class="sc-home">Lawrenceville, Ga.</div><div class="sc-badge">Signed</div></div>
-      <div class="signed-card"><div class="sc-pos">LB</div><div class="sc-name">Kosi Okpala</div><div class="sc-stars">★★★</div><div class="sc-home">Houston, Texas</div><div class="sc-badge">Signed</div></div>
-      <div class="signed-card"><div class="sc-pos">LB</div><div class="sc-name">Rocky Cummings</div><div class="sc-stars">★★★★</div><div class="sc-home">Carlsbad, Calif.</div><div class="sc-badge">Signed</div></div>
-      <div class="signed-card"><div class="sc-pos">DB</div><div class="sc-name">Samari Matthews</div><div class="sc-stars">★★★★</div><div class="sc-home">Charlotte, N.C.</div><div class="sc-badge">Signed</div></div>
-      <div class="signed-card"><div class="sc-pos">DB</div><div class="sc-name">Hayward Howard Jr.</div><div class="sc-stars">★★★</div><div class="sc-home">New Orleans, La.</div><div class="sc-badge">Signed</div></div>
-      <div class="signed-card"><div class="sc-pos">DB</div><div class="sc-name">Toray Davis</div><div class="sc-stars">★★★</div><div class="sc-home">Thornton, Colo.</div><div class="sc-badge">Signed</div></div>
-      <div class="signed-card"><div class="sc-pos">DB</div><div class="sc-name">Yaheim Riley</div><div class="sc-stars">★★★</div><div class="sc-home">Miami, Fla.</div><div class="sc-badge">Signed</div></div>
-      <div class="signed-card"><div class="sc-pos">K</div><div class="sc-name">Jake Collett</div><div class="sc-stars">★★★</div><div class="sc-home">Ringgold, Ga.</div><div class="sc-badge">Signed</div></div>
-      <div class="signed-card"><div class="sc-pos">P</div><div class="sc-name">Mikey Bukauskas</div><div class="sc-stars">★★★</div><div class="sc-home">Prosper, Texas</div><div class="sc-badge">Signed</div></div>
-    </div>
+    <div class="signed-grid" id="signed-grid" style="display:none"></div>
   </div>
 
 </div><!-- /hs -->
@@ -444,16 +448,11 @@ footer{padding:26px 48px;display:flex;align-items:center;justify-content:space-b
       <div class="sec-title">2026 Transfer Portal</div>
       <div class="sec-meta">Source: Public Reports</div>
     </div>
-    <div class="portal-stat-grid">
-      <div class="psg-cell"><div class="psg-num" style="color:var(--green)">11</div><div class="psg-lbl">Incoming</div></div>
-      <div class="psg-cell"><div class="psg-num" style="color:var(--red)">8</div><div class="psg-lbl">Outgoing / Departed</div></div>
-      <div class="psg-cell"><div class="psg-num" style="color:var(--orange)">+3</div><div class="psg-lbl">Net Roster Change</div></div>
-      <div class="psg-cell"><div class="psg-num">4</div><div class="psg-lbl">Immediate Impact</div></div>
-    </div>
+    <div class="portal-stat-grid" id="portal-stats"></div>
     <div class="sub-tab-bar">
-      <button class="stab active" data-ptab="in">Incoming (11)</button>
-      <button class="stab" data-ptab="out">Outgoing (8)</button>
-      <button class="stab" data-ptab="watch">Watch List (6)</button>
+      <button class="stab active" data-ptab="in" id="stab-in">Incoming</button>
+      <button class="stab" data-ptab="out" id="stab-out">Outgoing</button>
+      <button class="stab" data-ptab="watch" id="stab-watch">Watch List</button>
     </div>
     <div id="ptab-in"><table class="ptbl"><thead><tr><th>Player</th><th>Pos</th><th>Stars</th><th>Yr</th><th>From</th><th>Depth Impact</th><th>Source</th></tr></thead><tbody id="portal-in-tbody"></tbody></table></div>
     <div id="ptab-out" style="display:none"><table class="ptbl"><thead><tr><th>Player</th><th>Pos</th><th>Class</th><th>Destination</th><th>Reason</th></tr></thead><tbody id="portal-out-tbody"></tbody></table></div>
@@ -468,7 +467,7 @@ footer{padding:26px 48px;display:flex;align-items:center;justify-content:space-b
   <div class="sec">
     <div class="sec-head">
       <div class="sec-title">2027 Verified Commits</div>
-      <div class="sec-meta">8 Publicly Named · Sources: 247Sports · On3</div>
+      <div class="sec-meta" id="commits-meta">Sources: 247Sports · On3</div>
     </div>
     <div class="commit-cards" id="commit-cards"></div>
   </div>
@@ -541,105 +540,139 @@ footer{padding:26px 48px;display:flex;align-items:center;justify-content:space-b
 
 <script>
 // ============================================================
-//  DATA — edit these arrays to update the page.
-//  No other code needs changing for routine updates.
+//  DATA — this page renders /data/recruiting.json (hand-verified,
+//  edit that file to update the page) plus two live layers:
+//  /api/verify-recruiting (Grok daily check, clearly labeled) and
+//  /api/stories (newest Recruiting stories in the activity feed).
+//  No data lives in this HTML file.
 // ============================================================
 
-// ── 2027 COMMITS (publicly named only — no placeholders) ──
-// source: always "confirmed" — only include publicly announced commits
-const commits = [
-  { name:"Easton Royal",   pos:"WR",   htWt:"6'0 / 205",  stars:5, rating:"97.33", school:"Brother Martin",   city:"New Orleans, LA",  date:"Nov 29, 2025", dateSort:20251129 },
-  { name:"Cameron Hall",   pos:"DE",   htWt:"6'3 / 230",  stars:4, rating:"~89",   school:"Mansfield Summit", city:"Arlington, TX",    date:"Jan 28, 2026", dateSort:20260128 },
-  { name:"Jackson Cook",   pos:"OL",   htWt:"6'3 / 290",  stars:4, rating:"~86",   school:"Westlake",         city:"Austin, TX",       date:"Mar 2026",     dateSort:20260301 },
-  { name:"Derwin Fields",  pos:"EDGE", htWt:"6'3 / 230",  stars:4, rating:"~88",   school:"Brookhaven",       city:"Brookhaven, MS",   date:"Apr 18, 2026", dateSort:20260418 },
-  { name:"Noah Roberts",   pos:"RB",   htWt:"5'11 / 205", stars:4, rating:"~87",   school:"Basha",            city:"Chandler, AZ",     date:"May 1, 2026",  dateSort:20260501 },
-  { name:"Brock Williams", pos:"TE",   htWt:"6'5 / 215",  stars:4, rating:"~90",   school:"Libertyville",     city:"Libertyville, IL", date:"May 15, 2026", dateSort:20260515 },
-  { name:"JT Geraci",      pos:"TE",   htWt:"6'5 / 230",  stars:3, rating:"~82",   school:"St. John Bosco",   city:"Ramsey, NJ",       date:"Not announced",dateSort:99990001 },
-  { name:"Karnell James",  pos:"S",    htWt:"—",          stars:3, rating:"—",     school:"Manvel",           city:"Manvel, TX",       date:"Not announced",dateSort:99990002 },
-];
+let commits = [], targets = [], portalIn = [], portalOut = [], portalWatch = [];
+let needs = [], timeline = [], signed2026 = [];
+let meta = {}, lastUpdated = null;
+let recruitingStories = []; // newest Recruiting stories from /api/stories
 
-// ── TARGETS (public reports only — no invented intel) ──
-const targets = [
-  { name:"John Meredith III", pos:"QB",   info:"DFW, TX · 5★",         status:"target",    source:"247Sports / On3 public reports" },
-  { name:"Jaylen Mbakwe",     pos:"WR",   info:"Houston, TX · 5★",     status:"trending",  source:"Multiple recruiting reporters" },
-  { name:"Devin Sanchez",     pos:"CB",   info:"Houston, TX · 5★",     status:"target",    source:"247Sports / On3 public reports" },
-  { name:"Malachi Nelson Jr.",pos:"QB",   info:"Denton, TX · 5★",      status:"target",    source:"247Sports / On3 public reports" },
-  { name:"Brashard Smith",    pos:"RB",   info:"Katy, TX · 4★",        status:"trending",  source:"Public recruiting reports" },
-  { name:"Anthony Jones Jr.", pos:"OT",   info:"Cedar Hill, TX · 4★",  status:"target",    source:"247Sports / On3 public reports" },
-  { name:"Caleb Carmouche",   pos:"S",    info:"New Orleans, LA · 4★", status:"monitoring",source:"Public recruiting reports" },
-  { name:"Elijah Griffin",    pos:"EDGE", info:"Georgia · 5★",         status:"monitoring",source:"Public recruiting reports" },
-];
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-// ── PORTAL INCOMING (all from public reporting) ──
-const portalIn = [
-  { name:"Cam Coleman",        pos:"WR", stars:5, yr:"Jr.", from:"Auburn",        impact:"ib-now",  label:"Immediate Starter" },
-  { name:"Raleek Brown",       pos:"RB", stars:4, yr:"Sr.", from:"Oklahoma State",impact:"ib-now",  label:"Immediate Starter" },
-  { name:"Hollywood Smothers", pos:"RB", stars:4, yr:"Jr.", from:"Arizona State", impact:"ib-now",  label:"Starter" },
-  { name:"MJ Morris",          pos:"QB", stars:4, yr:"Sr.", from:"NC State",      impact:"ib-depth",label:"QB2 / Depth" },
-  { name:"Emmett Mosley V",    pos:"WR", stars:4, yr:"Jr.", from:"Stanford",      impact:"ib-depth",label:"Rotational" },
-  { name:"Sterling Berkhalter",pos:"WR", stars:4, yr:"Sr.", from:"Tennessee",     impact:"ib-depth",label:"Rotational" },
-  { name:"Ty Boatright",       pos:"WR", stars:3, yr:"Sr.", from:"Oklahoma State",impact:"ib-role", label:"Special Teams" },
-  { name:"Rett Andersen",      pos:"WR", stars:3, yr:"Sr.", from:"Stanford",      impact:"ib-role", label:"Depth" },
-  { name:"Michael Masunas",    pos:"TE", stars:3, yr:"Sr.", from:"Navy",          impact:"ib-depth",label:"Starter" },
-  { name:"Rasheem Biles",      pos:"LB", stars:4, yr:"Sr.", from:"Ohio State",    impact:"ib-now",  label:"Immediate Starter" },
-  { name:"Derek Williams Jr.", pos:"CB", stars:4, yr:"Jr.", from:"Penn State",    impact:"ib-now",  label:"Immediate Starter" },
-];
+async function loadRecruitingData() {
+  const res = await fetch('data/recruiting.json', { cache: 'no-cache' });
+  if (!res.ok) throw new Error('recruiting.json HTTP ' + res.status);
+  const d = await res.json();
+  commits     = d.commits     || [];
+  targets     = d.targets     || [];
+  portalIn    = d.portalIn    || [];
+  portalOut   = d.portalOut   || [];
+  portalWatch = d.portalWatch || [];
+  needs       = d.needs       || [];
+  timeline    = d.timeline    || [];
+  signed2026  = d.signed2026  || [];
+  meta        = d.meta        || {};
+  lastUpdated = d.lastUpdated || null;
+}
 
-// ── PORTAL OUTGOING ──
-const portalOut = [
-  { name:"Quinn Ewers",         pos:"QB", yr:"Grad / NFL", dest:"NFL — San Francisco 49ers (Rd. 1)", reason:"Graduated / drafted" },
-  { name:"Johntay Cook II",     pos:"WR", yr:"Sr.",        dest:"Entered NFL Draft",                  reason:"Graduated" },
-  { name:"Isaiah Bond",         pos:"WR", yr:"Sr.",        dest:"Entered NFL Draft",                  reason:"Graduated" },
-  { name:"Adonai Mitchell",     pos:"WR", yr:"Sr.",        dest:"NFL — Indianapolis Colts",           reason:"Graduated / drafted" },
-  { name:"Anthony Hill Jr.",    pos:"LB", yr:"So. / NFL",  dest:"NFL Draft — 1st Round",              reason:"Early NFL departure" },
-  { name:"T'Vondre Sweat",      pos:"DT", yr:"Grad",       dest:"NFL — Tennessee Titans",             reason:"Graduated / drafted" },
-  { name:"Jahleel Billingsley", pos:"TE", yr:"Grad",       dest:"Departed",                           reason:"Graduation" },
-  { name:"Kelvin Banks Jr.",    pos:"OT", yr:"Sr. / NFL",  dest:"NFL Draft — 1st Round",              reason:"Early NFL departure" },
-];
+// ── Freshness pill: green under 7 days, amber stale warning after ──
+function renderFreshness() {
+  const pill = document.getElementById('fresh-pill');
+  if (!lastUpdated) { pill.textContent = 'Update date unknown'; pill.classList.add('chip-fresh-stale'); return; }
+  const days = Math.floor((Date.now() - new Date(lastUpdated).getTime()) / 86400000);
+  const dateStr = new Date(lastUpdated).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  pill.classList.remove('chip-date');
+  if (days < 7) {
+    pill.classList.add('chip-fresh-ok');
+    pill.textContent = 'Verified ' + dateStr + (days <= 0 ? ' · Today' : ' · ' + days + 'd ago');
+  } else {
+    pill.classList.add('chip-fresh-stale');
+    pill.textContent = '⚠ Stale — verified ' + dateStr + ' (' + days + 'd ago)';
+  }
+}
 
-// ── PORTAL WATCH LIST ──
-const portalWatch = [
-  { name:"TJ Moore",         pos:"WR", school:"Michigan",   detail:"Jr. · 6'1\" · ★★★★ · 42 rec, 610 yds, 6 TD (2025)", status:"ws-tgt", label:"Texas Target",   conf:"Offer extended — source: public reports" },
-  { name:"Deondre Jackson",  pos:"OT", school:"Ole Miss",   detail:"Sr. · 6'5\" 320 · ★★★★ · Multi-year starter",        status:"ws-off", label:"Offer Extended", conf:"Texas in top 3 — source: public reports" },
-  { name:"Quinshon Judkins", pos:"RB", school:"Ohio State", detail:"Jr. · 5'11\" 215 · ★★★★★ · 2x 1,000-yd rusher",     status:"ws-mon", label:"Monitoring",     conf:"Long shot — likely NFL (source: reports)" },
-  { name:"Jaxson Dart",      pos:"QB", school:"Ole Miss",   detail:"Sr. · 6'3\" 225 · ★★★★ · 3,500+ yds passing (2025)",status:"ws-mon", label:"Monitoring",     conf:"Depth / competition — source: reports" },
-  { name:"Kaytron Allen",    pos:"RB", school:"Penn State", detail:"Jr. · 6'0\" 220 · ★★★★ · Power back",               status:"ws-tgt", label:"Texas Target",   conf:"Visit expected — source: public reports" },
-  { name:"Malaki Starks",    pos:"S",  school:"Georgia",    detail:"Jr. · 6'1\" 200 · ★★★★★",                           status:"ws-mon", label:"Monitoring",     conf:"Likely stays or NFL — source: reports" },
-];
+function renderHeroChips() {
+  document.getElementById('chip-on3').textContent = (meta.on3Rank ? '#' + meta.on3Rank : '—') + ' On3 · 2027 Class';
+  document.getElementById('chip-247').textContent = (meta.sports247Rank ? '#' + meta.sports247Rank : '—') + ' 247Sports · 2027 Class';
+  document.getElementById('chip-commits').textContent = commits.length + ' Verified Commits · 2027';
+  document.getElementById('chip-portal').textContent = portalIn.length + ' Incoming Transfers · 2026';
+}
 
-// ── POSITION NEEDS (editorial — clearly labeled) ──
-const needs = [
-  { pos:"QB",   urgency:"Medium", fill:60, context:"Arch Manning is the established starter. MJ Morris (portal) provides depth. One 2027 QB is a genuine staff priority.", recruiting:"John Meredith III (5★, DFW) · Malachi Nelson Jr. (5★, Denton) — per public reports", portal:"MJ Morris added (NC State, Sr.). Jaxson Dart listed as monitoring." },
-  { pos:"RB",   urgency:"Medium", fill:50, context:"Raleek Brown and Hollywood Smothers added via portal. Noah Roberts committed in 2027. Staff well-positioned at RB.", recruiting:"Noah Roberts (4★, AZ) — committed. Brashard Smith (4★, TX) — trending per reports.", portal:"Brown + Smothers added. Kaytron Allen (Penn State) listed as visit target per reports." },
-  { pos:"WR",   urgency:"High",   fill:88, context:"Lost Bond, Mitchell, Cook II to graduation/NFL. Five WRs added via portal. Easton Royal (5★) anchors 2027.", recruiting:"Easton Royal (5★) — committed. Jaylen Mbakwe (5★, Houston) — trending per reports.", portal:"Cam Coleman (5★, Auburn) added. TJ Moore (Michigan) listed as remaining portal target." },
-  { pos:"TE",   urgency:"Low",    fill:22, context:"JT Geraci and Brock Williams both committed in 2027. Michael Masunas added via portal.", recruiting:"Brock Williams (4★) + JT Geraci (3★) — both committed.", portal:"Masunas (Navy) added as projected starter." },
-  { pos:"OT",   urgency:"High",   fill:90, context:"Kelvin Banks Jr. (1st round) departed. Offensive tackle is the highest-priority remaining need.", recruiting:"Anthony Jones Jr. (4★, Cedar Hill TX) — priority target per public reports.", portal:"Deondre Jackson (Ole Miss) — Texas in top 3 per public reports." },
-  { pos:"IOL",  urgency:"Medium", fill:62, context:"Jackson Cook committed at interior OL. Staff likely needs one more interior lineman.", recruiting:"Jackson Cook (4★, Austin TX) — committed. Additional targets per recruiting analysts.", portal:"No confirmed IOL portal targets as of June 2026." },
-  { pos:"EDGE", urgency:"High",   fill:80, context:"Hall and Fields committed. A third edge rusher would complete the position. Colin Simmons returns.", recruiting:"Cameron Hall (4★) + Derwin Fields (4★) — both committed. Elijah Griffin (5★) — monitoring.", portal:"No confirmed EDGE portal additions as of June 2026." },
-  { pos:"DT",   urgency:"Medium", fill:60, context:"T'Vondre Sweat graduated/drafted. Richard Wesley (4★) signed in 2026 is one piece.", recruiting:"No current 2027 DT commitment — listed as a priority need by analysts.", portal:"No confirmed portal additions at DT as of June 2026." },
-  { pos:"LB",   urgency:"High",   fill:78, context:"Anthony Hill Jr. (1st round) departed early. Rasheem Biles added via portal.", recruiting:"No current 2027 LB commitment — priority need per public reports.", portal:"Rasheem Biles (Ohio State, Sr.) added as projected immediate starter." },
-  { pos:"CB",   urgency:"High",   fill:88, context:"Derek Williams Jr. fills one spot via portal. Blue-chip 2027 corner depth is a priority.", recruiting:"Devin Sanchez (5★, Houston TX) — top CB priority per public reports.", portal:"Derek Williams Jr. (Penn State) added as projected CB1 starter." },
-  { pos:"S",    urgency:"Medium", fill:55, context:"Karnell James committed in 2027. Staff may add one more depending on visit season.", recruiting:"Karnell James (3★, Manvel TX) — committed. Caleb Carmouche (4★) — monitoring.", portal:"Malaki Starks (Georgia) — monitoring; likely stays or NFL per reports." },
-  { pos:"ST",   urgency:"Low",    fill:12, context:"Jake Collett (K) and Mikey Bukauskas (P) both signed in 2026. No active special teams need.", recruiting:"Collett (K) + Bukauskas (P) signed in 2026.", portal:"No ST portal activity as of June 2026." },
-];
+function renderOverviewStats() {
+  document.getElementById('ov-commits').textContent = commits.length;
+  document.getElementById('ov-on3').textContent = meta.on3Rank ? '#' + meta.on3Rank : '—';
+  document.getElementById('ov-247').textContent = meta.sports247Rank ? '#' + meta.sports247Rank : '—';
+  document.getElementById('ov-signed').textContent = signed2026.length || '—';
+  if (lastUpdated) {
+    document.getElementById('ov-verified-meta').textContent =
+      'Hand-verified · Sources: On3 · 247Sports · ' + new Date(lastUpdated).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  }
+  const portalStats = `
+      <div class="psg-cell"><div class="psg-num" style="color:var(--green)">${portalIn.length}</div><div class="psg-lbl">Incoming</div></div>
+      <div class="psg-cell"><div class="psg-num" style="color:var(--red)">${portalOut.length || '—'}</div><div class="psg-lbl">Outgoing / Departed</div></div>
+      <div class="psg-cell"><div class="psg-num" style="color:var(--orange)">${meta.portalNet != null ? (meta.portalNet > 0 ? '+' : '') + meta.portalNet : '—'}</div><div class="psg-lbl">Net Roster Change</div></div>
+      <div class="psg-cell"><div class="psg-num">${meta.portalImmediateImpact != null ? meta.portalImmediateImpact : '—'}</div><div class="psg-lbl">Immediate Impact</div></div>`;
+  document.getElementById('ov-portal-stats').innerHTML = portalStats;
+  document.getElementById('portal-stats').innerHTML = portalStats;
+  document.getElementById('stab-in').textContent = `Incoming (${portalIn.length})`;
+  document.getElementById('stab-out').textContent = `Outgoing (${portalOut.length})`;
+  document.getElementById('stab-watch').textContent = `Watch List (${portalWatch.length})`;
+  document.getElementById('commits-meta').textContent = commits.length + ' Publicly Named · Sources: 247Sports · On3';
+  document.getElementById('signed-count').textContent = signed2026.length + ' Players ·';
+}
 
-// ── ACTIVITY TIMELINE (newest first) ──
-// type: "commit" | "portal" | "intel" | "visit"
-const timeline = [
-  { date:"Jun 3, 2026",  type:"intel",  text:"Class sits at #15 On3 / #26 247Sports with 8 publicly named commits. Summer visit season open through July 4 dead period." },
-  { date:"May 15, 2026", type:"commit", text:"Brock Williams (TE, Libertyville, IL) publicly commits to Texas. 6'5 tight end is the second TE of the cycle." },
-  { date:"May 1, 2026",  type:"commit", text:"Noah Roberts (RB, Basha / Chandler, AZ) commits. 4-star back fills the early RB need." },
-  { date:"Apr 18, 2026", type:"commit", text:"Derwin Fields (EDGE, Brookhaven, MS) commits. Third pass rusher added alongside Cameron Hall." },
-  { date:"Apr 2026",     type:"portal", text:"Derek Williams Jr. (CB, Penn State) joins Texas via transfer portal. 2025 Big Ten All-Conference, projected CB1 starter." },
-  { date:"Apr 2026",     type:"portal", text:"Rasheem Biles (LB, Ohio State) transfers to Texas. Projected immediate starter at linebacker." },
-  { date:"Mar 2026",     type:"commit", text:"Jackson Cook (OL, Westlake / Austin, TX) commits. First interior OL of the cycle." },
-  { date:"Mar 2026",     type:"portal", text:"Cam Coleman (WR, Auburn) transfers to Texas. 5-star prospect, ranked #7 WR nationally in recruiting." },
-  { date:"Mar 2026",     type:"portal", text:"Raleek Brown (RB, Oklahoma State) and Hollywood Smothers (RB, Arizona State) both join via portal." },
-  { date:"Feb 2026",     type:"portal", text:"WR depth added via portal: Emmett Mosley V (Stanford), Sterling Berkhalter (Tennessee), Ty Boatright (Oklahoma State), Rett Andersen (Stanford)." },
-  { date:"Feb 2026",     type:"portal", text:"MJ Morris (QB, NC State) joins as depth. Michael Masunas (TE, Navy) joins as projected TE starter." },
-  { date:"Jan 28, 2026", type:"commit", text:"Cameron Hall (DE, Mansfield Summit / Arlington, TX) commits. First defensive commit of the 2027 cycle." },
-  { date:"Nov 29, 2025", type:"commit", text:"Easton Royal (WR, Brother Martin / New Orleans, LA) commits. 5-star, 97.33 On3 composite." },
-];
+// ── Live · via Grok block (never overwrites verified data) ──
+async function renderLiveGrok() {
+  const body = document.getElementById('live-grok-body');
+  const updated = document.getElementById('live-grok-updated');
+  try {
+    const res = await fetch('/api/verify-recruiting', { signal: AbortSignal.timeout(8000) });
+    const d = await res.json();
+    if (!d || !d.live) {
+      updated.textContent = 'no check recorded yet';
+      body.innerHTML = '<div class="live-grok-note">No automated check has run yet. The daily pipeline writes the first snapshot at the next refresh.</div>';
+      return;
+    }
+    const L = d.live;
+    updated.textContent = d.updatedAt ? 'checked ' + new Date(d.updatedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) +
+      ' ' + new Date(d.updatedAt).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }) : '';
+    const delta = (liveVal, verifiedVal) =>
+      (liveVal != null && verifiedVal != null && liveVal !== verifiedVal)
+        ? `<div class="lg-delta">differs from hand-verified #${verifiedVal}</div>` : '';
+    body.innerHTML =
+      '<div class="live-grok-grid">' +
+        `<div class="lg-cell"><div class="lg-num">${L.on3TeamRank != null ? '#' + L.on3TeamRank : '—'}</div><div class="lg-lbl">On3 Team Rank · Live</div>${delta(L.on3TeamRank, meta.on3Rank)}</div>` +
+        `<div class="lg-cell"><div class="lg-num">${L.sports247TeamRank != null ? '#' + L.sports247TeamRank : '—'}</div><div class="lg-lbl">247Sports Rank · Live</div>${delta(L.sports247TeamRank, meta.sports247Rank)}</div>` +
+        `<div class="lg-cell"><div class="lg-num">${L.commitCount != null ? L.commitCount : '—'}</div><div class="lg-lbl">Commit Count · Live</div>${L.commitCount != null && L.commitCount !== commits.length ? `<div class="lg-delta">hand-verified list has ${commits.length}</div>` : ''}</div>` +
+      '</div>' +
+      ((L.recentMoves || []).length
+        ? '<div class="live-grok-moves">' + L.recentMoves.map(m =>
+            `<div>· <strong>${esc(m.player)}</strong> (${esc(m.pos)}) ${esc(m.type)} — ${esc(m.note)} <span style="color:var(--muted)">${esc(m.date)}</span></div>`).join('') + '</div>'
+        : '<div class="live-grok-note">No new commits or decommits found in the last 7 days.</div>') +
+      ((L.sources || []).length ? `<div class="live-grok-src">Live sources: ${L.sources.map(esc).join(' · ')}</div>` : '');
+  } catch (e) {
+    updated.textContent = 'unavailable';
+    body.innerHTML = '<div class="live-grok-note">Live check unavailable right now — hand-verified data above is unaffected.</div>';
+  }
+}
+
+// ── Newest Recruiting stories for the activity feed ──
+// Must mirror slugify() in stories.html so ?story= deep links resolve
+function slugifyStory(str) {
+  return String(str || '').toLowerCase()
+    .replace(/&/g, ' and ')
+    .replace(/[''’]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 80)
+    .replace(/-+$/, '');
+}
+async function loadRecruitingStories() {
+  try {
+    const res = await fetch('/api/stories', { signal: AbortSignal.timeout(8000) });
+    if (!res.ok) return;
+    const d = await res.json();
+    recruitingStories = (d.stories || [])
+      .filter(s => s.category === 'Recruiting')
+      .sort((a, b) => new Date(b._generated || b.date || 0) - new Date(a._generated || a.date || 0))
+      .slice(0, 5);
+  } catch (e) { /* feed still renders the hand-verified timeline */ }
+}
 
 // ============================================================
 //  RENDER FUNCTIONS
@@ -647,14 +680,29 @@ const timeline = [
 
 const stars = n => n ? '<span class="td-stars">' + '★'.repeat(n) + '</span>' : '—';
 
-// Overview feed (5 most recent items)
+// Overview feed — 5 newest Tower Recruiting stories merged with the
+// hand-verified timeline, newest first
+function feedTime(dateStr) {
+  let t = Date.parse(dateStr);
+  if (isNaN(t)) t = Date.parse('1 ' + dateStr); // "Mar 2026" → "1 Mar 2026"
+  return isNaN(t) ? 0 : t;
+}
 function renderOverviewFeed() {
-  document.getElementById('overview-feed').innerHTML = timeline.slice(0, 5).map(e => `
-    <div class="feed-item ${e.type}">
-      <div class="feed-date">${e.date}</div>
+  const storyItems = recruitingStories.map(s => ({
+    date: s.date || '',
+    type: 'story',
+    text: `<strong>${esc(s.headline)}</strong> — ${esc((s.hook || '').split('. ')[0])}.`,
+    href: 'stories.html?story=' + encodeURIComponent(slugifyStory(s.headline)),
+    _t: feedTime(s._generated || s.date),
+  }));
+  const timelineItems = timeline.map(e => ({ ...e, text: esc(e.text), _t: feedTime(e.date) }));
+  const items = storyItems.concat(timelineItems).sort((a, b) => b._t - a._t).slice(0, 10);
+  document.getElementById('overview-feed').innerHTML = items.map(e => `
+    <div class="feed-item ${e.type}"${e.href ? ` onclick="window.location.href='${e.href}'"` : ''}>
+      <div class="feed-date">${esc(e.date)}</div>
       <div>
         <div class="feed-text">${e.text}</div>
-        <span class="feed-tag tag-${e.type}">${e.type}</span>
+        <span class="feed-tag tag-${e.type}">${e.type === 'story' ? 'tower story' : e.type}</span>
       </div>
     </div>`).join('');
 }
@@ -743,6 +791,12 @@ function renderCommitCards() {
     </div>`).join('');
 }
 
+// 2026 signed class cards
+function renderSigned() {
+  document.getElementById('signed-grid').innerHTML = signed2026.map(p => `
+    <div class="signed-card"><div class="sc-pos">${esc(p.pos)}</div><div class="sc-name">${esc(p.name)}</div><div class="sc-stars">${'★'.repeat(p.stars)}</div><div class="sc-home">${esc(p.home)}</div><div class="sc-badge">Signed</div></div>`).join('');
+}
+
 // Target cards
 function renderTargets() {
   document.getElementById('target-grid').innerHTML = targets.map(t => {
@@ -775,16 +829,17 @@ function renderPortal() {
       <td><span class="vtag vtag-public">Public Report</span></td>
     </tr>`).join('');
 
-  document.getElementById('portal-out-tbody').innerHTML = portalOut.map(p => `
+  document.getElementById('portal-out-tbody').innerHTML = portalOut.length ? portalOut.map(p => `
     <tr>
       <td><span class="p-name">${p.name}</span></td>
       <td><span class="p-pos">${p.pos}</span></td>
       <td><span style="font-family:'Barlow Condensed',sans-serif;font-size:11px;color:var(--muted)">${p.yr}</span></td>
       <td><span class="p-from">${p.dest}</span></td>
       <td><span style="font-size:12px;color:var(--muted)">${p.reason}</span></td>
-    </tr>`).join('');
+    </tr>`).join('')
+    : `<tr><td colspan="5" style="padding:36px 18px;text-align:center;color:var(--muted);font-size:12px;">No verified 2026 outgoing transfers listed yet. The previous table was pulled for re-verification (see NEEDS-VERIFICATION.md) — verified departures will be re-added to data/recruiting.json.</td></tr>`;
 
-  document.getElementById('portal-watch-list').innerHTML = portalWatch.map(p => `
+  document.getElementById('portal-watch-list').innerHTML = portalWatch.length ? portalWatch.map(p => `
     <div class="watch-item">
       <div>
         <div class="w-name">${p.name} — ${p.pos} — ${p.school}</div>
@@ -794,7 +849,8 @@ function renderPortal() {
         <span class="w-status ${p.status}">${p.label}</span>
         <div class="w-conf">${p.conf}</div>
       </div>
-    </div>`).join('');
+    </div>`).join('')
+    : `<div class="empty-state" style="padding:36px 18px;"><div class="empty-title">No verified portal watch list</div><p class="empty-body" style="font-size:12px;color:var(--muted);">The previous watch list was removed — it included players no longer in college football. Verified watch entries will be re-added to data/recruiting.json.</p></div>`;
 }
 
 function showPortalTab(tab, btn) {
@@ -844,20 +900,37 @@ function toggleSigned() {
 }
 
 // Init
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   document.querySelectorAll('.itab').forEach(btn =>
     btn.addEventListener('click', () => switchTab(btn.dataset.tab)));
 
   document.querySelectorAll('.stab').forEach(btn =>
     btn.addEventListener('click', () => showPortalTab(btn.dataset.ptab, btn)));
 
-  hsFiltered = [...commits];
+  try {
+    // Stories feed loads in parallel with the verified JSON
+    const storiesPromise = loadRecruitingStories();
+    await loadRecruitingData();
+    await storiesPromise;
+  } catch (e) {
+    console.error('[tower/recruiting] data load failed:', e);
+    document.getElementById('fresh-pill').textContent = '⚠ Data failed to load';
+    document.getElementById('fresh-pill').classList.add('chip-fresh-stale');
+    return;
+  }
+
+  renderFreshness();
+  renderHeroChips();
+  renderOverviewStats();
   renderOverviewFeed();
+  hsFiltered = [...commits];
   renderHsTable();
+  renderSigned();
   renderCommitCards();
   renderTargets();
   renderPortal();
   renderNeeds();
+  renderLiveGrok(); // async, fills its own block
 
   // URL hash: recruiting.html#portal auto-opens portal tab
   const hash = window.location.hash.replace('#', '');
@@ -877,7 +950,7 @@ function recruitAskIntel(t) {
   const prompt =
     `Recruiting analysis for ${t.name} (${t.pos}, ${t.info}) — currently ${statusLabel} for Texas. ` +
     `Answer: (1) What depth chart hole does he fill and who does he compete with or replace? ` +
-    `(2) How does he fit with Arch Manning's offense or Will Muschamp's defense? ` +
+    `(2) How does he fit with Arch Manning's offense or the Texas defense? ` +
     `(3) What does committing to Texas look like for his development vs. other options? ` +
     `(4) On a scale of 1–10, how much does landing him improve Texas's 2027–2028 CFP outlook? ` +
     `Be direct and specific — sell the recruit and grade the fit.`;

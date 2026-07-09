@@ -7,10 +7,12 @@
 
   function loadPlayers() {
     if (_loadPromise) return _loadPromise;
-    _loadPromise = fetch('./data/players.json')
+    // Unified data layer: players live in data/db.json as a map keyed by id
+    _loadPromise = fetch('./data/db.json')
       .then(r => r.json())
       .then(data => {
-        _players = data.players;
+        _players = Object.values(data.players || {})
+          .sort((a, b) => (a.number || 999) - (b.number || 999));
         window._playerNames = new Set(_players.map(p => p.name));
         return _players;
       })

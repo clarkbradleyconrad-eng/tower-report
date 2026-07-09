@@ -11,13 +11,40 @@
  *   XAI_API_KEY — xAI API key
  */
 
+import {
+  factsPromptBlock, SOURCING_RULES, GRAPHICS_RULES,
+  validateStory, normalizeImpactBreakdown,
+} from './_lib/story-standards.js';
+
 export const config = { runtime: 'edge' };
+
+// Edge runtime has no fs — read the hand-verified facts from the static site
+async function loadFacts() {
+  try {
+    const host = process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL || 'tower-report.vercel.app';
+    const res = await fetch(`https://${host}/data/facts.json`, { signal: AbortSignal.timeout(5000) });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch { return null; }
+}
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Headers': 'Content-Type, X-Desk-Key, Authorization',
 };
+
+// Each call is a paid Grok-4 + web-search request. Require the desk key
+// (X-Desk-Key) or cron secret (Bearer) once either env var is configured;
+// with neither set, behavior is unchanged so nothing breaks pre-provisioning.
+function authorized(req) {
+  const desk = process.env.DESK_PASSWORD;
+  const cron = process.env.CRON_SECRET;
+  if (!desk && !cron) return true;
+  const key = req.headers.get('x-desk-key') || '';
+  const bearer = req.headers.get('authorization') || '';
+  return (desk && key === desk) || (cron && bearer === `Bearer ${cron}`);
+}
 
 const SYSTEM = `You are Tower Report's lead analyst — the sharpest Texas Longhorns intelligence engine on the internet. Your job is not to summarize what happened. Your job is to tell the reader what it means, why it matters right now, and what it signals about where this program is heading.
 
@@ -49,6 +76,10 @@ STANDARDS:
 - Minimum 450 words. Maximum 800 words.
 - End with a one-line "TOWER TAKE:" that is the single sharpest editorial observation — the thing an insider would say that nobody else is saying
 
+${SOURCING_RULES}
+
+${GRAPHICS_RULES}
+
 Return ONLY a valid JSON object in this exact shape — no markdown, no explanation:
 
 {
@@ -63,7 +94,22 @@ Return ONLY a valid JSON object in this exact shape — no markdown, no explanat
     "keySignals": ["<signal 1 — one sharp analytical observation>", "<signal 2>", "<signal 3>", "<signal 4>", "<signal 5>"],
     "categories": ["<one of: Analysis | Recruiting | Portal | Offense | Defense | Championship | Program | Rivalry | Film Room | Depth Chart>"],
     "tags": ["<tag1>", "<tag2>", "<tag3>"],
-    "impactScore": <integer 60-99, honest assessment of this story's importance to the 2026 season>
+    "impactScore": <integer 60-99, honest assessment of this story's importance to the 2026 season>,
+    "sources": ["<Outlet 1 — REQUIRED: at least 2 named outlets that directly informed this story>", "<Outlet 2>"],
+    "players": ["<First Last — real player names from the sourced reports only, never placeholders>"],
+    "affectedPositions": ["<use only: QB RB WR TE OL DL LB CB S EDGE K P ST>"],
+    "watchNext": ["<specific development to monitor + where + when>", "<development 2>", "<development 3>"],
+    "impactBreakdown": [
+      {"label": "Program & Roster Impact", "value": <int>},
+      {"label": "Fan & Social Velocity", "value": <int>},
+      {"label": "Recruiting/Portal Momentum", "value": <int>},
+      {"label": "Expert Consensus", "value": <int>}
+    ],
+    "seasonModel": {
+      "<row label, e.g. CFP Odds Shift>": "<short concrete projection grounded in the sources>",
+      "<row label, e.g. Depth Chart Effect>": "<...>",
+      "<row label, e.g. Next Game Relevance>": "<... 3-4 rows total>"
+    }
   },
   "socialPosts": {
     "breaking": "<Under 280 chars. Breaking alert style. Lead with the news, end with #HookEm>",
@@ -80,6 +126,12 @@ export default async function handler(req) {
 
   if (req.method !== 'POST') {
     return new Response('Method not allowed', { status: 405, headers: CORS });
+  }
+
+  if (!authorized(req)) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 401, headers: { ...CORS, 'Content-Type': 'application/json' },
+    });
   }
 
   const apiKey = process.env.XAI_API_KEY;
@@ -105,7 +157,12 @@ export default async function handler(req) {
     weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
   });
 
-  let userPrompt = `Today is ${today}.\n\nEvent type: ${eventType || 'Program News'}\n\n`;
+  const facts = await loadFacts();
+  const factsBlock = factsPromptBlock(facts);
+
+  let userPrompt = `Today is ${today}.\n\n`;
+  if (factsBlock) userPrompt += `${factsBlock}\n\n`;
+  userPrompt += `Event type: ${eventType || 'Program News'}\n\n`;
   if (topic) userPrompt += `Story topic: ${topic}\n\n`;
   if (sourceContent) userPrompt += `Source content (use this as the factual foundation):\n${sourceContent}\n\n`;
   if (sourceUrl) userPrompt += `Source URL: ${sourceUrl}\n\n`;
@@ -146,6 +203,21 @@ export default async function handler(req) {
 
     const parsed = JSON.parse(content);
     if (!parsed.story?.title) throw new Error('Invalid story payload');
+
+    // Accuracy gate — same standards as stories-refresh. A story that fails
+    // is never returned or saved; the caller gets the reasons for the log.
+    const check = validateStory(
+      { ...parsed.story, takeaways: parsed.story.takeaways || parsed.story.keySignals },
+      facts
+    );
+    if (!check.ok) {
+      console.warn('[tower/generate-story] REJECTED:', parsed.story.title, '—', check.reasons.join('; '));
+      return new Response(
+        JSON.stringify({ error: 'Story rejected by accuracy gate', code: 'STORY_REJECTED', headline: parsed.story.title, reasons: check.reasons }),
+        { status: 422, headers: { ...CORS, 'Content-Type': 'application/json' } }
+      );
+    }
+    normalizeImpactBreakdown(parsed.story);
 
     const id = `story-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
     const story = {

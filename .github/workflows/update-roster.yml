@@ -20,32 +20,37 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install requests beautifulsoup4 lxml anthropic youtube-transcript-api
+          pip install requests beautifulsoup4 lxml
 
       - name: Fetch roster data
         run: |
           python .github/scripts/update_roster.py
 
-      - name: Generate AI morning briefing
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: |
-          python .github/scripts/aggregate_news.py
-
-      - name: Generate stories + process URL queue
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: |
-          python .github/scripts/generate_stories.py
+      # NOTE (2026-07-08): the aggregate_news.py / generate_stories.py steps
+      # were removed — their output (data/briefing.json, data/stories.json)
+      # has no consumers; the live site reads briefing/stories from Vercel
+      # Blob via /api/briefing and /api/stories. Scripts remain in
+      # .github/scripts if that pipeline is ever revived.
 
       - name: Commit and push if changed
         run: |
           git config user.name "Tower Report Bot"
           git config user.email "bot@tower-report.local"
-          git add data/roster.json data/briefing.json data/stories.json data/story-queue.json
+          git add data/roster.json
+
+          # INVARIANT: the bot only ever commits files under data/.
+          # Hand-edited pages (HTML/CSS/JS) are human-owned; if anything
+          # outside data/ is staged, abort loudly instead of committing.
+          VIOLATIONS=$(git diff --cached --name-only | grep -v '^data/' || true)
+          if [ -n "$VIOLATIONS" ]; then
+            echo "ERROR: bot attempted to commit files outside data/:" >&2
+            echo "$VIOLATIONS" >&2
+            exit 1
+          fi
+
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "chore: auto-update roster, briefing, and stories"
+            git commit -m "chore: auto-update roster"
             git push
           fi

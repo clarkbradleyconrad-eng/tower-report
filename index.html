@@ -317,8 +317,21 @@ a.hero-stat:hover .hs-label{color:var(--orange);}
 }
 .bi-featured .bi-hed{font-size:14px;-webkit-line-clamp:3;}
 .bi-ctx{font-family:'Inter',sans-serif;font-size:11px;font-weight:400;color:rgba(148,140,130,0.7);line-height:1.45;margin-bottom:7px;}
-.bi-meta{display:flex;align-items:center;gap:6px;margin-top:2px;}
+.bi-meta{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:2px;}
 .bi-time{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:.5px;text-transform:uppercase;color:rgba(148,140,130,0.45);}
+.bi-read{
+  font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;
+  color:rgba(191,87,0,0.6);display:flex;align-items:center;gap:4px;transition:color 150ms;
+}
+.bi-read .bi-arrow{transition:transform 150ms var(--ease-out);}
+.briefing-item:hover .bi-read{color:var(--orange);}
+.briefing-item:hover .bi-read .bi-arrow{transform:translateX(3px);}
+.briefing-item:hover{box-shadow:inset 2px 0 0 var(--orange);}
+.bi-imp{
+  font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  color:var(--orange);border:1px solid rgba(191,87,0,0.4);padding:1px 6px;border-radius:2px;line-height:1.5;
+}
+.bi-imp-urgent{color:#fff;background:var(--red);border-color:var(--red);animation:blink 2s ease-in-out infinite;}
 .briefing-fade{display:none;}
 .briefing-footer{
   padding:9px 18px 11px;border-top:1px solid rgba(255,255,255,0.06);
@@ -3283,13 +3296,20 @@ async function loadBriefing(){
   const list=document.getElementById('briefing-list');
   list.innerHTML=briefingSkeleton();
   const catClass={RECRUITING:'recruiting',ROSTER:'roster',PORTAL:'portal',PROGRAM:'program',INTEL:'program',INJURY:'urgent',NIL:'nil'};
-  const timeOffsets=[1,2,3,5,7];
   try{
     const res=await fetch('/api/briefing');
     if(!res.ok) throw new Error('fetch failed');
     const data=await res.json();
     if(data.briefing && data.briefing.length){
       const items=data.briefing.slice(0,5);
+      // Real age of this briefing run — never invented per-item offsets
+      let ageLabel='';
+      if(data.lastUpdated){
+        const mins=Math.max(0,Math.round((Date.now()-new Date(data.lastUpdated).getTime())/60000));
+        if(mins<60) ageLabel=(mins||1)+'m ago';
+        else if(mins<2880) ageLabel=Math.round(mins/60)+'h ago';
+        else ageLabel=Math.round(mins/1440)+'d ago';
+      }
       const countEl=document.getElementById('briefing-story-count');
       const countSep=document.getElementById('briefing-count-sep');
       if(countEl){countEl.textContent=items.length+' STORIES';}
@@ -3302,20 +3322,23 @@ async function loadBriefing(){
         const ctx=item.context||'';
         const via=(item.source||'').toUpperCase();
         const isFeatured=idx===0;
-        const hrs=timeOffsets[idx]||(idx+1);
-        const href=item.url||'stories.html';
-        const isExternal=!!(item.url);
+        const isInternal=!!(item.id);
+        const href=isInternal?'/story?id='+encodeURIComponent(item.id):(item.url||'stories.html');
+        const isExternal=!isInternal&&!!(item.url);
+        const imp=(item.importance||'').toUpperCase();
+        const impChip=imp==='URGENT'?'<span class="bi-imp bi-imp-urgent">Urgent</span>':imp==='HIGH'?'<span class="bi-imp">High Signal</span>':'';
         return `<a class="briefing-item${isFeatured?' bi-featured':''}" href="${href}"${isExternal?' target="_blank" rel="noopener noreferrer"':''}>
           <div class="bi-top">
             <div class="bi-left">
               <span class="bi-badge ${badgeClass}">${catLabel}</span>
               ${isFeatured?'<span class="bi-star">★</span>':''}
+              ${impChip}
             </div>
             <span class="bi-via">VIA ${via}</span>
           </div>
           <div class="bi-hed">${hed}</div>
           ${ctx?`<div class="bi-ctx">${ctx}</div>`:''}
-          <div class="bi-meta"><span class="bi-time">${hrs}h ago</span></div>
+          <div class="bi-meta">${ageLabel?`<span class="bi-time">${ageLabel}</span>`:''}<span class="bi-read">Read the Brief <span class="bi-arrow">→</span></span></div>
         </a>`;
       }).join('');
     }else{

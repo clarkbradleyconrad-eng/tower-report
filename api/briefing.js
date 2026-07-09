@@ -37,7 +37,7 @@ function json(data, status = 200) {
 /* ---- Blob helpers ---- */
 
 async function blobListAll(token) {
-  const url = `${BLOB_API}?prefix=${encodeURIComponent(BLOB_PREFIX)}&token=${encodeURIComponent(token)}&limit=100`;
+  const url = `${BLOB_API}?prefix=${encodeURIComponent(BLOB_PREFIX)}&limit=100`;
   const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
   if (!res.ok) {
     console.error(`[tower/briefing] blobList failed: ${res.status} ${res.statusText}`);
@@ -111,6 +111,9 @@ Each item must have:
 - importance: HIGH, NORMAL, or URGENT
 - headline: max 12 words, written like a confident beat reporter, include specific names and numbers
 - context: one sentence, the single most important supporting detail, specific not vague
+- whatHappened: 2-3 sentences of factual reporting beyond the headline — specific names, numbers, dates, rankings
+- whyItMatters: 2-3 sentences on what this means for Texas — the depth chart, the recruiting board, or the championship path
+- whatNext: 1-2 sentences — the next concrete development Texas fans should watch for
 - source: actual outlet name (ON3, 247SPORTS, INSIDE TEXAS, RIVALS, BLEACHER REPORT, etc)
 - url: the direct URL to the specific article or page you sourced this from (must be a real link you found via web search)
 Only include real verified news. Never invent facts. Return valid JSON array only, no other text.`;
@@ -160,6 +163,10 @@ async function fetchFromGrok() {
 
   if (!Array.isArray(items) || items.length === 0) throw new Error('Invalid briefing payload');
 
+  // Stable per-item ids so the homepage can deep-link each brief to /story?id=…
+  const dateKey = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+  items.forEach((item, i) => { item.id = `brief-${dateKey}-${i + 1}`; });
+
   return items;
 }
 
@@ -174,7 +181,8 @@ export default async function handler(req) {
     return new Response('Method not allowed', { status: 405, headers: CORS });
   }
 
-  const isCron = new URL(req.url).searchParams.has('cron');
+  const url = new URL(req.url);
+  const isCron = url.searchParams.has('cron');
 
   // Regular GET: return cached Blob data only, never call Grok
   if (!isCron) {
@@ -184,7 +192,18 @@ export default async function handler(req) {
     return json({ briefing: [], lastUpdated: null });
   }
 
-  // Cron GET: call Grok, write to Blob, return fresh data
+  // Cron GET: call Grok, write to Blob, return fresh data.
+  // Each run is a paid Grok call and overwrites the cache, so once
+  // CRON_SECRET is configured, require it (Bearer header or ?token=).
+  const secret = process.env.CRON_SECRET;
+  if (secret) {
+    const bearer = req.headers.get('authorization') || '';
+    const token = url.searchParams.get('token') || '';
+    if (bearer !== `Bearer ${secret}` && token !== secret) {
+      return json({ error: 'Unauthorized' }, 401);
+    }
+  }
+
   if (!process.env.XAI_API_KEY) {
     return json({ error: 'XAI_API_KEY not configured' }, 503);
   }

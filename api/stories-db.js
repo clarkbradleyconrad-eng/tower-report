@@ -24,8 +24,20 @@ const BLOB_API = 'https://blob.vercel-storage.com';
 const CORS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Headers': 'Content-Type, X-Desk-Key, Authorization',
 };
+
+// Mutations require the desk key (X-Desk-Key) or the cron secret (Bearer)
+// once either env var is configured. With neither set, behavior is unchanged
+// (open) so the newsroom keeps working before the env is provisioned.
+function authorized(req) {
+  const desk = process.env.DESK_PASSWORD;
+  const cron = process.env.CRON_SECRET;
+  if (!desk && !cron) return true;
+  const key = req.headers.get('x-desk-key') || '';
+  const bearer = req.headers.get('authorization') || '';
+  return (desk && key === desk) || (cron && bearer === `Bearer ${cron}`);
+}
 
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
@@ -103,6 +115,9 @@ export default async function handler(req) {
       const stories = await blobGet();
       return json({ stories });
     }
+
+    // Everything past this point mutates the archive
+    if (!authorized(req)) return json({ error: 'Unauthorized' }, 401);
 
     if (req.method === 'POST') {
       const body = await req.json();
