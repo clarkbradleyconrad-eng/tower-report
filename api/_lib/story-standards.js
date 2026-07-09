@@ -74,7 +74,11 @@ function collectText(story) {
 
 function coordinatorConflicts(text, facts) {
   const reasons = [];
-  const roleRe = /(head coach|offensive coordinator|defensive coordinator)\s+([A-Z][\w'’.-]+(?:\s+[A-Z][\w'’.-]+)+)/g;
+  // Name = capitalized words only; no "." in the class — it swallowed
+  // sentence boundaries ("head coach Steve Sarkisian. No…") and produced
+  // false rejections. A one-word match ("coach Sarkisian") passes when it
+  // is contained in the verified full name.
+  const roleRe = /(head coach|offensive coordinator|defensive coordinator)\s+([A-Z][\w'’-]+(?:\s+[A-Z][\w'’-]+)*)/g;
   const factFor = {
     'head coach': facts?.headCoach,
     'offensive coordinator': facts?.offensiveCoordinator,
@@ -85,9 +89,12 @@ function coordinatorConflicts(text, facts) {
     const role = m[1].toLowerCase();
     const name = m[2].trim();
     const expected = factFor[role];
-    if (expected && name.toLowerCase() !== expected.toLowerCase()) {
-      reasons.push(`names "${name}" as ${role}; verified facts say ${expected}`);
-    } else if (!expected && role !== 'head coach') {
+    if (expected) {
+      const a = name.toLowerCase(), b = expected.toLowerCase();
+      if (!a.includes(b) && !b.includes(a)) {
+        reasons.push(`names "${name}" as ${role}; verified facts say ${expected}`);
+      }
+    } else if (role !== 'head coach') {
       reasons.push(`attributes the ${role} role to "${name}" — that role is unverified in data/facts.json`);
     }
   }
