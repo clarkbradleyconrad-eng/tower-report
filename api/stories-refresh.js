@@ -377,7 +377,7 @@ export default async function handler(req, res) {
         tools: [{ type: 'web_search' }],
         temperature: 0.2,
       }),
-      signal: AbortSignal.timeout(55000),
+      signal: AbortSignal.timeout(80000),
     });
 
     if (!xaiRes.ok) {

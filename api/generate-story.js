@@ -11,21 +11,28 @@
  *   XAI_API_KEY — xAI API key
  */
 
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
 import {
   factsPromptBlock, SOURCING_RULES, GRAPHICS_RULES,
   validateStory, normalizeImpactBreakdown,
 } from './_lib/story-standards.js';
 
-export const config = { runtime: 'edge' };
+// Node runtime (was edge): edge functions must send the first byte within
+// ~25s and Grok web-search calls regularly take longer — runs 504'd whenever
+// Grok was slow. vercel.json sets maxDuration: 90 + bundles data/.
 
-// Edge runtime has no fs — read the hand-verified facts from the static site
 async function loadFacts() {
   try {
-    const host = process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL || 'tower-report.vercel.app';
-    const res = await fetch(`https://${host}/data/facts.json`, { signal: AbortSignal.timeout(5000) });
-    if (!res.ok) return null;
-    return await res.json();
-  } catch { return null; }
+    return JSON.parse(await readFile(path.join(process.cwd(), 'data/facts.json'), 'utf8'));
+  } catch {
+    try {
+      const host = process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL || 'tower-report.vercel.app';
+      const res = await fetch(`https://${host}/data/facts.json`, { signal: AbortSignal.timeout(5000) });
+      if (!res.ok) return null;
+      return await res.json();
+    } catch { return null; }
+  }
 }
 
 const CORS = {
@@ -34,6 +41,12 @@ const CORS = {
   'Access-Control-Allow-Headers': 'Content-Type, X-Desk-Key, Authorization',
 };
 
+function json(res, data, status = 200) {
+  for (const [k, v] of Object.entries(CORS)) res.setHeader(k, v);
+  res.setHeader('Content-Type', 'application/json');
+  return res.status(status).json(data);
+}
+
 // Each call is a paid Grok-4 + web-search request. Require the desk key
 // (X-Desk-Key) or cron secret (Bearer) once either env var is configured;
 // with neither set, behavior is unchanged so nothing breaks pre-provisioning.
@@ -41,8 +54,8 @@ function authorized(req) {
   const desk = process.env.DESK_PASSWORD;
   const cron = process.env.CRON_SECRET;
   if (!desk && !cron) return true;
-  const key = req.headers.get('x-desk-key') || '';
-  const bearer = req.headers.get('authorization') || '';
+  const key = req.headers['x-desk-key'] || '';
+  const bearer = req.headers['authorization'] || '';
   return (desk && key === desk) || (cron && bearer === `Bearer ${cron}`);
 }
 
@@ -119,36 +132,32 @@ Return ONLY a valid JSON object in this exact shape — no markdown, no explanat
   }
 }`;
 
-export default async function handler(req) {
+export default async function handler(req, res) {
   if (req.method === 'OPTIONS') {
-    return new Response(null, { status: 204, headers: CORS });
+    for (const [k, v] of Object.entries(CORS)) res.setHeader(k, v);
+    return res.status(204).end();
   }
 
   if (req.method !== 'POST') {
-    return new Response('Method not allowed', { status: 405, headers: CORS });
+    return json(res, { error: 'Method not allowed' }, 405);
   }
 
   if (!authorized(req)) {
-    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-      status: 401, headers: { ...CORS, 'Content-Type': 'application/json' },
-    });
+    return json(res, { error: 'Unauthorized' }, 401);
   }
 
   const apiKey = process.env.XAI_API_KEY;
   if (!apiKey) {
-    return new Response(
-      JSON.stringify({ error: 'XAI_API_KEY not configured' }),
-      { status: 503, headers: { ...CORS, 'Content-Type': 'application/json' } }
-    );
+    return json(res, { error: 'XAI_API_KEY not configured' }, 503);
   }
 
-  let body;
-  try {
-    body = await req.json();
-  } catch {
-    return new Response(JSON.stringify({ error: 'Invalid JSON body' }), {
-      status: 400, headers: { ...CORS, 'Content-Type': 'application/json' },
-    });
+  // Vercel's Node runtime parses JSON bodies into req.body
+  let body = req.body;
+  if (typeof body === 'string') {
+    try { body = JSON.parse(body); } catch { body = null; }
+  }
+  if (!body || typeof body !== 'object') {
+    return json(res, { error: 'Invalid JSON body' }, 400);
   }
 
   const { eventType, topic, sourceContent, sourceUrl } = body;
@@ -184,16 +193,13 @@ export default async function handler(req) {
         tools: [{ type: 'web_search' }],
         temperature: 0.25,
       }),
-      signal: AbortSignal.timeout(55000),
+      signal: AbortSignal.timeout(80000),
     });
 
     if (!xaiRes.ok) {
       const errText = await xaiRes.text().catch(() => '');
       console.error('[tower/generate-story] xAI error', xaiRes.status, errText.slice(0, 300));
-      return new Response(
-        JSON.stringify({ error: 'AI generation failed', code: 'XAI_ERROR' }),
-        { status: 502, headers: { ...CORS, 'Content-Type': 'application/json' } }
-      );
+      return json(res, { error: 'AI generation failed', code: 'XAI_ERROR' }, 502);
     }
 
     const data = await xaiRes.json();
@@ -212,10 +218,7 @@ export default async function handler(req) {
     );
     if (!check.ok) {
       console.warn('[tower/generate-story] REJECTED:', parsed.story.title, '—', check.reasons.join('; '));
-      return new Response(
-        JSON.stringify({ error: 'Story rejected by accuracy gate', code: 'STORY_REJECTED', headline: parsed.story.title, reasons: check.reasons }),
-        { status: 422, headers: { ...CORS, 'Content-Type': 'application/json' } }
-      );
+      return json(res, { error: 'Story rejected by accuracy gate', code: 'STORY_REJECTED', headline: parsed.story.title, reasons: check.reasons }, 422);
     }
     normalizeImpactBreakdown(parsed.story);
 
@@ -238,15 +241,10 @@ export default async function handler(req) {
       ) / 1200)),
     };
 
-    return new Response(JSON.stringify({ story, socialPosts: parsed.socialPosts || {} }), {
-      headers: { ...CORS, 'Content-Type': 'application/json' },
-    });
+    return json(res, { story, socialPosts: parsed.socialPosts || {} });
 
   } catch (err) {
     console.error('[tower/generate-story]', err.message);
-    return new Response(
-      JSON.stringify({ error: err.message }),
-      { status: 500, headers: { ...CORS, 'Content-Type': 'application/json' } }
-    );
+    return json(res, { error: err.message }, 500);
   }
 }

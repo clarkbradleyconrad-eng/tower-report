@@ -28,7 +28,9 @@ const BLOB_API = 'https://blob.vercel-storage.com';
 const LOG_PATHNAME = 'tower-refresh-log.json';
 const LOG_PREFIX = 'tower-refresh-log'; // prefix without .json — REST API appends a hash
 const MAX_LOGGED_RUNS = 30;
-const STEP_TIMEOUT_MS = 58000;
+// Grok-backed steps run on the Node runtime with maxDuration 90 and an
+// internal 80s Grok timeout — aborting earlier here logged false failures
+const STEP_TIMEOUT_MS = 88000;
 
 function baseUrl() {
   const host = process.env.VERCEL_PROJECT_PRODUCTION_URL

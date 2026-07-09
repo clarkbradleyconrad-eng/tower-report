@@ -13,7 +13,9 @@
  *   BLOB_READ_WRITE_TOKEN  — Vercel Blob token
  */
 
-export const config = { runtime: 'edge' };
+// Node runtime (was edge): edge functions must send the first byte within
+// ~25s, and a non-streaming Grok web-search call regularly takes longer —
+// runs 504'd whenever Grok was slow. vercel.json sets maxDuration: 90.
 
 const BLOB_PATHNAME = 'tower-briefing.json';
 // Prefix without extension — matches tower-briefing*.json including random-suffix variants
@@ -27,11 +29,10 @@ const CORS = {
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
-function json(data, status = 200) {
-  return new Response(JSON.stringify(data), {
-    status,
-    headers: { ...CORS, 'Content-Type': 'application/json' },
-  });
+function json(res, data, status = 200) {
+  for (const [k, v] of Object.entries(CORS)) res.setHeader(k, v);
+  res.setHeader('Content-Type', 'application/json');
+  return res.status(status).json(data);
 }
 
 /* ---- Blob helpers ---- */
@@ -144,7 +145,7 @@ async function fetchFromGrok() {
       tools: [{ type: 'web_search' }],
       temperature: 0.1,
     }),
-    signal: AbortSignal.timeout(55000),
+    signal: AbortSignal.timeout(80000),
   });
 
   if (!xaiRes.ok) {
@@ -172,24 +173,25 @@ async function fetchFromGrok() {
 
 /* ---- Handler ---- */
 
-export default async function handler(req) {
+export default async function handler(req, res) {
   if (req.method === 'OPTIONS') {
-    return new Response(null, { status: 204, headers: CORS });
+    for (const [k, v] of Object.entries(CORS)) res.setHeader(k, v);
+    return res.status(204).end();
   }
 
   if (req.method !== 'GET') {
-    return new Response('Method not allowed', { status: 405, headers: CORS });
+    return json(res, { error: 'Method not allowed' }, 405);
   }
 
-  const url = new URL(req.url);
+  const url = new URL(req.url, 'http://localhost');
   const isCron = url.searchParams.has('cron');
 
   // Regular GET: return cached Blob data only, never call Grok
   if (!isCron) {
     const cached = await blobGet();
-    if (cached) return json(cached);
+    if (cached) return json(res, cached);
     // Nothing cached yet — return empty shell so frontend shows skeleton
-    return json({ briefing: [], lastUpdated: null });
+    return json(res, { briefing: [], lastUpdated: null });
   }
 
   // Cron GET: call Grok, write to Blob, return fresh data.
@@ -197,15 +199,15 @@ export default async function handler(req) {
   // CRON_SECRET is configured, require it (Bearer header or ?token=).
   const secret = process.env.CRON_SECRET;
   if (secret) {
-    const bearer = req.headers.get('authorization') || '';
+    const bearer = req.headers['authorization'] || '';
     const token = url.searchParams.get('token') || '';
     if (bearer !== `Bearer ${secret}` && token !== secret) {
-      return json({ error: 'Unauthorized' }, 401);
+      return json(res, { error: 'Unauthorized' }, 401);
     }
   }
 
   if (!process.env.XAI_API_KEY) {
-    return json({ error: 'XAI_API_KEY not configured' }, 503);
+    return json(res, { error: 'XAI_API_KEY not configured' }, 503);
   }
 
   try {
@@ -215,15 +217,15 @@ export default async function handler(req) {
       lastUpdated: new Date().toISOString(),
     };
     await blobSet(payload);
-    return json(payload);
+    return json(res, payload);
   } catch (err) {
     console.error('[tower/briefing] Grok failed:', err.message);
     // Fall back to last cached version so a cron failure never breaks the site
     const cached = await blobGet();
     if (cached) {
       console.log('[tower/briefing] returning stale cache after Grok failure');
-      return json({ ...cached, stale: true });
+      return json(res, { ...cached, stale: true });
     }
-    return json({ error: err.message }, 502);
+    return json(res, { error: err.message }, 502);
   }
 }

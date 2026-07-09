@@ -16,7 +16,9 @@
   "functions": {
     "api/daily-refresh.js": { "maxDuration": 300 },
     "api/stories-refresh.js": { "maxDuration": 90, "includeFiles": "data/**" },
-    "api/verify-recruiting.js": { "maxDuration": 90, "includeFiles": "data/**" }
+    "api/verify-recruiting.js": { "maxDuration": 90, "includeFiles": "data/**" },
+    "api/briefing.js": { "maxDuration": 90 },
+    "api/generate-story.js": { "maxDuration": 90, "includeFiles": "data/**" }
   },
   "headers": [
     {
