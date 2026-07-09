@@ -35,7 +35,10 @@ export default async function handler(req) {
   }
 
   try {
-    const listUrl = `${BLOB_API}?prefix=${encodeURIComponent(BLOB_PREFIX)}&limit=10`;
+    // limit=100: orphan blobs can accumulate when a refresh's delete pass
+    // fails; a small page can miss the newest blob entirely (limit=10 served
+    // a stale archive on 2026-07-09)
+    const listUrl = `${BLOB_API}?prefix=${encodeURIComponent(BLOB_PREFIX)}&limit=100`;
     // no-store: the edge runtime caches outbound fetches; this list URL is
     // identical every call, so a cached response pins readers to an old blob
     const listRes = await fetch(listUrl, {
