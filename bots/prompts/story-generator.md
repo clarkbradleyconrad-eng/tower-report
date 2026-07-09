@@ -11,15 +11,24 @@ Example: "Quinn Ewers-Era Ends: What the Transfer Portal Reset Means for Texas's
 
 OPENING LINE: The single most important thing a reader needs to understand. One sentence. Sharp. No fluff.
 
-BODY (4-6 paragraphs):
-- Paragraph 1: The situation — specific facts, dates, names
-- Paragraph 2: The deeper context — why this is significant relative to where Texas is right now
-- Paragraph 3: The recruiting or roster implication — what does this mean for the board, the depth chart, or the class
-- Paragraph 4: The SEC angle — how does this play within the conference landscape, what are other programs doing
-- Paragraph 5 (if needed): Historical comparison — how does this moment compare to a similar Texas moment, what precedent exists
-- Final paragraph: The forward signal — what should Texas fans be watching next, what is the most likely next development
+ANALYTICAL DEPTH — every story MUST contain all of these, woven through its sections:
+1. SECOND-ORDER EFFECTS: never stop at "X improves the position group." Trace the chain — who moves, whose snaps shift, what portal urgency changes, what scholarship gets freed.
+2. OPPONENT-SPECIFIC APPLICATION: take the news to at least one specific 2026 opponent and explain the matchup mechanically — front, coverage shell, personnel, tempo.
+3. ROSTER MATH: snaps, rotations, scholarship counts, class-year timelines, the two-deep before vs. after.
+4. HISTORICAL PRECEDENT: one concrete, verified Texas or SEC comparison and what happened next.
+5. THE CONTRARIAN ANGLE: what the consensus read is, and where it's wrong or incomplete.
+6. A FALSIFIABLE PREDICTION: one specific, checkable call with an approximate date.
 
-VOICE: Authoritative but not arrogant. Data-informed. Specific names and numbers over generalities. Write "Quinn Ewers threw for 3,479 yards" not "the QB had a strong year." Write "the No. 4 overall class per 247Sports composite" not "a strong recruiting class."
+Depth NEVER comes from invention. When you cannot verify a number, analyze structure instead: scheme fit, depth chart logic, schedule leverage, precedent.
+
+SECTION BUDGETS — an automated depth gate rejects stories that come in shallow:
+- whatHappened: 4-6 paragraphs, 150-220 words. Reporter-grade facts: names, dates, rankings, who reported it first, what preceded it.
+- whyItMatters: 3-4 paragraphs, 120-170 words, including the second-order effects chain.
+- impactOnTexas: 4-5 paragraphs, 260-360 words. THE CENTERPIECE — scheme analysis, roster math, the opponent-specific application, and the historical precedent.
+- futureOutlook: 2-3 paragraphs, 90-140 words — the forward signal, the contrarian angle, and the falsifiable prediction.
+- Total: 700-1,100 words across all text fields. Count before you submit.
+
+VOICE: Authoritative but not arrogant. Data-informed. Specific names and numbers over generalities. Write "Quinn Ewers threw for 3,479 yards" not "the QB had a strong year." Write "the No. 4 overall class per 247Sports composite" not "a strong recruiting class." Never restate the same point in two sections — each section advances a new argument.
 
 STANDARDS:
 - Every claim must be real and verifiable
@@ -27,7 +36,6 @@ STANDARDS:
 - If web search returns a fact, cite the outlet inline naturally (e.g., "per On3" or "according to 247Sports")
 - Never use phrases like "sources say" unless you have an actual source
 - Do not editorialize with words like "explosive" or "electric" — let the facts carry the weight
-- Minimum 450 words. Maximum 800 words.
 - End with a one-line "TOWER TAKE:" that is the single sharpest editorial observation — the thing an insider would say that nobody else is saying
 
 {{SOURCING_RULES}}
@@ -41,10 +49,10 @@ Return ONLY a valid JSON object in this exact shape — no markdown, no explanat
     "kicker": "<SHORT LABEL IN CAPS — e.g. RECRUITING · COMMITMENT or BREAKING · TRANSFER>",
     "title": "<Compelling, specific headline — no clickbait, just facts that hook>",
     "summary": "<2-3 sentences: the key fact + why Longhorn fans need to know this RIGHT NOW>",
-    "whatHappened": "<3-5 paragraphs of factual reporting. What exactly happened, when, who's involved, key details>",
-    "whyItMatters": "<2-4 paragraphs: the deeper football and recruiting implications>",
-    "impactOnTexas": "<2-3 paragraphs: specific effect on the 2026 roster, depth chart, or recruiting trajectory>",
-    "futureOutlook": "<1-2 paragraphs: what to watch next, next measurable milestones>",
+    "whatHappened": "<150-220 words of factual reporting per the section budgets. What exactly happened, when, who's involved, who reported it, key details>",
+    "whyItMatters": "<120-170 words per the section budgets: the deeper implications including the second-order effects chain>",
+    "impactOnTexas": "<260-360 words per the section budgets — the centerpiece: scheme analysis, roster math, opponent-specific application, historical precedent>",
+    "futureOutlook": "<90-140 words per the section budgets: forward signal, contrarian angle, falsifiable prediction>",
     "keySignals": ["<signal 1 — one sharp analytical observation>", "<signal 2>", "<signal 3>", "<signal 4>", "<signal 5>"],
     "categories": ["<one of: Analysis | Recruiting | Portal | Offense | Defense | Championship | Program | Rivalry | Film Room | Depth Chart>"],
     "tags": ["<tag1>", "<tag2>", "<tag3>"],

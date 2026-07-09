@@ -153,6 +153,25 @@ export function validateStory(story, facts) {
   if ((s.takeaways || []).length < 2) reasons.push('takeaways underpopulated');
   if ((s.watchNext || []).length < 2) reasons.push('watchNext underpopulated');
 
+  // Depth gate — full stories (not signal briefs) must carry real analysis,
+  // not preview-card padding. Thresholds sit ~70-75% of the prompt's section
+  // budgets so honest stories pass and shallow ones fail.
+  if (s.isSignalBrief !== true) {
+    const wc = (v) => String(v || '').trim().split(/\s+/).filter(Boolean).length;
+    const totalWords = Object.values(s)
+      .filter(v => typeof v === 'string').reduce((n, v) => n + wc(v), 0)
+      + [].concat(s.whoItAffects || [], s.takeaways || [], s.watchNext || [])
+        .reduce((n, v) => n + wc(v), 0);
+    if (totalWords < 600) reasons.push(`depth: story totals ${totalWords} words; full stories need 900-1,300 (gate: 600)`);
+    // Centerpiece analysis section — either schema's name for it
+    const centerpiece = s.footballImpact || s.impactOnTexas || '';
+    if (wc(centerpiece) < 170) reasons.push(`depth: football-impact analysis is ${wc(centerpiece)} words; needs 260-360 (gate: 170)`);
+    if (s.whatHappened !== undefined && wc(s.whatHappened) < 90) reasons.push(`depth: whatHappened is ${wc(s.whatHappened)} words; needs 130-190 (gate: 90)`);
+    if (s.whyItMatters !== undefined && wc(s.whyItMatters) < 75) reasons.push(`depth: whyItMatters is ${wc(s.whyItMatters)} words; needs 110-160 (gate: 75)`);
+    if (s.towerTake !== undefined && wc(s.towerTake) < 60) reasons.push(`depth: towerTake is ${wc(s.towerTake)} words; needs 90-140 (gate: 60)`);
+    if (s.whoItAffects !== undefined && (s.whoItAffects || []).length < 3) reasons.push('depth: whoItAffects needs 4-6 entries (gate: 3)');
+  }
+
   const text = collectText(s);
   reasons.push(...coordinatorConflicts(text, facts));
 

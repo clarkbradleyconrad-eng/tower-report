@@ -380,6 +380,12 @@ button{cursor:pointer;}
 .ts-watchnext ul{list-style:none;display:flex;flex-direction:column;gap:7px;}
 .ts-watchnext li{display:flex;gap:9px;font-size:13.5px;line-height:1.55;color:var(--secondary);}
 .ts-watchnext li::before{content:'▸';color:var(--muted);font-size:10px;flex-shrink:0;margin-top:2px;}
+.ts-affects-list{list-style:none;display:flex;flex-direction:column;gap:9px;margin-top:2px;}
+.ts-affects-list li{display:flex;gap:9px;font-size:14px;line-height:1.62;color:var(--white2);}
+.ts-affects-list li::before{content:'●';color:var(--orange);font-size:7px;flex-shrink:0;margin-top:7px;}
+.ts-towertake{margin:22px 0 20px;padding:17px 19px;background:linear-gradient(135deg,rgba(191,87,0,.10),rgba(191,87,0,.03));border:1px solid rgba(191,87,0,.35);border-left:3px solid var(--orange);}
+.ts-towertake-lbl{font-family:var(--font-display);font-size:8px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--orange);margin-bottom:9px;}
+.ts-towertake p{font-size:14.5px;line-height:1.66;color:var(--white2);font-style:italic;}
 .ts-modal-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:14px;}
 .ts-modal-tag{padding:3px 8px;background:var(--s3);border:1px solid var(--border);font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--secondary);}
 
@@ -1204,6 +1210,27 @@ function renderArticle(s) {
   var wim = s.whyItMatters||'';
   if (wim && wim !== (s.hook||s.summary||'')) {
     out += '<div class="ts-wim-box"><div class="ts-wim-box-lbl">Why It Matters</div><p>'+esc(wim)+'</p></div>';
+  }
+
+  // Full analysis sections (AI stories carry these as structured fields —
+  // before 2026-07-09 they were generated but never rendered, which made
+  // every story read like its preview card)
+  if (s.whatHappened) {
+    out += '<div class="ts-section-block"><div class="ts-section-lbl">What Happened</div><div class="ts-section-body">'+esc(s.whatHappened)+'</div></div>';
+  }
+  if (s.footballImpact) {
+    out += '<div class="ts-section-block"><div class="ts-section-lbl">Football Impact</div><div class="ts-section-body">'+esc(s.footballImpact)+'</div></div>';
+  }
+  if (s.whoItAffects && s.whoItAffects.length) {
+    out += '<div class="ts-section-block"><div class="ts-section-lbl">Who It Affects</div><ul class="ts-affects-list">'+
+      s.whoItAffects.map(function(w){ return '<li>'+esc(w)+'</li>'; }).join('')+
+    '</ul></div>';
+  }
+  if (s.whatChanges) {
+    out += '<div class="ts-section-block"><div class="ts-section-lbl">What This Changes</div><div class="ts-section-body">'+esc(s.whatChanges)+'</div></div>';
+  }
+  if (s.towerTake) {
+    out += '<div class="ts-towertake"><div class="ts-towertake-lbl">Tower Take</div><p>'+esc(s.towerTake)+'</p></div>';
   }
 
   // Body or parsed overview sections
