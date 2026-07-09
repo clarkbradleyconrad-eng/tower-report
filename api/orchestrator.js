@@ -77,14 +77,27 @@ const HTTP_ADAPTERS = {
 
   'story-generator': async (bot, { base, dryRun }) => {
     const url = dryRun ? withQuery(bot.endpoint, 'dryRun=1') : bot.endpoint;
-    const gen = await stepFetch(base, url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        eventType: 'Program News',
-        topic: 'The single most important verified Texas Longhorns football development of the last 24 hours',
-      }),
-    }, bot.timeoutMs);
+    let gen;
+    try {
+      gen = await stepFetch(base, url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          eventType: 'Program News',
+          topic: 'The single most important verified Texas Longhorns football development of the last 24 hours',
+        }),
+      }, bot.timeoutMs);
+    } catch (err) {
+      // A 422 gate rejection is a successful bot run whose output didn't
+      // make the bar — it's already in the review queue, not a failure
+      if (/STORY_REJECTED/.test(err.message)) {
+        const m = err.message.match(/HTTP 422: (\{.*)/s);
+        let body = {};
+        try { body = JSON.parse(m ? m[1] : '{}'); } catch { /* partial body */ }
+        return { score: body._score ?? null, promptHash: body._promptHash ?? null, rejected: true, summary: { rejected: true, headline: body.headline || null, reasons: (body.reasons || [String(err.message).slice(0, 160)]).slice(0, 4) } };
+      }
+      throw err;
+    }
     if (gen.code === 'STORY_REJECTED' || gen.rejected) {
       return { score: gen._score ?? null, promptHash: gen._promptHash ?? null, rejected: true, summary: { rejected: true, headline: gen.headline, reasons: (gen.reasons || []).slice(0, 4) } };
     }
