@@ -46,7 +46,11 @@ The 6-player watch list included players who are **no longer in college football
 
 "8 Outgoing / +3 Net Roster Change" came from the quarantined outgoing table, so `data/recruiting.json → meta.portalOutgoing` and `meta.portalNet` are now `null` (page renders "—"). "4 Immediate Impact" was kept (derived from the verified incoming list). Verify and fill in.
 
-## 6. Live stories already in the archive (published before the accuracy gate)
+## 6. Hand-verified recruiting data is far behind the live numbers
+
+`data/recruiting.json` (your June 3 snapshot) says **#15 On3 / #26 247Sports / 8 commits**. The first Grok live checks (July 9, sources: On3 + 247Sports) report **#5 On3 / #4 247Sports / 22 commits**, plus commits not in your hand-verified list: **Montre Jackson (CB, ~Jul 1)**, **Kasi Currie (OG, ~Jul 4)**, and **Ismael Camara (5★ OT)** per multiple sourced stories. The page shows the live numbers clearly labeled "Live · via Grok" with "differs from hand-verified" deltas — but the verified table itself needs a refresh pass from you.
+
+## 7. Live stories already in the archive (published before the accuracy gate)
 
 These stay live (removing them is your call) but contain claims the new gate would reject:
 
@@ -54,8 +58,9 @@ These stay live (removing them is your call) but contain claims the new gate wou
 - **"Texas Lands Jermaine Bishop Jr. and Jamarion Carlton in 2026 Class Surge"** — describes an active "2026 class surge" dated July 7, 2026, but the 2026 class is signed/closed (both players appear in the signed-2026 list); also asserts Muschamp.
 - Single-source stories: "Texas Trending for Five-Star RB Landen Williams-Callis…" (Sports Illustrated only), "Orangebloods Updates 2026 Offensive Depth Chart…" (Orangebloods only).
 - Every story naming a DC (see item 1).
+- Two stories generated 2026-07-09 ~14:58 UTC by a stale deployment during the cutover (no impact breakdown / season model; one names Muschamp): "Texas Adds Portal WR Cam Coleman and RB Hollywood Smothers to 2026 Roster" and "Colin Simmons Positioned for SEC History as Edge Depth Improves".
 
-## 7. data/facts.json values I could not set
+## 8. data/facts.json values I could not set
 
 - `offensiveCoordinator` — null (item 2)
 - `defensiveCoordinator` — null (item 1)

@@ -17,6 +17,10 @@
 // ~25s, and a non-streaming Grok web-search call regularly takes longer —
 // runs 504'd whenever Grok was slow. vercel.json sets maxDuration: 90.
 
+import { loadPromptWithFacts } from '../bots/lib/prompts.js';
+import { scoreBriefing, REJECT_THRESHOLD } from '../bots/lib/score.js';
+import { pushRejected } from '../bots/lib/blob.js';
+
 const BLOB_PATHNAME = 'tower-briefing.json';
 // Prefix without extension — matches tower-briefing*.json including random-suffix variants
 // (Vercel Blob REST API ignores addRandomSuffix=false; prefix must match the hash-inserted form)
@@ -97,31 +101,15 @@ async function blobSet(data) {
   }
 }
 
-/* ---- Grok call — identical pattern to generate-story.js ---- */
-
-const SYSTEM = `You are the Tower Report briefing engine for Texas Longhorns football. Search the web for real verified news from the last 48 hours about Texas Longhorns football. Return exactly 5 briefing items covering DIFFERENT categories. You must include at minimum:
-- 1 ROSTER or PROGRAM item (team news, depth chart, coaching, season outlook)
-- 1 RECRUITING item (commits, targets, visits)
-- 1 PORTAL or NIL item (transfers, NIL deals)
-- 1 INTEL item (injury updates, betting lines, national rankings, CFP outlook)
-- 1 item of your choice based on what is most newsworthy today
-Never return more than 2 items from the same category. Prioritize variety and what a serious Texas football fan would actually want to know today.
-
-Each item must have:
-- category: one of RECRUITING, ROSTER, PORTAL, PROGRAM, INTEL, INJURY, NIL
-- importance: HIGH, NORMAL, or URGENT
-- headline: max 12 words, written like a confident beat reporter, include specific names and numbers
-- context: one sentence, the single most important supporting detail, specific not vague
-- whatHappened: 2-3 sentences of factual reporting beyond the headline — specific names, numbers, dates, rankings
-- whyItMatters: 2-3 sentences on what this means for Texas — the depth chart, the recruiting board, or the championship path
-- whatNext: 1-2 sentences — the next concrete development Texas fans should watch for
-- source: actual outlet name (ON3, 247SPORTS, INSIDE TEXAS, RIVALS, BLEACHER REPORT, etc)
-- url: the direct URL to the specific article or page you sourced this from (must be a real link you found via web search)
-Only include real verified news. Never invent facts. Return valid JSON array only, no other text.`;
+/* ---- Grok call — identical pattern to generate-story.js ----
+   System prompt lives in bots/prompts/briefing.md (versioned; hash logged
+   with every output so quality changes trace to prompt edits). */
 
 async function fetchFromGrok() {
   const apiKey = process.env.XAI_API_KEY;
   if (!apiKey) throw new Error('XAI_API_KEY not configured');
+
+  const { text: SYSTEM, hash: promptHash } = await loadPromptWithFacts('briefing');
 
   const today = new Date().toLocaleDateString('en-US', {
     weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
@@ -168,7 +156,7 @@ async function fetchFromGrok() {
   const dateKey = new Date().toISOString().slice(0, 10).replace(/-/g, '');
   items.forEach((item, i) => { item.id = `brief-${dateKey}-${i + 1}`; });
 
-  return items;
+  return { items, promptHash };
 }
 
 /* ---- Handler ---- */
@@ -210,14 +198,32 @@ export default async function handler(req, res) {
     return json(res, { error: 'XAI_API_KEY not configured' }, 503);
   }
 
+  // ?dryRun=1 (orchestrator dry runs): generate + grade but never publish
+  const dryRun = url.searchParams.get('dryRun') === '1';
+
   try {
-    const items = await fetchFromGrok();
+    const { items, promptHash } = await fetchFromGrok();
+
+    // Quality gate: graded 0-100 (bots/lib/score.js); below threshold the
+    // fresh briefing is rejected to the review queue and the cache stays.
+    const { score, reasons } = scoreBriefing(items);
+    if (score < REJECT_THRESHOLD) {
+      console.warn(`[tower/briefing] REJECTED score=${score}: ${reasons.join('; ')}`);
+      if (!dryRun) {
+        await pushRejected('briefing', { promptHash, score, reasons, output: items });
+      }
+      const cached = await blobGet();
+      return json(res, { ...(cached || { briefing: [], lastUpdated: null }), rejected: true, _score: score, _promptHash: promptHash });
+    }
+
     const payload = {
       briefing: items,
       lastUpdated: new Date().toISOString(),
+      _score: score,
+      _promptHash: promptHash,
     };
-    await blobSet(payload);
-    return json(res, payload);
+    if (!dryRun) await blobSet(payload);
+    return json(res, dryRun ? { ...payload, dryRun: true } : payload);
   } catch (err) {
     console.error('[tower/briefing] Grok failed:', err.message);
     // Fall back to last cached version so a cron failure never breaks the site
