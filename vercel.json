@@ -16,10 +16,10 @@
   "functions": {
     "api/orchestrator.js": { "maxDuration": 300, "includeFiles": "{data,bots}/**" },
     "api/ops.js": { "maxDuration": 30, "includeFiles": "{data/**,bots/**,NEEDS-VERIFICATION.md}" },
-    "api/stories-refresh.js": { "maxDuration": 90, "includeFiles": "{data,bots}/**" },
+    "api/stories-refresh.js": { "maxDuration": 200, "includeFiles": "{data,bots}/**" },
     "api/verify-recruiting.js": { "maxDuration": 90, "includeFiles": "{data,bots}/**" },
     "api/briefing.js": { "maxDuration": 90, "includeFiles": "{data,bots}/**" },
-    "api/generate-story.js": { "maxDuration": 90, "includeFiles": "{data,bots}/**" }
+    "api/generate-story.js": { "maxDuration": 150, "includeFiles": "{data,bots}/**" }
   },
   "headers": [
     {

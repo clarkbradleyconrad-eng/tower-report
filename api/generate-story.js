@@ -16,6 +16,7 @@ import path from 'node:path';
 import {
   validateStory, normalizeImpactBreakdown,
 } from './_lib/story-standards.js';
+import { isDepthOnlyRejection, repairStoryDepth } from './_lib/story-depth.js';
 import { loadPromptWithFacts } from '../bots/lib/prompts.js';
 import { scoreStory, REJECT_THRESHOLD } from '../bots/lib/score.js';
 import { pushRejected } from '../bots/lib/blob.js';
@@ -153,10 +154,26 @@ export default async function handler(req, res) {
 
     // Accuracy gate — same standards as stories-refresh. A story that fails
     // is never returned or saved; the caller gets the reasons for the log.
-    const check = validateStory(
-      { ...parsed.story, takeaways: parsed.story.takeaways || parsed.story.keySignals },
-      facts
-    );
+    const checkable = (s) => ({ ...s, takeaways: s.takeaways || s.keySignals });
+    let check = validateStory(checkable(parsed.story), facts);
+    // Depth-only failures get one repair pass (expand short sections, no new
+    // facts) before the story is given up on — see api/_lib/story-depth.js.
+    if (!check.ok && isDepthOnlyRejection(check.reasons)) {
+      try {
+        const fixed = await repairStoryDepth(parsed.story, check.reasons, { timeoutMs: 45000 });
+        const recheck = validateStory(checkable(fixed), facts);
+        if (recheck.ok) {
+          console.log('[tower/generate-story] depth-repaired:', fixed.title || parsed.story.title);
+          parsed.story = fixed;
+          check = recheck;
+        } else {
+          parsed.story = fixed;
+          check = { ok: false, reasons: recheck.reasons.map(r => `after depth repair — ${r}`) };
+        }
+      } catch (err) {
+        check = { ok: false, reasons: [...check.reasons, `depth repair failed: ${err.message}`] };
+      }
+    }
     if (!check.ok) {
       console.warn('[tower/generate-story] REJECTED:', parsed.story.title, '—', check.reasons.join('; '));
       if (!dryRun) {

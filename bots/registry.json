@@ -35,7 +35,7 @@
       "outputType": "story",
       "dependsOn": [],
       "enabled": true,
-      "timeoutMs": 88000,
+      "timeoutMs": 140000,
       "alert": { "onFail": true, "qualityDrop": 15 }
     },
     {
@@ -52,7 +52,7 @@
       "outputType": "stories",
       "dependsOn": [],
       "enabled": true,
-      "timeoutMs": 88000,
+      "timeoutMs": 190000,
       "alert": { "onFail": true, "qualityDrop": 15 }
     },
     {

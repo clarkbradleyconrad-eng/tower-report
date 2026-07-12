@@ -22,6 +22,7 @@ import {
   validateStory, normalizeImpactBreakdown,
   isDuplicatePair, dedupeArchive, DEDUP_WINDOW_MS,
 } from './_lib/story-standards.js';
+import { isDepthOnlyRejection, repairStoryDepth } from './_lib/story-depth.js';
 import { loadPromptWithFacts } from '../bots/lib/prompts.js';
 import { scoreStory, REJECT_THRESHOLD } from '../bots/lib/score.js';
 import { pushRejected } from '../bots/lib/blob.js';
@@ -288,8 +289,29 @@ export default async function handler(req, res) {
   const rejected = [];
   const validStories = [];
   const storyScores = [];
-  for (const story of freshStories) {
-    const { ok, reasons } = validateStory(story, facts);
+  let repairedCount = 0;
+  for (let story of freshStories) {
+    let { ok, reasons } = validateStory(story, facts);
+    // Depth-only failures get one repair pass: the research is sound, the
+    // model just wrote short. Grok expands the flagged sections (no web
+    // search, no new facts) and the result is re-validated on the same gate.
+    if (!ok && isDepthOnlyRejection(reasons)) {
+      try {
+        const fixed = await repairStoryDepth(story, reasons, { timeoutMs: 45000 });
+        const recheck = validateStory(fixed, facts);
+        if (recheck.ok) {
+          console.log(`[tower/stories-refresh] depth-repaired "${story.headline}"`);
+          story = fixed;
+          ok = true;
+          repairedCount++;
+        } else {
+          story = fixed;
+          reasons = recheck.reasons.map(r => `after depth repair — ${r}`);
+        }
+      } catch (err) {
+        reasons = [...reasons, `depth repair failed: ${err.message}`];
+      }
+    }
     if (!ok) {
       console.warn(`[tower/stories-refresh] REJECTED "${story.headline}": ${reasons.join('; ')}`);
       rejected.push({ headline: story.headline, reasons, score: null, story });
@@ -382,6 +404,7 @@ export default async function handler(req, res) {
     ok: true,
     ...(dryRun ? { dryRun: true } : {}),
     added: toAdd.length,
+    depthRepaired: repairedCount,
     droppedDuplicates: droppedDetail.length,
     droppedDetail,
     rejected: rejected.length,

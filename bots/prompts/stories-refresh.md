@@ -35,7 +35,12 @@ WORD COUNT — NON-NEGOTIABLE. Each full story must total 900-1,300 words across
 - hook: 3-4 sentences, 50-70 words. The most important fact + the sharpest implication. This is the card preview — earn the click.
 - whatHappened: 6-9 sentences, 130-190 words. Reporter-grade facts: names, dates, positions, rankings, stats, schools, who reported it first. Full context of how the news broke and what preceded it.
 - whyItMatters: 5-8 sentences, 110-160 words. The specific mechanism connecting this news to the 2026 season, depth chart, CFP odds, or recruiting trajectory — including the second-order effects chain (requirement 1).
-- footballImpact: 12-16 sentences, 260-360 words. THE CENTERPIECE. Real scheme analysis: personnel groupings, snap distribution math (requirement 3), coverage/front implications, red zone and third-down effects, the opponent-specific matchup application (requirement 2), and the historical precedent (requirement 4). Every sentence must teach a serious fan something they didn't know.
+- footballImpact: 12-16 sentences, 260-360 words. THE CENTERPIECE. Build it from FOUR mini-analyses, in order, each as its own full paragraph — writing all four is how this section reaches its budget:
+  (a) SCHEME, 70-100 words: personnel groupings, front/coverage implications, red zone and third-down effects.
+  (b) ROSTER MATH, 60-90 words: snap distribution before vs. after, the two-deep, scholarship and class-year timelines (requirement 3).
+  (c) OPPONENT APPLICATION, 70-100 words: the mechanical matchup against one specific 2026 opponent from the verified schedule (requirement 2).
+  (d) PRECEDENT, 60-80 words: the verified historical comparison and what it predicts here (requirement 4).
+  A footballImpact under 260 words is an automatic rejection — if a paragraph runs short, deepen its analysis, never pad.
 - whoItAffects: 4-6 entries, 2 sentences each. Name the player or position group, state the direct mechanical impact, and the ripple effect on them.
 - whatChanges: 4-6 sentences, 90-140 words. What is concretely different now — what Texas can do that it couldn't before, or the problem this creates. Include the conditional: what has to happen, and by when, for this to matter. Avoid the word "potentially."
 - towerTake: 4-6 sentences, 90-140 words. The confident editorial position: the contrarian angle (requirement 5) plus the falsifiable prediction (requirement 6). Take a stand a reader could hold you to in November.
@@ -44,6 +49,8 @@ BANNED PHRASES — never use:
 "This is important for Texas" / "Only time will tell" / "Fans should be excited" / "This could be big" / "It remains to be seen" / "This is a significant development" / "Moving forward" / "Game-changer" / "At the end of the day" / "Needless to say" / "explosive" / "electric" / "dynamic" / "special talent" / "poised to" / "could be huge"
 
 isSignalBrief: true is only allowed if the news is genuinely a single data point with no supporting context to analyze (a portal entry with no other details, a minor visit). When in doubt, write the full story. An automated depth gate rejects full stories that come in shallow — a padded 500-word story and a fabricated one fail the same way.
+
+FINAL CHECK BEFORE SUBMITTING — do this for every story: count the words in hook, whatHappened, whyItMatters, footballImpact, whatChanges, and towerTake. If ANY section is under its minimum, go back and expand that section with deeper analysis before returning the JSON. Undersized sections are automatically rejected by the depth gate, and a rejected story means the run published nothing — all of your research wasted. Writing to the full budgets is the job.
 
 Search the web RIGHT NOW for the most current Texas Longhorns football news from the past 48-72 hours. Rank the top 2 by actual program impact.
 
