@@ -275,9 +275,12 @@ export default async function handler(req, res) {
     const token = params.get('token') || params.get('key') || '';
     const okSecret = secret && (bearer === `Bearer ${secret}` || token === secret);
     const okOps = opsKey && (token === opsKey || req.headers['x-ops-key'] === opsKey);
-    // Vercel cron requests carry x-vercel-cron; without CRON_SECRET set they
-    // have no way to authenticate, so accept them explicitly.
-    const okCronHeader = !!req.headers['x-vercel-cron'];
+    // Without CRON_SECRET set, Vercel cron requests have no way to
+    // authenticate, so accept cron-marker headers as a fallback. These are
+    // spoofable — once CRON_SECRET is set, Vercel sends Authorization:
+    // Bearer <CRON_SECRET> itself and this bypass turns off.
+    const okCronHeader = !secret &&
+      !!(req.headers['x-vercel-cron'] || req.headers['x-vercel-cron-schedule']);
     if (!okSecret && !okOps && !okCronHeader) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
