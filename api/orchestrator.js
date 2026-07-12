@@ -295,17 +295,19 @@ export default async function handler(req, res) {
   const startMs = Date.now();
   const base = baseUrl();
 
-  // Watchdog: no full run fired since today's 06:00 UTC → alert + catch up.
+  // Watchdog: no run in the last 13h means a scheduled slot was missed
+  // (06:00 checked at ~10:05, 18:00 checked at ~22:05) → alert + catch up.
+  // Rolling window instead of "since 06:00 UTC" so both slots are covered.
   let watchdogMiss = null;
   if (slot === 'watchdog') {
     const heartbeat = await blobGetJson(KEYS.heartbeat.prefix);
-    const today6 = new Date(); today6.setUTCHours(6, 0, 0, 0);
     const lastRun = heartbeat?.lastRun ? new Date(heartbeat.lastRun) : null;
-    if (lastRun && lastRun >= today6) {
+    const freshMs = 13 * 3600 * 1000;
+    if (lastRun && Date.now() - lastRun.getTime() < freshMs) {
       return res.status(200).json({ ok: true, watchdog: 'pass', lastRun: heartbeat.lastRun });
     }
     watchdogMiss = { lastRun: heartbeat?.lastRun || null };
-    console.warn('[tower/orchestrator] watchdog MISS — no run since 06:00 UTC, running catch-up');
+    console.warn('[tower/orchestrator] watchdog MISS — no run in 13h, running catch-up');
   }
 
   const { bots, overrides } = await loadBots();

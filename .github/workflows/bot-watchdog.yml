@@ -1,14 +1,18 @@
 name: Bot Watchdog
 
 # Vercel Hobby allows only 2 cron jobs and both are the am/pm orchestrator
-# runs, so the "did the morning run actually fire?" check lives here.
-# At 10:05 UTC it hits the orchestrator's watchdog slot: if no run has
-# fired since 06:00 UTC, the orchestrator alerts Slack (SLACK_OPS_WEBHOOK)
-# and runs a catch-up cycle itself.
+# runs — and Hobby cron delivery has proven unreliable (silent 3-day gap,
+# 2026-07-09→12), so this workflow is the guaranteed backstop for BOTH slots.
+# Each check hits the orchestrator's watchdog slot ~4h after the Vercel cron
+# should have fired: if no run landed in the last 13h, the orchestrator
+# alerts Slack (SLACK_OPS_WEBHOOK) and runs a catch-up cycle itself.
+#
+# Auth: OPS_KEY repo secret (same value as the Vercel OPS_KEY env var).
 
 on:
   schedule:
-    - cron: '5 10 * * *'  # 10:05 UTC daily
+    - cron: '5 10 * * *'  # backstops the 06:00 UTC slot
+    - cron: '5 22 * * *'  # backstops the 18:00 UTC slot
   workflow_dispatch:
 
 jobs:
@@ -17,12 +21,15 @@ jobs:
     steps:
       - name: Ping orchestrator watchdog slot
         run: |
-          # OPS_KEY repo secret is optional — only needed once CRON_SECRET/OPS_KEY
-          # enforcement is enabled on the Vercel side.
           response=$(curl -sS -m 290 "https://tower-report.vercel.app/api/orchestrator?slot=watchdog${OPS_KEY:+&key=$OPS_KEY}")
           echo "$response"
-          echo "$response" | grep -q '"watchdog":"pass"\|"watchdog": "pass"' \
-            && echo "Morning run verified." \
-            || echo "Watchdog triggered a catch-up run (or errored) — see response above."
+          if echo "$response" | grep -q '"watchdog":"pass"'; then
+            echo "Scheduled run verified — nothing to do."
+          elif echo "$response" | grep -q '"watchdogMiss"'; then
+            echo "::warning::Vercel cron missed its slot — watchdog ran a catch-up cycle."
+          else
+            echo "::error::Orchestrator unreachable or rejected the watchdog (check OPS_KEY secret + response above)."
+            exit 1
+          fi
         env:
           OPS_KEY: ${{ secrets.OPS_KEY }}
