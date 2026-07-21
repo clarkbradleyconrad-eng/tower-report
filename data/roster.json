@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "lastUpdated": "2026-07-20T08:54:20.007331+00:00",
+  "lastUpdated": "2026-07-21T08:24:33.890283+00:00",
   "team": {
     "name": "Texas Longhorns",
     "conference": "SEC",
@@ -77,14 +77,6 @@
         "hometown": "Dallas, Texas"
       },
       {
-        "number": 14,
-        "name": "Brad Spence",
-        "class": "Sr.",
-        "height": null,
-        "weight": null,
-        "hometown": "Houston, Texas"
-      },
-      {
         "number": 15,
         "name": "Justus Terry",
         "class": "So.",
@@ -139,6 +131,22 @@
         "height": null,
         "weight": null,
         "hometown": "Cedar Hill, Texas"
+      },
+      {
+        "number": 55,
+        "name": "Elijah Ali",
+        "class": "Fr.",
+        "height": null,
+        "weight": null,
+        "hometown": "Downey, Calif."
+      },
+      {
+        "number": 80,
+        "name": "Tita Brinley",
+        "class": "Fr.",
+        "height": null,
+        "weight": null,
+        "hometown": "Humble, Texas"
       },
       {
         "number": 88,
@@ -295,6 +303,22 @@
         "hometown": "San Antonio, Texas"
       },
       {
+        "number": 39,
+        "name": "Evan Enderlin",
+        "class": "Fr.",
+        "height": null,
+        "weight": null,
+        "hometown": "Carrollton, Texas"
+      },
+      {
+        "number": 86,
+        "name": "Hudson Powell",
+        "class": "Jr.",
+        "height": null,
+        "weight": null,
+        "hometown": "Austin, Texas"
+      },
+      {
         "number": 89,
         "name": "Ty Boatright",
         "class": "Sr.",
@@ -441,6 +465,14 @@
         "hometown": "Boerne, Texas"
       },
       {
+        "number": 36,
+        "name": "Nick Hudson",
+        "class": "Sr.",
+        "height": null,
+        "weight": null,
+        "hometown": "Houston, Texas"
+      },
+      {
         "number": 41,
         "name": "Ziky Umeozulu",
         "class": "So.",
@@ -537,6 +569,14 @@
         "height": null,
         "weight": null,
         "hometown": "Austin, Texas"
+      },
+      {
+        "number": 45,
+        "name": "Darius Snow",
+        "class": "Sr.",
+        "height": null,
+        "weight": null,
+        "hometown": "Frisco, Texas"
       }
     ],
     "QB": [
@@ -579,6 +619,16 @@
         "height": null,
         "weight": null,
         "hometown": "Austin, Texas"
+      }
+    ],
+    "EDGE/LB": [
+      {
+        "number": 14,
+        "name": "Brad Spence",
+        "class": "Sr.",
+        "height": null,
+        "weight": null,
+        "hometown": "Houston, Texas"
       }
     ],
     "TE": [
@@ -629,14 +679,6 @@
         "height": null,
         "weight": null,
         "hometown": "Calhoun, Ga."
-      },
-      {
-        "number": 86,
-        "name": "Hudson Powell",
-        "class": "Jr.",
-        "height": null,
-        "weight": null,
-        "hometown": "Austin, Texas"
       },
       {
         "number": 87,
@@ -729,6 +771,14 @@
     ],
     "OL": [
       {
+        "number": 50,
+        "name": "Laurence Seymore III",
+        "class": "Sr.",
+        "height": null,
+        "weight": null,
+        "hometown": "Miami Gardens, Fla."
+      },
+      {
         "number": 51,
         "name": "John Turntine III",
         "class": "Fr.",
@@ -769,6 +819,14 @@
         "hometown": "Dallas, Texas"
       },
       {
+        "number": 68,
+        "name": "Paris Patterson",
+        "class": "Jr.",
+        "height": null,
+        "weight": null,
+        "hometown": "East St. Louis, Ill."
+      },
+      {
         "number": 69,
         "name": "Brooks Kieschnick Jr.",
         "class": "Sr.",
@@ -791,6 +849,14 @@
         "height": null,
         "weight": null,
         "hometown": "Hamilton, Ontario"
+      },
+      {
+        "number": 72,
+        "name": "Nicolas Robertson",
+        "class": "Fr.",
+        "height": null,
+        "weight": null,
+        "hometown": "Spring, Texas"
       },
       {
         "number": 73,
