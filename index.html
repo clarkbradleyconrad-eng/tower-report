@@ -308,18 +308,25 @@ main{display:block;}
   });
 
   /* ── Latest analysis ── */
+  var FEATURED_CARD =
+    '<a class="tr-card story-card" href="story-sarkisian-culture-2026.html" style="border-color:rgba(191,87,0,0.28);">' +
+      '<span class="tr-badge tr-badge-reported">Feature</span>' +
+      '<div class="st-hed">The Culture Has a Face: Sarkisian on Arch Manning and What Texas Is Building</div>' +
+      '<div class="st-dek">Steve Sarkisian went on the record this offseason in a way he\'s never done before. Five years of building. The culture now has a name, a face, and a destination.</div>' +
+      '<div class="st-meta">' +
+        '<span class="tr-freshness">July 22, 2026</span>' +
+        '<span class="tr-badge tr-badge-model">Feature · 11 min</span>' +
+      '</div>' +
+    '</a>';
+
   fetch('/api/stories?limit=6', { signal: AbortSignal.timeout(10000) })
     .then(function (r) { if (!r.ok) throw 0; return r.json(); })
     .then(function (data) {
       var stories = (data.stories || [])
         .sort(function (a, b) { return (+b.impact || 0) - (+a.impact || 0); })
-        .slice(0, 3);
+        .slice(0, 2);
       var grid = document.getElementById('stories-grid');
-      if (!stories.length) {
-        grid.outerHTML = '<div class="tr-empty">No published analysis yet. The pipeline publishes twice daily.</div>';
-        return;
-      }
-      grid.innerHTML = stories.map(function (s) {
+      var aiCards = stories.map(function (s) {
         var srcs = Array.isArray(s.sources) ? s.sources : [];
         return '<a class="tr-card story-card" href="/story?id=' + encodeURIComponent(s.id) + '">' +
           '<span class="tr-badge tr-badge-reported">' + esc(s.category || 'Analysis') + '</span>' +
@@ -331,10 +338,11 @@ main{display:block;}
             (s.impact ? '<span class="tr-badge tr-badge-model">Impact ' + esc(s.impact) + '</span>' : '') +
           '</div></a>';
       }).join('');
+      grid.innerHTML = FEATURED_CARD + aiCards;
     })
     .catch(function () {
-      document.getElementById('stories-grid').outerHTML =
-        '<div class="tr-empty">Stories temporarily unavailable. <a href="stories.html" style="color:var(--orange);">Try the archive →</a></div>';
+      var grid = document.getElementById('stories-grid');
+      if (grid) grid.innerHTML = FEATURED_CARD;
     });
 })();
 </script>

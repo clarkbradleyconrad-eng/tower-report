@@ -10,13 +10,13 @@
  */
 
 const NAV_PAGES = [
-  { label: 'Home',         href: 'index.html' },
-  { label: 'Latest',       href: 'stories.html' },
-  { label: 'Team',         href: 'depth-chart.html' },
-  { label: 'Recruiting',   href: 'recruiting.html' },
-  { label: 'Season',       href: 'schedule.html' },
-  { label: 'Intelligence', href: 'intelligence.html' },
-  { label: 'History',      href: 'history.html' },
+  { label: 'Home',           href: 'index.html' },
+  { label: 'Season Hub',     href: 'schedule.html' },
+  { label: 'Roster & Depth', href: 'depth-chart.html' },
+  { label: 'Recruiting',     href: 'recruiting.html' },
+  { label: 'Stories',        href: 'stories.html' },
+  { label: 'Intelligence',   href: 'intelligence.html' },
+  { label: 'History',        href: 'history.html' },
 ];
 
 /* Sub-pages highlight their parent section. */
@@ -77,7 +77,7 @@ function injectNav() {
         </a>
         <div class="nav-links">
           ${links}
-          <a href="intelligence.html" class="nav-cta">Ask Tower</a>
+          <a href="intelligence.html" class="nav-cta">Ask AI</a>
         </div>
         <button class="nav-hamburger" onclick="toggleMobileNav()" aria-label="Menu" aria-expanded="false" aria-controls="nav-mobile">
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
@@ -85,7 +85,7 @@ function injectNav() {
       </div>
       <div class="nav-mobile" id="nav-mobile">
         ${mobileLinks}
-        <a href="intelligence.html" class="mobile-cta">Ask Tower Intelligence</a>
+        <a href="intelligence.html" class="mobile-cta">Ask AI</a>
       </div>
     </nav>
     <div id="tr-status" hidden></div>`;
