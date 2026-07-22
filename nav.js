@@ -25,6 +25,7 @@ const NAV_PARENT = {
   'roster.html': 'depth-chart.html',
   'player.html': 'depth-chart.html',
   'portal.html': 'recruiting.html',
+  'recruiting-board.html': 'recruiting.html',
   'stats.html': 'schedule.html',
   'game-story.html': 'schedule.html',
   'story.html': 'stories.html',

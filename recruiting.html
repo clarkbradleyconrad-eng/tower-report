@@ -1,961 +1,793 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Recruiting — Tower Report</title>
-<meta name="description" content="Texas Longhorns recruiting and transfer portal hub. Verified commits, public portal moves, position needs. Tower Report."/>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet"/>
+<meta name="description" content="Live Texas Longhorns recruiting board: every target, commit, crystal ball, and visit — sourced and timestamped.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="nav.js" defer></script>
 <style>
 :root{
-  --orange:#BF5700;--black:#080808;
-  --surface:#111;--surface2:#181818;--surface3:#202020;
-  --border:rgba(255,255,255,0.07);--border-mid:rgba(255,255,255,0.10);--border-hi:rgba(255,255,255,0.15);
-  --white:#F5F0E8;--white2:#C4BCB0;--muted:#6B6560;--secondary:#A09890;
-  --green:#22c55e;--amber:#f59e0b;--red:#ef4444;--blue:#3b82f6;
+  --orange:#BF5700;--orange-hi:#CF6210;--orange-lo:rgba(191,87,0,0.12);
+  --black:#080808;--s0:#0F0F0F;--s1:#141414;--s2:#1A1A1A;--s3:#212121;--s4:#2A2A2A;
+  --border:rgba(255,255,255,0.055);--bm:rgba(255,255,255,0.10);--bs:rgba(255,255,255,0.16);
+  --white:#F0EBE1;--w2:#C4BCB0;--muted:#5A5450;--sec:#948C82;
+  --green:#22c55e;--green-lo:rgba(34,197,94,0.12);
+  --amber:#f59e0b;--amber-lo:rgba(245,158,11,0.12);
+  --red:#ef4444;--red-lo:rgba(239,68,68,0.12);
+  --blue:#60a5fa;--blue-lo:rgba(96,165,250,0.12);
+  --purple:#a78bfa;--purple-lo:rgba(167,139,250,0.12);
+  --font-cond:'Barlow Condensed','Arial Narrow',sans-serif;
+  --font-body:'Inter',-apple-system,sans-serif;
+  --radius:6px;
 }
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--white);font-family:var(--font-body);-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+a{color:inherit;text-decoration:none;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
 
-/* ─── HERO ─── */
-.hub-hero{position:relative;padding:56px 48px 48px;background:#0a0a0a;border-bottom:1px solid var(--border-mid);overflow:hidden;}
-.hub-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 800px 350px at 10% 65%,rgba(191,87,0,0.08) 0%,transparent 70%);pointer-events:none;}
-.hero-inner{max-width:1400px;margin:0 auto;position:relative;}
-.live-row{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
-.live-dot{width:7px;height:7px;border-radius:50%;background:var(--orange);flex-shrink:0;animation:pulse 1.8s ease-in-out infinite;}
-@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(191,87,0,0.55);}60%{opacity:.9;box-shadow:0 0 0 6px rgba(191,87,0,0);}}
-.live-label{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);}
-.hero-title{font-family:'Playfair Display',serif;font-size:clamp(34px,4.5vw,60px);font-weight:900;line-height:1.05;letter-spacing:-1.5px;color:var(--white);margin-bottom:20px;}
-.hero-title em{color:var(--orange);font-style:normal;}
-.hero-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;}
-.chip{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:5px 11px;border:1px solid;}
-.chip-rank{color:var(--amber);border-color:rgba(245,158,11,0.3);background:rgba(245,158,11,0.05);}
-.chip-commits{color:var(--green);border-color:rgba(34,197,94,0.3);background:rgba(34,197,94,0.05);}
-.chip-portal{color:var(--blue);border-color:rgba(59,130,246,0.3);background:rgba(59,130,246,0.05);}
-.chip-date{color:var(--muted);border-color:var(--border-mid);}
-.chip-fresh-ok{color:var(--green);border-color:rgba(34,197,94,0.35);background:rgba(34,197,94,0.06);}
-.chip-fresh-stale{color:var(--amber);border-color:rgba(245,158,11,0.4);background:rgba(245,158,11,0.08);}
-/* Live · via Grok block */
-.live-grok{border:1px solid rgba(191,87,0,0.35);background:rgba(191,87,0,0.05);padding:16px 18px;}
-.live-grok-head{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
-.live-grok-dot{width:6px;height:6px;border-radius:50%;background:var(--orange);animation:tiPulse 2s ease-in-out infinite;}
-.live-grok-lbl{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);}
-.live-grok-meta{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-left:auto;}
-.live-grok-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);}
-.lg-cell{background:var(--surface);padding:12px 14px;}
-.lg-num{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:800;color:var(--white);}
-.lg-lbl{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);margin-top:2px;}
-.lg-delta{font-size:10px;color:var(--amber);margin-top:3px;}
-.live-grok-moves{margin-top:10px;font-size:12px;color:var(--white);line-height:1.5;}
-.live-grok-src{margin-top:10px;font-size:10px;color:var(--muted);letter-spacing:0.5px;}
-.live-grok-note{margin-top:8px;font-size:10px;color:var(--muted);font-style:italic;}
-/* Recruiting stories in the activity feed */
-.feed-item.story{border-left-color:var(--orange);cursor:pointer;}
-.tag-story{background:rgba(191,87,0,0.07);border-color:rgba(191,87,0,0.22);color:var(--orange);}
-.source-bar{font-size:11px;color:var(--muted);border-left:2px solid var(--border-hi);padding-left:12px;line-height:1.7;max-width:640px;}
+/* ── HERO ── */
+.hero{background:var(--s0);border-bottom:1px solid var(--border);padding:28px 24px 20px;}
+.hero-inner{max-width:1400px;margin:0 auto;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+.hero-left{}
+.hero-kicker{font:700 10px/1 var(--font-cond);letter-spacing:.35em;text-transform:uppercase;color:var(--orange);margin-bottom:8px;}
+.hero-title{font:800 clamp(22px,3.5vw,34px)/1 var(--font-cond);letter-spacing:.5px;text-transform:uppercase;margin-bottom:14px;}
+.hero-stats{display:flex;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;max-width:600px;}
+.hero-stat{flex:1;background:var(--s0);padding:10px 16px;text-align:center;}
+.hero-stat-n{font:800 20px/1 var(--font-cond);color:var(--orange);}
+.hero-stat-l{font:700 8px/1 var(--font-cond);letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:3px;}
+.hero-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0;padding-top:4px;}
+.hero-time{font:500 11px var(--font-body);color:var(--muted);}
+.hero-refresh{font:600 11px/1 var(--font-cond);letter-spacing:1.5px;text-transform:uppercase;color:#fff;background:var(--orange);border:1px solid transparent;border-radius:var(--radius);padding:8px 18px;transition:background .15s;}
+.hero-refresh:hover{background:var(--orange-hi);}
+.hero-refresh:disabled{opacity:.45;cursor:not-allowed;}
 
-/* ─── INTERNAL TAB BAR ─── */
-.tab-bar{position:sticky;top:59px;z-index:100;background:rgba(8,8,8,0.97);backdrop-filter:blur(16px);border-bottom:1px solid var(--border-mid);}
-.tab-bar-inner{max-width:1400px;margin:0 auto;padding:0 48px;display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
-.tab-bar-inner::-webkit-scrollbar{display:none;}
-.itab{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:15px 18px;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;color:var(--muted);background:none;border-top:none;border-left:none;border-right:none;white-space:nowrap;flex-shrink:0;}
-.itab:hover{color:var(--white2);}
-.itab.active{color:var(--white);border-bottom-color:var(--orange);}
+/* ── INTEL FEED ── */
+.feed{background:rgba(191,87,0,0.06);border-bottom:1px solid rgba(191,87,0,0.18);overflow:hidden;height:36px;display:flex;align-items:center;}
+.feed-label{font:700 9px/1 var(--font-cond);letter-spacing:.2em;text-transform:uppercase;color:var(--orange);padding:0 16px;border-right:1px solid rgba(191,87,0,0.25);white-space:nowrap;flex-shrink:0;}
+.feed-track{flex:1;overflow:hidden;position:relative;}
+.feed-items{display:flex;gap:0;white-space:nowrap;animation:ticker 30s linear infinite;}
+.feed-items:hover{animation-play-state:paused;}
+.feed-item{display:inline-flex;align-items:center;gap:8px;padding:0 28px;font:500 12px var(--font-body);color:var(--w2);}
+.feed-item .fi-dot{width:5px;height:5px;border-radius:50%;background:var(--muted);flex-shrink:0;}
+.feed-item.high .fi-dot{background:var(--orange);}
+.feed-item.high{color:var(--white);}
+.feed-empty{font:500 12px var(--font-body);color:var(--muted);padding:0 20px;}
+@keyframes ticker{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
 
-/* ─── LAYOUT ─── */
-.wrap{max-width:1400px;margin:0 auto;padding:0 48px 80px;}
-.panel{display:none;padding-top:32px;}
-.panel.active{display:block;}
-.sec{margin-bottom:44px;}
-.sec-head{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--border);margin-bottom:20px;}
-.sec-title{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);}
-.sec-meta{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
+/* ── CONTROLS ── */
+.ctrl{background:var(--s0);border-bottom:1px solid var(--border);padding:0 24px;}
+.ctrl-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;gap:12px;height:46px;overflow-x:auto;}
+.ctrl-group{display:flex;align-items:center;gap:4px;flex-shrink:0;}
+.ctrl-btn{font:600 10px/1 var(--font-cond);letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:5px 12px;border-radius:var(--radius);border:1px solid transparent;transition:all .15s;}
+.ctrl-btn:hover{color:var(--w2);}
+.ctrl-btn.active{color:var(--white);background:var(--s2);border-color:var(--bm);}
+.ctrl-divider{width:1px;height:20px;background:var(--border);flex-shrink:0;}
+.ctrl-search{background:var(--s2);border:1px solid var(--bm);border-radius:var(--radius);padding:5px 12px;font:500 12px var(--font-body);color:var(--white);width:180px;outline:none;transition:border-color .15s;}
+.ctrl-search:focus{border-color:rgba(191,87,0,0.5);}
+.ctrl-search::placeholder{color:var(--muted);}
+.ctrl-view{display:flex;background:var(--s2);border:1px solid var(--bm);border-radius:var(--radius);overflow:hidden;}
+.ctrl-view-btn{font:700 9px/1 var(--font-cond);letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:6px 12px;transition:all .15s;}
+.ctrl-view-btn.active{color:var(--white);background:var(--s3);}
+.ctrl-pos{background:var(--s2);border:1px solid var(--bm);border-radius:var(--radius);padding:5px 10px;font:600 10px var(--font-cond);letter-spacing:1px;color:var(--w2);outline:none;}
+.ctrl-pos option{background:var(--s2);}
 
-/* ─── VERIFIED LABEL ─── */
-.vtag{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 6px;border:1px solid;display:inline-block;}
-.vtag-confirmed{color:var(--green);border-color:rgba(34,197,94,0.28);background:rgba(34,197,94,0.05);}
-.vtag-public{color:var(--amber);border-color:rgba(245,158,11,0.28);background:rgba(245,158,11,0.05);}
-.vtag-portal{color:var(--blue);border-color:rgba(59,130,246,0.28);background:rgba(59,130,246,0.05);}
-.vtag-editorial{color:var(--muted);border-color:var(--border-mid);}
+/* ── MAIN LAYOUT ── */
+.main{max-width:1400px;margin:0 auto;padding:20px 24px 100px;}
 
-/* ─── STAT GRID ─── */
-.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);}
-.stat-cell{background:var(--surface);padding:20px 16px;text-align:center;}
-.stat-num{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:700;line-height:1;margin-bottom:4px;}
-.stat-lbl{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+/* ── BOARD VIEW ── */
+.board{display:flex;gap:14px;overflow-x:auto;padding-bottom:12px;align-items:flex-start;}
+.board::-webkit-scrollbar{height:4px;}
+.board::-webkit-scrollbar-track{background:var(--s0);}
+.board::-webkit-scrollbar-thumb{background:var(--bm);border-radius:2px;}
+.col{flex:0 0 240px;display:flex;flex-direction:column;gap:8px;}
+.col-hdr{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-radius:var(--radius);background:var(--s1);}
+.col-name{font:700 10px/1 var(--font-cond);letter-spacing:2px;text-transform:uppercase;}
+.col-count{font:700 11px/1 var(--font-cond);color:var(--muted);}
+.col-hdr.committed .col-name{color:var(--green);}
+.col-hdr.priority .col-name{color:var(--orange);}
+.col-hdr.trending-up .col-name{color:var(--amber);}
+.col-hdr.target .col-name{color:var(--blue);}
+.col-hdr.warm .col-name{color:var(--purple);}
+.col-hdr.cold .col-name{color:var(--muted);}
+.col-hdr.trending-down .col-name{color:var(--red);}
+.col-hdr.decommitted .col-name{color:var(--muted);}
 
-/* ─── ACTIVITY FEED ─── */
-.feed{display:flex;flex-direction:column;gap:1px;}
-.feed-item{display:grid;grid-template-columns:120px 1fr;gap:14px;align-items:start;background:var(--surface);padding:14px 18px;border-left:2px solid var(--border-mid);transition:background .15s;}
-.feed-item:hover{background:var(--surface2);}
-.feed-item.commit{border-left-color:var(--green);}
-.feed-item.portal{border-left-color:var(--blue);}
-.feed-item.intel{border-left-color:var(--orange);}
-.feed-item.visit{border-left-color:var(--amber);}
-.feed-date{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);padding-top:2px;}
-.feed-text{font-size:13px;color:var(--white2);line-height:1.6;margin-bottom:5px;}
-.feed-tag{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;border:1px solid;display:inline-block;}
-.tag-commit{background:rgba(34,197,94,0.07);border-color:rgba(34,197,94,0.22);color:var(--green);}
-.tag-portal{background:rgba(59,130,246,0.07);border-color:rgba(59,130,246,0.22);color:var(--blue);}
-.tag-intel{background:rgba(191,87,0,0.07);border-color:rgba(191,87,0,0.22);color:var(--orange);}
-.tag-visit{background:rgba(245,158,11,0.07);border-color:rgba(245,158,11,0.22);color:var(--amber);}
+/* ── RECRUIT CARD ── */
+.card{background:var(--s1);border:1px solid var(--border);border-radius:var(--radius);padding:12px;cursor:pointer;transition:all .15s;position:relative;}
+.card:hover{background:var(--s2);border-color:var(--bm);transform:translateY(-1px);}
+.card-pos-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.card-stars{font-size:10px;color:var(--amber);letter-spacing:1px;}
+.card-pos{font:700 9px/1 var(--font-cond);letter-spacing:2px;text-transform:uppercase;color:var(--muted);background:var(--s3);padding:2px 6px;border-radius:3px;}
+.card-rank{font:600 9px var(--font-body);color:var(--muted);}
+.card-name{font:700 15px/1.2 var(--font-cond);letter-spacing:.3px;margin-bottom:3px;}
+.card-from{font:500 11px var(--font-body);color:var(--sec);margin-bottom:8px;line-height:1.3;}
+.card-conf{margin-bottom:8px;}
+.card-conf-bar{height:3px;background:var(--s3);border-radius:2px;overflow:hidden;margin-bottom:3px;}
+.card-conf-fill{height:100%;border-radius:2px;transition:width .4s ease;}
+.card-conf-pct{font:600 10px var(--font-body);color:var(--muted);}
+.card-footer{display:flex;align-items:center;justify-content:space-between;}
+.card-status{font:700 8px/1 var(--font-cond);letter-spacing:1.5px;text-transform:uppercase;padding:3px 7px;border-radius:3px;}
+.card-age{font:500 10px var(--font-body);color:var(--muted);}
+.card-hot{position:absolute;top:8px;right:8px;width:6px;height:6px;border-radius:50%;background:var(--orange);}
 
-/* ─── FILTER BAR ─── */
-.filter-bar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;}
-.filter-bar input,.filter-bar select{font-family:'Barlow',sans-serif;font-size:13px;background:var(--surface);color:var(--white);border:1px solid var(--border-mid);padding:9px 13px;outline:none;transition:border-color .15s;}
-.filter-bar input{flex:1;min-width:180px;}
-.filter-bar select{min-width:130px;cursor:pointer;}
-.filter-bar input:focus,.filter-bar select:focus{border-color:var(--orange);}
-.filter-bar select option{background:#111;}
+/* Status badge + bar colors */
+.s-committed .card-status{background:var(--green-lo);color:var(--green);}
+.s-committed .card-conf-fill{background:var(--green);}
+.s-committed .card-name{color:var(--green);}
+.s-priority .card-status{background:var(--orange-lo);color:var(--orange);}
+.s-priority .card-conf-fill{background:var(--orange);}
+.s-trending-up .card-status{background:var(--amber-lo);color:var(--amber);}
+.s-trending-up .card-conf-fill{background:var(--amber);}
+.s-target .card-status{background:var(--blue-lo);color:var(--blue);}
+.s-target .card-conf-fill{background:var(--blue);}
+.s-warm .card-status{background:var(--purple-lo);color:var(--purple);}
+.s-warm .card-conf-fill{background:var(--purple);}
+.s-cold .card-status{background:rgba(90,84,80,0.15);color:var(--sec);}
+.s-cold .card-conf-fill{background:var(--muted);}
+.s-trending-down .card-status{background:var(--red-lo);color:var(--red);}
+.s-trending-down .card-conf-fill{background:var(--red);}
+.s-decommitted .card-status{background:rgba(90,84,80,0.15);color:var(--muted);}
+.s-decommitted .card-conf-fill{background:var(--muted);}
 
-/* ─── SORTABLE TABLE ─── */
-.tbl-wrap{overflow-x:auto;background:var(--surface);border:1px solid var(--border-mid);margin-bottom:28px;}
-.rtbl{width:100%;border-collapse:collapse;}
-.rtbl thead tr{border-bottom:1px solid var(--border-hi);}
-.rtbl th{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:13px 14px;text-align:left;cursor:pointer;white-space:nowrap;user-select:none;transition:color .14s;}
-.rtbl th:hover{color:var(--white2);}
-.rtbl th.asc::after{content:' ↑';color:var(--orange);}
-.rtbl th.desc::after{content:' ↓';color:var(--orange);}
-.rtbl tbody tr{border-bottom:1px solid var(--border);transition:background .13s;cursor:pointer;}
-.rtbl tbody tr:last-child{border-bottom:none;}
-.rtbl tbody tr:hover{background:var(--surface2);}
-.rtbl td{padding:13px 14px;font-size:13px;color:var(--white2);white-space:nowrap;}
-.td-name{font-size:14px;font-weight:600;color:var(--white) !important;}
-.td-pos{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;color:var(--orange) !important;}
-.td-stars{color:var(--amber);font-size:12px;}
-.td-sub{font-size:11px;color:var(--muted);display:block;margin-top:1px;}
-.rtbl tbody tr.expand-row{display:none;cursor:default;}
-.rtbl tbody tr.expand-row.open{display:table-row;}
-.expand-cell{background:var(--surface2) !important;padding:14px 18px !important;white-space:normal !important;}
-.expand-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
-.ex-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
-.ex-val{font-size:12px;color:var(--white2);line-height:1.55;}
-.tbl-foot{font-size:11px;color:var(--muted);text-align:center;padding:10px 14px;border-top:1px solid var(--border);}
+/* ── LIST VIEW ── */
+.list-wrap{overflow-x:auto;}
+.list-tbl{width:100%;border-collapse:collapse;}
+.list-tbl th{font:700 9px/1 var(--font-cond);letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--bm);white-space:nowrap;cursor:pointer;user-select:none;}
+.list-tbl th:hover{color:var(--w2);}
+.list-tbl th .sort-arrow{margin-left:4px;opacity:.5;}
+.list-tbl tr{border-bottom:1px solid var(--border);cursor:pointer;transition:background .12s;}
+.list-tbl tr:hover{background:var(--s1);}
+.list-tbl td{padding:11px 12px;font:500 13px var(--font-body);color:var(--w2);vertical-align:middle;white-space:nowrap;}
+.list-name{font:600 14px var(--font-body);color:var(--white);}
+.list-from{font:400 11px var(--font-body);color:var(--sec);}
+.list-stars{color:var(--amber);font-size:11px;}
+.list-rank{font:600 12px var(--font-body);color:var(--muted);}
+.list-conf-bar{width:70px;height:4px;background:var(--s3);border-radius:2px;overflow:hidden;}
+.list-conf-fill{height:100%;border-radius:2px;}
+.list-conf-pct{font:600 11px var(--font-body);margin-left:6px;}
 
-/* ─── COMMIT CARDS ─── */
-.commit-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:1px;background:var(--border);}
-.commit-card{background:var(--surface);padding:20px;border-top:2px solid transparent;transition:background .13s;}
-.commit-card:hover{background:var(--surface2);}
-.cc-pos{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:5px;}
-.cc-name{font-size:15px;font-weight:600;color:var(--white);margin-bottom:4px;}
-.cc-stars{color:var(--amber);font-size:12px;margin-bottom:3px;}
-.cc-school{font-size:12px;color:var(--muted);margin-bottom:10px;}
-.cc-date{font-family:'Barlow Condensed',sans-serif;font-size:10px;color:var(--muted);}
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:500;display:flex;align-items:flex-start;justify-content:flex-end;opacity:0;pointer-events:none;transition:opacity .2s;}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{background:var(--s0);width:min(480px,100vw);height:100vh;overflow-y:auto;border-left:1px solid var(--bm);transform:translateX(100%);transition:transform .25s cubic-bezier(0.16,1,0.3,1);}
+.modal-overlay.open .modal{transform:translateX(0);}
+.modal-hdr{position:sticky;top:0;background:var(--s0);border-bottom:1px solid var(--border);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;z-index:10;}
+.modal-close{font:700 20px/1 var(--font-body);color:var(--muted);padding:4px 8px;border-radius:var(--radius);}
+.modal-close:hover{color:var(--white);background:var(--s2);}
+.modal-body{padding:20px 18px 40px;}
+.modal-pos-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.modal-pos{font:700 10px/1 var(--font-cond);letter-spacing:2px;text-transform:uppercase;color:var(--muted);background:var(--s2);padding:3px 8px;border-radius:3px;}
+.modal-cls{font:600 10px var(--font-body);color:var(--muted);}
+.modal-name{font:800 26px/1.1 var(--font-cond);letter-spacing:.3px;margin-bottom:4px;}
+.modal-from{font:500 13px var(--font-body);color:var(--sec);margin-bottom:16px;}
+.modal-stars{font-size:14px;color:var(--amber);letter-spacing:2px;}
+.modal-status-row{display:flex;align-items:center;gap:10px;margin:14px 0;}
+.modal-status{font:700 9px/1 var(--font-cond);letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:4px;}
+.modal-conf-block{margin:16px 0;}
+.modal-conf-label{font:700 9px/1 var(--font-cond);letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.modal-conf-track{height:8px;background:var(--s3);border-radius:4px;overflow:hidden;}
+.modal-conf-fill{height:100%;border-radius:4px;transition:width .5s ease;}
+.modal-conf-pct{font:700 22px/1 var(--font-cond);color:var(--white);margin-top:6px;}
+.modal-conf-sub{font:500 11px var(--font-body);color:var(--muted);}
+.modal-section{margin:18px 0;}
+.modal-section-title{font:700 9px/1 var(--font-cond);letter-spacing:.25em;text-transform:uppercase;color:var(--orange);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.modal-section-title::after{content:'';flex:1;height:1px;background:rgba(191,87,0,0.2);}
+.modal-ranks{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.modal-rank-cell{background:var(--s1);border:1px solid var(--border);border-radius:var(--radius);padding:10px;text-align:center;}
+.modal-rank-n{font:800 20px/1 var(--font-cond);color:var(--white);}
+.modal-rank-l{font:700 8px/1 var(--font-cond);letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:3px;}
+.modal-offers{display:flex;flex-wrap:wrap;gap:5px;}
+.modal-offer{font:600 11px var(--font-body);background:var(--s2);border:1px solid var(--bm);border-radius:4px;padding:4px 8px;color:var(--w2);}
+.modal-offer.texas{background:var(--orange-lo);border-color:rgba(191,87,0,0.3);color:var(--orange);}
+.modal-topschools{display:flex;flex-direction:column;gap:6px;}
+.modal-topschool{display:flex;align-items:center;gap:8px;}
+.modal-topschool-name{font:600 12px var(--font-body);color:var(--white);width:100px;flex-shrink:0;}
+.modal-topschool-bar{flex:1;height:6px;background:var(--s3);border-radius:3px;overflow:hidden;}
+.modal-topschool-fill{height:100%;border-radius:3px;}
+.modal-cb{display:flex;flex-direction:column;gap:8px;}
+.modal-cb-item{background:var(--s1);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;display:flex;align-items:flex-start;gap:10px;}
+.modal-cb-icon{font-size:16px;flex-shrink:0;}
+.modal-cb-pick{font:700 13px var(--font-body);color:var(--white);}
+.modal-cb-by{font:400 11px var(--font-body);color:var(--sec);}
+.modal-cb-conf{font:600 9px/1 var(--font-cond);letter-spacing:1px;text-transform:uppercase;margin-top:2px;}
+.modal-cb-conf.high{color:var(--green);}
+.modal-cb-conf.medium{color:var(--amber);}
+.modal-cb-conf.low{color:var(--muted);}
+.modal-timeline{display:flex;flex-direction:column;gap:0;}
+.tl-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);}
+.tl-item:last-child{border-bottom:none;}
+.tl-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+.tl-dot.high{background:var(--orange);}
+.tl-dot.normal{background:var(--bm);}
+.tl-body{flex:1;}
+.tl-text{font:500 12px/1.5 var(--font-body);color:var(--w2);}
+.tl-text.high{color:var(--white);font-weight:600;}
+.tl-meta{font:500 10px var(--font-body);color:var(--muted);margin-top:3px;}
+.modal-ask-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px;background:var(--orange-lo);border:1px solid rgba(191,87,0,0.35);border-radius:var(--radius);font:600 12px var(--font-cond);letter-spacing:2px;text-transform:uppercase;color:var(--orange);transition:all .15s;margin-top:4px;}
+.modal-ask-btn:hover{background:rgba(191,87,0,0.22);}
+.modal-no-data{font:400 12px var(--font-body);color:var(--muted);font-style:italic;padding:4px 0;}
+.modal-visits{display:flex;flex-direction:column;gap:6px;}
+.modal-visit{display:flex;align-items:center;gap:10px;background:var(--s1);border:1px solid var(--border);border-radius:var(--radius);padding:8px 12px;}
+.modal-visit-type{font:700 8px/1 var(--font-cond);letter-spacing:1.5px;text-transform:uppercase;padding:2px 6px;border-radius:3px;}
+.modal-visit-type.official{background:var(--green-lo);color:var(--green);}
+.modal-visit-type.unofficial{background:var(--blue-lo);color:var(--blue);}
+.modal-visit-date{font:600 12px var(--font-body);color:var(--w2);}
+.modal-visit-school{font:500 11px var(--font-body);color:var(--sec);}
 
-/* ─── TARGET CARDS ─── */
-.target-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1px;background:var(--border);}
-.target-card{background:var(--surface);padding:20px;border-top:2px solid transparent;transition:background .13s;}
-.target-card:hover{background:var(--surface2);}
-.target-card.hot{border-top-color:rgba(191,87,0,0.5);}
-.tc-pos{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:5px;}
-.tc-name{font-size:15px;font-weight:600;color:var(--white);margin-bottom:4px;}
-.tc-info{font-size:12px;color:var(--muted);margin-bottom:12px;}
-.tc-footer{display:flex;align-items:center;justify-content:space-between;}
-.tc-status{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 9px;border:1px solid;}
-.st-trending{background:rgba(245,158,11,0.08);border-color:rgba(245,158,11,0.28);color:var(--amber);}
-.st-target{background:rgba(191,87,0,0.08);border-color:rgba(191,87,0,0.28);color:var(--orange);}
-.st-monitoring{background:rgba(107,101,96,0.08);border-color:rgba(107,101,96,0.22);color:var(--muted);}
+/* ── CHAT PANEL ── */
+.chat-fab{position:fixed;bottom:24px;right:24px;z-index:400;width:52px;height:52px;border-radius:50%;background:var(--orange);color:#fff;font-size:22px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(191,87,0,0.45);transition:all .15s;border:none;}
+.chat-fab:hover{background:var(--orange-hi);transform:scale(1.06);}
+.chat-panel{position:fixed;bottom:0;right:0;width:min(420px,100vw);height:min(580px,90vh);background:var(--s0);border:1px solid var(--bm);border-bottom:none;border-radius:12px 12px 0 0;z-index:401;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .25s cubic-bezier(0.16,1,0.3,1);}
+.chat-panel.open{transform:translateY(0);}
+.chat-phdr{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.chat-ptitle{font:700 12px/1 var(--font-cond);letter-spacing:2px;text-transform:uppercase;color:var(--white);}
+.chat-psub{font:400 10px var(--font-body);color:var(--muted);margin-top:2px;}
+.chat-pclose{font:400 18px var(--font-body);color:var(--muted);padding:2px 6px;border-radius:4px;}
+.chat-pclose:hover{color:var(--white);background:var(--s2);}
+.chat-chips{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;gap:6px;flex-wrap:wrap;flex-shrink:0;}
+.chat-chip{font:500 11px var(--font-body);color:var(--sec);background:var(--s2);border:1px solid var(--bm);border-radius:20px;padding:5px 12px;transition:all .15s;text-align:left;}
+.chat-chip:hover{color:var(--white);border-color:rgba(191,87,0,0.4);}
+.chat-msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:12px;}
+.chat-msg{max-width:85%;line-height:1.5;}
+.chat-msg.user{align-self:flex-end;background:var(--orange-lo);border:1px solid rgba(191,87,0,0.25);border-radius:12px 12px 4px 12px;padding:8px 12px;font:500 13px var(--font-body);color:var(--white);}
+.chat-msg.ai{align-self:flex-start;background:var(--s2);border:1px solid var(--bm);border-radius:12px 12px 12px 4px;padding:8px 12px;font:400 13px/1.55 var(--font-body);color:var(--w2);}
+.chat-msg.ai strong{color:var(--white);}
+.chat-msg.ai code{background:var(--s3);padding:1px 4px;border-radius:3px;font-size:11px;}
+.chat-typing{display:flex;gap:4px;align-items:center;padding:4px 0;}
+.chat-typing span{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:pulse 1.2s ease infinite;}
+.chat-typing span:nth-child(2){animation-delay:.2s;}
+.chat-typing span:nth-child(3){animation-delay:.4s;}
+@keyframes pulse{0%,80%,100%{opacity:.3;}40%{opacity:1;}}
+.chat-input-row{padding:10px 12px;border-top:1px solid var(--border);display:flex;gap:8px;align-items:flex-end;flex-shrink:0;}
+.chat-input{flex:1;background:var(--s2);border:1px solid var(--bm);border-radius:var(--radius);padding:8px 12px;font:500 13px var(--font-body);color:var(--white);resize:none;height:38px;max-height:100px;overflow-y:auto;outline:none;transition:border-color .15s;line-height:1.4;}
+.chat-input:focus{border-color:rgba(191,87,0,0.45);}
+.chat-input::placeholder{color:var(--muted);}
+.chat-send{background:var(--orange);color:#fff;border-radius:var(--radius);padding:8px 14px;font:600 12px var(--font-cond);letter-spacing:1px;transition:background .15s;flex-shrink:0;height:38px;}
+.chat-send:hover{background:var(--orange-hi);}
+.chat-send:disabled{opacity:.45;cursor:not-allowed;}
 
-/* ─── 2026 SIGNED CLASS ─── */
-.toggle-btn{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);background:none;border:1px solid var(--border-mid);padding:6px 13px;cursor:pointer;transition:all .13s;}
-.toggle-btn:hover{color:var(--white);border-color:var(--border-hi);}
-.signed-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:1px;background:var(--border);margin-bottom:28px;}
-.signed-card{background:var(--surface);padding:14px;transition:background .13s;}
-.signed-card:hover{background:var(--surface2);}
-.sc-pos{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:3px;}
-.sc-name{font-size:13px;font-weight:600;color:var(--white);margin-bottom:2px;}
-.sc-stars{color:var(--amber);font-size:10px;margin-bottom:2px;}
-.sc-home{font-size:11px;color:var(--muted);}
-.sc-badge{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 6px;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);color:var(--green);margin-top:5px;}
+/* ── EMPTY / SKELETON ── */
+.empty{padding:60px 24px;text-align:center;}
+.empty-icon{font-size:32px;margin-bottom:12px;}
+.empty-title{font:700 16px var(--font-cond);color:var(--w2);margin-bottom:6px;}
+.empty-sub{font:400 13px var(--font-body);color:var(--muted);}
+.skel-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--radius);padding:12px;height:120px;animation:shimmer 1.5s ease infinite;}
+@keyframes shimmer{0%,100%{opacity:.3;}50%{opacity:.6;}}
 
-/* ─── CALENDAR ─── */
-.cal-list{display:flex;flex-direction:column;gap:1px;}
-.cal-item{display:grid;grid-template-columns:100px 1fr auto;gap:14px;align-items:center;background:var(--surface);padding:13px 18px;}
-.cal-d{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;color:var(--orange);}
-.cal-e{font-size:13px;font-weight:500;color:var(--white);}
-.cal-t{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:3px 7px;border:1px solid var(--border);white-space:nowrap;}
-
-/* ─── PORTAL ─── */
-.portal-stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);margin-bottom:24px;}
-.psg-cell{background:var(--surface);padding:18px 14px;text-align:center;}
-.psg-num{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:700;line-height:1;margin-bottom:4px;}
-.psg-lbl{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
-.sub-tab-bar{display:flex;border-bottom:1px solid var(--border);margin-bottom:20px;}
-.stab{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:12px 18px;cursor:pointer;border-bottom:2px solid transparent;transition:all .14s;color:var(--muted);background:none;border-top:none;border-left:none;border-right:none;white-space:nowrap;}
-.stab:hover{color:var(--white2);}
-.stab.active{color:var(--white);border-bottom-color:var(--orange);}
-.ptbl{width:100%;border-collapse:collapse;margin-bottom:28px;}
-.ptbl th{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:11px 13px;text-align:left;border-bottom:1px solid var(--border-hi);background:var(--surface);white-space:nowrap;}
-.ptbl td{padding:13px 13px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:middle;}
-.ptbl tr:hover td{background:var(--surface);}
-.p-name{font-size:14px;font-weight:600;color:var(--white);}
-.p-pos{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);}
-.p-stars{color:var(--amber);font-size:11px;}
-.p-from{font-size:12px;color:var(--secondary);}
-.ibadge{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;}
-.ib-now{background:rgba(191,87,0,0.14);border:1px solid rgba(191,87,0,0.28);color:var(--orange);}
-.ib-depth{background:rgba(160,152,144,0.09);border:1px solid rgba(160,152,144,0.18);color:var(--secondary);}
-.ib-role{background:rgba(107,101,96,0.09);border:1px solid rgba(107,101,96,0.14);color:var(--muted);}
-.watch-list{display:flex;flex-direction:column;gap:1px;}
-.watch-item{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;background:var(--surface);padding:14px 18px;transition:background .13s;}
-.watch-item:hover{background:var(--surface2);}
-.w-name{font-size:14px;font-weight:600;color:var(--white);margin-bottom:3px;}
-.w-detail{font-size:12px;color:var(--muted);}
-.w-right{text-align:right;}
-.w-status{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 9px;display:block;margin-bottom:3px;}
-.ws-mon{background:rgba(160,152,144,0.08);border:1px solid rgba(160,152,144,0.18);color:var(--secondary);}
-.ws-tgt{background:rgba(191,87,0,0.1);border:1px solid rgba(191,87,0,0.26);color:var(--orange);}
-.ws-off{background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);color:var(--green);}
-.w-conf{font-family:'Barlow Condensed',sans-serif;font-size:10px;color:var(--muted);}
-
-/* ─── POSITION NEEDS ─── */
-.needs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1px;background:var(--border);}
-.need-card{background:var(--surface);padding:20px;transition:background .13s;}
-.need-card:hover{background:var(--surface2);}
-.need-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-.need-pos{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;color:var(--white);}
-.need-urg{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 9px;}
-.urg-hi{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.26);color:var(--red);}
-.urg-md{background:rgba(191,87,0,0.1);border:1px solid rgba(191,87,0,0.26);color:var(--orange);}
-.urg-lo{background:rgba(34,197,94,0.07);border:1px solid rgba(34,197,94,0.2);color:var(--green);}
-.need-bar{height:2px;background:var(--surface3);border-radius:2px;margin-bottom:10px;}
-.need-fill{height:100%;border-radius:2px;}
-.nf-hi{background:var(--red);}
-.nf-md{background:var(--orange);}
-.nf-lo{background:var(--green);}
-.need-context{font-size:12px;color:var(--secondary);line-height:1.6;margin-bottom:12px;}
-.need-2col{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.need-block{background:var(--surface2);padding:9px 11px;}
-.need-block-lbl{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
-.need-block-val{font-size:11px;color:var(--white2);line-height:1.5;}
-
-/* ─── EMPTY STATE ─── */
-.empty-state{padding:60px 24px;text-align:center;border:1px solid var(--border);background:var(--surface);}
-.empty-icon{font-size:28px;opacity:.3;margin-bottom:14px;}
-.empty-title{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--white2);margin-bottom:8px;}
-.empty-body{font-size:13px;color:var(--muted);line-height:1.65;max-width:420px;margin:0 auto;}
-.empty-link{color:var(--orange);text-decoration:none;}
-.empty-link:hover{text-decoration:underline;}
-
-/* ─── EDITORIAL NOTICE ─── */
-.editorial-notice{display:flex;align-items:flex-start;gap:12px;padding:14px 18px;background:rgba(191,87,0,0.04);border:1px solid rgba(191,87,0,0.14);margin-bottom:20px;}
-.editorial-notice p{font-size:12px;color:var(--secondary);line-height:1.6;}
-.editorial-notice strong{color:var(--white2);}
-
-/* ─── FOOTER ─── */
-footer{padding:26px 48px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);}
-.f-logo{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:3px;color:var(--muted);}
-.f-logo span{color:var(--orange);}
-.f-text{font-size:11px;color:var(--muted);}
-
-/* ─── RESPONSIVE ─── */
-@media(max-width:900px){
-  .hub-hero,.wrap{padding-left:20px;padding-right:20px;}
-  .tab-bar-inner{padding:0 16px;}
-  .stat-grid{grid-template-columns:repeat(2,1fr);}
-  .portal-stat-grid{grid-template-columns:repeat(2,1fr);}
-  .feed-item{grid-template-columns:1fr;gap:3px;}
-  .expand-grid{grid-template-columns:1fr;}
-  .cal-item{grid-template-columns:85px 1fr;}.cal-t{display:none;}
-  .ptbl{display:block;overflow-x:auto;}
-  .need-2col{grid-template-columns:1fr;}
-  footer{flex-direction:column;gap:8px;padding:18px 20px;}
+@media(max-width:768px){
+  .hero-inner{flex-direction:column;}
+  .hero-right{flex-direction:row;align-items:center;width:100%;justify-content:space-between;}
+  .board{gap:10px;}
+  .col{flex:0 0 200px;}
+  .main{padding:16px 14px 100px;}
+  .ctrl-search{width:130px;}
+  .modal{width:100vw;}
 }
-@media(max-width:600px){
-  .stat-grid{grid-template-columns:repeat(2,1fr);}
-  .hero-chips{gap:6px;}
-  .filter-bar{flex-direction:column;}
-  .filter-bar input,.filter-bar select{min-width:0;}
-  .commit-cards,.target-grid,.needs-grid{grid-template-columns:1fr;}
-}
-/* Tower Intel integration */
-.ti-recruit-btn{
-  display:inline-flex;align-items:center;gap:5px;margin-top:10px;width:100%;
-  font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;
-  letter-spacing:1.5px;text-transform:uppercase;
-  color:var(--orange);background:rgba(191,87,0,0.07);
-  border:1px solid rgba(191,87,0,0.25);padding:6px 10px;
-  cursor:pointer;transition:all .15s;justify-content:center;
-}
-.ti-recruit-btn:hover{background:rgba(191,87,0,0.16);border-color:rgba(191,87,0,0.5);}
-.ti-recruit-dot{width:4px;height:4px;border-radius:50%;background:var(--orange);flex-shrink:0;animation:tiPulse 2s ease-in-out infinite;}
-@keyframes tiPulse{0%,100%{opacity:1;}50%{opacity:.3;}}
 </style>
 </head>
 <body>
 
+<!-- nav.js injects the global header -->
+
 <!-- HERO -->
-<div class="hub-hero">
+<div class="hero">
   <div class="hero-inner">
-    <div class="live-row">
-      <span class="live-label">Tower Recruiting Hub</span>
-    </div>
-    <h1 class="hero-title">Texas Recruiting<br><em>&amp; Transfer Portal</em></h1>
-    <div class="hero-chips">
-      <div class="chip chip-rank" id="chip-on3">On3 · 2027 Class</div>
-      <div class="chip chip-rank" id="chip-247">247Sports · 2027 Class</div>
-      <div class="chip chip-commits" id="chip-commits">Verified Commits · 2027</div>
-      <div class="chip chip-portal" id="chip-portal">Incoming Transfers · 2026</div>
-      <div class="chip chip-date" id="fresh-pill">Loading…</div>
-    </div>
-    <p class="source-bar">All data sourced from public records: 247Sports, On3, Rivals, ESPN Recruiting, and verified reporter posts. No commitments, visits, rankings, or quotes are invented. Uncertain items are labeled <strong>Public Report</strong>. Position analysis is labeled <strong>Editorial</strong>.</p>
-  </div>
-</div>
-
-<!-- INTERNAL TAB BAR -->
-<div class="tab-bar">
-  <div class="tab-bar-inner">
-    <button class="itab active" data-tab="overview">Overview</button>
-    <button class="itab" data-tab="hs">HS Recruiting</button>
-    <button class="itab" data-tab="portal">Transfer Portal</button>
-    <button class="itab" data-tab="commits">Commits</button>
-    <button class="itab" data-tab="targets">Targets</button>
-    <button class="itab" data-tab="offers">Offers</button>
-    <button class="itab" data-tab="needs">Position Needs</button>
-  </div>
-</div>
-
-<div class="wrap">
-
-<!-- ══════════════════ OVERVIEW ══════════════════ -->
-<div class="panel active" id="panel-overview">
-
-  <div class="sec">
-    <div class="sec-head">
-      <div class="sec-title">2027 Class At-a-Glance</div>
-      <div class="sec-meta" id="ov-verified-meta">Hand-verified · Sources: On3 · 247Sports</div>
-    </div>
-    <div class="stat-grid">
-      <div class="stat-cell"><div class="stat-num" style="color:var(--green)" id="ov-commits">—</div><div class="stat-lbl">Public Commits</div></div>
-      <div class="stat-cell"><div class="stat-num" style="color:var(--amber)" id="ov-on3">—</div><div class="stat-lbl">On3 Team Rank</div></div>
-      <div class="stat-cell"><div class="stat-num" style="color:var(--amber)" id="ov-247">—</div><div class="stat-lbl">247Sports Rank</div></div>
-      <div class="stat-cell"><div class="stat-num" id="ov-signed">—</div><div class="stat-lbl">2026 Signed</div></div>
-    </div>
-  </div>
-
-  <div class="sec">
-    <div class="live-grok" id="live-grok-block">
-      <div class="live-grok-head">
-        <span class="live-grok-dot"></span>
-        <span class="live-grok-lbl">Live · via Grok</span>
-        <span class="live-grok-meta" id="live-grok-updated">checking…</span>
+    <div class="hero-left">
+      <div class="hero-kicker">Texas Longhorns · 2027 Class</div>
+      <h1 class="hero-title">Recruiting Intelligence Board</h1>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="hero-stat-n" id="stat-commits">—</div><div class="hero-stat-l">Commits</div></div>
+        <div class="hero-stat"><div class="hero-stat-n" id="stat-targets">—</div><div class="hero-stat-l">Targets</div></div>
+        <div class="hero-stat"><div class="hero-stat-n" id="stat-priority">—</div><div class="hero-stat-l">Priority</div></div>
+        <div class="hero-stat"><div class="hero-stat-n" id="stat-tracked">—</div><div class="hero-stat-l">Tracked</div></div>
       </div>
-      <div id="live-grok-body"><div class="live-grok-note">Loading the latest Grok web-search check of the 2027 class…</div></div>
-      <div class="live-grok-note">Automated daily web-search check (On3 + 247Sports). Shown alongside — never replacing — Tower's hand-verified data above.</div>
+    </div>
+    <div class="hero-right">
+      <span class="hero-time" id="updated-time">Loading…</span>
+      <button class="hero-refresh" id="refresh-btn" onclick="triggerRefresh()">Refresh Intel</button>
     </div>
   </div>
+</div>
 
-  <div class="sec">
-    <div class="sec-head">
-      <div class="sec-title">2026 Transfer Portal Summary</div>
-      <div class="sec-meta">Source: Public Reports</div>
-    </div>
-    <div class="portal-stat-grid" id="ov-portal-stats"></div>
+<!-- INTEL FEED -->
+<div class="feed">
+  <div class="feed-label">Intel Feed</div>
+  <div class="feed-track">
+    <div class="feed-items" id="feed-items"><span class="feed-empty">Loading latest intel…</span></div>
   </div>
+</div>
 
-  <div class="sec">
-    <div class="sec-head">
-      <div class="sec-title">Recent Activity</div>
-      <div class="sec-meta">Newest First · Includes Tower Recruiting Stories</div>
+<!-- CONTROLS -->
+<div class="ctrl">
+  <div class="ctrl-inner">
+    <div class="ctrl-group" id="status-filters">
+      <button class="ctrl-btn active" data-status="all" onclick="setStatusFilter('all',this)">All</button>
+      <button class="ctrl-btn" data-status="Committed" onclick="setStatusFilter('Committed',this)">Committed</button>
+      <button class="ctrl-btn" data-status="Priority" onclick="setStatusFilter('Priority',this)">Priority</button>
+      <button class="ctrl-btn" data-status="Trending Up" onclick="setStatusFilter('Trending Up',this)">Trending</button>
+      <button class="ctrl-btn" data-status="Target" onclick="setStatusFilter('Target',this)">Targets</button>
     </div>
-    <div class="feed" id="overview-feed"></div>
-  </div>
-
-</div><!-- /overview -->
-
-<!-- ══════════════════ HS RECRUITING ══════════════════ -->
-<div class="panel" id="panel-hs">
-
-  <div class="sec">
-    <div class="sec-head">
-      <div class="sec-title">2027 Commits</div>
-      <div class="sec-meta" id="hs-count">Click row to expand</div>
-    </div>
-    <div class="filter-bar">
-      <input type="text" id="hs-search" placeholder="Search player, school, or city…" oninput="applyHsFilter()"/>
-      <select id="hs-pos" onchange="applyHsFilter()">
-        <option value="">All Positions</option>
-        <option>WR</option><option>DE</option><option>OL</option><option>EDGE</option>
-        <option>RB</option><option>TE</option><option>S</option><option>QB</option><option>CB</option><option>LB</option>
-      </select>
-      <select id="hs-stars" onchange="applyHsFilter()">
-        <option value="">All Ratings</option>
-        <option value="5">5-Star</option>
-        <option value="4">4-Star</option>
-        <option value="3">3-Star</option>
-      </select>
-      <select id="hs-sort" onchange="applyHsFilter()">
-        <option value="dateSort">Sort: Commit Date</option>
-        <option value="rating">Sort: Rating</option>
-        <option value="name">Sort: Name</option>
-        <option value="pos">Sort: Position</option>
-      </select>
-    </div>
-    <div class="tbl-wrap">
-      <table class="rtbl">
-        <thead>
-          <tr>
-            <th data-col="name">Player</th>
-            <th data-col="pos">Pos</th>
-            <th data-col="htWt">Ht/Wt</th>
-            <th data-col="rating">Rating</th>
-            <th data-col="school">School</th>
-            <th data-col="dateSort">Committed</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody id="hs-tbody"></tbody>
-      </table>
-      <p class="tbl-foot">Sources: 247Sports · On3 · ESPN · Click any column header to sort · Click row to expand</p>
+    <div class="ctrl-divider"></div>
+    <select class="ctrl-pos" id="pos-filter" onchange="render()">
+      <option value="all">All positions</option>
+      <option value="QB">QB</option><option value="RB">RB</option><option value="WR">WR</option>
+      <option value="TE">TE</option><option value="OT">OT</option><option value="IOL">IOL/OG</option>
+      <option value="EDGE">EDGE</option><option value="DT">DT</option><option value="LB">LB</option>
+      <option value="CB">CB</option><option value="S">S</option>
+    </select>
+    <input class="ctrl-search" id="search" placeholder="Search recruits…" oninput="render()">
+    <div class="ctrl-divider"></div>
+    <div class="ctrl-view">
+      <button class="ctrl-view-btn active" id="view-board" onclick="setView('board')">Board</button>
+      <button class="ctrl-view-btn" id="view-list" onclick="setView('list')">List</button>
     </div>
   </div>
+</div>
 
-  <div class="sec">
-    <div class="sec-head">
-      <div class="sec-title">Recruiting Calendar</div>
-      <div class="sec-meta">2026–2027 Key Dates</div>
+<!-- MAIN CONTENT -->
+<div class="main">
+  <div id="board-view"></div>
+  <div id="list-view" style="display:none;"></div>
+</div>
+
+<!-- RECRUIT MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-hdr">
+      <div style="font:700 9px/1 var(--font-cond);letter-spacing:2px;text-transform:uppercase;color:var(--muted);">Recruit Profile</div>
+      <button class="modal-close" onclick="closeModal()">×</button>
     </div>
-    <div class="cal-list">
-      <div class="cal-item"><div class="cal-d">Jun 1–30</div><div class="cal-e">Unofficial visit period — peak month for 2027 campus activity</div><div class="cal-t">Visits</div></div>
-      <div class="cal-item"><div class="cal-d">Jul 4</div><div class="cal-e">Dead period begins — no in-person recruiting contact</div><div class="cal-t">Dead Period</div></div>
-      <div class="cal-item"><div class="cal-d">Jul 25</div><div class="cal-e">Contact period resumes — coaches on road for in-home visits</div><div class="cal-t">Contact</div></div>
-      <div class="cal-item"><div class="cal-d">Sep 1</div><div class="cal-e">Official visit season opens for 2027 class</div><div class="cal-t">Official Visits</div></div>
-      <div class="cal-item"><div class="cal-d">Oct 2–4</div><div class="cal-e">Major recruiting weekend — multiple official visits expected</div><div class="cal-t">Official Visits</div></div>
-      <div class="cal-item"><div class="cal-d">Dec 17–19</div><div class="cal-e">Early Signing Period — 2027 class signs letters of intent</div><div class="cal-t">Signing Day</div></div>
-      <div class="cal-item"><div class="cal-d">Feb 4, 2027</div><div class="cal-e">National Signing Day — remaining unsigned commits may sign</div><div class="cal-t">Signing Day</div></div>
-    </div>
+    <div class="modal-body" id="modal-body"></div>
   </div>
+</div>
 
-  <div class="sec">
-    <div class="sec-head">
-      <div class="sec-title">2026 Signed Class</div>
-      <div class="sec-meta" id="signed-meta"><span id="signed-count"></span> ESD + NSD · <button class="toggle-btn" id="signed-btn" onclick="toggleSigned()">Show Class</button></div>
+<!-- AI CHAT -->
+<button class="chat-fab" id="chat-fab" onclick="toggleChat()" title="Ask Longhorn Intel">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+</button>
+
+<div class="chat-panel" id="chat-panel">
+  <div class="chat-phdr">
+    <div>
+      <div class="chat-ptitle">Longhorn Intel</div>
+      <div class="chat-psub">Ask anything about the recruiting board</div>
     </div>
-    <div class="signed-grid" id="signed-grid" style="display:none"></div>
+    <button class="chat-pclose" onclick="toggleChat()">×</button>
   </div>
-
-</div><!-- /hs -->
-
-<!-- ══════════════════ TRANSFER PORTAL ══════════════════ -->
-<div class="panel" id="panel-portal">
-
-  <div class="sec">
-    <div class="sec-head">
-      <div class="sec-title">2026 Transfer Portal</div>
-      <div class="sec-meta">Source: Public Reports</div>
-    </div>
-    <div class="portal-stat-grid" id="portal-stats"></div>
-    <div class="sub-tab-bar">
-      <button class="stab active" data-ptab="in" id="stab-in">Incoming</button>
-      <button class="stab" data-ptab="out" id="stab-out">Outgoing</button>
-      <button class="stab" data-ptab="watch" id="stab-watch">Watch List</button>
-    </div>
-    <div id="ptab-in"><table class="ptbl"><thead><tr><th>Player</th><th>Pos</th><th>Stars</th><th>Yr</th><th>From</th><th>Depth Impact</th><th>Source</th></tr></thead><tbody id="portal-in-tbody"></tbody></table></div>
-    <div id="ptab-out" style="display:none"><table class="ptbl"><thead><tr><th>Player</th><th>Pos</th><th>Class</th><th>Destination</th><th>Reason</th></tr></thead><tbody id="portal-out-tbody"></tbody></table></div>
-    <div id="ptab-watch" style="display:none"><div class="watch-list" id="portal-watch-list"></div></div>
+  <div class="chat-chips" id="chat-chips">
+    <button class="chat-chip" onclick="sendChip(this)">Top DL targets?</button>
+    <button class="chat-chip" onclick="sendChip(this)">Which commits are at risk?</button>
+    <button class="chat-chip" onclick="sendChip(this)">Class ranking trajectory?</button>
+    <button class="chat-chip" onclick="sendChip(this)">Biggest needs left?</button>
   </div>
-
-</div><!-- /portal -->
-
-<!-- ══════════════════ COMMITS ══════════════════ -->
-<div class="panel" id="panel-commits">
-
-  <div class="sec">
-    <div class="sec-head">
-      <div class="sec-title">2027 Verified Commits</div>
-      <div class="sec-meta" id="commits-meta">Sources: 247Sports · On3</div>
-    </div>
-    <div class="commit-cards" id="commit-cards"></div>
+  <div class="chat-msgs" id="chat-msgs">
+    <div class="chat-msg ai">Hook 'em! Ask me anything about the 2027 class — targets, commits, crystal balls, position needs, or what's trending.</div>
   </div>
-
-</div><!-- /commits -->
-
-<!-- ══════════════════ TARGETS ══════════════════ -->
-<div class="panel" id="panel-targets">
-
-  <div class="sec">
-    <div class="sec-head">
-      <div class="sec-title">Priority Targets — 2027</div>
-      <div class="sec-meta">All items sourced from public reports only</div>
-    </div>
-    <div class="editorial-notice">
-      <p><strong>Source note:</strong> Target status (Trending, Target, Monitoring) reflects public reporting from 247Sports, On3, Rivals, and verified recruiting reporters as of the last update date. Tower does not independently verify contact or interest levels. Nothing below is confirmed by Texas staff or the prospects.</p>
-    </div>
-    <div class="target-grid" id="target-grid"></div>
+  <div class="chat-input-row">
+    <textarea class="chat-input" id="chat-input" placeholder="Ask about recruiting…" rows="1" onkeydown="chatKey(event)"></textarea>
+    <button class="chat-send" id="chat-send" onclick="sendChat()">Ask</button>
   </div>
-
-</div><!-- /targets -->
-
-<!-- ══════════════════ OFFERS ══════════════════ -->
-<div class="panel" id="panel-offers">
-
-  <div class="sec">
-    <div class="sec-head">
-      <div class="sec-title">Offer Tracking</div>
-      <div class="sec-meta">2027 Class</div>
-    </div>
-    <div class="empty-state">
-      <div class="empty-icon">📋</div>
-      <div class="empty-title">No verified offer data available</div>
-      <p class="empty-body">Comprehensive offer tracking requires a live feed from a premium service. Texas 2027 offer lists are available at <a class="empty-link" href="https://247sports.com" target="_blank" rel="noopener">247Sports</a>, <a class="empty-link" href="https://on3.com" target="_blank" rel="noopener">On3</a>, and <a class="empty-link" href="https://rivals.com" target="_blank" rel="noopener">Rivals</a>. Tower does not publish offer lists without verification from those sources.</p>
-    </div>
-  </div>
-
-</div><!-- /offers -->
-
-<!-- ══════════════════ POSITION NEEDS ══════════════════ -->
-<div class="panel" id="panel-needs">
-
-  <div class="sec">
-    <div class="sec-head">
-      <div class="sec-title">Position Needs — 2027</div>
-      <div class="sec-meta">Recruiting + Portal Combined View</div>
-    </div>
-    <div class="editorial-notice">
-      <p><strong>Editorial analysis:</strong> Urgency ratings below reflect Tower's assessment based on known departures, portal additions, and current 2027 commitments — all public information. These are not official team assessments. Roster projections are inherently uncertain.</p>
-    </div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
-      <select style="font-family:'Barlow',sans-serif;font-size:12px;background:var(--surface);color:var(--white);border:1px solid var(--border-mid);padding:8px 12px;outline:none;cursor:pointer;" id="needs-filter" onchange="renderNeeds()">
-        <option value="">All Positions</option>
-        <option value="High">High Urgency</option>
-        <option value="Medium">Medium Urgency</option>
-        <option value="Low">Low Urgency</option>
-      </select>
-    </div>
-    <div class="needs-grid" id="needs-grid"></div>
-  </div>
-
-</div><!-- /needs -->
-
-</div><!-- /wrap -->
-
-<footer>
-  <div class="f-logo">TOWER<span>REPORT</span></div>
-  <div class="f-text">All recruiting intelligence from public sources only. The Tower Never Sleeps. © 2026</div>
-</footer>
+</div>
 
 <script>
-// ============================================================
-//  DATA — this page renders /data/recruiting.json (hand-verified,
-//  edit that file to update the page) plus two live layers:
-//  /api/verify-recruiting (Grok daily check, clearly labeled) and
-//  /api/stories (newest Recruiting stories in the activity feed).
-//  No data lives in this HTML file.
-// ============================================================
+var BOARD = null;
+var activeStatus = 'all';
+var activeView = 'board';
+var chatMessages = [];
+var chatOpen = false;
+var focusedRecruit = null;
 
-let commits = [], targets = [], portalIn = [], portalOut = [], portalWatch = [];
-let needs = [], timeline = [], signed2026 = [];
-let meta = {}, lastUpdated = null;
-let recruitingStories = []; // newest Recruiting stories from /api/stories
-
-const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-
-async function loadRecruitingData() {
-  const res = await fetch('data/recruiting.json', { cache: 'no-cache' });
-  if (!res.ok) throw new Error('recruiting.json HTTP ' + res.status);
-  const d = await res.json();
-  commits     = d.commits     || [];
-  targets     = d.targets     || [];
-  portalIn    = d.portalIn    || [];
-  portalOut   = d.portalOut   || [];
-  portalWatch = d.portalWatch || [];
-  needs       = d.needs       || [];
-  timeline    = d.timeline    || [];
-  signed2026  = d.signed2026  || [];
-  meta        = d.meta        || {};
-  lastUpdated = d.lastUpdated || null;
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
-
-// ── Freshness pill: green under 7 days, amber stale warning after ──
-function renderFreshness() {
-  const pill = document.getElementById('fresh-pill');
-  if (!lastUpdated) { pill.textContent = 'Update date unknown'; pill.classList.add('chip-fresh-stale'); return; }
-  const days = Math.floor((Date.now() - new Date(lastUpdated).getTime()) / 86400000);
-  const dateStr = new Date(lastUpdated).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-  pill.classList.remove('chip-date');
-  if (days < 7) {
-    pill.classList.add('chip-fresh-ok');
-    pill.textContent = 'Verified ' + dateStr + (days <= 0 ? ' · Today' : ' · ' + days + 'd ago');
-  } else {
-    pill.classList.add('chip-fresh-stale');
-    pill.textContent = '⚠ Stale — verified ' + dateStr + ' (' + days + 'd ago)';
-  }
+function stars(n) {
+  var s = '';
+  for (var i = 0; i < 5; i++) s += i < n ? '★' : '☆';
+  return s;
 }
-
-function renderHeroChips() {
-  document.getElementById('chip-on3').textContent = (meta.on3Rank ? '#' + meta.on3Rank : '—') + ' On3 · 2027 Class';
-  document.getElementById('chip-247').textContent = (meta.sports247Rank ? '#' + meta.sports247Rank : '—') + ' 247Sports · 2027 Class';
-  document.getElementById('chip-commits').textContent = commits.length + ' Verified Commits · 2027';
-  document.getElementById('chip-portal').textContent = portalIn.length + ' Incoming Transfers · 2026';
+function statusSlug(s) {
+  return (s||'').toLowerCase().replace(/\s+/g,'-').replace(/[^a-z-]/g,'');
 }
-
-function renderOverviewStats() {
-  document.getElementById('ov-commits').textContent = commits.length;
-  document.getElementById('ov-on3').textContent = meta.on3Rank ? '#' + meta.on3Rank : '—';
-  document.getElementById('ov-247').textContent = meta.sports247Rank ? '#' + meta.sports247Rank : '—';
-  document.getElementById('ov-signed').textContent = signed2026.length || '—';
-  if (lastUpdated) {
-    document.getElementById('ov-verified-meta').textContent =
-      'Hand-verified · Sources: On3 · 247Sports · ' + new Date(lastUpdated).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-  }
-  const portalStats = `
-      <div class="psg-cell"><div class="psg-num" style="color:var(--green)">${portalIn.length}</div><div class="psg-lbl">Incoming</div></div>
-      <div class="psg-cell"><div class="psg-num" style="color:var(--red)">${portalOut.length || '—'}</div><div class="psg-lbl">Outgoing / Departed</div></div>
-      <div class="psg-cell"><div class="psg-num" style="color:var(--orange)">${meta.portalNet != null ? (meta.portalNet > 0 ? '+' : '') + meta.portalNet : '—'}</div><div class="psg-lbl">Net Roster Change</div></div>
-      <div class="psg-cell"><div class="psg-num">${meta.portalImmediateImpact != null ? meta.portalImmediateImpact : '—'}</div><div class="psg-lbl">Immediate Impact</div></div>`;
-  document.getElementById('ov-portal-stats').innerHTML = portalStats;
-  document.getElementById('portal-stats').innerHTML = portalStats;
-  document.getElementById('stab-in').textContent = `Incoming (${portalIn.length})`;
-  document.getElementById('stab-out').textContent = `Outgoing (${portalOut.length})`;
-  document.getElementById('stab-watch').textContent = `Watch List (${portalWatch.length})`;
-  document.getElementById('commits-meta').textContent = commits.length + ' Publicly Named · Sources: 247Sports · On3';
-  document.getElementById('signed-count').textContent = signed2026.length + ' Players ·';
+function fmtAgo(iso) {
+  if (!iso) return 'never';
+  var m = (Date.now() - new Date(iso).getTime()) / 60000;
+  if (m < 1) return 'just now';
+  if (m < 60) return Math.round(m) + 'm ago';
+  if (m < 48*60) return (m/60).toFixed(0) + 'h ago';
+  return Math.round(m/1440) + 'd ago';
 }
-
-// ── Live · via Grok block (never overwrites verified data) ──
-async function renderLiveGrok() {
-  const body = document.getElementById('live-grok-body');
-  const updated = document.getElementById('live-grok-updated');
-  try {
-    const res = await fetch('/api/verify-recruiting', { signal: AbortSignal.timeout(8000) });
-    const d = await res.json();
-    if (!d || !d.live) {
-      updated.textContent = 'no check recorded yet';
-      body.innerHTML = '<div class="live-grok-note">No automated check has run yet. The daily pipeline writes the first snapshot at the next refresh.</div>';
-      return;
-    }
-    const L = d.live;
-    updated.textContent = d.updatedAt ? 'checked ' + new Date(d.updatedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) +
-      ' ' + new Date(d.updatedAt).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }) : '';
-    const delta = (liveVal, verifiedVal) =>
-      (liveVal != null && verifiedVal != null && liveVal !== verifiedVal)
-        ? `<div class="lg-delta">differs from hand-verified #${verifiedVal}</div>` : '';
-    body.innerHTML =
-      '<div class="live-grok-grid">' +
-        `<div class="lg-cell"><div class="lg-num">${L.on3TeamRank != null ? '#' + L.on3TeamRank : '—'}</div><div class="lg-lbl">On3 Team Rank · Live</div>${delta(L.on3TeamRank, meta.on3Rank)}</div>` +
-        `<div class="lg-cell"><div class="lg-num">${L.sports247TeamRank != null ? '#' + L.sports247TeamRank : '—'}</div><div class="lg-lbl">247Sports Rank · Live</div>${delta(L.sports247TeamRank, meta.sports247Rank)}</div>` +
-        `<div class="lg-cell"><div class="lg-num">${L.commitCount != null ? L.commitCount : '—'}</div><div class="lg-lbl">Commit Count · Live</div>${L.commitCount != null && L.commitCount !== commits.length ? `<div class="lg-delta">hand-verified list has ${commits.length}</div>` : ''}</div>` +
-      '</div>' +
-      ((L.recentMoves || []).length
-        ? '<div class="live-grok-moves">' + L.recentMoves.map(m =>
-            `<div>· <strong>${esc(m.player)}</strong> (${esc(m.pos)}) ${esc(m.type)} — ${esc(m.note)} <span style="color:var(--muted)">${esc(m.date)}</span></div>`).join('') + '</div>'
-        : '<div class="live-grok-note">No new commits or decommits found in the last 7 days.</div>') +
-      ((L.sources || []).length ? `<div class="live-grok-src">Live sources: ${L.sources.map(esc).join(' · ')}</div>` : '');
-  } catch (e) {
-    updated.textContent = 'unavailable';
-    body.innerHTML = '<div class="live-grok-note">Live check unavailable right now — hand-verified data above is unaffected.</div>';
-  }
+function fmtDate(iso) {
+  if (!iso) return '';
+  try { return new Date(iso).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); }
+  catch(e) { return iso; }
 }
-
-// ── Newest Recruiting stories for the activity feed ──
-// Must mirror slugify() in stories.html so ?story= deep links resolve
-function slugifyStory(str) {
-  return String(str || '').toLowerCase()
-    .replace(/&/g, ' and ')
-    .replace(/[''’]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .slice(0, 80)
-    .replace(/-+$/, '');
+function confColor(status) {
+  var map = { Committed:'var(--green)', Priority:'var(--orange)', 'Trending Up':'var(--amber)', Target:'var(--blue)', Warm:'var(--purple)', Cold:'var(--muted)', 'Trending Down':'var(--red)', Decommitted:'var(--muted)' };
+  return map[status] || 'var(--muted)';
 }
-async function loadRecruitingStories() {
-  try {
-    const res = await fetch('/api/stories', { signal: AbortSignal.timeout(8000) });
-    if (!res.ok) return;
-    const d = await res.json();
-    recruitingStories = (d.stories || [])
-      .filter(s => s.category === 'Recruiting')
-      .sort((a, b) => new Date(b._generated || b.date || 0) - new Date(a._generated || a.date || 0))
-      .slice(0, 5);
-  } catch (e) { /* feed still renders the hand-verified timeline */ }
-}
-
-// ============================================================
-//  RENDER FUNCTIONS
-// ============================================================
-
-const stars = n => n ? '<span class="td-stars">' + '★'.repeat(n) + '</span>' : '—';
-
-// Overview feed — 5 newest Tower Recruiting stories merged with the
-// hand-verified timeline, newest first
-function feedTime(dateStr) {
-  let t = Date.parse(dateStr);
-  if (isNaN(t)) t = Date.parse('1 ' + dateStr); // "Mar 2026" → "1 Mar 2026"
-  return isNaN(t) ? 0 : t;
-}
-function renderOverviewFeed() {
-  const storyItems = recruitingStories.map(s => ({
-    date: s.date || '',
-    type: 'story',
-    text: `<strong>${esc(s.headline)}</strong> — ${esc((s.hook || '').split('. ')[0])}.`,
-    href: 'stories.html?story=' + encodeURIComponent(slugifyStory(s.headline)),
-    _t: feedTime(s._generated || s.date),
-  }));
-  const timelineItems = timeline.map(e => ({ ...e, text: esc(e.text), _t: feedTime(e.date) }));
-  const items = storyItems.concat(timelineItems).sort((a, b) => b._t - a._t).slice(0, 10);
-  document.getElementById('overview-feed').innerHTML = items.map(e => `
-    <div class="feed-item ${e.type}"${e.href ? ` onclick="window.location.href='${e.href}'"` : ''}>
-      <div class="feed-date">${esc(e.date)}</div>
-      <div>
-        <div class="feed-text">${e.text}</div>
-        <span class="feed-tag tag-${e.type}">${e.type === 'story' ? 'tower story' : e.type}</span>
-      </div>
-    </div>`).join('');
-}
-
-// HS table
-let hsSortCol = 'dateSort', hsSortDir = 1, hsFiltered = [...commits];
-
-function applyHsFilter() {
-  const q   = document.getElementById('hs-search').value.toLowerCase();
-  const pos = document.getElementById('hs-pos').value;
-  const st  = document.getElementById('hs-stars').value;
-  hsSortCol = document.getElementById('hs-sort').value;
-  hsSortDir = 1;
-  hsFiltered = commits.filter(p => {
-    const mq = !q   || [p.name, p.school, p.city].some(s => s.toLowerCase().includes(q));
-    const mp = !pos || p.pos === pos;
-    const ms = !st  || p.stars === parseInt(st);
-    return mq && mp && ms;
+function filtered() {
+  if (!BOARD || !BOARD.recruits) return [];
+  var q = (document.getElementById('search').value||'').toLowerCase().trim();
+  var pos = document.getElementById('pos-filter').value;
+  return BOARD.recruits.filter(function(r) {
+    if (activeStatus !== 'all' && r.status !== activeStatus) return false;
+    if (pos !== 'all' && r.position !== pos && !(pos === 'IOL' && ['OG','OC','IOL'].includes(r.position))) return false;
+    if (q && !r.name.toLowerCase().includes(q) && !(r.hometown||'').toLowerCase().includes(q) && !(r.position||'').toLowerCase().includes(q)) return false;
+    return true;
   });
-  document.querySelectorAll('.rtbl th').forEach(h => h.classList.remove('asc','desc'));
-  const th = document.querySelector(`.rtbl th[data-col="${hsSortCol}"]`);
-  if (th) th.classList.add('asc');
-  renderHsTable();
 }
 
-function renderHsTable() {
-  const sorted = [...hsFiltered].sort((a, b) => {
-    let av = a[hsSortCol], bv = b[hsSortCol];
+/* ── DATA LOAD ── */
+function load() {
+  fetch('/api/recruiting-board')
+    .then(function(r){ return r.json(); })
+    .then(function(d) {
+      BOARD = d;
+      updateStats();
+      updateFeed();
+      updateTime();
+      render();
+    })
+    .catch(function(e) {
+      document.getElementById('board-view').innerHTML = '<div class="empty"><div class="empty-icon">⚠</div><div class="empty-title">Could not load board</div><div class="empty-sub">' + esc(e.message) + '</div></div>';
+    });
+}
+
+function updateStats() {
+  var r = BOARD.recruits || [];
+  document.getElementById('stat-commits').textContent = r.filter(function(x){ return x.status==='Committed'; }).length;
+  document.getElementById('stat-targets').textContent = r.filter(function(x){ return ['Target','Warm','Trending Up','Priority'].includes(x.status); }).length;
+  document.getElementById('stat-priority').textContent = r.filter(function(x){ return x.status==='Priority'||x.status==='Trending Up'; }).length;
+  document.getElementById('stat-tracked').textContent = r.length;
+}
+
+function updateTime() {
+  var el = document.getElementById('updated-time');
+  el.textContent = BOARD.updated ? 'Updated ' + fmtAgo(BOARD.updated) : 'Not yet refreshed';
+}
+
+function updateFeed() {
+  var feed = document.getElementById('feed-items');
+  var changes = BOARD.changes || [];
+  if (!changes.length) { feed.innerHTML = '<span class="feed-empty">No recent changes — run a refresh for live intel</span>'; return; }
+  var html = changes.concat(changes).map(function(c) {
+    return '<span class="feed-item ' + (c.importance==='high'?'high':'') + '"><span class="fi-dot"></span>' + esc(c.name || '') + (c.name?' — ':'') + esc(c.text) + '</span>';
+  }).join('');
+  feed.innerHTML = html;
+}
+
+/* ── STATUS FILTER ── */
+function setStatusFilter(status, btn) {
+  activeStatus = status;
+  document.querySelectorAll('[data-status]').forEach(function(b){ b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+  render();
+}
+
+/* ── VIEW TOGGLE ── */
+function setView(v) {
+  activeView = v;
+  document.getElementById('view-board').classList.toggle('active', v==='board');
+  document.getElementById('view-list').classList.toggle('active', v==='list');
+  document.getElementById('board-view').style.display = v==='board' ? '' : 'none';
+  document.getElementById('list-view').style.display = v==='list' ? '' : 'none';
+  render();
+}
+
+/* ── RENDER ── */
+function render() {
+  if (!BOARD) return;
+  if (activeView === 'board') renderBoard();
+  else renderList();
+}
+
+var COLS = [
+  { key:'Committed',    label:'Committed',    cls:'committed' },
+  { key:'Priority',     label:'Priority',     cls:'priority' },
+  { key:'Trending Up',  label:'Trending Up',  cls:'trending-up' },
+  { key:'Target',       label:'Targets',      cls:'target' },
+  { key:'Warm',         label:'Warm',         cls:'warm' },
+  { key:'Cold',         label:'Cold',         cls:'cold' },
+  { key:'Trending Down',label:'Cooling',      cls:'trending-down' },
+  { key:'Decommitted',  label:'Decommitted',  cls:'decommitted' },
+];
+
+function renderBoard() {
+  var recs = filtered();
+  var byStatus = {};
+  COLS.forEach(function(c){ byStatus[c.key] = []; });
+  recs.forEach(function(r){ if (byStatus[r.status]) byStatus[r.status].push(r); });
+  var activeCols = activeStatus !== 'all'
+    ? COLS.filter(function(c){ return c.key === activeStatus; })
+    : COLS.filter(function(c){ return byStatus[c.key].length > 0; });
+  var html = '<div class="board">';
+  activeCols.forEach(function(col) {
+    var recruits = byStatus[col.key] || [];
+    html += '<div class="col">';
+    html += '<div class="col-hdr ' + col.cls + '"><span class="col-name">' + col.label + '</span><span class="col-count">' + recruits.length + '</span></div>';
+    if (!recruits.length) {
+      html += '<div style="font:400 11px var(--font-body);color:var(--muted);padding:12px 0;text-align:center;">None tracked</div>';
+    }
+    recruits.forEach(function(r) { html += renderCard(r); });
+    html += '</div>';
+  });
+  html += '</div>';
+  document.getElementById('board-view').innerHTML = html;
+}
+
+function renderCard(r) {
+  var slug = statusSlug(r.status);
+  var rankText = r.rankComposite ? '#' + r.rankComposite : (r.on3Rank ? '#' + r.on3Rank + ' On3' : '');
+  var hot = r.timeline && r.timeline.length && ((Date.now() - new Date(r.timeline[0].ts).getTime()) < 48*3600*1000);
+  return '<div class="card s-' + slug + '" onclick="openModal(\'' + esc(r.id) + '\')">' +
+    (hot ? '<div class="card-hot"></div>' : '') +
+    '<div class="card-pos-row"><span class="card-stars">' + stars(r.stars) + '</span><span class="card-pos">' + esc(r.position) + '</span>' + (rankText ? '<span class="card-rank">' + esc(rankText) + '</span>' : '') + '</div>' +
+    '<div class="card-name">' + esc(r.name) + '</div>' +
+    '<div class="card-from">' + esc(r.hometown || '') + (r.highSchool ? '<br>' + esc(r.highSchool) : '') + '</div>' +
+    '<div class="card-conf"><div class="card-conf-bar"><div class="card-conf-fill" style="width:' + (r.confidence||0) + '%;background:' + confColor(r.status) + '"></div></div>' +
+    '<div class="card-conf-pct">' + (r.confidence||0) + '% confidence</div></div>' +
+    '<div class="card-footer"><span class="card-status">' + esc(r.status) + '</span><span class="card-age">' + fmtAgo(r.lastUpdated) + '</span></div>' +
+    '</div>';
+}
+
+var sortCol = 'confidence', sortDir = -1;
+function renderList() {
+  var recs = filtered().slice().sort(function(a,b){
+    var av = a[sortCol], bv = b[sortCol];
+    if (av == null) av = -Infinity;
+    if (bv == null) bv = -Infinity;
     if (typeof av === 'string') av = av.toLowerCase();
     if (typeof bv === 'string') bv = bv.toLowerCase();
-    return av < bv ? -hsSortDir : av > bv ? hsSortDir : 0;
+    return av < bv ? -sortDir : av > bv ? sortDir : 0;
   });
-  document.getElementById('hs-tbody').innerHTML = sorted.map((p, i) => {
-    const dataRow = `<tr onclick="toggleRow(${i})">
-      <td class="td-name">${p.name}</td>
-      <td class="td-pos">${p.pos}</td>
-      <td>${p.htWt}</td>
-      <td>${stars(p.stars)}${p.rating !== '—' ? ' <span style="font-size:11px;color:var(--muted)">(' + p.rating + ')</span>' : ''}</td>
-      <td>${p.school}<span class="td-sub">${p.city}</span></td>
-      <td style="color:var(--muted);font-size:12px;">${p.date}</td>
-      <td><span class="vtag vtag-confirmed">Confirmed</span></td>
-    </tr>`;
-    const expandRow = `<tr class="expand-row" id="ex-${i}">
-      <td colspan="7" class="expand-cell">
-        <div class="expand-grid">
-          <div><div class="ex-label">Position / Size</div><div class="ex-val">${p.pos} · ${p.htWt}</div></div>
-          <div><div class="ex-label">High School</div><div class="ex-val">${p.school} · ${p.city}</div></div>
-          <div><div class="ex-label">Rating</div><div class="ex-val">${stars(p.stars)} ${p.rating !== '—' ? p.rating : 'Not rated'} <span class="vtag vtag-confirmed" style="margin-left:4px">Confirmed</span></div></div>
-        </div>
-      </td>
-    </tr>`;
-    return dataRow + expandRow;
-  }).join('');
-
-  // Rebind sort
-  document.querySelectorAll('.rtbl th[data-col]').forEach(th => {
-    th.onclick = () => {
-      const col = th.dataset.col;
-      hsSortCol === col ? hsSortDir *= -1 : (hsSortCol = col, hsSortDir = 1);
-      document.querySelectorAll('.rtbl th').forEach(h => h.classList.remove('asc','desc'));
-      th.classList.add(hsSortDir === 1 ? 'asc' : 'desc');
-      renderHsTable();
-    };
+  var cols = [{k:'name',l:'Name'},{k:'position',l:'Pos'},{k:'stars',l:'Stars'},{k:'rankComposite',l:'Rank'},{k:'status',l:'Status'},{k:'confidence',l:'Conf'},{k:'lastUpdated',l:'Updated'}];
+  var html = '<div class="list-wrap"><table class="list-tbl"><thead><tr>' +
+    cols.map(function(c){
+      var arr = sortCol===c.k ? (sortDir===1?'↑':'↓') : '';
+      return '<th onclick="sortList(\'' + c.k + '\')">' + c.l + '<span class="sort-arrow">' + arr + '</span></th>';
+    }).join('') + '</tr></thead><tbody>';
+  recs.forEach(function(r) {
+    var slug = statusSlug(r.status);
+    html += '<tr onclick="openModal(\'' + esc(r.id) + '\')">' +
+      '<td><div class="list-name">' + esc(r.name) + '</div><div class="list-from">' + esc(r.hometown||'') + '</div></td>' +
+      '<td><span style="font:700 10px var(--font-cond);letter-spacing:1px;color:var(--muted)">' + esc(r.position) + '</span></td>' +
+      '<td><span class="list-stars">' + stars(r.stars) + '</span></td>' +
+      '<td class="list-rank">' + (r.rankComposite ? '#'+r.rankComposite : r.on3Rank ? '#'+r.on3Rank+' On3' : '—') + '</td>' +
+      '<td><span class="card-status s-' + slug + '" style="display:inline-block">' + esc(r.status) + '</span></td>' +
+      '<td><div style="display:flex;align-items:center;gap:6px"><div class="list-conf-bar"><div class="list-conf-fill" style="width:' + (r.confidence||0) + '%;background:' + confColor(r.status) + '"></div></div><span class="list-conf-pct" style="color:' + confColor(r.status) + '">' + (r.confidence||0) + '%</span></div></td>' +
+      '<td style="color:var(--muted)">' + fmtAgo(r.lastUpdated) + '</td>' +
+      '</tr>';
   });
-
-  document.getElementById('hs-count').textContent = `${sorted.length} of ${commits.length} · Click row to expand`;
+  html += '</tbody></table></div>';
+  document.getElementById('list-view').innerHTML = html;
 }
 
-function toggleRow(i) {
-  const r = document.getElementById('ex-' + i);
-  if (r) r.classList.toggle('open');
+function sortList(col) {
+  if (sortCol === col) sortDir *= -1; else { sortCol = col; sortDir = col === 'name' ? 1 : -1; }
+  renderList();
 }
 
-// Commit cards
-function renderCommitCards() {
-  document.getElementById('commit-cards').innerHTML = commits.map(p => `
-    <div class="commit-card">
-      <div class="cc-pos">${p.pos}</div>
-      <div class="cc-name">${p.name}</div>
-      <div class="cc-stars">${'★'.repeat(p.stars)}</div>
-      <div class="cc-school">${p.school} · ${p.city}</div>
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px;">
-        <div class="cc-date">${p.date}</div>
-        <span class="vtag vtag-confirmed">Confirmed</span>
-      </div>
-    </div>`).join('');
+/* ── MODAL ── */
+function openModal(id) {
+  var r = (BOARD.recruits||[]).find(function(x){ return x.id === id; });
+  if (!r) return;
+  focusedRecruit = r;
+  document.getElementById('modal-body').innerHTML = buildModalHtml(r);
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
 
-// 2026 signed class cards
-function renderSigned() {
-  document.getElementById('signed-grid').innerHTML = signed2026.map(p => `
-    <div class="signed-card"><div class="sc-pos">${esc(p.pos)}</div><div class="sc-name">${esc(p.name)}</div><div class="sc-stars">${'★'.repeat(p.stars)}</div><div class="sc-home">${esc(p.home)}</div><div class="sc-badge">Signed</div></div>`).join('');
+function closeModal(e) {
+  if (e && e.target !== document.getElementById('modal-overlay')) return;
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+  focusedRecruit = null;
 }
 
-// Target cards
-function renderTargets() {
-  document.getElementById('target-grid').innerHTML = targets.map(t => {
-    const sc = t.status === 'trending' ? 'st-trending' : t.status === 'target' ? 'st-target' : 'st-monitoring';
-    const sl = t.status === 'trending' ? '↑ Trending' : t.status === 'target' ? 'Target' : 'Monitoring';
-    return `<div class="target-card${t.status === 'trending' ? ' hot' : ''}">
-      <div class="tc-pos">${t.pos}</div>
-      <div class="tc-name">${t.name}</div>
-      <div class="tc-info">${t.info}</div>
-      <div class="tc-footer">
-        <span class="tc-status ${sc}">${sl}</span>
-        <span class="vtag vtag-public">Public Report</span>
-      </div>
-      <div style="font-size:10px;color:var(--muted);margin-top:7px;">Source: ${t.source}</div>
-      <button class="ti-recruit-btn" onclick="recruitAskIntel(${JSON.stringify(t)})"><span class="ti-recruit-dot"></span>What If They Commit?</button>
-    </div>`;
-  }).join('');
-}
-
-// Portal tables
-function renderPortal() {
-  document.getElementById('portal-in-tbody').innerHTML = portalIn.map(p => `
-    <tr>
-      <td><span class="p-name">${p.name}</span></td>
-      <td><span class="p-pos">${p.pos}</span></td>
-      <td><span class="p-stars">${'★'.repeat(p.stars)}</span></td>
-      <td><span style="font-family:'Barlow Condensed',sans-serif;font-size:11px;color:var(--muted)">${p.yr}</span></td>
-      <td><span class="p-from">${p.from}</span></td>
-      <td><span class="ibadge ${p.impact}">${p.label}</span></td>
-      <td><span class="vtag vtag-public">Public Report</span></td>
-    </tr>`).join('');
-
-  document.getElementById('portal-out-tbody').innerHTML = portalOut.length ? portalOut.map(p => `
-    <tr>
-      <td><span class="p-name">${p.name}</span></td>
-      <td><span class="p-pos">${p.pos}</span></td>
-      <td><span style="font-family:'Barlow Condensed',sans-serif;font-size:11px;color:var(--muted)">${p.yr}</span></td>
-      <td><span class="p-from">${p.dest}</span></td>
-      <td><span style="font-size:12px;color:var(--muted)">${p.reason}</span></td>
-    </tr>`).join('')
-    : `<tr><td colspan="5" style="padding:36px 18px;text-align:center;color:var(--muted);font-size:12px;">No verified 2026 outgoing transfers listed yet. The previous table was pulled for re-verification (see NEEDS-VERIFICATION.md) — verified departures will be re-added to data/recruiting.json.</td></tr>`;
-
-  document.getElementById('portal-watch-list').innerHTML = portalWatch.length ? portalWatch.map(p => `
-    <div class="watch-item">
-      <div>
-        <div class="w-name">${p.name} — ${p.pos} — ${p.school}</div>
-        <div class="w-detail">${p.detail}</div>
-      </div>
-      <div class="w-right">
-        <span class="w-status ${p.status}">${p.label}</span>
-        <div class="w-conf">${p.conf}</div>
-      </div>
-    </div>`).join('')
-    : `<div class="empty-state" style="padding:36px 18px;"><div class="empty-title">No verified portal watch list</div><p class="empty-body" style="font-size:12px;color:var(--muted);">The previous watch list was removed — it included players no longer in college football. Verified watch entries will be re-added to data/recruiting.json.</p></div>`;
-}
-
-function showPortalTab(tab, btn) {
-  ['in','out','watch'].forEach(t =>
-    document.getElementById('ptab-' + t).style.display = t === tab ? '' : 'none');
-  document.querySelectorAll('.stab').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-}
-
-// Position needs
-function renderNeeds() {
-  const f = document.getElementById('needs-filter').value;
-  const fc = u => u === 'High' ? 'nf-hi' : u === 'Medium' ? 'nf-md' : 'nf-lo';
-  const uc = u => u === 'High' ? 'urg-hi' : u === 'Medium' ? 'urg-md' : 'urg-lo';
-  document.getElementById('needs-grid').innerHTML = needs
-    .filter(n => !f || n.urgency === f)
-    .map(n => `
-    <div class="need-card">
-      <div class="need-top">
-        <div class="need-pos">${n.pos}</div>
-        <div class="need-urg ${uc(n.urgency)}">${n.urgency}</div>
-      </div>
-      <div class="need-bar"><div class="need-fill ${fc(n.urgency)}" style="width:${n.fill}%"></div></div>
-      <div class="need-context">${n.context}</div>
-      <div class="need-2col">
-        <div class="need-block"><div class="need-block-lbl">Recruiting</div><div class="need-block-val">${n.recruiting}</div></div>
-        <div class="need-block"><div class="need-block-lbl">Portal</div><div class="need-block-val">${n.portal}</div></div>
-      </div>
-    </div>`).join('');
-}
-
-// Tab switching
-function switchTab(tab) {
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.itab').forEach(b => b.classList.remove('active'));
-  document.getElementById('panel-' + tab).classList.add('active');
-  document.querySelector(`.itab[data-tab="${tab}"]`).classList.add('active');
-  history.replaceState(null, '', '#' + tab);
-}
-
-function toggleSigned() {
-  const g = document.getElementById('signed-grid');
-  const b = document.getElementById('signed-btn');
-  const vis = g.style.display !== 'none';
-  g.style.display = vis ? 'none' : 'grid';
-  b.textContent = vis ? 'Show Class' : 'Hide Class';
-}
-
-// Init
-document.addEventListener('DOMContentLoaded', async () => {
-  document.querySelectorAll('.itab').forEach(btn =>
-    btn.addEventListener('click', () => switchTab(btn.dataset.tab)));
-
-  document.querySelectorAll('.stab').forEach(btn =>
-    btn.addEventListener('click', () => showPortalTab(btn.dataset.ptab, btn)));
-
-  try {
-    // Stories feed loads in parallel with the verified JSON
-    const storiesPromise = loadRecruitingStories();
-    await loadRecruitingData();
-    await storiesPromise;
-  } catch (e) {
-    console.error('[tower/recruiting] data load failed:', e);
-    document.getElementById('fresh-pill').textContent = '⚠ Data failed to load';
-    document.getElementById('fresh-pill').classList.add('chip-fresh-stale');
-    return;
+function buildModalHtml(r) {
+  var slug = statusSlug(r.status);
+  var rankHtml = '<div class="modal-ranks">' +
+    '<div class="modal-rank-cell"><div class="modal-rank-n">' + (r.rankComposite||'—') + '</div><div class="modal-rank-l">Composite</div></div>' +
+    '<div class="modal-rank-cell"><div class="modal-rank-n">' + (r.on3Rank||'—') + '</div><div class="modal-rank-l">On3</div></div>' +
+    '<div class="modal-rank-cell"><div class="modal-rank-n">' + (r.rank247||'—') + '</div><div class="modal-rank-l">247Sports</div></div>' +
+    '</div>';
+  var offersHtml = (r.offers||[]).length
+    ? (r.offers||[]).map(function(o){ return '<span class="modal-offer' + (o==='Texas'?' texas':'') + '">' + esc(o) + '</span>'; }).join('')
+    : '<span class="modal-no-data">No verified offers on file</span>';
+  var topSchoolsHtml = '';
+  if ((r.topSchools||[]).length) {
+    topSchoolsHtml = r.topSchools.slice(0,5).map(function(s,i){
+      var pct = Math.max(20, 100 - i*18);
+      var color = s==='Texas' ? 'var(--orange)' : 'var(--bm)';
+      return '<div class="modal-topschool"><span class="modal-topschool-name">' + esc(s) + '</span><div class="modal-topschool-bar"><div class="modal-topschool-fill" style="width:' + pct + '%;background:' + color + '"></div></div></div>';
+    }).join('');
   }
-
-  renderFreshness();
-  renderHeroChips();
-  renderOverviewStats();
-  renderOverviewFeed();
-  hsFiltered = [...commits];
-  renderHsTable();
-  renderSigned();
-  renderCommitCards();
-  renderTargets();
-  renderPortal();
-  renderNeeds();
-  renderLiveGrok(); // async, fills its own block
-
-  // URL hash: recruiting.html#portal auto-opens portal tab
-  const hash = window.location.hash.replace('#', '');
-  const valid = ['overview','hs','portal','commits','targets','offers','needs'];
-  if (valid.includes(hash)) switchTab(hash);
-});
-
-function recruitAskIntel(t) {
-  if (!window.TowerIntel) return;
-  const statusLabel = t.status === 'trending' ? 'trending toward Texas' : t.status === 'target' ? 'a high-priority target' : 'being monitored';
-  const ctx = TowerIntel.buildContext('player', {
-    name: t.name,
-    position: t.pos,
-    status: `Recruiting target — ${statusLabel} · ${t.info}`,
-    depthPosition: `${t.pos} prospect — 2027 class`
-  });
-  const prompt =
-    `Recruiting analysis for ${t.name} (${t.pos}, ${t.info}) — currently ${statusLabel} for Texas. ` +
-    `Answer: (1) What depth chart hole does he fill and who does he compete with or replace? ` +
-    `(2) How does he fit with Arch Manning's offense or the Texas defense? ` +
-    `(3) What does committing to Texas look like for his development vs. other options? ` +
-    `(4) On a scale of 1–10, how much does landing him improve Texas's 2027–2028 CFP outlook? ` +
-    `Be direct and specific — sell the recruit and grade the fit.`;
-  TowerIntel.openWithContext(`${t.name} · ${t.pos} Recruiting Analysis`, prompt, ctx);
+  var cbHtml = (r.crystalBalls||[]).map(function(cb){
+    var icon = cb.pick==='Texas' ? '🟠' : '⚪';
+    return '<div class="modal-cb-item"><span class="modal-cb-icon">' + icon + '</span><div><div class="modal-cb-pick">' + esc(cb.pick) + '</div><div class="modal-cb-by">' + esc(cb.predictor) + ' · ' + esc(cb.outlet) + ' · ' + fmtDate(cb.date) + '</div><div class="modal-cb-conf ' + esc(cb.confidence||'') + '">' + esc((cb.confidence||'').toUpperCase()) + ' CONFIDENCE</div></div></div>';
+  }).join('');
+  var visitsHtml = (r.visits||[]).length
+    ? (r.visits||[]).map(function(v){
+        return '<div class="modal-visit"><span class="modal-visit-type ' + esc(v.type||'unofficial') + '">' + esc(v.type||'visit') + '</span><span class="modal-visit-date">' + fmtDate(v.date) + '</span><span class="modal-visit-school">' + esc(v.school) + '</span></div>';
+      }).join('')
+    : '<span class="modal-no-data">No visits on file</span>';
+  var tlHtml = (r.timeline||[]).length
+    ? (r.timeline||[]).slice(0,20).map(function(e){
+        return '<div class="tl-item"><div class="tl-dot ' + (e.importance||'normal') + '"></div><div class="tl-body"><div class="tl-text ' + (e.importance||'normal') + '">' + esc(e.text) + '</div><div class="tl-meta">' + esc(e.source||'') + (e.ts ? ' · ' + fmtDate(e.ts) : '') + '</div></div></div>';
+      }).join('')
+    : '<span class="modal-no-data">No timeline events on file</span>';
+  var htWt = [r.height, r.weight ? r.weight+'lb' : ''].filter(Boolean).join(' / ');
+  return '<div class="modal-pos-row"><span class="modal-pos">' + esc(r.position) + '</span><span class="modal-cls">Class of ' + (r.class||2027) + '</span></div>' +
+    '<div class="modal-name">' + esc(r.name) + '</div>' +
+    '<div class="modal-from">' + esc(r.hometown||'') + (r.highSchool ? ' · ' + esc(r.highSchool) : '') + (htWt ? ' · ' + esc(htWt) : '') + '</div>' +
+    '<div class="modal-stars">' + stars(r.stars) + '</div>' +
+    '<div class="modal-status-row"><span class="card-status s-' + slug + '" style="font-size:10px">' + esc(r.status) + '</span></div>' +
+    '<div class="modal-conf-block">' +
+      '<div class="modal-conf-label">Texas Confidence</div>' +
+      '<div class="modal-conf-track"><div class="modal-conf-fill" style="width:' + (r.confidence||0) + '%;background:' + confColor(r.status) + '"></div></div>' +
+      '<div class="modal-conf-pct">' + (r.confidence||0) + '%</div>' +
+      '<div class="modal-conf-sub">' + confLabel(r.confidence, r.status) + '</div>' +
+    '</div>' +
+    '<div class="modal-section"><div class="modal-section-title">Rankings</div>' + rankHtml + '</div>' +
+    (topSchoolsHtml ? '<div class="modal-section"><div class="modal-section-title">Top Schools</div><div class="modal-topschools">' + topSchoolsHtml + '</div></div>' : '') +
+    (cbHtml ? '<div class="modal-section"><div class="modal-section-title">Crystal Balls</div><div class="modal-cb">' + cbHtml + '</div></div>' : '') +
+    '<div class="modal-section"><div class="modal-section-title">Offers (' + (r.offers||[]).length + ')</div><div class="modal-offers">' + offersHtml + '</div></div>' +
+    '<div class="modal-section"><div class="modal-section-title">Visits</div><div class="modal-visits">' + visitsHtml + '</div></div>' +
+    '<div class="modal-section"><div class="modal-section-title">Timeline</div><div class="modal-timeline">' + tlHtml + '</div></div>' +
+    '<button class="modal-ask-btn" onclick="askAboutRecruit()">Ask Longhorn Intel about ' + esc(r.name) + '</button>';
 }
+
+function confLabel(pct, status) {
+  if (status === 'Committed') return 'Committed to Texas';
+  if (pct >= 75) return 'Strong Texas lean — crystal balls and insider consensus point here';
+  if (pct >= 55) return 'Leaning Texas — positive signals but competition remains';
+  if (pct >= 35) return 'Genuine competition — 2-3 schools in realistic contention';
+  if (pct >= 15) return 'Texas is in the mix but trailing another program';
+  return 'Texas has offered but not currently in contention';
+}
+
+/* ── REFRESH ── */
+function triggerRefresh() {
+  var btn = document.getElementById('refresh-btn');
+  btn.disabled = true;
+  btn.textContent = 'Refreshing…';
+  fetch('/api/recruiting-board?refresh=1')
+    .then(function(r){ return r.json(); })
+    .then(function(d) {
+      if (d.error) throw new Error(d.error);
+      btn.textContent = 'Done!';
+      setTimeout(function(){ load(); btn.textContent = 'Refresh Intel'; btn.disabled = false; }, 1200);
+    })
+    .catch(function(e) {
+      btn.textContent = 'Error — try again';
+      btn.disabled = false;
+      setTimeout(function(){ btn.textContent = 'Refresh Intel'; }, 3000);
+    });
+}
+
+/* ── CHAT ── */
+function toggleChat() {
+  chatOpen = !chatOpen;
+  document.getElementById('chat-panel').classList.toggle('open', chatOpen);
+  if (chatOpen) document.getElementById('chat-input').focus();
+}
+
+function askAboutRecruit() {
+  if (!focusedRecruit) return;
+  closeModal();
+  var r = focusedRecruit;
+  var q = 'Tell me about ' + r.name + ' — what\'s the latest on his recruitment and what are Texas\'s chances?';
+  if (!chatOpen) toggleChat();
+  document.getElementById('chat-input').value = q;
+  setTimeout(sendChat, 100);
+}
+
+function sendChip(btn) {
+  document.getElementById('chat-input').value = btn.textContent;
+  sendChat();
+}
+
+function chatKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChat(); }
+}
+
+function buildRecruitingContext() {
+  if (!BOARD) return null;
+  var recruits = BOARD.recruits || [];
+  return {
+    type: 'recruiting',
+    data: {
+      summary: BOARD.summary,
+      commits: recruits.filter(function(r){ return r.status==='Committed'; }).map(function(r){ return {name:r.name, position:r.position}; }),
+      priority: recruits.filter(function(r){ return r.status==='Priority'||r.status==='Trending Up'; }).map(function(r){ return {name:r.name, position:r.position, confidence:r.confidence, topSchools:r.topSchools}; }),
+      targets: recruits.filter(function(r){ return ['Target','Warm'].includes(r.status); }).map(function(r){ return {name:r.name, position:r.position, status:r.status}; }),
+      changes: (BOARD.changes||[]).slice(0,5),
+      recruit: focusedRecruit,
+    }
+  };
+}
+
+function addChatMsg(role, text) {
+  var msgs = document.getElementById('chat-msgs');
+  var el = document.createElement('div');
+  el.className = 'chat-msg ' + (role==='user'?'user':'ai');
+  if (role === 'ai') el.innerHTML = mdToHtml(text);
+  else el.textContent = text;
+  msgs.appendChild(el);
+  msgs.scrollTop = msgs.scrollHeight;
+  return el;
+}
+
+function mdToHtml(t) {
+  return esc(t)
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/`(.+?)`/g, '<code>$1</code>')
+    .replace(/\n/g, '<br>');
+}
+
+function sendChat() {
+  var input = document.getElementById('chat-input');
+  var q = input.value.trim();
+  if (!q) return;
+  input.value = '';
+  document.getElementById('chat-send').disabled = true;
+  chatMessages.push({ role: 'user', content: q });
+  addChatMsg('user', q);
+  var typing = document.createElement('div');
+  typing.className = 'chat-msg ai';
+  typing.innerHTML = '<div class="chat-typing"><span></span><span></span><span></span></div>';
+  document.getElementById('chat-msgs').appendChild(typing);
+  document.getElementById('chat-msgs').scrollTop = 99999;
+  var ctx = buildRecruitingContext();
+  fetch('/api/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ messages: chatMessages, context: ctx }),
+  }).then(function(res) {
+    typing.remove();
+    if (!res.ok || !res.body) throw new Error('Chat unavailable');
+    var aiEl = addChatMsg('ai', '');
+    var reader = res.body.getReader();
+    var decoder = new TextDecoder();
+    var buf = '';
+    var full = '';
+    function pump() {
+      return reader.read().then(function(d) {
+        if (d.done) {
+          chatMessages.push({ role: 'assistant', content: full });
+          document.getElementById('chat-send').disabled = false;
+          return;
+        }
+        buf += decoder.decode(d.value, { stream: true });
+        var lines = buf.split('\n');
+        buf = lines.pop() || '';
+        lines.forEach(function(line) {
+          if (!line.startsWith('data: ')) return;
+          var raw = line.slice(6).trim();
+          if (raw === '[DONE]') return;
+          try {
+            var ev = JSON.parse(raw);
+            var delta = ev.choices?.[0]?.delta?.content || '';
+            if (delta) { full += delta; aiEl.innerHTML = mdToHtml(full); document.getElementById('chat-msgs').scrollTop = 99999; }
+          } catch(e) {}
+        });
+        return pump();
+      });
+    }
+    return pump();
+  }).catch(function(e) {
+    typing.remove();
+    addChatMsg('ai', 'Sorry, ran into an error: ' + e.message);
+    document.getElementById('chat-send').disabled = false;
+  });
+}
+
+load();
 </script>
-<script src="js/tower-intel.js"></script>
 </body>
 </html>
