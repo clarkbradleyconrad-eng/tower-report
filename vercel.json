@@ -19,7 +19,8 @@
     "api/stories-refresh.js": { "maxDuration": 200, "includeFiles": "{data,bots}/**" },
     "api/verify-recruiting.js": { "maxDuration": 90, "includeFiles": "{data,bots}/**" },
     "api/briefing.js": { "maxDuration": 90, "includeFiles": "{data,bots}/**" },
-    "api/generate-story.js": { "maxDuration": 150, "includeFiles": "{data,bots}/**" }
+    "api/generate-story.js": { "maxDuration": 150, "includeFiles": "{data,bots}/**" },
+    "api/recruiting-board.js": { "maxDuration": 120, "includeFiles": "{data,bots}/**" }
   },
   "headers": [
     {

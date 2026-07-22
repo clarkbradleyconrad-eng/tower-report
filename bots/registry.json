@@ -90,6 +90,23 @@
       "alert": { "onFail": true }
     },
     {
+      "id": "recruiting-board",
+      "name": "Recruiting Intelligence Board",
+      "purpose": "Monitor public recruiting sources (247Sports, On3, Rivals) for Texas football; update offer/visit/crystal ball/commitment/ranking data for each tracked recruit; publish live board to the recruiting database",
+      "kind": "http",
+      "endpoint": "/api/recruiting-board?refresh=1",
+      "method": "GET",
+      "schedule": "orchestrator am+pm (06:00 / 18:00 UTC)",
+      "promptFile": "bots/prompts/recruiting-board.md",
+      "inputs": ["web-search", "data/facts.json", "blob:tower-recruiting-board.json"],
+      "outputs": ["blob:tower-recruiting-board.json"],
+      "outputType": "recruiting-board",
+      "dependsOn": [],
+      "enabled": true,
+      "timeoutMs": 115000,
+      "alert": { "onFail": true, "qualityDrop": 15 }
+    },
+    {
       "id": "social-drafter",
       "name": "Social Drafter",
       "purpose": "Turn the day's top story into 3 X post drafts for human review on ops.html — never auto-posted",

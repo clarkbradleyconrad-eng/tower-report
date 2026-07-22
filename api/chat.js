@@ -68,6 +68,38 @@ function buildContextBlock(ctx) {
       if (d.depthPosition) lines.push(`**Depth Chart:** ${d.depthPosition}`);
       lines.push('\n*Analysis mode: Film/Projection Analyst + Recruiting Scout. Reference specific matchups, teammates, and what this player means for the CFP path and Arch Manning\'s Heisman campaign.*');
       break;
+
+    case 'recruiting': {
+      lines.push(`## 2027 TEXAS RECRUITING BOARD`);
+      if (d.summary) lines.push(`**Class status:** ${d.summary}`);
+      if (d.classRank) lines.push(`**Class rank:** ${d.classRank}`);
+      if (d.commitCount != null) lines.push(`**Commits:** ${d.commitCount}`);
+      if (d.commits?.length) {
+        lines.push(`**Committed (${d.commits.length}):** ${d.commits.map(c => `${c.name} (${c.position})`).join(', ')}`);
+      }
+      if (d.priority?.length) {
+        lines.push(`**Priority targets:** ${d.priority.map(t => `${t.name} (${t.position}, ${t.confidence}% confidence${t.topSchools?.length ? ', competing: ' + t.topSchools.join('/') : ''})`).join(' · ')}`);
+      }
+      if (d.targets?.length) {
+        lines.push(`**Other targets:** ${d.targets.map(t => `${t.name} (${t.position}, ${t.status})`).join(' · ')}`);
+      }
+      if (d.changes?.length) {
+        lines.push(`**Recent intel:** ${d.changes.slice(0, 5).map(c => c.text).join(' · ')}`);
+      }
+      if (d.recruit) {
+        const r = d.recruit;
+        lines.push(`\n**FOCUSED RECRUIT: ${r.name}**`);
+        if (r.position) lines.push(`Position: ${r.position} | Class: ${r.class}`);
+        if (r.hometown) lines.push(`Hometown: ${r.hometown}${r.highSchool ? ` · ${r.highSchool}` : ''}`);
+        if (r.stars) lines.push(`Rating: ${r.stars}★${r.rankComposite ? ` · #${r.rankComposite} composite` : ''}${r.on3Rank ? ` · #${r.on3Rank} On3` : ''}`);
+        if (r.status) lines.push(`Status: ${r.status} | Confidence: ${r.confidence}%`);
+        if (r.topSchools?.length) lines.push(`Top schools: ${r.topSchools.join(', ')}`);
+        if (r.crystalBalls?.length) lines.push(`Crystal balls: ${r.crystalBalls.map(c => `${c.pick} (${c.predictor}, ${c.outlet})`).join(', ')}`);
+        if (r.timeline?.length) lines.push(`Recent timeline: ${r.timeline.slice(0, 3).map(e => e.text).join(' · ')}`);
+      }
+      lines.push('\n*Analysis mode: Recruiting Intelligence Analyst. Reference crystal ball predictions, competing schools, visit history, position needs, and class ranking implications. Cite outlets when mentioning specific events. Never fabricate commitments, offers, or rankings.*');
+      break;
+    }
   }
 
   return lines.join('\n');

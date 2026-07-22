@@ -73,6 +73,7 @@ export const KEYS = {
   social: { path: 'tower-social-drafts.json', prefix: 'tower-social-drafts' },
   heartbeat: { path: 'tower-refresh-log.json', prefix: 'tower-refresh-log' },
   stories: { path: 'tower-ai-stories.json', prefix: 'tower-ai-stories' },
+  recruitingBoard: { path: 'tower-recruiting-board.json', prefix: 'tower-recruiting-board' },
 };
 
 /**
