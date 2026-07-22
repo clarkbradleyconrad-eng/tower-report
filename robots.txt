@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /ops.html
+Disallow: /newsroom.html
+Disallow: /update-roster.html
+Disallow: /api/
+
+Sitemap: https://tower-report.vercel.app/sitemap.xml

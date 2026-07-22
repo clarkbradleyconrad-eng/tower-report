@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Longhorn Intelligence — Tower Report</title>
   <meta name="description" content="AI-powered Texas Longhorns football analysis. Ask anything about the 2026 season, roster, recruiting, and CFP path." />
+  <link rel="canonical" href="https://tower-report.vercel.app/intelligence.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Tower Report" />
+  <meta property="og:title" content="Longhorn Intelligence — ask anything about Texas football" />
+  <meta property="og:description" content="Streamed AI answers on the 2026 Longhorns — roster, recruiting, schedule, CFP path." />
+  <meta property="og:url" content="https://tower-report.vercel.app/intelligence.html" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet" />
@@ -505,39 +511,33 @@
   </div>
 
   <div id="chat-area">
-    <div id="messages">
+    <div id="messages" role="log" aria-live="polite" aria-label="Conversation">
       <!-- empty state or messages go here -->
     </div>
     <div id="empty-state">
       <div class="prompt-section-label">Try asking</div>
       <div class="prompt-grid" id="prompt-grid">
         <button class="prompt-chip" onclick="sendPrompt(this)">
-          <span class="chip-icon">🏈</span>
           <span class="chip-label">2026 Season Outlook</span>
           <span class="chip-desc">Break down the schedule, key games, and CFP path</span>
         </button>
         <button class="prompt-chip" onclick="sendPrompt(this)">
-          <span class="chip-icon">⭐</span>
           <span class="chip-label">Arch Manning Heisman Case</span>
           <span class="chip-desc">Is he the frontrunner? What does he need to do?</span>
         </button>
         <button class="prompt-chip" onclick="sendPrompt(this)">
-          <span class="chip-icon">🔥</span>
           <span class="chip-label">Ohio State Week 2 Preview</span>
           <span class="chip-desc">Biggest early game — matchups, keys to winning</span>
         </button>
         <button class="prompt-chip" onclick="sendPrompt(this)">
-          <span class="chip-icon">📋</span>
           <span class="chip-label">Portal Class Grades</span>
           <span class="chip-desc">Cam Coleman, Raleek Brown, Derek Williams — how do they fit?</span>
         </button>
         <button class="prompt-chip" onclick="sendPrompt(this)">
-          <span class="chip-icon">💪</span>
           <span class="chip-label">Colin Simmons vs Top Edge Rushers</span>
           <span class="chip-desc">How does he compare nationally heading into 2026?</span>
         </button>
         <button class="prompt-chip" onclick="sendPrompt(this)">
-          <span class="chip-icon">🎯</span>
           <span class="chip-label">Biggest Roster Question Marks</span>
           <span class="chip-desc">OL, DT depth — where is Texas most vulnerable?</span>
         </button>
@@ -568,6 +568,8 @@
     var messages = []; // { role: 'user'|'assistant', content: string }
     var isStreaming = false;
     var pendingContext = null; // set when routed from another page via sessionStorage
+    var controller = null;     // AbortController for the in-flight request
+    var lastQuery = '';        // for the retry action
 
     var messagesEl = document.getElementById('messages');
     var emptyState = document.getElementById('empty-state');
@@ -615,8 +617,58 @@
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+      if (isStreaming) { stopStreaming(); return; } // button doubles as Stop
       if (!sendBtn.disabled) handleSend();
     });
+
+    function stopStreaming() {
+      if (controller) controller.abort();
+    }
+
+    var SEND_SVG = sendBtn.innerHTML;
+    var STOP_SVG = '<svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="1.5"/></svg>';
+    function setStreamingUI(on) {
+      isStreaming = on;
+      sendBtn.innerHTML = on ? STOP_SVG : SEND_SVG;
+      sendBtn.title = on ? 'Stop generating' : 'Send';
+      sendBtn.setAttribute('aria-label', sendBtn.title);
+      sendBtn.disabled = on ? false : !inputEl.value.trim();
+    }
+
+    // Action row (Copy / Retry) under a finished assistant message
+    function appendActions(shell, text, failedQuery) {
+      var row = document.createElement('div');
+      row.style.cssText = 'display:flex;gap:8px;margin-top:8px;';
+      if (text) {
+        var copy = document.createElement('button');
+        copy.textContent = 'Copy';
+        copy.style.cssText = actionBtnCss();
+        copy.onclick = function () {
+          navigator.clipboard.writeText(text).then(function () {
+            copy.textContent = 'Copied'; setTimeout(function () { copy.textContent = 'Copy'; }, 1500);
+          });
+        };
+        row.appendChild(copy);
+      }
+      if (failedQuery) {
+        var retry = document.createElement('button');
+        retry.textContent = 'Retry';
+        retry.style.cssText = actionBtnCss();
+        retry.onclick = function () {
+          row.remove();
+          inputEl.value = failedQuery;
+          inputEl.dispatchEvent(new Event('input'));
+          handleSend();
+        };
+        row.appendChild(retry);
+      }
+      shell.appendChild(row);
+    }
+    function actionBtnCss() {
+      return 'background:none;border:1px solid var(--border);border-radius:4px;color:var(--text-muted);' +
+             'font:600 11px "Barlow Condensed",sans-serif;letter-spacing:1px;text-transform:uppercase;' +
+             'padding:4px 10px;cursor:pointer;min-height:28px;';
+    }
 
     // ── Chip click ──
     window.sendPrompt = function (el) {
@@ -676,8 +728,12 @@
       var text = inputEl.value.trim();
       if (!text || isStreaming) return;
 
-      isStreaming = true;
-      sendBtn.disabled = true;
+      lastQuery = text;
+      // Shareable query URL (first turn only — later turns depend on history)
+      if (!messages.length) {
+        try { history.replaceState(null, '', '?q=' + encodeURIComponent(text)); } catch (_) {}
+      }
+      setStreamingUI(true);
       inputEl.value = '';
       inputEl.style.height = '';
       emptyState.style.display = 'none';
@@ -690,6 +746,9 @@
       var bodyEl      = shell.querySelector('.message-body');
       var accumulated = '';
 
+      controller = new AbortController();
+      var timeoutId = setTimeout(function () { controller.abort(); }, 90000);
+
       try {
         var reqBody = { messages: messages };
         if (pendingContext) { reqBody.context = pendingContext; pendingContext = null; }
@@ -697,6 +756,7 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(reqBody),
+          signal: controller.signal,
         });
 
         if (!res.ok) {
@@ -706,6 +766,7 @@
         }
 
         if (!res.body) throw new Error('No response stream');
+        clearTimeout(timeoutId); // headers arrived — let the stream run; Stop still works
 
         thinkingEl.style.display = 'none';
         bodyEl.style.display = '';
@@ -757,17 +818,35 @@
         // Final render
         bodyEl.innerHTML = renderMarkdown(accumulated || '*(No response)*');
         messages.push({ role: 'assistant', content: accumulated });
+        appendActions(shell, accumulated, null);
 
       } catch (err) {
         thinkingEl.style.display = 'none';
         bodyEl.style.display = '';
-        bodyEl.innerHTML = '<div class="error-msg">Error: ' + escapeHtml(err.message) + '<br>Check your connection or try again.</div>';
-        // pop the failed user message so history stays clean
-        messages.pop();
+        if (err && err.name === 'AbortError') {
+          if (accumulated) {
+            // User stopped mid-stream — keep what arrived, mark it clearly.
+            bodyEl.innerHTML = renderMarkdown(accumulated) +
+              '<div style="font-size:11px;color:var(--text-muted);font-style:italic;margin-top:6px;">Generation stopped.</div>';
+            messages.push({ role: 'assistant', content: accumulated });
+            appendActions(shell, accumulated, null);
+          } else {
+            bodyEl.innerHTML = '<div class="error-msg">Request cancelled or timed out. Live retrieval may be slow right now.</div>';
+            messages.pop();
+            appendActions(shell, null, lastQuery);
+          }
+        } else {
+          bodyEl.innerHTML = '<div class="error-msg">Error: ' + escapeHtml(err.message) +
+            '<br>Answers may be missing current data until the connection recovers.</div>';
+          messages.pop();
+          appendActions(shell, null, lastQuery);
+        }
+      } finally {
+        clearTimeout(timeoutId);
+        controller = null;
       }
 
-      isStreaming = false;
-      sendBtn.disabled = !inputEl.value.trim();
+      setStreamingUI(false);
       scrollToBottom();
     }
 
@@ -775,6 +854,17 @@
       var area = document.getElementById('chat-area');
       area.scrollTop = area.scrollHeight;
     }
+
+    // ── Shareable query URLs: /intelligence.html?q=… prefills and sends ──
+    (function () {
+      try {
+        var q = new URLSearchParams(window.location.search).get('q');
+        if (!q || sessionStorage.getItem('ti_prompt')) return; // context flow wins
+        inputEl.value = q;
+        inputEl.dispatchEvent(new Event('input'));
+        setTimeout(handleSend, 250);
+      } catch (_) {}
+    })();
 
     // ── Handle cross-page context (from stories, schedule, etc.) ──
     // When TowerIntel.openWithContext() is called on a page without an fchat modal,

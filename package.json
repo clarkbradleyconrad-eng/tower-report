@@ -2,16 +2,12 @@
   "name": "tower-report",
   "version": "1.0.0",
   "private": true,
-  "description": "Tower Report — Texas Longhorns Intelligence Platform",
+  "description": "Tower Report \u2014 Texas Longhorns Intelligence Platform",
   "type": "module",
   "engines": {
     "node": ">=18"
   },
   "scripts": {
     "dev": "vercel dev"
-  },
-  "dependencies": {
-    "@ai-sdk/xai": "^3.0.93",
-    "ai": "^6.0.196"
   }
 }

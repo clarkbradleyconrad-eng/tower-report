@@ -2716,5 +2716,63 @@
     "w2"
    ]
   }
+ },
+ "model": {
+  "label": "Tower Season Model",
+  "status": "Projection",
+  "methodology": "Static preseason estimate from returning production, schedule difficulty, portal additions, and 2025 results. Not a live simulation; values are set by hand and versioned in git.",
+  "updatedAt": "2026-06-03",
+  "confidence": "model-estimate",
+  "isProjection": true,
+  "projectedWins": {
+   "value": 8.9,
+   "label": "Projected Wins",
+   "range": "7–12",
+   "mostLikely": "9–3 or 10–2"
+  },
+  "cfpProbability": {
+   "value": 62,
+   "label": "CFP Berth",
+   "unit": "%"
+  },
+  "secChampionship": {
+   "value": 31,
+   "label": "SEC Championship",
+   "unit": "%"
+  },
+  "nationalChampionship": {
+   "value": 14,
+   "label": "CFP Title",
+   "unit": "%"
+  },
+  "win10Plus": {
+   "value": 36,
+   "label": "Win 10+ Games",
+   "unit": "%"
+  },
+  "notes": "Key variables: OL rebuild after Kelvin Banks Jr. departure, Ohio State result in Week 2, road slate at Tennessee/LSU/Texas A&M."
+ },
+ "program": {
+  "sourceName": "data/stats/program.json (hand-verified)",
+  "updatedAt": "2026-06-03",
+  "allTimeWins": 972,
+  "allTimeRecord": {
+   "wins": 972,
+   "losses": 397,
+   "ties": 33
+  },
+  "nationalTitles": 4,
+  "nationalTitleYears": [
+   1963,
+   1969,
+   1970,
+   2005
+  ],
+  "conferenceChampionships": 34,
+  "activeNFLPlayers": 51,
+  "allTimeDraftPicks": 381,
+  "headCoach": "Steve Sarkisian",
+  "stadium": "Darrell K Royal–Texas Memorial Stadium",
+  "capacity": 100119
  }
 }

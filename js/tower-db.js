@@ -30,6 +30,8 @@
       players: raw.players || {},
       games: raw.games || {},
       stories: raw.stories || {},
+      model: raw.model || null,     // Tower Season Model — single source for projections
+      program: raw.program || null, // hand-verified program facts (wins, titles, NFL counts)
     };
 
     db.playersArray = Object.keys(db.players).map(function (k) { return db.players[k]; })
@@ -80,7 +82,31 @@
     return db;
   }
 
+  /**
+   * Freshness rules (PRODUCT_AUDIT.md §8):
+   *   fresh   — within expected source interval
+   *   delayed — past interval but < 2× threshold
+   *   stale   — beyond threshold
+   * "LIVE" must never be shown from static markup; callers derive state here.
+   */
+  function freshness(dateLike, freshMins) {
+    var t = new Date(dateLike).getTime();
+    if (!t || isNaN(t)) return { state: 'unavailable', label: 'Data unavailable', mins: null };
+    var mins = Math.max(0, Math.round((Date.now() - t) / 60000));
+    var state = mins <= freshMins ? 'fresh' : mins <= freshMins * 2 ? 'delayed' : 'stale';
+    return { state: state, label: 'Updated ' + relTime(mins), mins: mins };
+  }
+
+  function relTime(mins) {
+    if (mins < 1) return 'just now';
+    if (mins < 60) return mins + 'm ago';
+    if (mins < 48 * 60) return Math.round(mins / 60) + 'h ago';
+    return Math.round(mins / 1440) + 'd ago';
+  }
+
   window.TowerDB = {
+    freshness: freshness,
+    relTime: relTime,
     load: function () {
       if (_promise) return _promise;
       _promise = fetch('./data/db.json')
