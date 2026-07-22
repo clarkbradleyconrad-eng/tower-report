@@ -144,6 +144,25 @@ button{cursor:pointer;font-family:inherit;}
 @keyframes _tin{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
 @keyframes _tout{from{opacity:1;}to{opacity:0;transform:translateY(4px);}}
 
+/* ── HEALTH BAR ── */
+.op-health-bar{display:flex;align-items:center;gap:0;margin-top:18px;padding:12px 16px;background:var(--s3);border:1px solid var(--border);flex-wrap:wrap;}
+.op-hstat{display:flex;align-items:center;gap:10px;padding:0 18px 0 0;margin:0 18px 0 0;border-right:1px solid var(--border-mid);}
+.op-hstat:last-child{border-right:none;margin-right:0;}
+.op-hstat-n{font-family:var(--font-display);font-size:24px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1;}
+.op-hstat-n.gn{color:var(--green);}
+.op-hstat-n.rd{color:#fca5a5;}
+.op-hstat-n.wt{color:var(--white2);}
+.op-hstat-l{font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);line-height:1.3;}
+
+/* ── BOT CARD ENHANCEMENTS ── */
+.op-bot-page{display:inline-flex;align-items:center;gap:4px;font-family:var(--font-display);font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);border:1px solid rgba(191,87,0,.3);padding:2px 7px;text-decoration:none;transition:all .12s;white-space:nowrap;}
+.op-bot-page:hover{background:var(--orange-lo);border-color:var(--orange);}
+.op-run-now{font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:7px 14px;border:1px solid var(--orange);background:transparent;color:var(--orange);transition:all .14s;cursor:pointer;}
+.op-run-now:hover:not(:disabled){background:var(--orange);color:#fff;}
+.op-run-now:disabled{opacity:.4;cursor:not-allowed;}
+.op-group-label{font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted);padding:16px 0 6px;border-top:1px solid var(--border);margin-top:10px;}
+.op-group-label:first-child{border-top:none;margin-top:0;padding-top:0;}
+
 /* ── LOCK / BANNER ── */
 .op-banner{background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.25);color:var(--amber);font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:9px 14px;margin:16px 0 0;}
 .op-lock{min-height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;padding:24px;text-align:center;}
@@ -176,6 +195,7 @@ button{cursor:pointer;font-family:inherit;}
           <button class="op-btn primary" onclick="triggerRun(null)" id="btn-full-run">▶ Run all bots</button>
         </div>
       </div>
+      <div id="health-bar" class="op-health-bar" style="display:none;"></div>
       <div id="banners"></div>
     </div>
   </header>
@@ -233,6 +253,21 @@ button{cursor:pointer;font-family:inherit;}
 'use strict';
 var KEY = new URLSearchParams(location.search).get('key') || sessionStorage.getItem('towerOpsKey') || '';
 var DATA = null;
+
+var BOT_PAGES = {
+  'briefing':          { page: '/',                     label: 'Homepage briefing' },
+  'story-generator':   { page: '/newsroom.html',        label: 'Newsroom drafts' },
+  'stories-refresh':   { page: '/newsroom.html',        label: 'Stories feed' },
+  'verify-recruiting': { page: '/recruiting.html',      label: 'Recruiting page' },
+  'recruiting-board':  { page: '/recruiting-board.html',label: 'Intel Board' },
+  'odds':              { page: '/schedule.html',        label: 'Schedule odds' },
+};
+
+var BOT_GROUPS = {
+  'Content':   ['briefing', 'story-generator', 'stories-refresh', 'social-drafter'],
+  'Recruiting':['verify-recruiting', 'recruiting-board'],
+  'Data / Ops':['odds', 'alerts'],
+};
 var esc = function (s) { var d = document.createElement('div'); d.textContent = s == null ? '' : String(s); return d.innerHTML; };
 
 function api(path) { return path + (path.indexOf('?') >= 0 ? '&' : '?') + 'key=' + encodeURIComponent(KEY); }
@@ -285,8 +320,24 @@ function sparkline(points) {
 
 function renderRoster(d) {
   var el = document.getElementById('roster');
-  document.getElementById('roster-meta').textContent = d.bots.length + ' registered · ' + d.bots.filter(function (b) { return b.enabled; }).length + ' enabled';
-  el.innerHTML = d.bots.map(function (b) {
+  var enabled = d.bots.filter(function (b) { return b.enabled; });
+  var healthy = enabled.filter(function (b) { return b.lastRun && b.lastRun.ok; }).length;
+  var failing = enabled.filter(function (b) { return b.lastRun && !b.lastRun.ok; }).length;
+  var noRun   = enabled.filter(function (b) { return !b.lastRun; }).length;
+
+  // Health bar
+  var hBar = document.getElementById('health-bar');
+  hBar.style.display = '';
+  hBar.innerHTML =
+    '<div class="op-hstat"><span class="op-hstat-n wt">' + d.bots.length + '</span><span class="op-hstat-l">Registered<br>bots</span></div>' +
+    '<div class="op-hstat"><span class="op-hstat-n gn">' + healthy + '</span><span class="op-hstat-l">Healthy<br>& passing</span></div>' +
+    (failing ? '<div class="op-hstat"><span class="op-hstat-n rd">' + failing + '</span><span class="op-hstat-l">Failing<br>last run</span></div>' : '') +
+    (noRun ? '<div class="op-hstat"><span class="op-hstat-n wt">' + noRun + '</span><span class="op-hstat-l">Not yet<br>run</span></div>' : '') +
+    '<div class="op-hstat"><span class="op-hstat-n wt">' + enabled.length + '</span><span class="op-hstat-l">Active<br>right now</span></div>';
+
+  document.getElementById('roster-meta').textContent = d.bots.length + ' registered · ' + enabled.length + ' enabled';
+
+  function botCard(b) {
     var last = b.lastRun;
     var streak = b.streak ? (b.streak.ok ? b.streak.count + '× pass' : b.streak.count + '× fail') : '—';
     var streakCls = b.streak ? (b.streak.ok ? 'gn' : 'rd') : '';
@@ -294,25 +345,60 @@ function renderRoster(d) {
       : !last ? '<span class="op-pill idle"><span class="dot"></span>No runs</span>'
       : last.ok ? '<span class="op-pill ok"><span class="dot"></span>Healthy</span>'
       : '<span class="op-pill bad"><span class="dot"></span>Failing</span>';
+    var pageInfo = BOT_PAGES[b.id];
+    var pageLink = pageInfo
+      ? '<a class="op-bot-page" href="' + pageInfo.page + '" target="_blank">↗ ' + esc(pageInfo.label) + '</a>'
+      : '';
     return '<div class="op-bot' + (b.enabled ? '' : ' disabled') + '">' +
-      '<div class="op-bot-top"><div><div class="op-bot-name">' + esc(b.name) + '</div>' +
-      '<div class="op-bot-id">' + esc(b.id) + ' · ' + esc(b.kind) + (b.dependsOn && b.dependsOn.length ? ' · after ' + esc(b.dependsOn.join(', ')) : '') + '</div></div>' + pill + '</div>' +
+      '<div class="op-bot-top">' +
+        '<div>' +
+          '<div class="op-bot-name">' + esc(b.name) + '</div>' +
+          '<div class="op-bot-id">' + esc(b.id) + ' · ' + esc(b.kind) + (b.dependsOn && b.dependsOn.length ? ' · after ' + esc(b.dependsOn.join(', ')) : '') + '</div>' +
+        '</div>' +
+        '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">' + pill +
+          (b.enabled ? '<button class="op-run-now" id="run-' + b.id + '" onclick="triggerRun(\'' + b.id + '\')">▶ Run now</button>' : '') +
+        '</div>' +
+      '</div>' +
       '<div class="op-bot-purpose">' + esc(b.purpose) + '</div>' +
+      (pageLink ? '<div style="margin-top:-2px;">' + pageLink + '</div>' : '') +
       '<div class="op-bot-stats">' +
-      '<div class="op-stat"><span class="op-stat-v or">' + (b.avgScore != null ? b.avgScore : '—') + '</span><span class="op-stat-l">Avg quality 30d</span></div>' +
-      '<div class="op-stat"><span class="op-stat-v">' + fmtMs(b.avgMs) + '</span><span class="op-stat-l">Avg duration</span></div>' +
-      '<div class="op-stat"><span class="op-stat-v ' + streakCls + '">' + streak + '</span><span class="op-stat-l">Streak</span></div>' +
-      '<div class="op-stat"><span class="op-stat-v">' + (last ? fmtAgo(last.t) : '—') + '</span><span class="op-stat-l">Last run</span></div>' +
-      (b.rejectedCount ? '<div class="op-stat"><span class="op-stat-v rd">' + b.rejectedCount + '</span><span class="op-stat-l">Rejected</span></div>' : '') +
+        '<div class="op-stat"><span class="op-stat-v or">' + (b.avgScore != null ? b.avgScore : '—') + '</span><span class="op-stat-l">Avg quality 30d</span></div>' +
+        '<div class="op-stat"><span class="op-stat-v">' + fmtMs(b.avgMs) + '</span><span class="op-stat-l">Avg duration</span></div>' +
+        '<div class="op-stat"><span class="op-stat-v ' + streakCls + '">' + streak + '</span><span class="op-stat-l">Streak</span></div>' +
+        '<div class="op-stat"><span class="op-stat-v">' + (last ? fmtAgo(last.t) : '—') + '</span><span class="op-stat-l">Last run</span></div>' +
+        (b.rejectedCount ? '<div class="op-stat"><span class="op-stat-v rd">' + b.rejectedCount + '</span><span class="op-stat-l">Rejected</span></div>' : '') +
       '</div>' +
       sparkline(b.spark) +
       '<div class="op-bot-foot">' +
-      '<span class="op-prompt-tag">' + (b.promptFile ? esc(b.promptFile.replace('bots/prompts/', '')) + (last && last.promptHash ? ' @ ' + esc(last.promptHash) : '') : 'no prompt') + '</span>' +
-      '<div class="op-bot-actions">' +
-      '<button class="op-mini" onclick="triggerRun(\'' + b.id + '\')">▶ Run</button>' +
-      '<button class="op-mini' + (b.enabled ? ' danger' : '') + '" onclick="toggleBot(\'' + b.id + '\',' + !b.enabled + ')">' + (b.enabled ? 'Disable' : 'Enable') + '</button>' +
-      '</div></div></div>';
-  }).join('');
+        '<span class="op-prompt-tag">' + (b.promptFile ? esc(b.promptFile.replace('bots/prompts/', '')) + (last && last.promptHash ? ' @ ' + esc(last.promptHash) : '') : 'no prompt') + '</span>' +
+        '<div class="op-bot-actions">' +
+          '<button class="op-mini' + (b.enabled ? ' danger' : '') + '" onclick="toggleBot(\'' + b.id + '\',' + !b.enabled + ')">' + (b.enabled ? 'Disable' : 'Enable') + '</button>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }
+
+  // Group bots by category
+  var byId = {};
+  d.bots.forEach(function(b){ byId[b.id] = b; });
+  var placed = {};
+  var html = '';
+  Object.keys(BOT_GROUPS).forEach(function(group) {
+    var ids = BOT_GROUPS[group];
+    var inGroup = ids.map(function(id){ return byId[id]; }).filter(Boolean);
+    if (!inGroup.length) return;
+    html += '<div class="op-group-label">' + esc(group) + '</div><div class="op-grid" style="margin-bottom:4px;">';
+    inGroup.forEach(function(b){ placed[b.id] = true; html += botCard(b); });
+    html += '</div>';
+  });
+  // Any bots not in any group
+  var ungrouped = d.bots.filter(function(b){ return !placed[b.id]; });
+  if (ungrouped.length) {
+    html += '<div class="op-group-label">Other</div><div class="op-grid">';
+    ungrouped.forEach(function(b){ html += botCard(b); });
+    html += '</div>';
+  }
+  el.innerHTML = html;
 }
 
 function renderRuns(d) {
@@ -434,8 +520,8 @@ function loadDashboard(showToast) {
 function triggerRun(botId) {
   var dry = document.getElementById('dry-run').checked;
   var url = '/api/orchestrator?' + (botId ? 'bot=' + encodeURIComponent(botId) + '&' : '') + (dry ? 'dryRun=true&' : '') + 'key=' + encodeURIComponent(KEY);
-  var btn = document.getElementById('btn-full-run');
-  btn.disabled = true;
+  var btn = botId ? document.getElementById('run-' + botId) : document.getElementById('btn-full-run');
+  if (btn) btn.disabled = true;
   toast((botId ? botId : 'Full run') + (dry ? ' (dry) ' : ' ') + 'started — this can take minutes', 'inf');
   fetch(url)
     .then(function (r) { return r.json(); })
@@ -447,7 +533,7 @@ function triggerRun(botId) {
       return loadDashboard(false);
     })
     .catch(function (e) { toast('Run failed: ' + e.message, 'err'); })
-    .finally(function () { btn.disabled = false; });
+    .finally(function () { if (btn) btn.disabled = false; });
 }
 
 function post(body) {
