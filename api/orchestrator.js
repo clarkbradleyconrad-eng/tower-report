@@ -163,6 +163,21 @@ const HTTP_ADAPTERS = {
     };
   },
 
+  'recruiting-board': async (bot, { base, dryRun }) => {
+    if (dryRun) return { summary: { dryRun: true, skippedWrite: true } };
+    const data = await stepFetch(base, bot.endpoint, {}, bot.timeoutMs);
+    return {
+      score: data._score ?? null,
+      promptHash: data._promptHash ?? null,
+      summary: {
+        recruits: data.count ?? (Array.isArray(data.recruits) ? data.recruits.length : null),
+        changes: (data.changes || []).length,
+        updated: data.updated ?? null,
+        summary: typeof data.summary === 'string' ? data.summary.slice(0, 200) : null,
+      },
+    };
+  },
+
   odds: async (bot, { base }) => {
     const data = await stepFetch(base, bot.endpoint, {}, bot.timeoutMs);
     return { summary: { source: data.meta?.source, liveGames: data.meta?.liveGames } };

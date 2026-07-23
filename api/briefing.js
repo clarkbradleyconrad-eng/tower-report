@@ -148,7 +148,10 @@ async function fetchFromGrok() {
 
   // Strip accidental markdown fences Grok sometimes adds
   const cleaned = content.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
-  const items = JSON.parse(cleaned);
+  let parsed = JSON.parse(cleaned);
+
+  // Grok sometimes wraps the array: {"items":[...]} or {"briefing":[...]}
+  let items = Array.isArray(parsed) ? parsed : (parsed.items || parsed.briefing || parsed.data || []);
 
   if (!Array.isArray(items) || items.length === 0) throw new Error('Invalid briefing payload');
 
