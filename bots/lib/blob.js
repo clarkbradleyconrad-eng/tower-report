@@ -74,7 +74,10 @@ export const KEYS = {
   heartbeat: { path: 'tower-refresh-log.json', prefix: 'tower-refresh-log' },
   stories: { path: 'tower-ai-stories.json', prefix: 'tower-ai-stories' },
   recruitingBoard: { path: 'tower-recruiting-board.json', prefix: 'tower-recruiting-board' },
-  socialPosted: { path: 'tower-social-posted.json', prefix: 'tower-social-posted' },
+  socialPosted:  { path: 'tower-social-posted.json',  prefix: 'tower-social-posted'  },
+  xQueue:        { path: 'tower-x-queue.json',        prefix: 'tower-x-queue'        },
+  xSettings:     { path: 'tower-x-settings.json',     prefix: 'tower-x-settings'     },
+  xAnalytics:    { path: 'tower-x-analytics.json',    prefix: 'tower-x-analytics'    },
 };
 
 /**

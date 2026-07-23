@@ -1,0 +1,1463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>X Dashboard · Tower Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="nav.js" defer></script>
+<style>
+:root {
+  --orange:#BF5700;--orange-hi:#CF6210;--orange-lo:rgba(191,87,0,0.12);
+  --black:#080808;--surface:#0F0F0F;--s2:#141414;--s3:#1A1A1A;--s4:#222222;
+  --border:rgba(255,255,255,0.07);--border-mid:rgba(255,255,255,0.10);
+  --white:#F0EBE1;--white2:#C4BCB0;--muted:#5A5450;--secondary:#948C82;
+  --green:#22c55e;--red:#ef4444;--amber:#f59e0b;--blue:#3b82f6;
+  --cyan:#06b6d4;--purple:#a855f7;--gold:#eab308;
+  --font-display:'Barlow Condensed',sans-serif;
+  --font-body:'Barlow',sans-serif;
+  --font-ui:'Inter',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font-body);background:var(--black);color:var(--white);line-height:1.55;}
+a{color:inherit;text-decoration:none;}
+button{cursor:pointer;font-family:inherit;}
+input,textarea,select{font-family:inherit;}
+
+/* ── LOCK ── */
+.xd-lock{min-height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;padding:24px;text-align:center;}
+.xd-lock input{background:var(--s2);border:1px solid var(--border-mid);color:var(--white);padding:10px 14px;font-family:var(--font-body);font-size:14px;width:min(320px,80vw);outline:none;}
+.xd-lock input:focus{border-color:var(--orange);}
+
+/* ── LAYOUT ── */
+.xd-wrap{max-width:1200px;margin:0 auto;padding:0 32px;}
+@media(max-width:768px){.xd-wrap{padding:0 16px;}}
+
+/* ── HERO ── */
+.xd-hero{border-bottom:1px solid var(--border-mid);padding:32px 0 22px;background:var(--surface);}
+.xd-eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.xd-rule{width:18px;height:2px;background:var(--orange);}
+.xd-kicker{font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:3.5px;text-transform:uppercase;color:var(--orange);}
+.xd-hed{font-family:var(--font-display);font-size:clamp(20px,3vw,30px);font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--white);margin-bottom:4px;}
+.xd-hed em{font-style:normal;color:var(--orange);}
+.xd-dek{font-size:12.5px;color:var(--secondary);}
+.xd-hero-row{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.xd-hero-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+
+/* ── BUTTONS ── */
+.xd-btn{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:8px 14px;display:inline-flex;align-items:center;gap:6px;transition:all .15s;border:1px solid;line-height:1;}
+.xd-btn.primary{background:var(--orange);color:#fff;border-color:var(--orange);}
+.xd-btn.primary:hover{background:var(--orange-hi);}
+.xd-btn.ghost{background:transparent;color:var(--white2);border-color:var(--border-mid);}
+.xd-btn.ghost:hover{border-color:var(--white2);color:var(--white);}
+.xd-btn.danger{background:transparent;color:#fca5a5;border-color:rgba(239,68,68,.3);}
+.xd-btn.danger:hover{background:rgba(239,68,68,.08);}
+.xd-btn.ok{background:transparent;color:#86efac;border-color:rgba(34,197,94,.3);}
+.xd-btn.ok:hover{background:rgba(34,197,94,.08);}
+.xd-btn:disabled{opacity:.4;cursor:not-allowed;}
+.xd-mini{font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:5px 10px;border:1px solid var(--border-mid);background:var(--s3);color:var(--white2);transition:all .14s;line-height:1;}
+.xd-mini:hover{border-color:var(--orange);color:var(--orange);}
+.xd-mini.danger:hover{border-color:var(--red);color:#fca5a5;}
+.xd-mini:disabled{opacity:.4;cursor:not-allowed;}
+
+/* ── TABS ── */
+.xd-tabs{display:flex;border-bottom:1px solid var(--border);background:var(--surface);padding:0 32px;position:sticky;top:56px;z-index:100;}
+@media(max-width:768px){.xd-tabs{padding:0 16px;top:50px;}}
+.xd-tab{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--secondary);padding:14px 18px;border:none;background:none;border-bottom:2px solid transparent;transition:all .15s;cursor:pointer;white-space:nowrap;}
+.xd-tab:hover{color:var(--white);}
+.xd-tab.active{color:var(--white);border-bottom-color:var(--orange);}
+.xd-tab-badge{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:var(--orange);color:#fff;font-size:9px;font-weight:700;margin-left:5px;vertical-align:middle;}
+
+/* ── CONTENT PANELS ── */
+.xd-panel{display:none;padding:28px 0 48px;}
+.xd-panel.active{display:block;}
+
+/* ── SECTION ── */
+.xd-sec-lbl{font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--orange);margin-bottom:2px;}
+.xd-sec-title{font-family:var(--font-display);font-size:16px;font-weight:800;text-transform:uppercase;color:var(--white);margin-bottom:14px;}
+.xd-sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap;}
+
+/* ── QUEUE STRIP ── */
+.xd-strip{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 16px;background:var(--s2);border:1px solid var(--border);margin-bottom:20px;}
+.xd-mode-group{display:flex;gap:0;}
+.xd-mode-opt{position:relative;}
+.xd-mode-opt input[type=radio]{position:absolute;opacity:0;width:0;height:0;}
+.xd-mode-opt label{font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:6px 12px;border:1px solid var(--border-mid);color:var(--secondary);cursor:pointer;transition:all .14s;display:block;margin-left:-1px;}
+.xd-mode-opt input:checked+label{background:var(--orange-lo);border-color:var(--orange);color:var(--orange);z-index:1;position:relative;}
+.xd-mode-opt label:hover{color:var(--white);}
+.xd-pause-toggle{display:flex;align-items:center;gap:7px;font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--secondary);cursor:pointer;user-select:none;}
+.xd-pause-toggle input{accent-color:var(--orange);width:14px;height:14px;}
+.xd-strip-sep{width:1px;height:22px;background:var(--border-mid);flex-shrink:0;}
+.xd-today-badge{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:1px;color:var(--white2);background:var(--s3);border:1px solid var(--border-mid);padding:5px 10px;white-space:nowrap;}
+.xd-today-badge span{color:var(--orange);}
+.xd-strip-right{margin-left:auto;display:flex;gap:8px;align-items:center;}
+
+/* ── POST CARD ── */
+.xd-card{background:var(--s2);border:1px solid var(--border);border-left:3px solid var(--border-mid);padding:16px;margin-bottom:10px;transition:border-color .15s;}
+.xd-card:hover{border-left-color:var(--orange);}
+.xd-card-head{display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap;margin-bottom:10px;}
+.xd-card-badges{display:flex;gap:5px;flex-wrap:wrap;flex:1;}
+.xd-fmt-badge{font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 8px;border:1px solid;}
+.xd-fmt-badge.breaking{color:#ff6b6b;border-color:rgba(255,107,107,.3);background:rgba(255,107,107,.07);}
+.xd-fmt-badge.analysis{color:#93c5fd;border-color:rgba(147,197,253,.3);background:rgba(147,197,253,.07);}
+.xd-fmt-badge.recruiting{color:#86efac;border-color:rgba(134,239,172,.3);background:rgba(134,239,172,.07);}
+.xd-fmt-badge.quote{color:#d8b4fe;border-color:rgba(216,180,254,.3);background:rgba(216,180,254,.07);}
+.xd-fmt-badge.stat{color:#67e8f9;border-color:rgba(103,232,249,.3);background:rgba(103,232,249,.07);}
+.xd-fmt-badge.gameday{color:#fdba74;border-color:rgba(253,186,116,.3);background:rgba(253,186,116,.07);}
+.xd-fmt-badge.promo{color:#fde047;border-color:rgba(253,224,71,.3);background:rgba(253,224,71,.07);}
+.xd-fmt-badge.question{color:#94a3b8;border-color:rgba(148,163,184,.3);background:rgba(148,163,184,.07);}
+.xd-conf-badge{font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 8px;border:1px solid;}
+.xd-conf-badge.confirmed{color:#86efac;border-color:rgba(134,239,172,.3);background:rgba(134,239,172,.07);}
+.xd-conf-badge.reported{color:#fde047;border-color:rgba(253,224,71,.3);background:rgba(253,224,71,.07);}
+.xd-conf-badge.developing{color:#fca5a5;border-color:rgba(252,165,165,.3);background:rgba(252,165,165,.07);}
+.xd-source-tag{font-family:var(--font-display);font-size:9px;font-weight:600;letter-spacing:1px;color:var(--secondary);border:1px solid var(--border);padding:3px 7px;background:var(--s3);}
+.xd-card-priority{font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);white-space:nowrap;}
+.xd-card-time{font-family:var(--font-display);font-size:9px;color:var(--muted);white-space:nowrap;}
+.xd-post-text{font-family:var(--font-ui);font-size:14px;color:var(--white);line-height:1.65;padding:10px 12px;background:var(--s3);border:1px solid var(--border);position:relative;white-space:pre-wrap;word-break:break-word;}
+.xd-post-text.editing{display:none;}
+.xd-post-textarea{width:100%;background:var(--s3);border:1px solid var(--orange);color:var(--white);font-family:var(--font-ui);font-size:14px;line-height:1.65;padding:10px 12px;resize:vertical;min-height:80px;outline:none;}
+.xd-char-count{font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:1px;text-align:right;margin-top:3px;color:var(--muted);}
+.xd-char-count.warn{color:var(--amber);}
+.xd-char-count.over{color:var(--red);}
+.xd-rationale{font-size:11.5px;color:var(--secondary);font-style:italic;margin-top:8px;padding-left:2px;}
+.xd-card-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:12px;flex-wrap:wrap;}
+.xd-card-actions{display:flex;gap:5px;flex-wrap:wrap;}
+.xd-scheduled-time{font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:1px;color:var(--amber);border:1px solid rgba(245,158,11,.3);background:rgba(245,158,11,.07);padding:4px 8px;}
+
+/* ── SCHEDULE DROPDOWN ── */
+.xd-sched-wrap{position:relative;display:inline-block;}
+.xd-sched-menu{position:absolute;bottom:calc(100% + 4px);right:0;background:var(--s3);border:1px solid var(--border-mid);min-width:170px;z-index:50;display:none;}
+.xd-sched-menu.open{display:block;}
+.xd-sched-item{font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:9px 12px;color:var(--white2);cursor:pointer;transition:all .12s;border-bottom:1px solid var(--border);}
+.xd-sched-item:last-child{border-bottom:none;}
+.xd-sched-item:hover{background:var(--orange-lo);color:var(--orange);}
+.xd-sched-custom{padding:8px 10px;border-bottom:1px solid var(--border);}
+.xd-sched-custom input{width:100%;background:var(--s2);border:1px solid var(--border-mid);color:var(--white);padding:5px 8px;font-size:12px;outline:none;}
+.xd-sched-custom input:focus{border-color:var(--orange);}
+
+/* ── EMPTY STATE ── */
+.xd-empty{padding:28px;text-align:center;font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);background:var(--s2);border:1px dashed var(--border-mid);}
+
+/* ── HISTORY TAB ── */
+.xd-history-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px;}
+.xd-sort-group{display:flex;gap:0;}
+.xd-sort-btn{font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:6px 12px;border:1px solid var(--border-mid);background:var(--s2);color:var(--secondary);cursor:pointer;transition:all .14s;margin-left:-1px;}
+.xd-sort-btn.active{background:var(--orange-lo);border-color:var(--orange);color:var(--orange);}
+.xd-history-row{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:var(--s2);border:1px solid var(--border);border-left:3px solid var(--border);margin-bottom:7px;flex-wrap:wrap;transition:border-left-color .15s;}
+.xd-history-row:hover{border-left-color:var(--orange);}
+.xd-history-time{font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:.5px;color:var(--muted);white-space:nowrap;min-width:90px;}
+.xd-history-text{font-family:var(--font-ui);font-size:13px;color:var(--white2);flex:1;line-height:1.4;}
+.xd-history-link{font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);border:1px solid rgba(191,87,0,.3);padding:3px 8px;white-space:nowrap;transition:all .12s;}
+.xd-history-link:hover{background:var(--orange-lo);}
+.xd-metrics{display:flex;gap:5px;flex-wrap:wrap;}
+.xd-metric{font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:.5px;padding:3px 7px;border:1px solid var(--border);color:var(--secondary);background:var(--s3);white-space:nowrap;}
+.xd-metric.hi{color:var(--orange);border-color:rgba(191,87,0,.3);background:var(--orange-lo);}
+
+/* ── ANALYTICS TAB ── */
+.xd-analytics-summary{display:flex;gap:0;background:var(--s2);border:1px solid var(--border);margin-bottom:20px;flex-wrap:wrap;}
+.xd-astat{padding:18px 22px;border-right:1px solid var(--border);flex:1;min-width:140px;}
+.xd-astat:last-child{border-right:none;}
+.xd-astat-n{font-family:var(--font-display);font-size:28px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--white);line-height:1;}
+.xd-astat-n.or{color:var(--orange);}
+.xd-astat-n.gn{color:var(--green);}
+.xd-astat-l{font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:4px;}
+.xd-chart-wrap{background:var(--s2);border:1px solid var(--border);padding:18px;margin-bottom:16px;}
+.xd-chart-title{font-family:var(--font-display);font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--white2);margin-bottom:14px;}
+.xd-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:9px;}
+.xd-bar-label{font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--secondary);width:80px;text-align:right;flex-shrink:0;}
+.xd-bar-track{flex:1;height:20px;background:var(--s3);border:1px solid var(--border);position:relative;overflow:hidden;}
+.xd-bar-fill{height:100%;background:var(--orange);opacity:.8;transition:width .5s ease;}
+.xd-bar-val{font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:.5px;color:var(--white2);position:absolute;right:6px;top:50%;transform:translateY(-50%);}
+.xd-hours-grid{display:grid;grid-template-columns:repeat(24,1fr);gap:2px;align-items:flex-end;height:60px;}
+.xd-hour-bar{background:var(--s4);position:relative;min-height:4px;transition:background .2s;}
+.xd-hour-bar.best{background:var(--orange);}
+.xd-hour-bar:hover::after{content:attr(data-label);position:absolute;bottom:calc(100%+3px);left:50%;transform:translateX(-50%);background:var(--s3);border:1px solid var(--border-mid);font-family:var(--font-display);font-size:9px;font-weight:700;color:var(--white2);padding:3px 6px;white-space:nowrap;pointer-events:none;z-index:10;}
+
+/* ── SETTINGS TAB ── */
+.xd-settings-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px;}
+.xd-setting-block{background:var(--s2);border:1px solid var(--border);padding:18px;}
+.xd-setting-block.full{grid-column:1/-1;}
+.xd-setting-lbl{font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:6px;}
+.xd-setting-desc{font-size:12px;color:var(--secondary);margin-bottom:14px;line-height:1.5;}
+.xd-slider-wrap{display:flex;align-items:center;gap:12px;}
+.xd-slider{flex:1;accent-color:var(--orange);height:4px;}
+.xd-slider-val{font-family:var(--font-display);font-size:14px;font-weight:800;color:var(--white);min-width:48px;text-align:right;}
+.xd-check-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px;margin-top:6px;}
+.xd-check-item{display:flex;align-items:center;gap:7px;padding:7px 10px;background:var(--s3);border:1px solid var(--border);cursor:pointer;}
+.xd-check-item input{accent-color:var(--orange);width:13px;height:13px;flex-shrink:0;}
+.xd-check-item span{font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--secondary);}
+.xd-check-item:has(input:checked) span{color:var(--white);}
+.xd-tags-wrap{display:flex;flex-wrap:wrap;gap:6px;min-height:34px;padding:8px 10px;background:var(--s3);border:1px solid var(--border);cursor:text;}
+.xd-tag{display:inline-flex;align-items:center;gap:4px;font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:1px;padding:4px 8px;background:var(--s4);border:1px solid var(--border-mid);color:var(--white2);}
+.xd-tag-x{background:none;border:none;color:var(--muted);cursor:pointer;font-size:11px;padding:0;line-height:1;transition:color .12s;}
+.xd-tag-x:hover{color:var(--red);}
+.xd-tag-input{background:none;border:none;outline:none;color:var(--white);font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:1px;min-width:80px;flex:1;}
+.xd-mode-card{padding:10px 14px;background:var(--s3);border:1px solid var(--border);margin-bottom:8px;cursor:pointer;transition:all .15s;}
+.xd-mode-card.active-mode{border-color:var(--orange);background:var(--orange-lo);}
+.xd-mode-card-title{font-family:var(--font-display);font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--white);margin-bottom:3px;}
+.xd-mode-card-desc{font-size:11.5px;color:var(--secondary);}
+.xd-mode-card.active-mode .xd-mode-card-title{color:var(--orange);}
+
+/* ── SKELETON ── */
+@keyframes _shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+.xd-skel{background:linear-gradient(90deg,#141414 25%,#1e1e1e 50%,#141414 75%);background-size:200% 100%;animation:_shimmer 1.6s infinite;border:1px solid var(--border);}
+.xd-skel-card{height:160px;margin-bottom:10px;}
+.xd-skel-row{height:52px;margin-bottom:7px;}
+
+/* ── TOAST ── */
+.xd-toasts{position:fixed;bottom:20px;right:20px;z-index:600;display:flex;flex-direction:column;gap:7px;align-items:flex-end;pointer-events:none;}
+.xd-toast{display:flex;align-items:center;gap:8px;padding:9px 13px;border:1px solid;font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;pointer-events:auto;animation:_tin .3s cubic-bezier(.16,1,.3,1),_tout .3s cubic-bezier(.16,1,.3,1) 3.2s both;}
+.xd-toast.ok{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.3);color:#86efac;}
+.xd-toast.err{background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.3);color:#fca5a5;}
+.xd-toast.inf{background:var(--s3);border-color:var(--border-mid);color:var(--white2);}
+@keyframes _tin{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+@keyframes _tout{from{opacity:1;}to{opacity:0;transform:translateY(4px);}}
+
+/* ── DIVIDER ── */
+.xd-divider{height:1px;background:var(--border);margin:20px 0;}
+
+/* ── FOOTER ── */
+.xd-footer{border-top:1px solid var(--border);margin-top:44px;padding:18px 0 28px;font-size:11.5px;color:var(--muted);}
+
+/* ── MOBILE ── */
+@media(max-width:768px){
+  .xd-strip{gap:8px;}
+  .xd-analytics-summary{flex-direction:column;}
+  .xd-astat{border-right:none;border-bottom:1px solid var(--border);}
+  .xd-astat:last-child{border-bottom:none;}
+  .xd-settings-grid{grid-template-columns:1fr;}
+  .xd-setting-block.full{grid-column:auto;}
+  .xd-history-row{flex-direction:column;}
+}
+</style>
+</head>
+<body>
+
+<div id="xd-lock" class="xd-lock" style="display:none;">
+  <div class="xd-kicker">Tower Report · X Admin</div>
+  <div style="font-family:var(--font-display);font-size:22px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Access <em style="color:var(--orange);font-style:normal;">key required</em></div>
+  <input id="lock-key" type="password" placeholder="Ops key" autocomplete="off">
+  <button class="xd-btn primary" onclick="unlock()">Enter</button>
+</div>
+
+<div id="xd-app" style="display:none;">
+  <header class="xd-hero">
+    <div class="xd-wrap">
+      <div class="xd-hero-row">
+        <div>
+          <div class="xd-eyebrow"><span class="xd-rule"></span><span class="xd-kicker">@towerreportai · X Posting Dashboard</span></div>
+          <h1 class="xd-hed">X Post <em>Control</em></h1>
+          <p class="xd-dek">Queue, approve, schedule, and analyze automated posts for @towerreportai.</p>
+        </div>
+        <div class="xd-hero-actions">
+          <button class="xd-btn ghost" onclick="refreshAll(true)" id="btn-refresh">↻ Refresh</button>
+          <button class="xd-btn primary" onclick="generateNow()" id="btn-generate">+ Generate Posts</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="xd-tabs" role="tablist">
+    <div class="xd-wrap" style="display:flex;gap:0;padding:0;">
+      <button class="xd-tab active" role="tab" onclick="switchTab('queue',this)" id="tab-queue">
+        Queue <span class="xd-tab-badge" id="badge-pending" style="display:none;"></span>
+      </button>
+      <button class="xd-tab" role="tab" onclick="switchTab('history',this)" id="tab-history">History</button>
+      <button class="xd-tab" role="tab" onclick="switchTab('analytics',this)" id="tab-analytics">Analytics</button>
+      <button class="xd-tab" role="tab" onclick="switchTab('settings',this)" id="tab-settings">Settings</button>
+    </div>
+  </nav>
+
+  <main class="xd-wrap" id="main">
+
+    <!-- ══════════════════════ TAB: QUEUE ══════════════════════ -->
+    <div class="xd-panel active" id="panel-queue">
+
+      <!-- Control strip -->
+      <div class="xd-strip" style="margin-top:24px;">
+        <div class="xd-mode-group" id="mode-group">
+          <div class="xd-mode-opt">
+            <input type="radio" name="xd-mode" id="mode-manual" value="manual" onchange="setMode('manual')">
+            <label for="mode-manual">Manual Approval</label>
+          </div>
+          <div class="xd-mode-opt">
+            <input type="radio" name="xd-mode" id="mode-trusted" value="trusted" onchange="setMode('trusted')">
+            <label for="mode-trusted">Trusted Sources</label>
+          </div>
+          <div class="xd-mode-opt">
+            <input type="radio" name="xd-mode" id="mode-auto" value="auto" onchange="setMode('auto')">
+            <label for="mode-auto">Fully Automatic</label>
+          </div>
+        </div>
+        <span class="xd-strip-sep"></span>
+        <label class="xd-pause-toggle">
+          <input type="checkbox" id="pause-toggle" onchange="setPaused(this.checked)">
+          Paused
+        </label>
+        <span class="xd-strip-sep"></span>
+        <div class="xd-today-badge" id="today-badge">— / — today</div>
+        <div class="xd-strip-right">
+          <button class="xd-btn primary" onclick="generateNow()" style="font-size:10px;padding:6px 12px;">+ Generate</button>
+        </div>
+      </div>
+
+      <!-- Pending -->
+      <div>
+        <div class="xd-sec-head">
+          <div>
+            <div class="xd-sec-lbl">Pending Approval</div>
+            <div class="xd-sec-title">Needs Review</div>
+          </div>
+          <div id="pending-meta" style="font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);"></div>
+        </div>
+        <div id="pending-list"><div class="xd-skel xd-skel-card"></div><div class="xd-skel xd-skel-card"></div></div>
+      </div>
+
+      <div class="xd-divider"></div>
+
+      <!-- Approved -->
+      <div>
+        <div class="xd-sec-head">
+          <div>
+            <div class="xd-sec-lbl">Approved</div>
+            <div class="xd-sec-title">Queued to Send</div>
+          </div>
+          <div id="approved-meta" style="font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);"></div>
+        </div>
+        <div id="approved-list"><div class="xd-skel xd-skel-row"></div></div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════ TAB: HISTORY ══════════════════════ -->
+    <div class="xd-panel" id="panel-history">
+      <div style="padding-top:24px;">
+        <div class="xd-history-head">
+          <div style="flex:1;">
+            <div class="xd-sec-lbl">Post History</div>
+            <div class="xd-sec-title">Posted Tweets</div>
+          </div>
+          <button class="xd-btn ghost" onclick="syncAnalytics()" id="btn-sync" style="font-size:10px;">↻ Sync Analytics</button>
+          <div class="xd-sort-group">
+            <button class="xd-sort-btn active" onclick="sortHistory('date',this)">Date</button>
+            <button class="xd-sort-btn" onclick="sortHistory('impressions',this)">Impressions</button>
+            <button class="xd-sort-btn" onclick="sortHistory('engagement',this)">Engagement</button>
+          </div>
+        </div>
+        <div id="history-list"><div class="xd-skel xd-skel-row"></div><div class="xd-skel xd-skel-row"></div><div class="xd-skel xd-skel-row"></div></div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════ TAB: ANALYTICS ══════════════════════ -->
+    <div class="xd-panel" id="panel-analytics">
+      <div style="padding-top:24px;">
+        <div class="xd-sec-lbl">Performance</div>
+        <div class="xd-sec-title" style="margin-bottom:16px;">Analytics Summary</div>
+
+        <div class="xd-analytics-summary" id="analytics-summary">
+          <div class="xd-astat"><div class="xd-astat-n or" id="an-posted">—</div><div class="xd-astat-l">Posts Today</div></div>
+          <div class="xd-astat"><div class="xd-astat-n" id="an-limit">—</div><div class="xd-astat-l">Daily Limit</div></div>
+          <div class="xd-astat"><div class="xd-astat-n gn" id="an-impressions">—</div><div class="xd-astat-l">Impressions Today</div></div>
+          <div class="xd-astat"><div class="xd-astat-n" id="an-eng">—</div><div class="xd-astat-l">Avg Eng Rate</div></div>
+          <div class="xd-astat"><div class="xd-astat-n" id="an-besthour">—</div><div class="xd-astat-l">Best Post Hour</div></div>
+        </div>
+
+        <div class="xd-chart-wrap">
+          <div class="xd-chart-title">Format Performance — Avg Impressions</div>
+          <div id="format-bars"><div class="xd-skel" style="height:120px;"></div></div>
+        </div>
+
+        <div class="xd-chart-wrap">
+          <div class="xd-chart-title">Best Posting Hours (UTC)</div>
+          <div style="display:flex;align-items:flex-end;gap:2px;height:70px;margin-bottom:6px;">
+            <div class="xd-hours-grid" id="hours-grid" style="width:100%;display:flex;align-items:flex-end;gap:2px;"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-family:var(--font-display);font-size:8px;font-weight:700;letter-spacing:.5px;color:var(--muted);margin-top:4px;">
+            <span>0h</span><span>6h</span><span>12h</span><span>18h</span><span>23h</span>
+          </div>
+        </div>
+
+        <div class="xd-chart-wrap">
+          <div class="xd-chart-title">Top 5 Performing Posts</div>
+          <div id="top-posts"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════ TAB: SETTINGS ══════════════════════ -->
+    <div class="xd-panel" id="panel-settings">
+      <div style="padding-top:24px;">
+        <div class="xd-sec-head">
+          <div>
+            <div class="xd-sec-lbl">Configuration</div>
+            <div class="xd-sec-title">X Posting Settings</div>
+          </div>
+          <button class="xd-btn primary" onclick="saveSettings()" id="btn-save">Save Settings</button>
+        </div>
+
+        <div class="xd-settings-grid">
+
+          <!-- Mode -->
+          <div class="xd-setting-block full">
+            <div class="xd-setting-lbl">Posting Mode</div>
+            <div class="xd-setting-desc">Controls how posts move from generated to posted.</div>
+            <div id="mode-cards">
+              <div class="xd-mode-card" data-mode="manual" onclick="selectSettingsMode('manual')">
+                <div class="xd-mode-card-title">Manual Approval</div>
+                <div class="xd-mode-card-desc">Every post sits in the queue until you explicitly approve it. Nothing goes out without a human click. Best for launch or sensitive periods.</div>
+              </div>
+              <div class="xd-mode-card" data-mode="trusted" onclick="selectSettingsMode('trusted')">
+                <div class="xd-mode-card-title">Trusted Sources Auto-Approve</div>
+                <div class="xd-mode-card-desc">Posts sourced from your trusted sources list (247Sports, On3, etc.) are auto-approved and scheduled. All others still require manual review.</div>
+              </div>
+              <div class="xd-mode-card" data-mode="auto" onclick="selectSettingsMode('auto')">
+                <div class="xd-mode-card-title">Fully Automatic</div>
+                <div class="xd-mode-card-desc">All generated posts are auto-approved and scheduled within your daily limits and minimum interval. Use with caution — no human review step.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Max posts per day -->
+          <div class="xd-setting-block">
+            <div class="xd-setting-lbl">Max Posts Per Day</div>
+            <div class="xd-setting-desc">Hard cap on posts in a 24h period. Approved posts beyond this limit will queue and post the next day.</div>
+            <div class="xd-slider-wrap">
+              <input type="range" class="xd-slider" id="s-maxposts" min="1" max="10" value="5" oninput="document.getElementById('v-maxposts').textContent=this.value">
+              <span class="xd-slider-val" id="v-maxposts">5</span>
+            </div>
+          </div>
+
+          <!-- Min interval -->
+          <div class="xd-setting-block">
+            <div class="xd-setting-lbl">Min Interval Between Posts</div>
+            <div class="xd-setting-desc">Minimum minutes between consecutive posts. Prevents flooding the feed.</div>
+            <div class="xd-slider-wrap">
+              <input type="range" class="xd-slider" id="s-interval" min="30" max="240" step="15" value="90" oninput="document.getElementById('v-interval').textContent=this.value+'m'">
+              <span class="xd-slider-val" id="v-interval">90m</span>
+            </div>
+          </div>
+
+          <!-- Link ratio -->
+          <div class="xd-setting-block">
+            <div class="xd-setting-lbl">Link Ratio</div>
+            <div class="xd-setting-desc">Target percentage of posts that include a link to a Tower Report story. 0% = text-only, 50% = half linked.</div>
+            <div class="xd-slider-wrap">
+              <input type="range" class="xd-slider" id="s-linkratio" min="0" max="50" step="5" value="30" oninput="document.getElementById('v-linkratio').textContent=this.value+'%'">
+              <span class="xd-slider-val" id="v-linkratio">30%</span>
+            </div>
+          </div>
+
+          <!-- Categories -->
+          <div class="xd-setting-block">
+            <div class="xd-setting-lbl">Active Post Categories</div>
+            <div class="xd-setting-desc">Only checked categories will be generated and posted.</div>
+            <div class="xd-check-grid" id="cat-grid"></div>
+          </div>
+
+          <!-- Trusted sources -->
+          <div class="xd-setting-block">
+            <div class="xd-setting-lbl">Trusted Sources</div>
+            <div class="xd-setting-desc">Posts citing only these sources are auto-approved in Trusted Sources mode. Press Enter or comma to add.</div>
+            <div class="xd-tags-wrap" id="trusted-tags" onclick="focusTagInput('trusted-input')"></div>
+          </div>
+
+          <!-- Blacklist topics -->
+          <div class="xd-setting-block">
+            <div class="xd-setting-lbl">Blacklist Topics</div>
+            <div class="xd-setting-desc">Posts matching these topics (case-insensitive) will be suppressed at generation time. Press Enter or comma to add.</div>
+            <div class="xd-tags-wrap" id="bl-topics-tags" onclick="focusTagInput('bl-topics-input')"></div>
+          </div>
+
+          <!-- Blacklist sources -->
+          <div class="xd-setting-block">
+            <div class="xd-setting-lbl">Blacklist Sources</div>
+            <div class="xd-setting-desc">Posts citing these sources will be suppressed. Useful for blocking unreliable rumor accounts.</div>
+            <div class="xd-tags-wrap" id="bl-sources-tags" onclick="focusTagInput('bl-sources-input')"></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <footer class="xd-footer">
+      Tower Report · @towerreportai X posting system. Posts require key auth. Auto-refresh every 60s.
+    </footer>
+  </main>
+</div>
+
+<div class="xd-toasts" id="toasts"></div>
+
+<script>
+'use strict';
+
+/* ══════════════════════════════════════
+   STATE
+══════════════════════════════════════ */
+var KEY = new URLSearchParams(location.search).get('key') || sessionStorage.getItem('towerOpsKey') || '';
+var SETTINGS = null;
+var ANALYTICS = null;
+var QUEUE = { pending: [], approved: [], posted: [], rejected: [] };
+var HISTORY_SORT = 'date';
+var REFRESH_TIMER = null;
+
+/* ══════════════════════════════════════
+   UTILS
+══════════════════════════════════════ */
+var esc = function(s) {
+  var d = document.createElement('div');
+  d.textContent = s == null ? '' : String(s);
+  return d.innerHTML;
+};
+
+function api(path, params) {
+  var base = path + (path.indexOf('?') >= 0 ? '&' : '?') + 'key=' + encodeURIComponent(KEY);
+  return params ? base + '&' + params : base;
+}
+
+function toast(msg, type) {
+  var wrap = document.getElementById('toasts');
+  var el = document.createElement('div');
+  el.className = 'xd-toast ' + (type || 'inf');
+  el.textContent = msg;
+  wrap.appendChild(el);
+  setTimeout(function() { el.remove(); }, 3800);
+}
+
+function fmtAgo(iso) {
+  if (!iso) return 'never';
+  var m = (Date.now() - new Date(iso).getTime()) / 60000;
+  if (m < 1) return 'just now';
+  if (m < 60) return Math.round(m) + 'm ago';
+  if (m < 48 * 60) return (m / 60).toFixed(1) + 'h ago';
+  return Math.round(m / 1440) + 'd ago';
+}
+
+function fmtDate(iso) {
+  if (!iso) return '—';
+  var d = new Date(iso);
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) +
+    ' ' + d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+}
+
+function fmtHour(h) {
+  if (h === 0) return '12am';
+  if (h < 12) return h + 'am';
+  if (h === 12) return '12pm';
+  return (h - 12) + 'pm';
+}
+
+function fmtNum(n) {
+  if (n == null) return '—';
+  if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
+  if (n >= 1000) return (n / 1000).toFixed(1) + 'K';
+  return String(n);
+}
+
+function charCountClass(n) {
+  if (n > 280) return 'over';
+  if (n >= 260) return 'warn';
+  return '';
+}
+
+function addHours(h) {
+  var d = new Date();
+  d.setHours(d.getHours() + h);
+  return d.toISOString().slice(0, 16);
+}
+
+/* ══════════════════════════════════════
+   AUTH
+══════════════════════════════════════ */
+function unlock() {
+  KEY = document.getElementById('lock-key').value.trim();
+  sessionStorage.setItem('towerOpsKey', KEY);
+  boot();
+}
+
+function showLock() {
+  document.getElementById('xd-app').style.display = 'none';
+  document.getElementById('xd-lock').style.display = 'flex';
+}
+
+/* ══════════════════════════════════════
+   TABS
+══════════════════════════════════════ */
+var ACTIVE_TAB = 'queue';
+
+function switchTab(name, btn) {
+  ACTIVE_TAB = name;
+  document.querySelectorAll('.xd-panel').forEach(function(p) { p.classList.remove('active'); });
+  document.querySelectorAll('.xd-tab').forEach(function(t) { t.classList.remove('active'); });
+  document.getElementById('panel-' + name).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (name === 'history') loadHistory();
+  if (name === 'analytics') loadAnalytics();
+  if (name === 'settings') loadSettings();
+}
+
+/* ══════════════════════════════════════
+   FORMAT BADGES
+══════════════════════════════════════ */
+var FORMAT_CLASSES = {
+  breaking: 'breaking', analysis: 'analysis', recruiting: 'recruiting',
+  quote: 'quote', stat: 'stat', gameday: 'gameday', promo: 'promo', question: 'question'
+};
+
+function fmtBadge(fmt) {
+  var cls = FORMAT_CLASSES[fmt] || 'question';
+  return '<span class="xd-fmt-badge ' + cls + '">' + esc(fmt || 'unknown') + '</span>';
+}
+
+function confBadge(conf) {
+  var cls = conf === 'confirmed' ? 'confirmed' : conf === 'reported' ? 'reported' : 'developing';
+  return '<span class="xd-conf-badge ' + cls + '">' + esc(conf || '—') + '</span>';
+}
+
+/* ══════════════════════════════════════
+   QUEUE — LOAD
+══════════════════════════════════════ */
+function loadQueue() {
+  var statuses = ['pending', 'approved'];
+  var promises = statuses.map(function(status) {
+    return fetch(api('/api/x-queue', 'status=' + status))
+      .then(function(r) {
+        if (r.status === 401) throw new Error('unauthorized');
+        return r.json();
+      })
+      .then(function(d) {
+        if (d.error) throw new Error(d.error);
+        QUEUE[status] = Array.isArray(d) ? d : (d.posts || d.items || []);
+      });
+  });
+
+  return Promise.all(promises)
+    .then(function() {
+      renderPending();
+      renderApproved();
+      updateTodayBadge();
+    })
+    .catch(function(e) {
+      if (e.message === 'unauthorized') { sessionStorage.removeItem('towerOpsKey'); showLock(); return; }
+      toast('Queue load failed: ' + e.message, 'err');
+    });
+}
+
+function updateTodayBadge() {
+  var posted = QUEUE.posted ? QUEUE.posted.length : (ANALYTICS && ANALYTICS.today ? ANALYTICS.today.posted : 0);
+  var limit = SETTINGS ? SETTINGS.maxPostsPerDay : (ANALYTICS && ANALYTICS.today ? ANALYTICS.today.limit : 5);
+  var badge = document.getElementById('today-badge');
+  if (badge) badge.innerHTML = '<span>' + (ANALYTICS && ANALYTICS.today ? ANALYTICS.today.posted : '—') + '</span> / ' + (limit || '—') + ' today';
+
+  var pendingBadge = document.getElementById('badge-pending');
+  var count = QUEUE.pending ? QUEUE.pending.length : 0;
+  if (pendingBadge) {
+    if (count > 0) {
+      pendingBadge.textContent = count;
+      pendingBadge.style.display = '';
+    } else {
+      pendingBadge.style.display = 'none';
+    }
+  }
+}
+
+/* ══════════════════════════════════════
+   QUEUE — RENDER PENDING
+══════════════════════════════════════ */
+function renderPending() {
+  var el = document.getElementById('pending-list');
+  var posts = QUEUE.pending || [];
+  var meta = document.getElementById('pending-meta');
+  if (meta) meta.textContent = posts.length + ' post' + (posts.length !== 1 ? 's' : '') + ' awaiting review';
+
+  if (!posts.length) {
+    el.innerHTML = '<div class="xd-empty">No pending posts — queue is clear</div>';
+    return;
+  }
+
+  el.innerHTML = posts.map(function(p) { return renderPostCard(p, 'pending'); }).join('');
+}
+
+function renderApproved() {
+  var el = document.getElementById('approved-list');
+  var posts = QUEUE.approved || [];
+  var meta = document.getElementById('approved-meta');
+  if (meta) meta.textContent = posts.length + ' approved, waiting to post';
+
+  if (!posts.length) {
+    el.innerHTML = '<div class="xd-empty">No approved posts in queue</div>';
+    return;
+  }
+
+  el.innerHTML = posts.map(function(p) { return renderPostCard(p, 'approved'); }).join('');
+}
+
+function renderPostCard(p, status) {
+  var sources = (p.sources || []).map(function(s) {
+    return '<span class="xd-source-tag">' + esc(s) + '</span>';
+  }).join('');
+
+  var schedTime = p.scheduledFor
+    ? '<span class="xd-scheduled-time">Scheduled ' + esc(fmtDate(p.scheduledFor)) + '</span>'
+    : '';
+
+  var actions = '';
+  if (status === 'pending') {
+    actions =
+      '<button class="xd-btn ok" style="font-size:9px;padding:5px 10px;" onclick="approvePost(\'' + p.id + '\')">✓ Approve</button>' +
+      '<div class="xd-sched-wrap">' +
+        '<button class="xd-btn ghost" style="font-size:9px;padding:5px 10px;" onclick="toggleSched(\'' + p.id + '\')">Schedule ▾</button>' +
+        '<div class="xd-sched-menu" id="sched-' + p.id + '">' +
+          '<div class="xd-sched-item" onclick="schedulePost(\'' + p.id + '\',\'now\')">Post now</div>' +
+          '<div class="xd-sched-item" onclick="schedulePost(\'' + p.id + '\',\'1h\')">In 1 hour</div>' +
+          '<div class="xd-sched-item" onclick="schedulePost(\'' + p.id + '\',\'2h\')">In 2 hours</div>' +
+          '<div class="xd-sched-item" onclick="schedulePost(\'' + p.id + '\',\'4h\')">In 4 hours</div>' +
+          '<div class="xd-sched-custom">' +
+            '<input type="datetime-local" id="custom-' + p.id + '" min="' + new Date().toISOString().slice(0,16) + '" placeholder="Custom time">' +
+            '<div class="xd-sched-item" style="border-bottom:none;" onclick="scheduleCustom(\'' + p.id + '\')">Set custom time</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      '<button class="xd-btn ghost" style="font-size:9px;padding:5px 10px;" id="edit-btn-' + p.id + '" onclick="startEdit(\'' + p.id + '\')">Edit</button>' +
+      '<button class="xd-btn danger" style="font-size:9px;padding:5px 10px;" onclick="rejectPost(\'' + p.id + '\')">✗ Reject</button>';
+  } else if (status === 'approved') {
+    actions =
+      schedTime +
+      '<button class="xd-btn primary" style="font-size:9px;padding:5px 10px;" onclick="sendNow(\'' + p.id + '\')">Send Now</button>' +
+      '<button class="xd-btn danger" style="font-size:9px;padding:5px 10px;" onclick="revokePost(\'' + p.id + '\')">Revoke</button>';
+  }
+
+  var textLen = (p.text || '').length;
+  var countCls = charCountClass(textLen);
+
+  return '<div class="xd-card" id="card-' + p.id + '">' +
+    '<div class="xd-card-head">' +
+      '<div class="xd-card-badges">' +
+        fmtBadge(p.format) +
+        confBadge(p.confidence) +
+        sources +
+      '</div>' +
+      '<span class="xd-card-priority">' + (p.priority != null ? 'P' + p.priority : '') + '</span>' +
+      '<span class="xd-card-time">' + esc(fmtAgo(p.generatedAt)) + '</span>' +
+    '</div>' +
+    '<div class="xd-post-text" id="text-display-' + p.id + '">' + esc(p.text || '') + '</div>' +
+    '<textarea class="xd-post-textarea" id="text-edit-' + p.id + '" style="display:none;" oninput="updateCharCount(\'' + p.id + '\')">' + esc(p.text || '') + '</textarea>' +
+    '<div class="xd-char-count ' + countCls + '" id="char-' + p.id + '">' + textLen + ' / 280</div>' +
+    (p.rationale ? '<div class="xd-rationale">' + esc(p.rationale) + '</div>' : '') +
+    '<div class="xd-card-foot">' +
+      '<div class="xd-card-actions">' + actions + '</div>' +
+      (status === 'pending' && p.scheduledFor ? schedTime : '') +
+    '</div>' +
+  '</div>';
+}
+
+/* ══════════════════════════════════════
+   QUEUE — EDIT
+══════════════════════════════════════ */
+function startEdit(id) {
+  var display = document.getElementById('text-display-' + id);
+  var editor = document.getElementById('text-edit-' + id);
+  var btn = document.getElementById('edit-btn-' + id);
+  if (!display || !editor) return;
+
+  if (editor.style.display === 'none') {
+    display.classList.add('editing');
+    display.style.display = 'none';
+    editor.style.display = 'block';
+    editor.focus();
+    btn.textContent = 'Save';
+    btn.onclick = function() { saveEdit(id); };
+  } else {
+    saveEdit(id);
+  }
+}
+
+function saveEdit(id) {
+  var editor = document.getElementById('text-edit-' + id);
+  var display = document.getElementById('text-display-' + id);
+  var btn = document.getElementById('edit-btn-' + id);
+  if (!editor) return;
+
+  var text = editor.value;
+  fetch(api('/api/x-queue', 'id=' + encodeURIComponent(id)), {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text: text })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(d) {
+    if (d.error) throw new Error(d.error);
+    display.textContent = text;
+    display.style.display = 'block';
+    editor.style.display = 'none';
+    btn.textContent = 'Edit';
+    btn.onclick = function() { startEdit(id); };
+    toast('Post updated', 'ok');
+  })
+  .catch(function(e) { toast('Save failed: ' + e.message, 'err'); });
+}
+
+function updateCharCount(id) {
+  var editor = document.getElementById('text-edit-' + id);
+  var counter = document.getElementById('char-' + id);
+  if (!editor || !counter) return;
+  var n = editor.value.length;
+  counter.textContent = n + ' / 280';
+  counter.className = 'xd-char-count ' + charCountClass(n);
+}
+
+/* ══════════════════════════════════════
+   QUEUE — SCHEDULE DROPDOWN
+══════════════════════════════════════ */
+function toggleSched(id) {
+  var menu = document.getElementById('sched-' + id);
+  if (!menu) return;
+  var isOpen = menu.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.xd-sched-menu.open').forEach(function(m) { m.classList.remove('open'); });
+  if (!isOpen) menu.classList.add('open');
+}
+
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.xd-sched-wrap')) {
+    document.querySelectorAll('.xd-sched-menu.open').forEach(function(m) { m.classList.remove('open'); });
+  }
+});
+
+function schedulePost(id, when) {
+  var scheduledFor = null;
+  if (when === 'now') scheduledFor = new Date().toISOString();
+  else if (when === '1h') scheduledFor = addHours(1) + ':00';
+  else if (when === '2h') scheduledFor = addHours(2) + ':00';
+  else if (when === '4h') scheduledFor = addHours(4) + ':00';
+
+  document.querySelectorAll('.xd-sched-menu.open').forEach(function(m) { m.classList.remove('open'); });
+
+  fetch(api('/api/x-queue', 'id=' + encodeURIComponent(id)), {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ status: 'approved', scheduledFor: scheduledFor })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(d) {
+    if (d.error) throw new Error(d.error);
+    toast('Scheduled ' + (when === 'now' ? 'to post now' : 'for ' + when), 'ok');
+    return loadQueue();
+  })
+  .catch(function(e) { toast('Schedule failed: ' + e.message, 'err'); });
+}
+
+function scheduleCustom(id) {
+  var input = document.getElementById('custom-' + id);
+  if (!input || !input.value) { toast('Pick a date/time first', 'err'); return; }
+  schedulePost(id, null);
+  // Override with custom
+  document.querySelectorAll('.xd-sched-menu.open').forEach(function(m) { m.classList.remove('open'); });
+  fetch(api('/api/x-queue', 'id=' + encodeURIComponent(id)), {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ status: 'approved', scheduledFor: new Date(input.value).toISOString() })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(d) {
+    if (d.error) throw new Error(d.error);
+    toast('Scheduled for ' + fmtDate(input.value), 'ok');
+    return loadQueue();
+  })
+  .catch(function(e) { toast('Schedule failed: ' + e.message, 'err'); });
+}
+
+/* ══════════════════════════════════════
+   QUEUE — ACTIONS
+══════════════════════════════════════ */
+function approvePost(id) {
+  patchPost(id, { status: 'approved' }, 'Approved', loadQueue);
+}
+
+function rejectPost(id) {
+  patchPost(id, { status: 'rejected' }, 'Rejected', loadQueue);
+}
+
+function revokePost(id) {
+  patchPost(id, { status: 'pending' }, 'Revoked to pending', loadQueue);
+}
+
+function sendNow(id) {
+  patchPost(id, { status: 'approved', scheduledFor: new Date().toISOString() }, 'Queued to send now', loadQueue);
+}
+
+function patchPost(id, body, successMsg, cb) {
+  fetch(api('/api/x-queue', 'id=' + encodeURIComponent(id)), {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(d) {
+    if (d.error) throw new Error(d.error);
+    toast(successMsg, 'ok');
+    if (cb) cb();
+  })
+  .catch(function(e) { toast('Action failed: ' + e.message, 'err'); });
+}
+
+function deletePost(id) {
+  if (!confirm('Delete this post?')) return;
+  fetch(api('/api/x-queue', 'id=' + encodeURIComponent(id)), { method: 'DELETE' })
+  .then(function(r) { return r.json(); })
+  .then(function(d) {
+    if (d.error) throw new Error(d.error);
+    toast('Post deleted', 'ok');
+    loadQueue();
+  })
+  .catch(function(e) { toast('Delete failed: ' + e.message, 'err'); });
+}
+
+/* ══════════════════════════════════════
+   MODE + PAUSE (strip controls)
+══════════════════════════════════════ */
+function setMode(mode) {
+  if (!SETTINGS) return;
+  SETTINGS.mode = mode;
+  saveSetting({ mode: mode });
+  syncModeCards(mode);
+}
+
+function setPaused(paused) {
+  if (!SETTINGS) return;
+  SETTINGS.paused = paused;
+  saveSetting({ paused: paused });
+  toast(paused ? 'Posting paused' : 'Posting resumed', 'ok');
+}
+
+function saveSetting(partial) {
+  var body = Object.assign({}, SETTINGS, partial);
+  fetch(api('/api/x-settings'), {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(d) { if (d.error) throw new Error(d.error); })
+  .catch(function(e) { toast('Settings save failed: ' + e.message, 'err'); });
+}
+
+/* ══════════════════════════════════════
+   GENERATE
+══════════════════════════════════════ */
+function generateNow() {
+  var btn = document.getElementById('btn-generate');
+  if (btn) btn.disabled = true;
+  toast('Generating new posts…', 'inf');
+  fetch(api('/api/x-generate'), { method: 'POST' })
+  .then(function(r) { return r.json(); })
+  .then(function(d) {
+    if (d.error) throw new Error(d.error);
+    toast('Generated ' + (d.count || d.generated || 'new') + ' posts', 'ok');
+    return loadQueue();
+  })
+  .catch(function(e) { toast('Generate failed: ' + e.message, 'err'); })
+  .finally(function() { if (btn) btn.disabled = false; });
+}
+
+/* ══════════════════════════════════════
+   HISTORY
+══════════════════════════════════════ */
+function loadHistory() {
+  var el = document.getElementById('history-list');
+  el.innerHTML = '<div class="xd-skel xd-skel-row"></div><div class="xd-skel xd-skel-row"></div><div class="xd-skel xd-skel-row"></div>';
+
+  fetch(api('/api/x-queue', 'status=posted'))
+  .then(function(r) {
+    if (r.status === 401) throw new Error('unauthorized');
+    return r.json();
+  })
+  .then(function(d) {
+    if (d.error) throw new Error(d.error);
+    var posts = Array.isArray(d) ? d : (d.posts || d.items || []);
+    QUEUE.posted = posts;
+    renderHistory();
+  })
+  .catch(function(e) {
+    if (e.message === 'unauthorized') { showLock(); return; }
+    // Try analytics endpoint for tweet data if queue endpoint doesn't have posted
+    return fetch(api('/api/x-analytics'))
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      ANALYTICS = d;
+      QUEUE.posted = d.tweets || [];
+      renderHistory();
+    });
+  });
+}
+
+function renderHistory() {
+  var el = document.getElementById('history-list');
+  var posts = (QUEUE.posted || []).slice(0, 30);
+
+  if (!posts.length) {
+    el.innerHTML = '<div class="xd-empty">No posted tweets yet</div>';
+    return;
+  }
+
+  // Sort
+  if (HISTORY_SORT === 'impressions') {
+    posts = posts.slice().sort(function(a, b) { return (b.impressions || 0) - (a.impressions || 0); });
+  } else if (HISTORY_SORT === 'engagement') {
+    posts = posts.slice().sort(function(a, b) {
+      var ea = ((b.likes || 0) + (b.retweets || 0) + (b.clicks || 0)) / (b.impressions || 1);
+      var eb = ((a.likes || 0) + (a.retweets || 0) + (a.clicks || 0)) / (a.impressions || 1);
+      return ea - eb;
+    });
+  } else {
+    posts = posts.slice().sort(function(a, b) {
+      return new Date(b.postedAt || b.scheduledFor || 0) - new Date(a.postedAt || a.scheduledFor || 0);
+    });
+  }
+
+  el.innerHTML = posts.map(function(p) {
+    var text = p.text || '';
+    var preview = text.length > 100 ? text.slice(0, 100) + '…' : text;
+    var impr = p.impressions || 0;
+    var likes = p.likes || 0;
+    var rts = p.retweets || 0;
+    var clicks = p.clicks || 0;
+    var engRate = impr > 0 ? (((likes + rts + clicks) / impr) * 100).toFixed(1) + '%' : '—';
+    var tweetUrl = p.tweetUrl || (p.tweetId ? 'https://x.com/towerreportai/status/' + p.tweetId : null);
+
+    return '<div class="xd-history-row">' +
+      '<div class="xd-history-time">' + esc(fmtDate(p.postedAt || p.scheduledFor)) + '</div>' +
+      fmtBadge(p.format) +
+      '<div class="xd-history-text">' + esc(preview) + '</div>' +
+      (tweetUrl ? '<a class="xd-history-link" href="' + esc(tweetUrl) + '" target="_blank" rel="noopener">↗ View</a>' : '') +
+      '<div class="xd-metrics">' +
+        '<span class="xd-metric' + (impr > 5000 ? ' hi' : '') + '">' + fmtNum(impr) + ' imp</span>' +
+        '<span class="xd-metric">' + fmtNum(likes) + ' ♥</span>' +
+        '<span class="xd-metric">' + fmtNum(rts) + ' RT</span>' +
+        (clicks ? '<span class="xd-metric">' + fmtNum(clicks) + ' clicks</span>' : '') +
+        '<span class="xd-metric">' + engRate + ' eng</span>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function sortHistory(key, btn) {
+  HISTORY_SORT = key;
+  document.querySelectorAll('.xd-sort-btn').forEach(function(b) { b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+  renderHistory();
+}
+
+function syncAnalytics() {
+  var btn = document.getElementById('btn-sync');
+  if (btn) btn.disabled = true;
+  toast('Syncing analytics…', 'inf');
+  fetch(api('/api/x-analytics'))
+  .then(function(r) { return r.json(); })
+  .then(function(d) {
+    if (d.error) throw new Error(d.error);
+    ANALYTICS = d;
+    if (d.tweets) QUEUE.posted = d.tweets;
+    renderHistory();
+    toast('Analytics synced', 'ok');
+  })
+  .catch(function(e) { toast('Sync failed: ' + e.message, 'err'); })
+  .finally(function() { if (btn) btn.disabled = false; });
+}
+
+/* ══════════════════════════════════════
+   ANALYTICS
+══════════════════════════════════════ */
+function loadAnalytics() {
+  if (ANALYTICS) { renderAnalytics(); return; }
+
+  fetch(api('/api/x-analytics'))
+  .then(function(r) {
+    if (r.status === 401) throw new Error('unauthorized');
+    return r.json();
+  })
+  .then(function(d) {
+    if (d.error) throw new Error(d.error);
+    ANALYTICS = d;
+    renderAnalytics();
+  })
+  .catch(function(e) {
+    if (e.message === 'unauthorized') { showLock(); return; }
+    toast('Analytics load failed: ' + e.message, 'err');
+  });
+}
+
+function renderAnalytics() {
+  if (!ANALYTICS) return;
+  var a = ANALYTICS;
+  var today = a.today || {};
+
+  // Summary stats
+  function set(id, val) { var el = document.getElementById(id); if (el) el.textContent = val; }
+  set('an-posted', today.posted != null ? today.posted : '—');
+  set('an-limit', today.limit != null ? today.limit : '—');
+  set('an-impressions', today.impressions != null ? fmtNum(today.impressions) : '—');
+  set('an-besthour', a.bestHour != null ? fmtHour(a.bestHour) : '—');
+
+  // Avg engagement rate from tweets
+  var tweets = a.tweets || [];
+  var avgEng = '—';
+  if (tweets.length) {
+    var totalEng = tweets.reduce(function(s, t) {
+      var imp = t.impressions || 0;
+      return s + (imp > 0 ? ((t.likes || 0) + (t.retweets || 0) + (t.clicks || 0)) / imp : 0);
+    }, 0);
+    avgEng = (totalEng / tweets.length * 100).toFixed(1) + '%';
+  }
+  set('an-eng', avgEng);
+
+  // Format bars
+  var fb = document.getElementById('format-bars');
+  var formats = a.topFormats || [];
+  if (!formats.length && tweets.length) {
+    // Build from tweets
+    var fmap = {};
+    tweets.forEach(function(t) {
+      if (!t.format) return;
+      if (!fmap[t.format]) fmap[t.format] = { sum: 0, count: 0 };
+      fmap[t.format].sum += t.impressions || 0;
+      fmap[t.format].count++;
+    });
+    formats = Object.keys(fmap).map(function(f) {
+      return { format: f, avgImpressions: Math.round(fmap[f].sum / fmap[f].count) };
+    }).sort(function(a, b) { return b.avgImpressions - a.avgImpressions; });
+  }
+  if (formats.length) {
+    var maxImp = Math.max.apply(null, formats.map(function(f) { return f.avgImpressions || 0; }));
+    fb.innerHTML = formats.map(function(f) {
+      var pct = maxImp > 0 ? Math.round((f.avgImpressions / maxImp) * 100) : 0;
+      return '<div class="xd-bar-row">' +
+        '<div class="xd-bar-label">' + esc(f.format) + '</div>' +
+        '<div class="xd-bar-track"><div class="xd-bar-fill" style="width:' + pct + '%;"></div>' +
+        '<span class="xd-bar-val">' + fmtNum(f.avgImpressions) + '</span></div>' +
+      '</div>';
+    }).join('');
+  } else {
+    fb.innerHTML = '<div class="xd-empty" style="margin:0;">No format data yet</div>';
+  }
+
+  // Hours grid
+  var hg = document.getElementById('hours-grid');
+  var bestHour = a.bestHour;
+  // Build hour data from tweets if available
+  var hourMap = {};
+  tweets.forEach(function(t) {
+    if (!t.postedAt) return;
+    var h = new Date(t.postedAt).getUTCHours();
+    if (!hourMap[h]) hourMap[h] = 0;
+    hourMap[h] += t.impressions || 0;
+  });
+  var maxH = 0;
+  for (var h = 0; h < 24; h++) { if ((hourMap[h] || 0) > maxH) maxH = hourMap[h]; }
+
+  hg.style.cssText = 'display:flex;align-items:flex-end;gap:2px;width:100%;height:60px;';
+  hg.innerHTML = '';
+  for (var hr = 0; hr < 24; hr++) {
+    var val = hourMap[hr] || 0;
+    var pctH = maxH > 0 ? Math.max(8, Math.round((val / maxH) * 100)) : (hr === bestHour ? 80 : 8);
+    var isBest = (hr === bestHour) || (maxH > 0 && val === maxH);
+    var bar = document.createElement('div');
+    bar.className = 'xd-hour-bar' + (isBest ? ' best' : '');
+    bar.style.cssText = 'flex:1;height:' + pctH + '%;min-height:4px;';
+    bar.setAttribute('data-label', fmtHour(hr) + (val > 0 ? ' · ' + fmtNum(val) + ' imp' : ''));
+    hg.appendChild(bar);
+  }
+
+  // Top posts
+  var tp = document.getElementById('top-posts');
+  var topTweets = tweets.slice().sort(function(a, b) { return (b.impressions || 0) - (a.impressions || 0); }).slice(0, 5);
+  if (!topTweets.length) {
+    tp.innerHTML = '<div class="xd-empty" style="margin:0;">No tweet data yet</div>';
+  } else {
+    tp.innerHTML = topTweets.map(function(t, i) {
+      var url = t.tweetUrl || (t.tweetId ? 'https://x.com/towerreportai/status/' + t.tweetId : null);
+      return '<div class="xd-history-row" style="margin-bottom:6px;">' +
+        '<div style="font-family:var(--font-display);font-size:11px;font-weight:800;color:var(--orange);width:20px;flex-shrink:0;">#' + (i+1) + '</div>' +
+        fmtBadge(t.format) +
+        '<div class="xd-history-text">' + esc((t.text || '').slice(0, 80) + ((t.text || '').length > 80 ? '…' : '')) + '</div>' +
+        (url ? '<a class="xd-history-link" href="' + esc(url) + '" target="_blank" rel="noopener">↗ View</a>' : '') +
+        '<div class="xd-metrics">' +
+          '<span class="xd-metric hi">' + fmtNum(t.impressions) + ' imp</span>' +
+          '<span class="xd-metric">' + fmtNum(t.likes) + ' ♥</span>' +
+          '<span class="xd-metric">' + fmtNum(t.retweets) + ' RT</span>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+}
+
+/* ══════════════════════════════════════
+   SETTINGS
+══════════════════════════════════════ */
+function loadSettings() {
+  if (SETTINGS) { renderSettings(); return; }
+
+  fetch(api('/api/x-settings'))
+  .then(function(r) {
+    if (r.status === 401) throw new Error('unauthorized');
+    return r.json();
+  })
+  .then(function(d) {
+    if (d.error) throw new Error(d.error);
+    SETTINGS = d;
+    renderSettings();
+  })
+  .catch(function(e) {
+    if (e.message === 'unauthorized') { showLock(); return; }
+    toast('Settings load failed: ' + e.message, 'err');
+  });
+}
+
+function renderSettings() {
+  if (!SETTINGS) return;
+  var s = SETTINGS;
+
+  // Mode radio in strip
+  var modeRadio = document.getElementById('mode-' + (s.mode === 'trusted' ? 'trusted' : s.mode === 'auto' ? 'auto' : 'manual'));
+  if (modeRadio) modeRadio.checked = true;
+
+  // Pause
+  var pt = document.getElementById('pause-toggle');
+  if (pt) pt.checked = !!s.paused;
+
+  // Sliders
+  var mp = document.getElementById('s-maxposts');
+  if (mp) { mp.value = s.maxPostsPerDay || 5; document.getElementById('v-maxposts').textContent = mp.value; }
+  var iv = document.getElementById('s-interval');
+  if (iv) { iv.value = s.minIntervalMinutes || 90; document.getElementById('v-interval').textContent = iv.value + 'm'; }
+  var lr = document.getElementById('s-linkratio');
+  if (lr) { lr.value = Math.round((s.linkRatio || 0.3) * 100); document.getElementById('v-linkratio').textContent = lr.value + '%'; }
+
+  // Mode cards
+  syncModeCards(s.mode);
+
+  // Categories
+  var allCats = ['breaking','analysis','recruiting','quote','stat','gameday','promo','question'];
+  var activeCats = s.categories || allCats;
+  var cg = document.getElementById('cat-grid');
+  if (cg) {
+    cg.innerHTML = allCats.map(function(c) {
+      var checked = activeCats.indexOf(c) >= 0;
+      return '<label class="xd-check-item">' +
+        '<input type="checkbox" name="cat-' + c + '" value="' + c + '"' + (checked ? ' checked' : '') + '>' +
+        '<span>' + c + '</span>' +
+      '</label>';
+    }).join('');
+  }
+
+  // Tag editors
+  renderTagEditor('trusted-tags', 'trusted-input', s.trustedSources || []);
+  renderTagEditor('bl-topics-tags', 'bl-topics-input', s.blacklistTopics || []);
+  renderTagEditor('bl-sources-tags', 'bl-sources-input', s.blacklistSources || []);
+}
+
+function syncModeCards(mode) {
+  document.querySelectorAll('.xd-mode-card').forEach(function(c) {
+    c.classList.toggle('active-mode', c.getAttribute('data-mode') === mode);
+  });
+}
+
+function selectSettingsMode(mode) {
+  if (!SETTINGS) return;
+  SETTINGS.mode = mode;
+  syncModeCards(mode);
+  // Also update strip radio
+  var radio = document.getElementById('mode-' + (mode === 'trusted' ? 'trusted' : mode === 'auto' ? 'auto' : 'manual'));
+  if (radio) radio.checked = true;
+}
+
+function renderTagEditor(containerId, inputId, tags) {
+  var wrap = document.getElementById(containerId);
+  if (!wrap) return;
+
+  function rebuild() {
+    wrap.innerHTML = '';
+    tags.forEach(function(tag, i) {
+      var span = document.createElement('span');
+      span.className = 'xd-tag';
+      span.innerHTML = esc(tag) + '<button class="xd-tag-x" title="Remove" onclick="removeTag(\'' + containerId + '\',\'' + inputId + '\',' + i + ')">×</button>';
+      wrap.appendChild(span);
+    });
+    var inp = document.createElement('input');
+    inp.type = 'text';
+    inp.className = 'xd-tag-input';
+    inp.id = inputId;
+    inp.placeholder = 'Add…';
+    inp.onkeydown = function(e) {
+      if (e.key === 'Enter' || e.key === ',') {
+        e.preventDefault();
+        var val = inp.value.replace(/,/g, '').trim();
+        if (val && tags.indexOf(val) < 0) { tags.push(val); rebuild(); }
+        else inp.value = '';
+      } else if (e.key === 'Backspace' && !inp.value && tags.length) {
+        tags.pop();
+        rebuild();
+      }
+    };
+    wrap.appendChild(inp);
+  }
+  rebuild();
+
+  // Store tags ref for save
+  wrap._tags = tags;
+}
+
+function focusTagInput(inputId) {
+  var el = document.getElementById(inputId);
+  if (el) el.focus();
+}
+
+function removeTag(containerId, inputId, idx) {
+  var wrap = document.getElementById(containerId);
+  if (!wrap || !wrap._tags) return;
+  wrap._tags.splice(idx, 1);
+  renderTagEditor(containerId, inputId, wrap._tags);
+}
+
+function getTagList(containerId) {
+  var wrap = document.getElementById(containerId);
+  return wrap && wrap._tags ? wrap._tags.slice() : [];
+}
+
+function saveSettings() {
+  if (!SETTINGS) { toast('Settings not loaded yet', 'err'); return; }
+
+  // Gather from form
+  var maxposts = parseInt(document.getElementById('s-maxposts').value) || 5;
+  var interval = parseInt(document.getElementById('s-interval').value) || 90;
+  var linkratio = parseFloat(document.getElementById('s-linkratio').value) / 100;
+
+  // Categories
+  var cats = [];
+  document.querySelectorAll('#cat-grid input:checked').forEach(function(cb) { cats.push(cb.value); });
+
+  // Mode from card
+  var activeCard = document.querySelector('.xd-mode-card.active-mode');
+  var mode = activeCard ? activeCard.getAttribute('data-mode') : SETTINGS.mode;
+
+  var body = Object.assign({}, SETTINGS, {
+    mode: mode,
+    maxPostsPerDay: maxposts,
+    minIntervalMinutes: interval,
+    linkRatio: linkratio,
+    categories: cats,
+    trustedSources: getTagList('trusted-tags'),
+    blacklistTopics: getTagList('bl-topics-tags'),
+    blacklistSources: getTagList('bl-sources-tags'),
+  });
+
+  var btn = document.getElementById('btn-save');
+  if (btn) btn.disabled = true;
+
+  fetch(api('/api/x-settings'), {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(d) {
+    if (d.error) throw new Error(d.error);
+    SETTINGS = body;
+    // Sync mode radio in strip
+    var modeRadio = document.getElementById('mode-' + (mode === 'trusted' ? 'trusted' : mode === 'auto' ? 'auto' : 'manual'));
+    if (modeRadio) modeRadio.checked = true;
+    toast('Settings saved', 'ok');
+  })
+  .catch(function(e) { toast('Save failed: ' + e.message, 'err'); })
+  .finally(function() { if (btn) btn.disabled = false; });
+}
+
+/* ══════════════════════════════════════
+   REFRESH ALL
+══════════════════════════════════════ */
+function refreshAll(showToast) {
+  var btn = document.getElementById('btn-refresh');
+  if (btn) btn.disabled = true;
+
+  var tasks = [loadQueue()];
+  if (ACTIVE_TAB === 'history') tasks.push(loadHistory());
+  if (ACTIVE_TAB === 'analytics') {
+    ANALYTICS = null;
+    tasks.push(fetch(api('/api/x-analytics')).then(function(r) { return r.json(); }).then(function(d) { ANALYTICS = d; renderAnalytics(); }));
+  }
+  if (ACTIVE_TAB === 'settings') {
+    SETTINGS = null;
+    tasks.push(fetch(api('/api/x-settings')).then(function(r) { return r.json(); }).then(function(d) { SETTINGS = d; renderSettings(); }));
+  }
+
+  Promise.all(tasks)
+  .then(function() { if (showToast) toast('Refreshed', 'ok'); })
+  .catch(function(e) { toast('Refresh failed: ' + e.message, 'err'); })
+  .finally(function() { if (btn) btn.disabled = false; });
+}
+
+/* ══════════════════════════════════════
+   BOOT
+══════════════════════════════════════ */
+function boot() {
+  document.getElementById('xd-lock').style.display = 'none';
+  document.getElementById('xd-app').style.display = 'block';
+
+  // Load initial data
+  loadQueue();
+
+  // Also pre-load settings to power the strip controls
+  fetch(api('/api/x-settings'))
+  .then(function(r) {
+    if (r.status === 401) throw new Error('unauthorized');
+    return r.json();
+  })
+  .then(function(d) {
+    if (d.error) throw new Error(d.error);
+    SETTINGS = d;
+    // Apply strip controls from settings
+    var modeKey = d.mode === 'trusted' ? 'trusted' : d.mode === 'auto' ? 'auto' : 'manual';
+    var modeRadio = document.getElementById('mode-' + modeKey);
+    if (modeRadio) modeRadio.checked = true;
+    var pt = document.getElementById('pause-toggle');
+    if (pt) pt.checked = !!d.paused;
+  })
+  .catch(function(e) {
+    if (e.message === 'unauthorized') { sessionStorage.removeItem('towerOpsKey'); showLock(); }
+  });
+
+  // Auto-fetch analytics for today badge
+  fetch(api('/api/x-analytics'))
+  .then(function(r) { return r.json(); })
+  .then(function(d) {
+    ANALYTICS = d;
+    updateTodayBadge();
+  })
+  .catch(function() { /* non-fatal */ });
+
+  // Auto-refresh every 60s
+  if (REFRESH_TIMER) clearInterval(REFRESH_TIMER);
+  REFRESH_TIMER = setInterval(function() {
+    if (ACTIVE_TAB === 'queue') loadQueue();
+  }, 60000);
+}
+
+/* ── KEYBOARD: Enter on lock screen ── */
+document.addEventListener('DOMContentLoaded', function() {
+  var lockInput = document.getElementById('lock-key');
+  if (lockInput) lockInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') unlock(); });
+});
+
+/* ── INIT ── */
+if (KEY) sessionStorage.setItem('towerOpsKey', KEY);
+
+// Try booting immediately; /api/x-settings will 401 if key is bad → showLock()
+if (KEY) {
+  boot();
+} else {
+  document.getElementById('xd-lock').style.display = 'flex';
+}
+</script>
+</body>
+</html>
