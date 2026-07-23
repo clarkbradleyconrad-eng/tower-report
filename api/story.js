@@ -83,6 +83,41 @@ function listSection(label, items) {
   return `<div class="sr-section"><div class="sr-section-lbl">${label}</div><ul class="sr-list">${li}</ul></div>`;
 }
 
+function renderQuotes(quotes) {
+  if (!Array.isArray(quotes) || !quotes.length) return '';
+  const items = quotes.filter(q => q && q.text && q.speaker).slice(0, 4);
+  if (!items.length) return '';
+  return `<div class="sr-quotes">
+    <div class="sr-section-lbl">Direct Quotes</div>
+    ${items.map(q => `<div class="sr-pull-quote">
+      <div class="sr-pq-open">“</div>
+      <div class="sr-pq-text">${esc(q.text)}</div>
+      <div class="sr-pq-attr">
+        <span class="sr-pq-speaker">${esc(q.speaker)}</span>${q.source ? `<span class="sr-pq-dot"> &middot; </span><span class="sr-pq-source">${esc(q.source)}</span>` : ''}${q.date ? `<span class="sr-pq-dot"> &middot; </span><span class="sr-pq-date">${esc(q.date)}</span>` : ''}
+      </div>
+    </div>`).join('')}
+  </div>`;
+}
+
+function renderXPosts(xPosts) {
+  if (!Array.isArray(xPosts) || !xPosts.length) return '';
+  const valid = xPosts.filter(p => {
+    if (!p || !p.url) return false;
+    try {
+      const h = new URL(p.url).hostname.replace(/^www\./, '');
+      return h === 'x.com' || h === 'twitter.com';
+    } catch { return false; }
+  }).slice(0, 4);
+  if (!valid.length) return '';
+  return `<div class="sr-x-section">
+    <div class="sr-section-lbl">From X</div>
+    <div class="sr-x-posts">
+      ${valid.map(p => `<blockquote class="twitter-tweet" data-theme="dark" data-dnt="true"><a href="${escAttr(p.url)}">${esc(p.preview || 'View post on X')}</a></blockquote>`).join('\n      ')}
+    </div>
+    <script async src="https://platform.twitter.com/widgets.js"><\/script>
+  </div>`;
+}
+
 function renderStory(s, pageUrl) {
   const isNewsroom = !!s.title;
   const headline = esc(s.headline || s.title || '');
@@ -99,6 +134,7 @@ function renderStory(s, pageUrl) {
 
   let body = '';
   body += section('What Happened', s.whatHappened);
+  body += renderQuotes(s.quotes);
   body += section('Football Impact', s.footballImpact);
 
   if (s.whoItAffects && s.whoItAffects.length) {
@@ -115,6 +151,8 @@ function renderStory(s, pageUrl) {
     if (watchItems.length) body += listSection('Watch List', watchItems);
     if (s.whatChanges) body += section('What Changes', s.whatChanges);
   }
+
+  body += renderXPosts(s.xPosts);
 
   if (s.towerTake) {
     body += `<div class="sr-tower-take"><div class="sr-tt-lbl">TOWER TAKE</div><p>${esc(s.towerTake)}</p></div>`;
@@ -364,6 +402,18 @@ button{cursor:pointer;font-family:inherit;}
 .sr-share-btn-footer{display:flex;align-items:center;gap:6px;padding:8px 16px;background:transparent;border:1px solid var(--border-mid);color:var(--secondary);font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;transition:all .15s;}
 .sr-share-btn-footer:hover{border-color:var(--white2);color:var(--white);}
 .sr-share-btn-footer.copied{border-color:var(--orange);color:var(--orange);}
+
+.sr-quotes{margin-bottom:28px;}
+.sr-pull-quote{background:var(--s2);border-left:3px solid var(--orange);padding:20px 24px;margin-bottom:12px;}
+.sr-pq-open{font-family:var(--font-ed);font-size:56px;color:var(--orange);opacity:.35;line-height:.75;margin-bottom:6px;user-select:none;}
+.sr-pq-text{font-family:var(--font-ed);font-size:16.5px;font-style:italic;line-height:1.65;color:var(--white);margin-bottom:12px;}
+.sr-pq-attr{font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
+.sr-pq-speaker{color:var(--orange);}
+.sr-pq-dot,.sr-pq-source,.sr-pq-date{color:var(--muted);}
+
+.sr-x-section{margin-bottom:28px;}
+.sr-x-posts{display:flex;flex-direction:column;gap:2px;}
+.sr-x-posts .twitter-tweet{margin:0 !important;max-width:100% !important;}
 
 .sr-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--orange);color:#fff;font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:10px 20px;opacity:0;transition:opacity .2s;pointer-events:none;}
 .sr-toast.show{opacity:1;}

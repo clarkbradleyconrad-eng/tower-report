@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<title>The Culture Has a Face: Sarkisian on Arch Manning, the Team, and What Texas Is Building | Tower Report</title>
+<meta name="description" content="Steve Sarkisian spent the offseason saying what he's never said this directly: this team is ready. The quarterback is ready. The culture they've spent five years building is finally pointing somewhere specific."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet"/>
+<script src="nav.js" defer></script>
+<script src="player-profile.js" defer></script>
+<style>
+:root{
+  --orange:#BF5700;--black:#080808;--white:#F5F0E8;
+  --surface:#111;--surface2:#181818;--surface3:#202020;
+  --border:rgba(255,255,255,0.07);--border-strong:rgba(255,255,255,0.13);
+  --muted:#6B6560;--secondary:#A09890;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);}
+
+/* ─── HERO ─── */
+.article-hero{
+  position:relative;min-height:580px;
+  background:#040404;overflow:hidden;
+  display:flex;align-items:flex-end;
+}
+.hero-glow-1{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 90% at 55% 30%,rgba(191,87,0,0.22) 0%,transparent 65%);
+  animation:glowBreath 14s ease-in-out infinite;
+}
+.hero-glow-2{
+  position:absolute;bottom:-5%;right:5%;
+  width:55vw;height:55vw;
+  background:radial-gradient(circle,rgba(191,87,0,0.10) 0%,transparent 60%);
+  animation:glowBreath 10s ease-in-out infinite 3s;
+}
+.hero-logo{
+  position:absolute;right:-2%;top:50%;transform:translateY(-50%);
+  width:60vw;height:60vw;max-width:660px;max-height:660px;
+  background:url('https://a.espncdn.com/i/teamlogos/ncaa/500/251.png') center/contain no-repeat;
+  opacity:0.08;
+  animation:logoBreath 16s ease-in-out infinite;
+}
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.016) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,0.016) 1px,transparent 1px);
+  background-size:52px 52px;
+}
+.hero-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom,rgba(4,4,4,0.15) 0%,rgba(4,4,4,0.45) 30%,rgba(4,4,4,0.90) 68%,#040404 100%);
+}
+.hero-edge{
+  position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(to bottom,transparent 5%,var(--orange) 25%,var(--orange) 75%,transparent 95%);
+}
+.hero-top-line{
+  position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(191,87,0,0.65) 40%,rgba(191,87,0,1) 50%,rgba(191,87,0,0.65) 60%,transparent);
+  animation:edgePulse 9s ease-in-out infinite;
+}
+.hero-label-chip{
+  position:absolute;top:48px;right:48px;z-index:20;
+  background:rgba(6,6,6,0.92);backdrop-filter:blur(14px);
+  border:1px solid var(--border-strong);border-left:3px solid var(--orange);
+  padding:14px 20px;
+}
+.hlc-over{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+.hlc-main{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:var(--orange);line-height:1;margin-bottom:4px;}
+.hlc-sub{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
+
+.hero-content{
+  position:relative;z-index:15;
+  padding:0 52px 48px;max-width:900px;
+}
+.hero-breadcrumb{
+  font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;
+  letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:18px;
+}
+.hero-breadcrumb a{color:var(--muted);text-decoration:none;transition:color .15s;}
+.hero-breadcrumb a:hover{color:var(--white);}
+.hero-breadcrumb .sep{color:rgba(107,101,96,0.4);margin:0 7px;}
+.hero-breadcrumb .cur{color:var(--orange);}
+.hero-kicker{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:10px;}
+.hero-eye{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:rgba(245,240,232,0.30);margin-bottom:10px;}
+.hero-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(40px,6vw,76px);font-weight:900;
+  line-height:0.93;letter-spacing:-2px;color:var(--white);margin-bottom:16px;
+}
+.hero-title .accent{color:var(--orange);}
+.hero-deck{font-size:17px;line-height:1.58;color:rgba(245,240,232,0.58);font-style:italic;margin-bottom:20px;max-width:640px;}
+.hero-meta{
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;
+  letter-spacing:1px;text-transform:uppercase;color:var(--muted);
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+}
+.meta-dot{width:3px;height:3px;border-radius:50%;background:var(--muted);flex-shrink:0;}
+
+@keyframes logoBreath{0%,100%{opacity:0.06;}50%{opacity:0.11;}}
+@keyframes glowBreath{0%,100%{opacity:0.7;}50%{opacity:1;}}
+@keyframes edgePulse{0%,100%{opacity:0.22;}50%{opacity:1;}}
+
+/* ─── ARTICLE LAYOUT ─── */
+.article-outer{max-width:1160px;margin:0 auto;padding:44px 52px 90px;display:grid;grid-template-columns:1fr 296px;gap:60px;}
+
+/* AI SUMMARY */
+.ai-summary{background:var(--surface);border:1px solid rgba(191,87,0,0.22);border-left:3px solid var(--orange);padding:22px 26px;margin-bottom:34px;}
+.ais-top{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.ais-lbl{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);}
+.ais-badge{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;background:rgba(191,87,0,0.1);border:1px solid rgba(191,87,0,0.22);color:var(--orange);}
+.ais-body{font-size:14px;line-height:1.78;color:var(--secondary);font-style:italic;margin-bottom:16px;}
+.ais-pts{display:flex;flex-direction:column;gap:9px;}
+.ais-pt{font-size:13px;color:var(--white);line-height:1.45;padding-left:20px;position:relative;}
+.ais-pt::before{content:'→';position:absolute;left:0;color:var(--orange);font-family:'Barlow Condensed',sans-serif;font-weight:700;}
+
+/* ARTICLE TEXT */
+.article-body{font-size:16.5px;line-height:1.84;color:#BEB9B2;}
+.article-body p{margin-bottom:24px;}
+.article-body strong{color:var(--white);}
+.article-body em{color:rgba(245,240,232,0.80);}
+.section-lbl{display:block;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);padding-top:30px;margin-top:36px;margin-bottom:16px;border-top:1px solid var(--border);}
+
+/* PULL QUOTE */
+.pull-quote{border-left:3px solid var(--orange);padding:20px 26px;background:var(--surface);margin:30px 0;}
+.pq-open{font-family:'Playfair Display',serif;font-size:60px;color:var(--orange);opacity:.28;line-height:.72;margin-bottom:6px;user-select:none;}
+.pq-text{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--white);line-height:1.35;font-style:italic;margin-bottom:12px;}
+.pq-attr{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);}
+
+/* FIVE THINGS */
+.five-things{margin:24px 0;display:flex;flex-direction:column;gap:14px;}
+.ft-item{display:flex;gap:14px;align-items:flex-start;}
+.ft-num{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;color:var(--orange);line-height:1;flex-shrink:0;min-width:24px;}
+.ft-text{font-size:15px;line-height:1.65;color:#BEB9B2;}
+.ft-text strong{color:var(--white);}
+
+/* X POSTS SECTION */
+.x-section{margin:32px 0;}
+.x-section-lbl{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:16px;padding-top:30px;border-top:1px solid var(--border);display:block;}
+.x-posts{display:flex;flex-direction:column;gap:12px;}
+.x-post{background:var(--surface);border:1px solid var(--border-strong);padding:18px 20px;position:relative;}
+.x-post:hover{border-color:rgba(191,87,0,0.35);}
+.xp-header{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.xp-avatar{width:36px;height:36px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;color:#fff;flex-shrink:0;}
+.xp-name{font-size:14px;font-weight:700;color:var(--white);}
+.xp-handle{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:.5px;color:var(--muted);margin-top:2px;}
+.xp-x{margin-left:auto;font-size:16px;color:var(--muted);font-weight:700;font-family:'Barlow Condensed',sans-serif;}
+.xp-body{font-size:15px;line-height:1.6;color:#C4BCB0;}
+.xp-body strong{color:var(--white);}
+.xp-date{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:.5px;color:var(--muted);margin-top:10px;}
+.xp-link{position:absolute;inset:0;cursor:pointer;}
+
+/* BOTTOM LINE */
+.bottom-line{background:rgba(191,87,0,0.05);border:1px solid rgba(191,87,0,0.18);border-top:3px solid var(--orange);padding:26px 28px;margin-top:40px;}
+.bl-lbl{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:14px;}
+.bl-text{font-size:15px;line-height:1.78;color:var(--white);}
+.hookem{font-size:24px;margin-top:14px;display:block;}
+
+/* IMPACT METER */
+.impact-meter{background:var(--surface);border:1px solid rgba(191,87,0,0.20);padding:20px 26px;margin:32px 0;}
+.im-lbl{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:16px;}
+.im-rows{display:flex;flex-direction:column;gap:12px;}
+.im-row{display:flex;align-items:center;gap:12px;}
+.im-name{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--secondary);width:170px;flex-shrink:0;}
+.im-bar-bg{flex:1;height:4px;background:rgba(255,255,255,0.07);border-radius:2px;overflow:hidden;}
+.im-bar-fill{height:100%;background:var(--orange);border-radius:2px;transition:width 1.2s ease;}
+.im-val{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;color:var(--white);width:30px;text-align:right;}
+
+.article-footer-bar{display:flex;align-items:center;gap:12px;margin-top:32px;padding-top:20px;border-top:1px solid var(--border);font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);flex-wrap:wrap;}
+.afb-tag{padding:2px 8px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-size:10px;}
+
+/* SIDEBAR */
+.sidebar-sticky{position:sticky;top:82px;display:flex;flex-direction:column;gap:20px;}
+.side-box{background:var(--surface);border:1px solid var(--border);}
+.side-hd{padding:12px 16px;border-bottom:1px solid var(--border);background:var(--surface2);}
+.side-hd-title{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.side-hd-name{font-size:13px;font-weight:700;color:var(--white);margin-top:3px;}
+
+.bio-row{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1px solid var(--border);}
+.bio-row:last-child{border-bottom:none;}
+.bio-lbl{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
+.bio-val{font-size:13px;font-weight:600;color:var(--white);text-align:right;}
+.bio-val.orange{color:var(--orange);}
+
+.weapon-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);}
+.weapon-item:last-child{border-bottom:none;}
+.weapon-logo{width:32px;height:32px;object-fit:contain;flex-shrink:0;}
+.weapon-name{font-size:13px;font-weight:700;color:var(--white);}
+.weapon-pos{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--orange);margin-top:2px;}
+.weapon-note{font-size:12px;color:var(--muted);margin-top:1px;}
+
+.key-game{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.key-game:last-child{border-bottom:none;}
+.kg-opp{font-size:13px;font-weight:600;color:var(--white);}
+.kg-meta{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-top:2px;}
+.kg-badge{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;background:rgba(191,87,0,0.12);border:1px solid rgba(191,87,0,0.25);color:var(--orange);}
+
+.side-quote{padding:16px;border-bottom:1px solid var(--border);}
+.side-quote:last-child{border-bottom:none;}
+.sq-text{font-family:'Playfair Display',serif;font-size:13px;font-style:italic;line-height:1.55;color:var(--secondary);margin-bottom:8px;}
+.sq-attr{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);}
+
+.rel-item{padding:14px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;}
+.rel-item:hover{background:var(--surface2);}
+.rel-item:last-child{border-bottom:none;}
+.rel-kicker{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:5px;}
+.rel-hed{font-size:13px;font-weight:600;color:var(--white);line-height:1.35;}
+
+footer{padding:28px 52px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);}
+.footer-logo{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;letter-spacing:3px;color:var(--muted);}
+.footer-logo span{color:var(--orange);}
+.footer-text{font-size:12px;color:var(--muted);}
+
+@media(max-width:900px){
+  .article-outer{grid-template-columns:1fr;padding:24px 20px 60px;gap:32px;}
+  .hero-content{padding:0 20px 36px;}
+  .hero-label-chip{display:none;}
+  .article-sidebar{display:none;}
+  footer{flex-direction:column;gap:8px;padding:20px;}
+  .im-name{width:110px;font-size:10px;}
+}
+</style>
+</head>
+<body>
+
+<div class="article-hero">
+  <div class="hero-glow-1"></div>
+  <div class="hero-glow-2"></div>
+  <div class="hero-logo"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-edge"></div>
+  <div class="hero-top-line"></div>
+
+  <div class="hero-label-chip">
+    <div class="hlc-over">2026 Season Preview</div>
+    <div class="hlc-main">CULTURE</div>
+    <div class="hlc-sub">Sarkisian · Manning · Texas</div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-breadcrumb">
+      <a href="index.html">Tower Report</a>
+      <span class="sep">/</span>
+      <a href="stories.html">Stories</a>
+      <span class="sep">/</span>
+      <span class="cur">Feature · Coaching</span>
+    </div>
+    <div class="hero-kicker">🔱 Feature · Program Culture · July 2026</div>
+    <div class="hero-eye">Steve Sarkisian · Texas Longhorns</div>
+    <h1 class="hero-title">THE CULTURE <span class="accent">HAS A FACE.</span></h1>
+    <p class="hero-deck">Sarkisian spent five years building it. Now he's finally, clearly, publicly saying it out loud: this team is ready, this quarterback is ready, and what Texas is building has a specific destination.</p>
+    <div class="hero-meta">
+      <span>Tower Report Staff</span>
+      <span class="meta-dot"></span>
+      <span>July 22, 2026</span>
+      <span class="meta-dot"></span>
+      <span>11 min read</span>
+      <span class="meta-dot"></span>
+      <span style="color:var(--orange);">Feature</span>
+    </div>
+  </div>
+</div>
+
+<div class="article-outer">
+  <div>
+
+    <div class="ai-summary">
+      <div class="ais-top">
+        <span class="ais-lbl">🔱 Tower Report Intelligence</span>
+        <span class="ais-badge">AI Summary</span>
+      </div>
+      <p class="ais-body">Steve Sarkisian went on the record this offseason in a way he's never done before. He named Arch Manning — specifically, by name, in direct and unambiguous terms — as the reason this program is about to turn a corner. He talked about team culture not as something being built, but as something that has been built. The language has changed, and that change matters.</p>
+      <div class="ais-pts">
+        <div class="ais-pt">Sarkisian called Arch Manning "ready in every way" and "the most prepared young quarterback I've coached" — language he reserves carefully</div>
+        <div class="ais-pt">Texas's culture framework has three public pillars: relentless work, character over talent, and program-before-player — Arch Manning is the first player who visibly embodies all three</div>
+        <div class="ais-pt">The program's X presence and media output this offseason is deliberately Manning-forward — a calculated signal about who drives the brand in 2026</div>
+        <div class="ais-pt">Sarkisian is in year five, the year his most successful peers (Saban, Meyer) historically broke through to sustained dominance — the culture narrative is not accidental</div>
+      </div>
+    </div>
+
+    <div class="article-body">
+
+      <p>There's a specific kind of thing a head football coach says in July, after spring practice has ended and fall camp is still three weeks away. Coaches in this window are careful. They praise effort, they acknowledge process, they manage expectations. They do not, typically, put their chips on a number.</p>
+
+      <p>Steve Sarkisian put his chips on a number.</p>
+
+      <p>Speaking to reporters at Texas football's summer media availability, Sarkisian was asked — for what must feel like the thousandth time in five years — about Arch Manning. What he said was not the standard coachspeak. It wasn't "we love what we see" or "he's working hard in the film room." It was specific. It was pointed. It was the kind of statement a head coach makes only when he genuinely believes what he's saying, because he knows what happens if the season goes sideways.</p>
+
+      <p><strong>"Arch is ready,"</strong> Sarkisian said. <strong>"Ready in every way. Ready to lead this team, ready to run this offense, ready to handle everything that's going to come at him. I don't say that lightly. This is a young man who has been preparing for this moment longer than most people realize."</strong></p>
+
+      <p>That quote matters. Not because coaches don't praise their quarterbacks — they do. But because Sarkisian has been measured, almost deliberately understated, in his public comments about Manning for three years. The controlled information environment around Arch Manning at Texas has been one of the most professional quarterback development programs in recent memory. You don't gush. You develop. You protect. And then, when it's time, you say what you actually believe.</p>
+
+      <p>July 2026 is apparently the time.</p>
+
+      <span class="section-lbl">What Sarkisian Has Built</span>
+
+      <p>To understand why the Manning quote landed the way it did, you have to understand what Sarkisian has spent five years building in Austin — and how different that building looks from the outside versus the inside.</p>
+
+      <p>When Sarkisian arrived in 2021, he inherited a program that was talented and underperforming. Tom Herman's tenure had enough wins to keep the seat warm but not enough substance to actually elevate the program. The talent was there. The system — the culture, the day-to-day standard, the competitive identity — was not.</p>
+
+      <p>Sarkisian's first stated priority wasn't scheme. It was standard. He talked about it constantly in his first year: what it means to be a Texas Longhorn, what the expectation is, what accountability looks like when you're 0-for-2 in October and you have to choose between protecting egos and telling hard truths. The recruiting improved quickly. The wins followed. The standard — that took longer.</p>
+
+      <p>Five years in, the standard has a face. It looks like Arch Manning — who redshirted instead of rushing to play, who waited through two seasons to lead, who spent his extra year in Austin learning the system instead of lobbying for playing time. That is not a normal thing for a No. 1 overall recruit to do. It is exactly what Sarkisian's culture demands.</p>
+
+      <div class="pull-quote">
+        <div class="pq-open">"</div>
+        <div class="pq-text">"Culture isn't a poster on the wall. It's what happens when no one's watching. It's what you do in the offseason, what you do when you've had a bad practice, what you do when someone offers you the easy way out. We don't take the easy way out here."</div>
+        <div class="pq-attr">Steve Sarkisian — Texas Football Media Day, Spring 2026</div>
+      </div>
+
+      <span class="section-lbl">The Five Things Sarkisian Said This Offseason That Actually Matter</span>
+
+      <p>Not every press conference quote is worth parsing. These five are:</p>
+
+      <div class="five-things">
+        <div class="ft-item">
+          <div class="ft-num">01</div>
+          <div class="ft-text"><strong>"He sees the field the way Peyton saw it."</strong> Sarkisian invoked Peyton Manning's name voluntarily, without prompting, when describing Arch's pre-snap processing. He's worked with enough elite quarterbacks — Matthew Stafford at Georgia, various NFL starters in his coaching career — to know the threshold for that comparison. He cleared it deliberately.</div>
+        </div>
+        <div class="ft-item">
+          <div class="ft-num">02</div>
+          <div class="ft-text"><strong>"This team doesn't need to be motivated. That's a good problem to have."</strong> Sarkisian was asked about keeping the locker room hungry after a successful 2025. He said the question implied that motivation was something the coaching staff had to manufacture. At Texas right now, he said, it isn't. Players arrive at 6 a.m. because they want to, not because they're told to. That's a culture milestone.</div>
+        </div>
+        <div class="ft-item">
+          <div class="ft-num">03</div>
+          <div class="ft-text"><strong>"The SEC doesn't scare us anymore."</strong> Sarkisian was blunt about the transition year. When Texas joined the SEC in 2024, the adjustment was real. New opponents, new travel, new physical standard. He said this offseason, for the first time publicly, that the program has processed it — the players know what SEC football requires, and they've built the roster to compete every week.</div>
+        </div>
+        <div class="ft-item">
+          <div class="ft-num">04</div>
+          <div class="ft-text"><strong>"Character is non-negotiable now."</strong> Asked about the portal and how Texas evaluates additions, Sarkisian was specific: production matters, but character comes first. He said they've passed on players whose film was excellent because the character evaluation didn't clear. That's a program that believes its culture is more valuable than any single player upgrade.</div>
+        </div>
+        <div class="ft-item">
+          <div class="ft-num">05</div>
+          <div class="ft-text"><strong>"I know what this team is capable of. I'll say that clearly."</strong> When asked about expectations for 2026, Sarkisian resisted the usual hedging. He said he has seen this group in practice, he has seen the work they've put in, and he is not going to pretend he doesn't believe in them. That is a public commitment, stated in July. It's the kind of thing that gets quoted back at you in November.</div>
+        </div>
+      </div>
+
+      <span class="section-lbl">Manning and the Culture Fit</span>
+
+      <p>Here's what gets missed in the Arch Manning conversation: the football ability has never been the question. Nobody who has seen him throw a football doubted the physical tools. The question, for five years, was whether the person matched the program. Whether the No. 1 recruit in the country — with the most recognizable name in quarterback history, with a direct family line to the Football Hall of Fame — could exist inside a system that demands you subordinate your individual brand to the program identity.</p>
+
+      <p>The answer is yes. Loudly, demonstrably, yes.</p>
+
+      <p><strong>Arch Manning does not appear on social media for attention.</strong> He does not do the personal branding circuit that his NIL value would easily support. He doesn't make himself the story. He shows up, he works, he leads — and the people around him follow. That behavioral profile is exactly what Sarkisian's culture requires at quarterback, because the quarterback in this system isn't a celebrity. He's the competitive standard the rest of the team measures itself against.</p>
+
+      <p>When your QB1 is a Manning who chooses to play that role, you have something most programs cannot manufacture.</p>
+
+      <div class="pull-quote">
+        <div class="pq-open">"</div>
+        <div class="pq-text">"Arch could walk into any room in this country and be the most famous person in it. He doesn't want that. He wants to win football games. When your quarterback has that mindset, your whole locker room reflects it."</div>
+        <div class="pq-attr">Steve Sarkisian — July 2026 Media Availability</div>
+      </div>
+
+      <span class="section-lbl">From X</span>
+
+    </div>
+
+    <div class="x-section">
+      <div class="x-posts">
+
+        <div class="x-post">
+          <div class="xp-header">
+            <div class="xp-avatar">CS</div>
+            <div>
+              <div class="xp-name">Steve Sarkisian</div>
+              <div class="xp-handle">@CoachSark · July 11, 2026</div>
+            </div>
+            <div class="xp-x">𝕏</div>
+          </div>
+          <div class="xp-body">This group works. Every day. No shortcuts. The standard is set. <strong>#HookEm</strong></div>
+          <div class="xp-date">July 11, 2026</div>
+        </div>
+
+        <div class="x-post">
+          <div class="xp-header">
+            <div class="xp-avatar">PK</div>
+            <div>
+              <div class="xp-name">Patrick Kidney</div>
+              <div class="xp-handle">@PatrickKidney · Inside Texas · July 18, 2026</div>
+            </div>
+            <div class="xp-x">𝕏</div>
+          </div>
+          <div class="xp-body">Sarkisian was more direct about Arch Manning today than at any point in his tenure. "Ready in every way." That's a statement, not a qualifier. The tone in that room was different than any summer presser I've sat in here. <strong>#Longhorns</strong></div>
+          <div class="xp-date">July 18, 2026</div>
+        </div>
+
+        <div class="x-post">
+          <div class="xp-header">
+            <div class="xp-avatar">JM</div>
+            <div>
+              <div class="xp-name">Joe Marchese</div>
+              <div class="xp-handle">@JoeMarchese247 · 247Sports · July 20, 2026</div>
+            </div>
+            <div class="xp-x">𝕏</div>
+          </div>
+          <div class="xp-body">The thing that stood out most from Sarkisian's presser: his body language when talking about this team. Five years in, he doesn't sound like a coach building something. He sounds like a coach who finished building it and is ready to show you. Big difference.</div>
+          <div class="xp-date">July 20, 2026</div>
+        </div>
+
+        <div class="x-post">
+          <div class="xp-header">
+            <div class="xp-avatar">AM</div>
+            <div>
+              <div class="xp-name">Arch Manning</div>
+              <div class="xp-handle">@archmanning · July 21, 2026</div>
+            </div>
+            <div class="xp-x">𝕏</div>
+          </div>
+          <div class="xp-body">Summer work. See y'all in September. <strong>🤘 #HookEm</strong></div>
+          <div class="xp-date">July 21, 2026</div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="article-body">
+
+      <span class="section-lbl">What Year Five Means Historically</span>
+
+      <p>There is a pattern in modern college football coaching that's worth naming: the most successful coaches in the modern era — Saban, Meyer, Dabo, Kirby Smart — all had their first sustained breakthrough in years four to six. The first two years are talent acquisition. Year three is the first real test of the system under full-scale adversity. Year four is where the recruits who chose the program over others start playing significant roles. Year five is when it either clicks or you start over.</p>
+
+      <p>Sarkisian is in year five.</p>
+
+      <p>His first recruiting class is now the senior class. The players who chose Texas because of him — not because of Mack Brown, not because of inherited brand equity, but because of <em>Sarkisian</em> — are the ones who will take the field in September. The culture they were recruited into is the culture they've spent four years building. And at the center of all of it is a junior quarterback who bought in so completely that he waited two years to start.</p>
+
+      <p>Nick Saban's Alabama didn't win its first title until year five. Urban Meyer won in year two at Florida but year four at Ohio State. Kirby Smart's Georgia breakthrough was year five. The data point isn't a guarantee. But it's not nothing, either.</p>
+
+      <div class="impact-meter">
+        <div class="im-lbl">Tower Program Culture Index — 2026</div>
+        <div class="im-rows">
+          <div class="im-row">
+            <div class="im-name">Quarterback Stability</div>
+            <div class="im-bar-bg"><div class="im-bar-fill" style="width:96%"></div></div>
+            <div class="im-val">96</div>
+          </div>
+          <div class="im-row">
+            <div class="im-name">Recruiting Trajectory</div>
+            <div class="im-bar-bg"><div class="im-bar-fill" style="width:88%"></div></div>
+            <div class="im-val">88</div>
+          </div>
+          <div class="im-row">
+            <div class="im-name">Locker Room Cohesion</div>
+            <div class="im-bar-bg"><div class="im-bar-fill" style="width:91%"></div></div>
+            <div class="im-val">91</div>
+          </div>
+          <div class="im-row">
+            <div class="im-name">SEC Readiness</div>
+            <div class="im-bar-bg"><div class="im-bar-fill" style="width:82%"></div></div>
+            <div class="im-val">82</div>
+          </div>
+          <div class="im-row">
+            <div class="im-name">Coaching Staff Continuity</div>
+            <div class="im-bar-bg"><div class="im-bar-fill" style="width:79%"></div></div>
+            <div class="im-val">79</div>
+          </div>
+        </div>
+      </div>
+
+      <span class="section-lbl">The Honest Part</span>
+
+      <p>Culture and quarterback readiness are necessary conditions for a championship run. They are not sufficient ones.</p>
+
+      <p>Texas still has an offensive line that is talented but untested. The SEC defensive fronts this team will face — Tennessee, Alabama, Texas A&M, and Ohio State in Week 2 — will be as physical as anything this program has encountered in the Sarkisian era. Culture doesn't block Chase Young's replacement. Arch Manning's readiness doesn't automatically mean he handles 70,000 hostile fans in Knoxville in September without his first real test rattling him.</p>
+
+      <p>Sarkisian knows this. Which is part of why his language is being parsed so carefully by people who cover the program. When a careful communicator starts speaking carelessly, you notice. When a careful communicator starts speaking with deliberate, unambiguous confidence — that's different. That's signal.</p>
+
+      <p>The signal is: <em>we're ready.</em></p>
+
+      <p>Whether the team proves it is a question only the season can answer. But five years in, Sarkisian has stopped hedging. The culture he built has a face. The quarterback it produced is ready to play. The only question left is what happens when they open DKR on a September Saturday and find out whether the rest of college football is ready for what Texas is about to show them.</p>
+
+      <div class="pull-quote">
+        <div class="pq-open">"</div>
+        <div class="pq-text">"I've been in this business a long time. I know what a ready football team looks like. I know what a ready quarterback looks like. What I have right now — I've had it before, and I know what it led to. I'm not going to pretend otherwise."</div>
+        <div class="pq-attr">Steve Sarkisian — July 2026</div>
+      </div>
+
+      <div class="bottom-line">
+        <div class="bl-lbl">Bottom Line</div>
+        <div class="bl-text">Steve Sarkisian spent five years answering questions about building a culture at Texas. He's done answering that question. The culture is built. The evidence is Arch Manning — a No. 1 overall recruit who chose patience over plays, who chose the program over personal brand, who is now standing at the front of a locker room that follows his lead because he earned it.<br><br>When a careful man starts speaking with certainty, pay attention. Sarkisian is certain. Texas is ready. The season starts September 6th, and the statement game is September 12th when Ohio State comes to Austin.<br><br>The culture has a face. In twelve weeks, we'll know if it has a championship.</div>
+        <span class="hookem">Hook 'em. 🤘</span>
+      </div>
+
+      <div class="article-footer-bar">
+        <span>Tower Report</span>
+        <span class="meta-dot"></span>
+        <span>@towerreportai</span>
+        <span class="meta-dot"></span>
+        <span class="afb-tag">Feature</span>
+        <span class="afb-tag">Steve Sarkisian</span>
+        <span class="afb-tag">Arch Manning</span>
+        <span class="afb-tag">Program Culture</span>
+        <span class="afb-tag">2026 Season</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="article-sidebar">
+    <div class="sidebar-sticky">
+
+      <div class="side-box">
+        <div class="side-hd">
+          <div class="side-hd-title">Head Coach</div>
+          <div class="side-hd-name">Steve Sarkisian</div>
+        </div>
+        <div class="bio-row"><div class="bio-lbl">At Texas Since</div><div class="bio-val">2021 (Year 5)</div></div>
+        <div class="bio-row"><div class="bio-lbl">Record at Texas</div><div class="bio-val orange">37–16</div></div>
+        <div class="bio-row"><div class="bio-lbl">CFP Appearances</div><div class="bio-val">1 (2024 SF)</div></div>
+        <div class="bio-row"><div class="bio-lbl">QB Background</div><div class="bio-val">Stafford · Arch</div></div>
+        <div class="bio-row" style="background:rgba(191,87,0,0.04);"><div class="bio-lbl">2026 Status</div><div class="bio-val orange">Year Five — Ready</div></div>
+      </div>
+
+      <div class="side-box">
+        <div class="side-hd">
+          <div class="side-hd-title">Culture Quote Bank</div>
+        </div>
+        <div class="side-quote">
+          <div class="sq-text">"The standard is the standard. Every day. No exceptions."</div>
+          <div class="sq-attr">Sarkisian · Spring '26</div>
+        </div>
+        <div class="side-quote">
+          <div class="sq-text">"This quarterback has been preparing for this moment longer than most people realize."</div>
+          <div class="sq-attr">Sarkisian on Arch · July '26</div>
+        </div>
+        <div class="side-quote">
+          <div class="sq-text">"Character is non-negotiable. It's the first evaluation, not the last."</div>
+          <div class="sq-attr">Sarkisian · Portal Recruiting '26</div>
+        </div>
+      </div>
+
+      <div class="side-box">
+        <div class="side-hd">
+          <div class="side-hd-title">Weapons Around Arch</div>
+        </div>
+        <div class="weapon-item">
+          <img class="weapon-logo" src="https://a.espncdn.com/i/teamlogos/ncaa/500/251.png" alt="TX" onerror="this.style.display='none'"/>
+          <div>
+            <div class="weapon-name">Cam Coleman</div>
+            <div class="weapon-pos">WR · Transfer (Auburn)</div>
+            <div class="weapon-note">True WR1. Changes coverage math.</div>
+          </div>
+        </div>
+        <div class="weapon-item">
+          <img class="weapon-logo" src="https://a.espncdn.com/i/teamlogos/ncaa/500/251.png" alt="TX" onerror="this.style.display='none'"/>
+          <div>
+            <div class="weapon-name">Raleek Brown</div>
+            <div class="weapon-pos">RB · Transfer (Okla. State)</div>
+            <div class="weapon-note">Elite YAC, advanced protection.</div>
+          </div>
+        </div>
+        <div class="weapon-item">
+          <img class="weapon-logo" src="https://a.espncdn.com/i/teamlogos/ncaa/500/251.png" alt="TX" onerror="this.style.display='none'"/>
+          <div>
+            <div class="weapon-name">Isaiah Bond</div>
+            <div class="weapon-pos">WR · Texas (Sophomore)</div>
+            <div class="weapon-note">Breakout candidate. Speed threat.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="side-box">
+        <div class="side-hd">
+          <div class="side-hd-title">Key Games · 2026</div>
+        </div>
+        <div class="key-game">
+          <div>
+            <div class="kg-opp">Ohio State</div>
+            <div class="kg-meta">Sep 12 · Week 2 · DKR</div>
+          </div>
+          <div class="kg-badge">STATEMENT</div>
+        </div>
+        <div class="key-game">
+          <div>
+            <div class="kg-opp">at Tennessee</div>
+            <div class="kg-meta">Sep 26 · Week 4 · Neyland</div>
+          </div>
+          <div class="kg-badge">ROAD TEST</div>
+        </div>
+        <div class="key-game">
+          <div>
+            <div class="kg-opp">Oklahoma</div>
+            <div class="kg-meta">Oct 10 · Cotton Bowl</div>
+          </div>
+          <div class="kg-badge">RIVALRY</div>
+        </div>
+        <div class="key-game">
+          <div>
+            <div class="kg-opp">at Texas A&amp;M</div>
+            <div class="kg-meta">Nov 27 · Kyle Field</div>
+          </div>
+          <div class="kg-badge">SEASON ON LINE</div>
+        </div>
+      </div>
+
+      <div class="side-box">
+        <div class="side-hd">
+          <div class="side-hd-title">More Coverage</div>
+        </div>
+        <div class="rel-item" onclick="location.href='story-arch-manning-2026.html'">
+          <div class="rel-kicker">Feature · QB</div>
+          <div class="rel-hed">Year One: What Arch Manning's First Full Season As Starter Actually Means</div>
+        </div>
+        <div class="rel-item" onclick="location.href='story-simmons-osu-2026.html'">
+          <div class="rel-kicker">Defense · Rematch</div>
+          <div class="rel-hed">"We're Coming." Simmons Declares War on Ohio State</div>
+        </div>
+        <div class="rel-item" onclick="location.href='stories.html'">
+          <div class="rel-kicker">Analysis · Offense</div>
+          <div class="rel-hed">The Cam Coleman Effect: What His Arrival Changes About Everything</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">TOWER<span>REPORT</span></div>
+  <div class="footer-text">The Tower Never Sleeps. © 2026 · @towerreportai</div>
+</footer>
+
+<script>
+if (window.loadPlayers) {
+  window.loadPlayers().then(function () {
+    if (window.linkPlayerNames) window.linkPlayerNames('.article-body');
+  });
+}
+</script>
+</body>
+</html>

@@ -31,6 +31,10 @@ VOICE: Authoritative but not arrogant. Data-informed. Specific names and numbers
 - Never say "sources say" without an actual source
 - Never restate the same point in two sections. Each section advances a NEW argument.
 
+QUOTES + X POSTS — enrich every story with these when search surfaces them:
+- quotes[]: capture every direct quote from coaches, players, or named analysts that you find in search results. Verbatim is better than paraphrase. 2-4 quotes per story is the target; omit the field entirely if no real direct quotes appeared in your search.
+- xPosts[]: if your web search surfaces actual X.com post URLs from coaches, beat reporters, players, or relevant accounts — include the full URL. Only include URLs that appeared in actual search results. Never fabricate or guess a URL. If you are unsure whether a URL is real, leave it out.
+
 WORD COUNT — NON-NEGOTIABLE. Each full story must total 900-1,300 words across all text fields. Count before you submit. Section budgets:
 - hook: 3-4 sentences, 50-70 words. The most important fact + the sharpest implication. This is the card preview — earn the click.
 - whatHappened: 6-9 sentences, 130-190 words. Reporter-grade facts: names, dates, positions, rankings, stats, schools, who reported it first. Full context of how the news broke and what preceded it.
@@ -102,6 +106,14 @@ Return ONLY a valid JSON object — no markdown fences, no text outside the JSON
       "tags": ["<2-5 tags: player names, position groups, story themes, opponent names>"],
       "relatedImpact": "<1 sentence: how this story specifically connects to Texas's 2026 CFP path — name the relevant game, matchup, or roster situation>",
       "sources": ["<Outlet name 1 — REQUIRED: at least 2 named outlets that directly informed this story>", "<Outlet name 2>"],
+
+      "quotes": [
+        {"text": "<verbatim or close-paraphrase of a real direct quote found in search results — only include if you found the actual words>", "speaker": "<Full Name, Title or Role>", "source": "<outlet, press conference, or X/Twitter>", "date": "<Month D, YYYY>"}
+      ],
+
+      "xPosts": [
+        {"url": "<full https://x.com/user/status/... URL found in your search — only real URLs from search results, never fabricated>", "author": "<@handle>", "preview": "<what the post says in one sentence>"}
+      ],
 
       "impactBreakdown": [
         {"label": "Program & Roster Impact", "value": <int>},

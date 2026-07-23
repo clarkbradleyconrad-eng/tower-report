@@ -3360,13 +3360,19 @@ async function updateMostRecentTimestamp(briefingDate){
 async function loadLatestAnalysis(){
   const grid=document.getElementById('stories-grid');
   if(!grid) return;
+  const FEATURED=`<a href="story-sarkisian-culture-2026.html" class="story-tile" style="border-color:rgba(191,87,0,0.32);">
+      <div class="st-top-row"><div class="st-kicker">FEATURE</div><div class="st-impact">96</div></div>
+      <div class="st-hed">The Culture Has a Face: Sarkisian on Arch Manning and What Texas Is Building</div>
+      <div class="st-dek">Steve Sarkisian went on the record this offseason in a way he's never done before. Five years of building. Now he's saying it clearly.</div>
+      <div class="st-cat">Program Culture</div>
+      <div class="st-read-more">Read Feature →</div>
+    </a>`;
   try{
     const res=await fetch('/api/stories');
-    if(!res.ok) return;
+    if(!res.ok){ grid.innerHTML=FEATURED; return; }
     const data=await res.json();
-    const stories=(data.stories||[]).slice(0,3);
-    if(!stories.length) return;
-    grid.innerHTML=stories.map(s=>`
+    const stories=(data.stories||[]).slice(0,2);
+    grid.innerHTML=FEATURED+stories.map(s=>`
       <a href="stories.html" class="story-tile">
         <div class="st-top-row"><div class="st-kicker">${s.kicker||s.category||''}</div>${s.impact?`<div class="st-impact">${s.impact}</div>`:''}</div>
         <div class="st-hed">${s.headline||''}</div>
@@ -3374,7 +3380,7 @@ async function loadLatestAnalysis(){
         <div class="st-cat">${s.category||''}</div>
         <div class="st-read-more">Read Analysis →</div>
       </a>`).join('');
-  }catch(e){}
+  }catch(e){ grid.innerHTML=FEATURED; }
 }
 
 /* ---- THREAD TABS ---- */
