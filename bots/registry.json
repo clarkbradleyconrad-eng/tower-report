@@ -123,6 +123,23 @@
       "alert": { "onFail": true, "qualityDrop": 15 }
     },
     {
+      "id": "social-poster",
+      "name": "X Auto-Poster",
+      "purpose": "Post the top story (breaking draft from social-drafter) and top briefing item to @towerreportai on X automatically after each pipeline run. Deduplicates within 8h.",
+      "kind": "http",
+      "endpoint": "/api/social-post",
+      "method": "GET",
+      "schedule": "orchestrator am+pm, after social-drafter and briefing",
+      "promptFile": null,
+      "inputs": [],
+      "outputs": ["blob:tower-social-posted.json"],
+      "outputType": null,
+      "dependsOn": ["social-drafter", "briefing"],
+      "enabled": true,
+      "timeoutMs": 30000,
+      "alert": { "onFail": true }
+    },
+    {
       "id": "alerts",
       "name": "Ops Alerts",
       "purpose": "Runs last every cycle; posts to Slack (SLACK_OPS_WEBHOOK) on bot failure, quality drop >15, missed runs, or review queue >10",

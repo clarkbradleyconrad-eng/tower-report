@@ -182,6 +182,19 @@ const HTTP_ADAPTERS = {
     const data = await stepFetch(base, bot.endpoint, {}, bot.timeoutMs);
     return { summary: { source: data.meta?.source, liveGames: data.meta?.liveGames } };
   },
+
+  'social-poster': async (bot, { base, dryRun }) => {
+    const url = dryRun ? withQuery(bot.endpoint, 'dryRun=1') : bot.endpoint;
+    const data = await stepFetch(base, url, {}, bot.timeoutMs);
+    return {
+      summary: {
+        posted: data.posted ?? 0,
+        skipped: data.skipped ?? 0,
+        urls: (data.results || []).map(r => r.url).filter(Boolean),
+        dryRun: !!data.dryRun,
+      },
+    };
+  },
 };
 
 /* ---- Review queue size (for the alerts bot) ---- */
