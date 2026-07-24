@@ -21,6 +21,89 @@ const PLACEHOLDER = /\b(multiple|various|several|numerous|unnamed|unknown|tbd|pl
 
 const clamp = (n) => Math.max(0, Math.min(100, Math.round(n)));
 
+/* ---- Substance metrics ----
+   Depth = density of verifiable specifics, not word count. A padded story
+   repeats the same ideas across sections with no numbers, dates, or
+   rankings — these metrics catch exactly that and cap the score below the
+   reject threshold, so padding can never buy a passing grade. */
+
+const STORY_SECTIONS = ['hook', 'whatHappened', 'whyItMatters', 'footballImpact',
+  'impactOnTexas', 'whatChanges', 'towerTake', 'futureOutlook', 'summary'];
+
+const FILLER = /\b(standard (offseason )?evaluation timelines?|remains to be seen|only time will tell|consensus (view|read) is|it is (unclear|uncertain) (whether|how)|will be (interesting|key|crucial) to watch|could go either way|time will tell|per recent reporting|according to reports\b)/gi;
+
+// Concrete, checkable specifics: counts, rankings, dates, measurements, records
+const CONCRETE = /\b(\d[\d,.]*(?:%|st|nd|rd|th)?|no\.\s?\d+|#\d+|[3-5]-star|five-star|four-star|three-star|\d-\d(?:\d)?|january|february|march|april|may|june|july|august|september|october|november|december)\b/gi;
+
+function sectionTexts(story) {
+  return STORY_SECTIONS
+    .map(k => [k, String(story?.[k] || '').trim()])
+    .filter(([, v]) => v.length > 0);
+}
+
+/** Concrete specifics per 100 words across all narrative sections. */
+export function factDensity(story) {
+  const text = sectionTexts(story).map(([, v]) => v).join(' ');
+  const words = text.split(/\s+/).filter(Boolean).length;
+  if (!words) return { per100: 0, count: 0, words: 0 };
+  const count = (text.match(CONCRETE) || []).length;
+  return { per100: (count / words) * 100, count, words };
+}
+
+/**
+ * Cross-section repetition: fraction of 4-word shingles in each section that
+ * already appeared in an earlier section. Padded stories recycle the same
+ * phrases; genuinely deep stories advance a new argument per section.
+ */
+export function repetitionRatio(story) {
+  const seen = new Set();
+  let repeated = 0, total = 0;
+  for (const [, text] of sectionTexts(story)) {
+    const words = text.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').split(/\s+/).filter(w => w.length > 2);
+    const local = [];
+    for (let i = 0; i + 4 <= words.length; i++) {
+      const sh = words.slice(i, i + 4).join(' ');
+      total++;
+      if (seen.has(sh)) repeated++;
+      local.push(sh);
+    }
+    for (const sh of local) seen.add(sh);
+  }
+  return total ? repeated / total : 0;
+}
+
+/** 0-25 substance points + hard caps. Returns { pts, cap, reasons }. */
+function substanceScore(story) {
+  const reasons = [];
+  let pts = 0;
+  let cap = 100;
+
+  const density = factDensity(story);
+  // Solid beat writing runs ~2.5-5 concrete specifics per 100 words
+  if (density.per100 >= 2.0) pts += 15;
+  else if (density.per100 >= 1.2) { pts += 8; reasons.push(`substance: thin fact density (${density.per100.toFixed(1)} specifics/100w, want 2.0+)`); }
+  else {
+    reasons.push(`substance: hollow — ${density.count} concrete specifics in ${density.words} words (${density.per100.toFixed(1)}/100w)`);
+    cap = Math.min(cap, 50); // hard fail: word count without facts is padding
+  }
+
+  const rep = repetitionRatio(story);
+  if (rep <= 0.04) pts += 10;
+  else if (rep <= 0.10) { pts += 4; reasons.push(`substance: noticeable cross-section repetition (${(rep * 100).toFixed(0)}%)`); }
+  else {
+    reasons.push(`substance: sections recycle the same phrases (${(rep * 100).toFixed(0)}% repeated shingles)`);
+    cap = Math.min(cap, 50); // hard fail: expansion by repetition
+  }
+
+  const fillerHits = (sectionTexts(story).map(([, v]) => v).join(' ').match(FILLER) || []);
+  if (fillerHits.length) {
+    pts = Math.max(0, pts - fillerHits.length * 3);
+    reasons.push(`substance: filler phrases (${[...new Set(fillerHits.map(f => f.toLowerCase()))].slice(0, 3).join('; ')})`);
+  }
+
+  return { pts, cap, reasons };
+}
+
 /* ---- Stories (stories-refresh + story-generator schemas) ---- */
 
 export function scoreStory(story, facts) {
@@ -28,33 +111,33 @@ export function scoreStory(story, facts) {
   const reasons = [];
   let pts = 0;
 
-  // Sourcing — 25
+  // Sourcing — 15
   const sources = (s.sources || []).map(x => String(x).trim()).filter(Boolean);
-  if (sources.length >= 2) pts += 15;
+  if (sources.length >= 2) pts += 9;
   else reasons.push(`sourcing: only ${sources.length} named outlet(s)`);
   const approved = sources.filter(src =>
     APPROVED_SOURCES.some(a => src.toLowerCase().includes(a.toLowerCase())));
-  pts += Math.min(10, approved.length * 5);
+  pts += Math.min(6, approved.length * 3);
   if (sources.length >= 2 && !approved.length) reasons.push('sourcing: no recognized beat outlet');
 
-  // Players — 20
+  // Players — 15
   const players = (s.players || []).map(x => String(x).trim()).filter(Boolean);
   const real = players.filter(p => p.split(/\s+/).length >= 2 && !PLACEHOLDER.test(p));
-  if (players.length && real.length === players.length) pts += 20;
-  else if (real.length) { pts += 10; reasons.push('players: contains placeholder entries'); }
+  if (players.length && real.length === players.length) pts += 15;
+  else if (real.length) { pts += 7; reasons.push('players: contains placeholder entries'); }
   else reasons.push('players: no real named players');
 
-  // Impact breakdown — 20
+  // Impact breakdown — 15
   const impact = Number(s.impact || s.impactScore) || 0;
   const breakdown = Array.isArray(s.impactBreakdown) ? s.impactBreakdown : [];
   const canon = (l) => String(l || '').toLowerCase().replace(/[^a-z]/g, '');
   const labels = breakdown.map(b => canon(b.label));
   const allLabels = breakdown.length === 4
     && IMPACT_COMPONENTS.every(want => labels.includes(canon(want)));
-  if (allLabels) pts += 10;
+  if (allLabels) pts += 8;
   else reasons.push('impactBreakdown: missing or mislabeled components');
   const sum = breakdown.reduce((a, b) => a + (Number(b.value) || 0), 0);
-  if (impact && sum === impact) pts += 10;
+  if (impact && sum === impact) pts += 7;
   else reasons.push(`impactBreakdown: components sum to ${sum}, impact is ${impact}`);
 
   // Facts consistency — 20
@@ -63,7 +146,7 @@ export function scoreStory(story, facts) {
   pts += Math.max(0, 20 - factConflicts.length * 10);
   reasons.push(...factConflicts.map(r => `facts: ${r}`));
 
-  // Completeness — 15 (covers both story schemas)
+  // Completeness — 10 (covers both story schemas)
   const fields = [
     s.headline || s.title,
     s.hook || s.summary,
@@ -77,10 +160,16 @@ export function scoreStory(story, facts) {
     s.seasonModel && Object.keys(s.seasonModel).length >= 3,
   ];
   const present = fields.filter(Boolean).length;
-  pts += Math.round((present / fields.length) * 15);
+  pts += Math.round((present / fields.length) * 10);
   if (present < fields.length) reasons.push(`completeness: ${present}/${fields.length} sections filled`);
 
-  return { score: clamp(pts), reasons };
+  // Substance — 25, with hard caps: hollow or self-repeating stories can
+  // never score above 50 no matter how well-formed the JSON is
+  const sub = substanceScore(s);
+  pts += sub.pts;
+  reasons.push(...sub.reasons);
+
+  return { score: Math.min(clamp(pts), sub.cap), reasons };
 }
 
 /* ---- Briefing items ---- */

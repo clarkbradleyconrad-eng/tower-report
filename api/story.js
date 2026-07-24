@@ -2,8 +2,12 @@
  * Tower Report — /api/story
  * Server-rendered story page with OG meta tags for sharing.
  * Routed via vercel.json rewrite: /story → /api/story
+ *
+ * For brief- IDs: generates a full long-form article on first click,
+ * caches to blob so every subsequent load is instant.
  */
-export const config = { runtime: 'edge' };
+
+// Node runtime — Grok web-search calls take up to 80s, edge times out at ~25s
 
 const BLOB_API = 'https://blob.vercel-storage.com';
 
@@ -25,8 +29,6 @@ function tierDesc(n) {
   return 'Stories with scores 75+ move the conversation. High signal. Real edge.';
 }
 
-// Real hero art from /img — a newsroom-set imageUrl wins, then keyword
-// matches against our actual assets, then the stories hero as default
 function heroImage(s) {
   if (s.imageUrl) return s.imageUrl;
   const hay = ((s.headline || s.title || '') + ' ' + (s.tags || []).join(' ')).toLowerCase();
@@ -34,6 +36,8 @@ function heroImage(s) {
   if (hay.includes('vince young') || hay.includes('rose bowl')) return '/img/gs-vy-run-2006.png';
   return '/img/stories-hero-bg.png';
 }
+
+/* ---- Blob helpers ---- */
 
 async function fetchBlob(token, prefix) {
   try {
@@ -50,8 +54,168 @@ async function fetchBlob(token, prefix) {
   } catch { return []; }
 }
 
-// A briefing item (tower-briefing blob) rendered through the story template.
-// Impact gauge maps from the briefing importance tier.
+async function fetchCachedBriefStory(token, id) {
+  try {
+    const prefix = `tower-brief-stories/${id}`;
+    const listRes = await fetch(`${BLOB_API}?prefix=${encodeURIComponent(prefix)}&limit=5`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!listRes.ok) return null;
+    const { blobs = [] } = await listRes.json();
+    if (!blobs.length) return null;
+    blobs.sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt));
+    const dataRes = await fetch(blobs[0].downloadUrl || blobs[0].url);
+    if (!dataRes.ok) return null;
+    return await dataRes.json();
+  } catch { return null; }
+}
+
+async function writeBriefStory(token, id, story) {
+  try {
+    const prefix = `tower-brief-stories/${id}`;
+    const listRes = await fetch(`${BLOB_API}?prefix=${encodeURIComponent(prefix)}&limit=10`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (listRes.ok) {
+      const { blobs = [] } = await listRes.json();
+      if (blobs.length) {
+        await fetch(BLOB_API, {
+          method: 'DELETE',
+          headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ urls: blobs.map(b => b.url) }),
+        });
+      }
+    }
+    await fetch(`${BLOB_API}/${prefix}.json?addRandomSuffix=false`, {
+      method: 'PUT',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify(story),
+    });
+  } catch (e) {
+    console.error('[story] blob cache write failed:', e.message);
+  }
+}
+
+/* ---- Article generation from briefing item ---- */
+
+const GENERATION_SYSTEM = `You are Tower Report's lead analyst — the sharpest Texas Longhorns football intelligence engine on the internet. You don't summarize. You tell readers what it means, why it matters right now, and what it signals about where this program is heading.
+
+Given a briefing item as a seed, you search the web for the full story and write a long-form, in-depth article that goes deeper than any national TV pundit or aggregator blog. Your readers are serious Texas football fans who want insider-level analysis, real numbers, and forward-looking takes — not press-release rewrites.
+
+ANALYTICAL DEPTH — every article must contain:
+1. SECOND-ORDER EFFECTS: trace the chain — who moves, whose snaps shift, what portal urgency changes, what scholarship gets freed, what recruiting board moves
+2. OPPONENT-SPECIFIC APPLICATION: take the news to at least one specific 2026 opponent and explain the matchup mechanically
+3. ROSTER MATH: snaps, rotations, scholarship counts, class-year timelines, the two-deep before vs. after
+4. HISTORICAL PRECEDENT: one concrete, verified Texas or SEC comparison and what happened next
+5. THE CONTRARIAN ANGLE: what the consensus read is missing or getting wrong
+6. A FALSIFIABLE PREDICTION: one specific, checkable call with an approximate date
+
+QUOTES: Search for and include real direct quotes from coaches, players, analysts, or reporters. If you found a quote via web search, include it. Do not invent quotes.
+
+X POSTS: Search X for posts from beat reporters and insiders covering this story. Include real x.com/status URLs you actually found. Do not generate fake post IDs.
+
+VOICE: Authoritative but not arrogant. Data-informed. Specific names and numbers over generalities. Write "Quinn Ewers threw for 3,479 yards" not "the QB had a strong year." Never restate the same point twice. Each section advances a new argument.
+
+STANDARDS:
+- Every claim must be real and verifiable from your web search
+- Named sources only — never "sources say" without an actual outlet
+- If web search returns a fact, cite the outlet inline naturally ("per On3", "according to 247Sports")
+- Do not use phrases like "explosive" or "electric" — let facts carry the weight
+
+Return ONLY a valid JSON object in this exact shape — no markdown fences, no explanation:
+
+{
+  "headline": "Specific, declarative, confident headline. No questions. Name the player and the stakes.",
+  "kicker": "CATEGORY IN CAPS — one of: RECRUITING · TRANSFER PORTAL · PROGRAM · ROSTER · INTEL · NIL · INJURY",
+  "category": "Category name matching the kicker",
+  "hook": "2-3 sentence lead paragraph: the key fact + why Longhorn fans need to know this right now. Sharp, specific, no filler.",
+  "whatHappened": "Full factual reporting, 400-500 words. Reporter-grade specificity: names, dates, rankings, who reported it first, what context preceded it. Multiple paragraphs. Go three levels deep.",
+  "whyItMatters": "200-250 words. Second-order effects chain: who on the depth chart moves, what recruiting board entries shift, what CFP odds implication, what portal urgency changes. At least 3 paragraphs.",
+  "whatChanges": "150-200 words. Concrete before-vs-after: roster math, scheme adjustments, scholarship implications, recruiting target priority changes.",
+  "quotes": [
+    {
+      "text": "Exact direct quote you found via web search",
+      "speaker": "Full Name, Title or Role",
+      "source": "Outlet or platform where this quote appeared",
+      "date": "Month Day, Year"
+    }
+  ],
+  "xPosts": [
+    {
+      "url": "https://x.com/handle/status/REAL_NUMERIC_ID",
+      "preview": "One sentence description of what this post says"
+    }
+  ],
+  "takeaways": [
+    "Sharp analytical insight 1 — specific observation, not generic summary",
+    "Sharp analytical insight 2",
+    "Sharp analytical insight 3",
+    "Sharp analytical insight 4",
+    "Sharp analytical insight 5"
+  ],
+  "watchNext": [
+    "Specific next development to watch, where to find it, and approximate timeframe",
+    "Second development to monitor"
+  ],
+  "towerTake": "The single sharpest editorial observation — the thing an insider would say that nobody else is saying. One sentence. No hedging.",
+  "impact": 85,
+  "tags": ["Tag1", "Tag2", "Tag3"],
+  "sources": ["Outlet 1", "Outlet 2"],
+  "sourceUrl": "https://direct-link-to-primary-source"
+}`;
+
+async function generateBriefStory(brief, apiKey) {
+  const today = new Date().toLocaleDateString('en-US', {
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+  });
+
+  const userPrompt = `Today is ${today}.
+
+Expand this briefing item into a full Tower Report article.
+
+BRIEFING SEED:
+Headline: ${brief.headline || ''}
+Category: ${brief.category || ''}
+What happened: ${brief.whatHappened || brief.context || ''}
+Why it matters: ${brief.whyItMatters || ''}
+What's next: ${brief.whatNext || ''}
+Source outlet: ${brief.source || ''}
+Source URL: ${brief.url || ''}
+
+Search the web for everything related to this story — the full context, any quotes from players/coaches/analysts, relevant X posts from beat reporters, background on the players involved, and any secondary effects on Texas football. Then write the full Tower Report long-form article and return only the JSON object.`;
+
+  const xaiRes = await fetch('https://api.x.ai/v1/responses', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: 'grok-4',
+      instructions: GENERATION_SYSTEM,
+      input: [{ role: 'user', content: userPrompt }],
+      tools: [{ type: 'web_search' }],
+      temperature: 0.2,
+    }),
+    signal: AbortSignal.timeout(90000),
+  });
+
+  if (!xaiRes.ok) {
+    const errText = await xaiRes.text().catch(() => '');
+    throw new Error(`xAI error ${xaiRes.status}: ${errText.slice(0, 200)}`);
+  }
+
+  const data = await xaiRes.json();
+  const messageItem = data.output?.find(o => o.type === 'message');
+  const content = messageItem?.content?.find(c => c.type === 'output_text')?.text;
+  if (!content) throw new Error('Empty response from Grok');
+
+  const cleaned = content.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
+  return JSON.parse(cleaned);
+}
+
+/* ---- Thin briefing → story fallback (used if generation fails) ---- */
+
 function briefToStory(b, lastUpdated) {
   const impactMap = { URGENT: 93, HIGH: 86, NORMAL: 78 };
   return {
@@ -72,6 +236,8 @@ function briefToStory(b, lastUpdated) {
   };
 }
 
+/* ---- Rendering helpers ---- */
+
 function section(label, body) {
   if (!body) return '';
   return `<div class="sr-section"><div class="sr-section-lbl">${label}</div><div class="sr-section-body">${esc(body)}</div></div>`;
@@ -90,7 +256,7 @@ function renderQuotes(quotes) {
   return `<div class="sr-quotes">
     <div class="sr-section-lbl">Direct Quotes</div>
     ${items.map(q => `<div class="sr-pull-quote">
-      <div class="sr-pq-open">“</div>
+      <div class="sr-pq-open">"</div>
       <div class="sr-pq-text">${esc(q.text)}</div>
       <div class="sr-pq-attr">
         <span class="sr-pq-speaker">${esc(q.speaker)}</span>${q.source ? `<span class="sr-pq-dot"> &middot; </span><span class="sr-pq-source">${esc(q.source)}</span>` : ''}${q.date ? `<span class="sr-pq-dot"> &middot; </span><span class="sr-pq-date">${esc(q.date)}</span>` : ''}
@@ -146,10 +312,11 @@ function renderStory(s, pageUrl) {
     body += section('Future Outlook', s.futureOutlook);
     if (s.keySignals?.length) body += listSection('Key Signals', s.keySignals);
   } else {
+    body += section('Why It Matters', s.whyItMatters);
+    body += section('What Changes', s.whatChanges);
     if (s.takeaways?.length) body += listSection('Signal Intelligence', s.takeaways);
     const watchItems = Array.isArray(s.watchNext) ? s.watchNext : (s.watchNext ? [s.watchNext] : []);
     if (watchItems.length) body += listSection('Watch List', watchItems);
-    if (s.whatChanges) body += section('What Changes', s.whatChanges);
   }
 
   body += renderXPosts(s.xPosts);
@@ -160,20 +327,18 @@ function renderStory(s, pageUrl) {
 
   const shareUrl = escAttr(pageUrl);
 
-  // Why It Matters callout — pulled out of the section flow into the mock's star box
-  const wim = s.whyItMatters ? `
+  const wim = hook ? `
     <div class="sr-wim">
       <div class="sr-wim-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
       <div>
-        <div class="sr-wim-lbl">Why It Matters</div>
-        <p>${esc(s.whyItMatters)}</p>
+        <div class="sr-wim-lbl">Tower Briefing</div>
+        <p>${esc(hook)}</p>
       </div>
     </div>` : '';
 
-  // Sidebar cards
   let sidebar = '';
   if (impact) {
-    const C = 263.9; // 2πr for r=42
+    const C = 263.9;
     sidebar += `
     <div class="sr-card">
       <div class="sr-card-lbl">Tower Impact</div>
@@ -262,27 +427,74 @@ function renderStory(s, pageUrl) {
   </div>`;
 }
 
-export default async function handler(req) {
-  const url = new URL(req.url);
+/* ---- Handler ---- */
+
+export default async function handler(req, res) {
+  const url = new URL(req.url, 'http://localhost');
   const id = url.searchParams.get('id') || '';
-  const origin = `${url.protocol}//${url.host}`;
+  const host = req.headers['x-forwarded-host'] || req.headers.host || 'tower-report.vercel.app';
+  const proto = req.headers['x-forwarded-proto'] || 'https';
+  const origin = `${proto}://${host}`;
   const pageUrl = `${origin}/story?id=${encodeURIComponent(id)}`;
 
   const token = process.env.BLOB_READ_WRITE_TOKEN;
+  const apiKey = process.env.XAI_API_KEY;
   let story = null;
+  let freshlyGenerated = false;
 
   if (token && id) {
     if (id.startsWith('brief-')) {
-      const briefData = await fetchBlob(token, 'tower-briefing');
-      const briefs = Array.isArray(briefData) ? briefData : (briefData.briefing || []);
-      const brief = briefs.find(b => b.id === id);
-      if (brief) story = briefToStory(brief, briefData.lastUpdated);
+      // 1. Check blob for a previously generated full article (fast path)
+      const cached = await fetchCachedBriefStory(token, id);
+
+      if (cached) {
+        story = cached;
+      } else {
+        // 2. Fetch the thin briefing seed from blob
+        const briefData = await fetchBlob(token, 'tower-briefing');
+        const briefs = Array.isArray(briefData) ? briefData : (briefData?.briefing || []);
+        // Exact ID match first; fall back to position (handles cron date rollover where
+        // homepage cached brief-YYYYMMDD-N links but the blob has newer/older IDs)
+        let brief = briefs.find(b => b.id === id);
+        if (!brief) {
+          const posMatch = id.match(/brief-\d{8}-(\d+)$/);
+          if (posMatch) {
+            const idx = parseInt(posMatch[1], 10) - 1;
+            brief = briefs[idx] || null;
+          }
+        }
+
+        if (brief && apiKey) {
+          // 3. Generate a full long-form article (first click only — cached after this)
+          freshlyGenerated = true;
+          try {
+            const generated = await generateBriefStory(brief, apiKey);
+            const wordCount = [
+              generated.whatHappened, generated.whyItMatters,
+              generated.whatChanges, generated.hook,
+            ].filter(Boolean).join(' ').split(/\s+/).length;
+            story = {
+              ...generated,
+              id,
+              readTime: Math.max(3, Math.round(wordCount / 200)),
+              date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+            };
+            // Await the cache write — Vercel kills the process after res.send(), so
+            // non-blocking writes get cut off before they complete.
+            await writeBriefStory(token, id, story);
+          } catch (e) {
+            console.error('[story] generation failed, using thin fallback:', e.message);
+            story = briefToStory(brief, briefData?.lastUpdated);
+          }
+        } else if (brief) {
+          story = briefToStory(brief, briefData?.lastUpdated);
+        }
+      }
     } else {
       const [aiStories, dbStories] = await Promise.all([
         fetchBlob(token, 'tower-ai-stories'),
         fetchBlob(token, 'tower-stories'),
       ]);
-      // Newsroom stories carry a status — never render unpublished drafts
       const published = dbStories.filter(s => !s.status || s.status === 'published');
       story = [...aiStories, ...published].find(s => s.id === id);
     }
@@ -295,7 +507,9 @@ export default async function handler(req) {
 <h1 style="font-size:24px;">Story not found</h1>
 <a href="/stories.html" style="color:#BF5700;font-size:13px;">← Back to stories</a>
 </body></html>`;
-    return new Response(html404, { status: 404, headers: { 'Content-Type': 'text/html; charset=utf-8' } });
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.status(404).send(html404);
+    return;
   }
 
   const ogTitle = story.headline || story.title || 'Tower Report';
@@ -386,7 +600,8 @@ button{cursor:pointer;font-family:inherit;}
 
 .sr-section{margin-bottom:28px;}
 .sr-section-lbl{font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:10px;}
-.sr-section-body{font-size:15px;line-height:1.72;color:var(--white2);}
+.sr-section-body{font-size:15px;line-height:1.78;color:var(--white2);}
+.sr-section-body p+p{margin-top:1em;}
 .sr-list{padding-left:18px;display:flex;flex-direction:column;gap:8px;}
 .sr-list li{font-size:14px;line-height:1.65;color:var(--white2);}
 .sr-tower-take{background:var(--s2);border-left:3px solid var(--orange);padding:20px 22px;margin:32px 0;}
@@ -456,10 +671,9 @@ function doShare(url, title) {
 </body>
 </html>`;
 
-  return new Response(html, {
-    headers: {
-      'Content-Type': 'text/html; charset=utf-8',
-      'Cache-Control': 's-maxage=300, stale-while-revalidate=600',
-    },
-  });
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  // Fresh generations: no-store so CDN doesn't cache during the slow first request.
+  // Cached reads: long TTL — the blob-cached story doesn't change.
+  res.setHeader('Cache-Control', freshlyGenerated ? 'no-store' : 'public, s-maxage=3600, stale-while-revalidate=86400');
+  res.status(200).send(html);
 }
