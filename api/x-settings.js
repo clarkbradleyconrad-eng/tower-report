@@ -24,7 +24,7 @@ const SETTINGS_PATH   = 'tower-x-settings.json';
 const SETTINGS_PREFIX = 'tower-x-settings';
 
 const DEFAULTS = {
-  mode:               'manual',
+  mode:               'trusted',
   paused:             false,
   maxPostsPerDay:     5,
   minIntervalMinutes: 90,

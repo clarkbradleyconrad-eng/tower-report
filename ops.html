@@ -163,6 +163,28 @@ button{cursor:pointer;font-family:inherit;}
 .op-group-label{font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted);padding:16px 0 6px;border-top:1px solid var(--border);margin-top:10px;}
 .op-group-label:first-child{border-top:none;margin-top:0;padding-top:0;}
 
+/* ── X QUEUE ── */
+.xq-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px;padding:10px 14px;background:var(--s2);border:1px solid var(--border);}
+.xq-bar-left{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.xq-mode{font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;border:1px solid;}
+.xq-mode.manual{color:var(--amber);border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.06);}
+.xq-mode.trusted{color:var(--green);border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.06);}
+.xq-mode.auto{color:#a5b4fc;border-color:rgba(168,85,247,.3);background:rgba(168,85,247,.06);}
+.xq-today{font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--secondary);}
+.xq-card{background:var(--s2);border:1px solid var(--border);border-left:3px solid var(--orange);padding:13px 15px;margin-bottom:7px;}
+.xq-card.approved{border-left-color:var(--green);}
+.xq-card.rejected{border-left-color:var(--red);opacity:.55;}
+.xq-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+.xq-badges{display:flex;gap:5px;margin-bottom:7px;flex-wrap:wrap;}
+.xq-fmt{font-family:var(--font-display);font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 8px;border:1px solid var(--border-mid);color:var(--white2);}
+.xq-conf{font-family:var(--font-display);font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border:1px solid;}
+.xq-conf.confirmed{color:var(--green);border-color:rgba(34,197,94,.25);}
+.xq-conf.reported{color:var(--amber);border-color:rgba(245,158,11,.25);}
+.xq-conf.developing{color:#fca5a5;border-color:rgba(239,68,68,.25);}
+.xq-text{font-size:13.5px;color:var(--white);line-height:1.6;margin-bottom:8px;}
+.xq-meta{font-family:var(--font-display);font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
+.xq-actions{display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap;}
+
 /* ── LOCK / BANNER ── */
 .op-banner{background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.25);color:var(--amber);font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:9px 14px;margin:16px 0 0;}
 .op-lock{min-height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;padding:24px;text-align:center;}
@@ -241,6 +263,14 @@ button{cursor:pointer;font-family:inherit;}
       <div id="social"><div class="op-skel op-skel-row"></div></div>
     </section>
 
+    <section class="op-section">
+      <div class="op-sec-head">
+        <div><div class="op-sec-lbl">X Posting</div><div class="op-sec-title">Post queue</div></div>
+        <div class="op-sec-meta"><a href="/x-dashboard.html" target="_blank" style="color:var(--orange);">Full dashboard →</a></div>
+      </div>
+      <div id="xqueue"><div class="op-skel op-skel-row"></div></div>
+    </section>
+
     <footer class="op-footer">
       Tower Report bot operations. Orchestrator crons: 06:00 &amp; 18:00 UTC (Vercel) · watchdog 10:05 UTC (GitHub Actions). Add a bot: registry entry + prompt file — see README.
     </footer>
@@ -261,11 +291,14 @@ var BOT_PAGES = {
   'verify-recruiting': { page: '/recruiting.html',      label: 'Recruiting page' },
   'recruiting-board':  { page: '/recruiting.html',      label: 'Recruiting page' },
   'odds':              { page: '/schedule.html',        label: 'Schedule odds' },
+  'x-generate':        { page: '/x-dashboard.html',     label: 'X Dashboard' },
+  'social-poster':     { page: '/x-dashboard.html',     label: 'X Dashboard' },
 };
 
 var BOT_GROUPS = {
   'Content':   ['briefing', 'story-generator', 'stories-refresh', 'social-drafter'],
   'Recruiting':['verify-recruiting', 'recruiting-board'],
+  'X Posting': ['x-generate', 'social-poster'],
   'Data / Ops':['odds', 'alerts'],
 };
 var esc = function (s) { var d = document.createElement('div'); d.textContent = s == null ? '' : String(s); return d.innerHTML; };
@@ -508,7 +541,7 @@ function loadDashboard(showToast) {
     .then(function (d) {
       if (d.error) throw new Error(d.error);
       DATA = d;
-      renderBanners(d); renderRoster(d); renderRuns(d); renderRejected(d); renderNV(d); renderSocial(d);
+      renderBanners(d); renderRoster(d); renderRuns(d); renderRejected(d); renderNV(d); renderSocial(d); loadXQueue();
       if (showToast) toast('Dashboard refreshed', 'ok');
     })
     .catch(function (e) {
@@ -575,6 +608,163 @@ function copyDraft(btn) {
   navigator.clipboard.writeText(btn.getAttribute('data-text'))
     .then(function () { toast('Draft copied', 'ok'); })
     .catch(function () { toast('Copy failed', 'err'); });
+}
+
+/* ── X QUEUE ── */
+
+var XQ_SETTINGS = null;
+
+function loadXQueue() {
+  var el = document.getElementById('xqueue');
+  Promise.all([
+    fetch(api('/api/x-settings')).then(function(r){ return r.json(); }).catch(function(){ return {}; }),
+    fetch(api('/api/x-queue?status=pending')).then(function(r){ return r.json(); }).catch(function(){ return {items:[]}; }),
+    fetch(api('/api/x-queue?status=approved')).then(function(r){ return r.json(); }).catch(function(){ return {items:[]}; }),
+  ]).then(function(results) {
+    var settings = results[0].settings || {};
+    var pending  = results[1].items  || [];
+    var approved = results[2].items  || [];
+    XQ_SETTINGS  = settings;
+    renderXQueue(settings, pending, approved, el);
+  }).catch(function(e) {
+    el.innerHTML = '<div class="op-empty">X queue unavailable — ' + esc(e.message) + '</div>';
+  });
+}
+
+function renderXQueue(settings, pending, approved, el) {
+  var mode     = settings.mode || 'trusted';
+  var paused   = settings.paused;
+  var maxDay   = settings.maxPostsPerDay || 5;
+  var modeLabel = mode === 'manual' ? 'Manual approval' : mode === 'trusted' ? 'Trusted auto-post' : 'Fully automatic';
+
+  var bar = '<div class="xq-bar">' +
+    '<div class="xq-bar-left">' +
+      '<span class="xq-mode ' + esc(mode) + '">' + esc(modeLabel) + (paused ? ' · PAUSED' : '') + '</span>' +
+      '<span class="xq-today">' + (pending.length + approved.length) + ' in queue · max ' + maxDay + '/day</span>' +
+    '</div>' +
+    '<div style="display:flex;gap:6px;">' +
+      '<button class="op-mini" onclick="xGenerate()">+ Generate posts</button>' +
+      '<button class="op-mini" onclick="xPostNow()" id="btn-xpost">▶ Post now</button>' +
+      (paused
+        ? '<button class="op-mini ok" onclick="xSetPaused(false)">▶ Resume</button>'
+        : '<button class="op-mini danger" onclick="xSetPaused(true)">⏸ Pause</button>') +
+    '</div>' +
+  '</div>';
+
+  var cards = '';
+
+  if (approved.length) {
+    cards += '<div class="op-sec-meta" style="margin-bottom:8px;">Approved — ready to post</div>';
+    cards += approved.slice(0, 5).map(function(item) { return xqCard(item, 'approved'); }).join('');
+  }
+
+  if (pending.length) {
+    if (approved.length) cards += '<div style="height:10px;"></div>';
+    cards += '<div class="op-sec-meta" style="margin-bottom:8px;">Pending review</div>';
+    cards += pending.slice(0, 8).map(function(item) { return xqCard(item, 'pending'); }).join('');
+    if (pending.length > 8) {
+      cards += '<div class="op-empty" style="font-size:9px;">' + (pending.length - 8) + ' more — <a href="/x-dashboard.html" target="_blank" style="color:var(--orange);">view all in dashboard</a></div>';
+    }
+  }
+
+  if (!pending.length && !approved.length) {
+    cards = '<div class="op-empty">Queue is empty — click "Generate posts" or wait for the next pipeline run (6am / 6pm UTC)</div>';
+  }
+
+  el.innerHTML = bar + cards;
+}
+
+function xqCard(item, status) {
+  var confCls = item.confidence === 'confirmed' ? 'confirmed' : item.confidence === 'developing' ? 'developing' : 'reported';
+  var sources = (item.sources || []).slice(0, 2).join(', ');
+  return '<div class="xq-card ' + (status === 'approved' ? 'approved' : '') + '">' +
+    '<div class="xq-badges">' +
+      '<span class="xq-fmt">' + esc(item.format || 'post') + '</span>' +
+      '<span class="xq-conf ' + confCls + '">' + esc(item.confidence || 'reported') + '</span>' +
+      (item.hasLink ? '<span class="xq-fmt" style="color:var(--orange);">link</span>' : '') +
+    '</div>' +
+    '<div class="xq-top">' +
+      '<div class="xq-text">' + esc(item.text) + '</div>' +
+      '<div class="xq-actions">' +
+        (status === 'pending'
+          ? '<button class="op-mini ok" onclick="xApprove(\'' + esc(item.id) + '\')">✓ Approve</button>' +
+            '<button class="op-mini danger" onclick="xReject(\'' + esc(item.id) + '\')">✗ Reject</button>'
+          : '<button class="op-mini" onclick="copyText(' + JSON.stringify(item.text) + ')">Copy</button>' +
+            '<button class="op-mini danger" onclick="xReject(\'' + esc(item.id) + '\')">Revoke</button>') +
+      '</div>' +
+    '</div>' +
+    '<div class="xq-meta">' + (item.text || '').length + '/280' + (sources ? ' · ' + esc(sources) : '') + '</div>' +
+  '</div>';
+}
+
+function xApprove(id) {
+  fetch(api('/api/x-queue'), {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', 'x-ops-key': KEY },
+    body: JSON.stringify({ id: id, status: 'approved' }),
+  }).then(function(r){ return r.json(); }).then(function(d) {
+    if (d.error) throw new Error(d.error);
+    toast('Approved', 'ok');
+    loadXQueue();
+  }).catch(function(e){ toast('Failed: ' + e.message, 'err'); });
+}
+
+function xReject(id) {
+  fetch(api('/api/x-queue'), {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', 'x-ops-key': KEY },
+    body: JSON.stringify({ id: id, status: 'rejected' }),
+  }).then(function(r){ return r.json(); }).then(function(d) {
+    if (d.error) throw new Error(d.error);
+    toast('Rejected', 'ok');
+    loadXQueue();
+  }).catch(function(e){ toast('Failed: ' + e.message, 'err'); });
+}
+
+function xPostNow() {
+  var btn = document.getElementById('btn-xpost');
+  if (btn) btn.disabled = true;
+  toast('Posting to X...', 'inf');
+  fetch(api('/api/social-post'))
+    .then(function(r){ return r.json(); })
+    .then(function(d) {
+      if (d.error) throw new Error(d.error);
+      var msg = d.paused ? 'Posting paused' : (d.posted + ' tweet' + (d.posted !== 1 ? 's' : '') + ' posted');
+      toast(msg, d.posted > 0 ? 'ok' : 'inf');
+      loadXQueue();
+    })
+    .catch(function(e){ toast('Failed: ' + e.message, 'err'); })
+    .finally(function(){ if (btn) btn.disabled = false; });
+}
+
+function xGenerate() {
+  toast('Generating X posts...', 'inf');
+  fetch(api('/api/x-generate'))
+    .then(function(r){ return r.json(); })
+    .then(function(d) {
+      if (d.error) throw new Error(d.error);
+      toast('Generated ' + (d.queued || d.generated || 0) + ' posts', 'ok');
+      loadXQueue();
+    })
+    .catch(function(e){ toast('Generation failed: ' + e.message, 'err'); });
+}
+
+function xSetPaused(paused) {
+  fetch(api('/api/x-settings'), {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', 'x-ops-key': KEY },
+    body: JSON.stringify({ paused: paused }),
+  }).then(function(r){ return r.json(); }).then(function(d) {
+    if (d.error) throw new Error(d.error);
+    toast(paused ? 'X posting paused' : 'X posting resumed', 'ok');
+    loadXQueue();
+  }).catch(function(e){ toast('Failed: ' + e.message, 'err'); });
+}
+
+function copyText(text) {
+  navigator.clipboard.writeText(text)
+    .then(function(){ toast('Copied', 'ok'); })
+    .catch(function(){ toast('Copy failed', 'err'); });
 }
 
 /* ── BOOT ── */
