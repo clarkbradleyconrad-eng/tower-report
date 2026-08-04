@@ -1,0 +1,34 @@
+name: Daily Brief
+
+# Sends a ~400-word ops digest to Telegram (or NOTIFY_CHANNEL) at 07:00 CT.
+# 12:00 UTC = 07:00 CDT (Mar–Nov). During standard time (Nov–Mar) fires at 06:00 CST.
+#
+# Required GitHub secrets: TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID
+# Optional: set NOTIFY_CHANNEL secret to 'slack' or 'sms' to switch channels.
+
+on:
+  schedule:
+    - cron: '0 12 * * *'
+  workflow_dispatch:
+
+jobs:
+  brief:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Send daily brief
+        run: node scripts/daily-brief.mjs
+        env:
+          NOTIFY_CHANNEL: ${{ secrets.NOTIFY_CHANNEL || 'telegram' }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          SLACK_OPS_WEBHOOK: ${{ secrets.SLACK_OPS_WEBHOOK }}
+          TWILIO_SID: ${{ secrets.TWILIO_SID }}
+          TWILIO_TOKEN: ${{ secrets.TWILIO_TOKEN }}
+          TWILIO_FROM: ${{ secrets.TWILIO_FROM }}
+          TWILIO_TO: ${{ secrets.TWILIO_TO }}
