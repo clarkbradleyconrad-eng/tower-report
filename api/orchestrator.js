@@ -252,6 +252,69 @@ async function runBot(bot, ctx) {
   }
 }
 
+/* ---- Story alert dispatcher ---- */
+
+async function dispatchStoryAlert(refreshResult, socialResult) {
+  const token = process.env.GITHUB_DISPATCH_TOKEN;
+  if (!token) return;
+
+  // Fetch the latest published story from the archive for full detail
+  let story = null;
+  try {
+    const archive = (await blobGetJson(KEYS.stories.prefix)) || [];
+    if (Array.isArray(archive) && archive.length) {
+      // Most-recently generated story is what stories-refresh just added
+      story = [...archive].sort((a, b) =>
+        new Date(b._generated || b.date || 0) - new Date(a._generated || a.date || 0)
+      )[0];
+    }
+  } catch (err) {
+    console.warn('[tower/orchestrator] story fetch for alert failed:', err.message);
+  }
+
+  // Fetch social drafts from blob — available because social-drafter runs before this
+  let drafts = null;
+  if (socialResult?.ok) {
+    try {
+      const social = await blobGetJson(KEYS.social.prefix);
+      drafts = social?.drafts || null;
+    } catch { /* non-fatal */ }
+  }
+
+  const siteBase = 'https://tower-report.vercel.app';
+  const payload = {
+    storyHeadline: story?.headline || null,
+    storyId: story?.id || null,
+    storyUrl: `${siteBase}/stories.html`,
+    category: story?.category || null,
+    impact: story?.impact ?? null,
+    hook: story?.hook ? String(story.hook).slice(0, 400) : null,
+    whyItMatters: story?.whyItMatters ? String(story.whyItMatters).slice(0, 400) : null,
+    players: story?.players || [],
+    sources: story?.sources || [],
+    drafts,
+    added: refreshResult.summary?.added,
+    total: refreshResult.summary?.total,
+  };
+
+  const res = await fetch('https://api.github.com/repos/clarkbradleyconrad-eng/tower-report/dispatches', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/vnd.github.v3+json',
+      'Content-Type': 'application/json',
+      'User-Agent': 'tower-report/1.0',
+    },
+    body: JSON.stringify({ event_type: 'story-published', client_payload: payload }),
+    signal: AbortSignal.timeout(10000),
+  });
+  if (!res.ok) {
+    const err = await res.text().catch(() => '');
+    throw new Error(`GitHub dispatch ${res.status}: ${err.slice(0, 200)}`);
+  }
+  console.log(`[tower/orchestrator] story-alert dispatched: "${payload.storyHeadline}"`);
+}
+
 /* ---- Persistence ---- */
 
 async function writeHeartbeat(run, results) {
@@ -406,6 +469,17 @@ export default async function handler(req, res) {
   } catch (err) {
     logsOk = false;
     console.error('[tower/orchestrator] run log write failed:', err.message);
+  }
+
+  // Dispatch story alert to GitHub Actions when new stories publish this run
+  if (!dryRun && process.env.GITHUB_DISPATCH_TOKEN) {
+    const refreshResult = results.find(r => r.id === 'stories-refresh');
+    const socialResult  = results.find(r => r.id === 'social-drafter');
+    if (refreshResult?.ok && (refreshResult.summary?.added ?? 0) > 0) {
+      dispatchStoryAlert(refreshResult, socialResult).catch(err =>
+        console.warn('[tower/orchestrator] story-alert dispatch failed:', err.message)
+      );
+    }
   }
 
   const ran = results.filter(r => !r.skipped);

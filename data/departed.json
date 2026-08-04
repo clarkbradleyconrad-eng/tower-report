@@ -1,0 +1,4 @@
+{
+  "_comment": "Players who have left the Texas Longhorns program (transferred, graduated, or otherwise departed). The social-drafter prompt checks post text against this list and flags any reference to a departed player as invalid. Add names as 'FirstName LastName'.",
+  "departed": []
+}

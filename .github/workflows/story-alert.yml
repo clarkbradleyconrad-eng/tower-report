@@ -1,0 +1,34 @@
+name: Story Alert
+
+# Fires within seconds of a new story passing the quality gate.
+# The orchestrator dispatches 'story-published' via the GitHub API
+# (requires GITHUB_DISPATCH_TOKEN set in Vercel env).
+#
+# Required GitHub secrets: TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID
+
+on:
+  repository_dispatch:
+    types: [story-published]
+
+jobs:
+  alert:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Send story alert
+        run: node scripts/story-alert.mjs
+        env:
+          NOTIFY_CHANNEL: ${{ secrets.NOTIFY_CHANNEL || 'telegram' }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          SLACK_OPS_WEBHOOK: ${{ secrets.SLACK_OPS_WEBHOOK }}
+          TWILIO_SID: ${{ secrets.TWILIO_SID }}
+          TWILIO_TOKEN: ${{ secrets.TWILIO_TOKEN }}
+          TWILIO_FROM: ${{ secrets.TWILIO_FROM }}
+          TWILIO_TO: ${{ secrets.TWILIO_TO }}
+          STORY_EVENT: ${{ toJson(github.event.client_payload) }}
