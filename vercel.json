@@ -23,7 +23,8 @@
     "api/recruiting-board.js": { "maxDuration": 120, "includeFiles": "{data,bots}/**" },
     "api/story.js": { "maxDuration": 120 },
     "api/x-generate.js": { "maxDuration": 90, "includeFiles": "bots/**" },
-    "api/social-post.js": { "maxDuration": 60 }
+    "api/social-post.js": { "maxDuration": 60 },
+    "api/telegram.js": { "maxDuration": 30, "includeFiles": "{data,bots}/**" }
   },
   "headers": [
     {
