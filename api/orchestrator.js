@@ -252,6 +252,51 @@ async function runBot(bot, ctx) {
   }
 }
 
+/* ---- Telegram pipeline completion notification ---- */
+
+async function notifyTelegramPipelineComplete(results, run) {
+  const token  = process.env.TELEGRAM_BOT_TOKEN;
+  const chatId = process.env.TELEGRAM_CHAT_ID;
+  if (!token || !chatId) return;
+
+  const refresh  = results.find(r => r.id === 'stories-refresh');
+  const briefing = results.find(r => r.id === 'briefing');
+  const xWriter  = results.find(r => r.id === 'x-generate');
+  const ran      = results.filter(r => !r.skipped);
+  const failed   = ran.filter(r => !r.ok);
+
+  const slotLabel = run.trigger?.includes('am') ? ' (AM)' : run.trigger?.includes('pm') ? ' (PM)' : run.trigger === 'manual' ? ' (manual)' : '';
+  let msg = failed.length ? `⚠️ <b>Pipeline done${slotLabel}</b>\n\n` : `✓ <b>Pipeline done${slotLabel}</b>\n\n`;
+
+  if (refresh?.ok && refresh.summary) {
+    const added    = refresh.summary.added ?? 0;
+    const rejected = refresh.summary.rejected ?? 0;
+    msg += `Stories: +${added} added`;
+    if (rejected) msg += `, ${rejected} rejected`;
+    msg += '\n';
+  }
+  if (briefing?.ok)  msg += 'Briefing: ✓ updated\n';
+  if (xWriter?.ok && (xWriter.summary?.generated ?? xWriter.summary?.queued ?? 0) > 0) {
+    msg += `X Writer: ${xWriter.summary.generated ?? xWriter.summary.queued} posts queued\n`;
+  }
+  if (failed.length) {
+    msg += '\n<b>Failed:</b>\n';
+    failed.forEach(r => { msg += `  ✗ ${r.name || r.id}: ${(r.error || '').slice(0, 80)}\n`; });
+  }
+
+  const added = refresh?.summary?.added ?? 0;
+  if (added > 0 || xWriter?.ok) msg += '\nText /queue or /stories to review.';
+
+  try {
+    await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: Number(chatId), text: msg.slice(0, 4096), parse_mode: 'HTML', link_preview_options: { is_disabled: true } }),
+      signal:  AbortSignal.timeout(8000),
+    });
+  } catch (err) { console.warn('[tower/orchestrator] telegram notify failed:', err.message); }
+}
+
 /* ---- Story alert dispatcher ---- */
 
 async function dispatchStoryAlert(refreshResult, socialResult) {
@@ -485,5 +530,13 @@ export default async function handler(req, res) {
   const ran = results.filter(r => !r.skipped);
   const allOk = ran.every(r => r.ok);
   console.log(`[tower/orchestrator] done ok=${allOk} trigger=${trigger} bots=${ran.map(r => `${r.id}:${r.ok ? 'ok' : 'FAIL'}(${r.ms}ms${r.score != null ? ` s${r.score}` : ''})`).join(' ')}`);
+
+  // Notify Telegram on every non-dry, non-watchdog run
+  if (!dryRun && slot !== 'watchdog') {
+    notifyTelegramPipelineComplete(results, run).catch(err =>
+      console.warn('[tower/orchestrator] telegram notify failed:', err.message)
+    );
+  }
+
   return res.status(200).json({ ok: allOk, logsOk, ...run });
 }

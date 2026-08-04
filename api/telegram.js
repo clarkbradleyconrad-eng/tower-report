@@ -156,16 +156,17 @@ async function grokAsk(prompt, { webSearch = false, maxTokens = 400 } = {}) {
 // ── NLP router ────────────────────────────────────────────────────────────────
 
 const NLP_KEYWORDS = [
-  { cmd: 'status',  words: ['status','health','system','running','pipeline','working','how are we','how is it'] },
-  { cmd: 'stories', words: ['stories','story','articles','article','news','what do we have','what\'s written','what have we'] },
-  { cmd: 'queue',   words: ['queue','tweets','tweet','x post','x posts','pending posts','what\'s pending','posting'] },
-  { cmd: 'bots',    words: ['bots','bot','last run','when did','pipeline step'] },
-  { cmd: 'audit',   words: ['audit','log','history','recent commands','what did i'] },
-  { cmd: 'run',     words: ['run pipeline','run it','trigger pipeline','start pipeline','fire it','run the bots','run everything'] },
-  { cmd: 'idea',    words: ['idea','suggest','pitch','what if we wrote','story idea'] },
-  { cmd: 'kill',    words: ['kill','remove story','drop story','delete story','get rid of'] },
-  { cmd: 'post',    words: ['post it','send tweet','tweet it','publish tweet','post tweet','fire tweet'] },
-  { cmd: 'check',   words: ['check','verify','confirm','did he','did they','is it true','recruits','commit','portal','decommit'] },
+  { cmd: 'status',    words: ['status','health','system','pipeline running','how are we','how is it','everything ok','all good','what happened','last run'] },
+  { cmd: 'stories',   words: ['stories','story','articles','article','what do we have','what\'s written','what have we got','new stories','latest stories','show stories','see stories','any stories'] },
+  { cmd: 'queue',     words: ['queue','tweets','tweet','x post','x posts','pending posts','what\'s pending','posting','what\'s in the queue','ready to post','what to post'] },
+  { cmd: 'bots',      words: ['bots','when did','bot run','last ran','pipeline steps'] },
+  { cmd: 'audit',     words: ['audit','log','history','recent commands','what have i done','command history'] },
+  { cmd: 'run',       words: ['run pipeline','run it','trigger','start pipeline','fire it','run the bots','run everything','refresh everything','run now','kick it off'] },
+  { cmd: 'idea',      words: ['idea','suggest','pitch','what if we wrote','story idea','story about','we should write','cover this'] },
+  { cmd: 'kill',      words: ['kill','remove story','drop story','delete story','get rid of','trash that'] },
+  { cmd: 'post',      words: ['post it','send tweet','tweet it','publish tweet','post tweet','fire tweet','send it','post this'] },
+  { cmd: 'check',     words: ['check','verify','confirm','did he','did they','is it true','recruits','commit','portal','decommit','what\'s the latest on','any news on','where does'] },
+  { cmd: 'dashboard', words: ['hi','hey','hello','sup','what\'s up','whats up','home','main','overview','what\'s going on','what do i need'] },
 ];
 
 async function nlpRoute(text) {
@@ -272,7 +273,7 @@ async function executeRun(chatId, messageId, data) {
     .catch(err => console.error('[telegram] orchestrator fire:', err.message));
 }
 
-// ── Mini dashboard ────────────────────────────────────────────────────────────
+// ── Smart dashboard ───────────────────────────────────────────────────────────
 
 async function showDashboard(chatId) {
   const [health, queueData, storiesBlob] = await Promise.allSettled([
@@ -285,18 +286,35 @@ async function showDashboard(chatId) {
   const q  = queueData.status === 'fulfilled' ? queueData.value : null;
   const sb = storiesBlob.status === 'fulfilled' ? storiesBlob.value : null;
 
-  const lastRun = h?.lastRun ? timeAgo(h.lastRun) : 'never';
-  const pendingPosts = (q?.items || []).filter(i => i.status === 'pending').length;
-  const allStories = Array.isArray(sb) ? sb : (sb?.stories || []);
-  const activeStories = allStories.filter(s => !s.rejected).length;
+  const lastRunMs       = h?.lastRun ? new Date(h.lastRun).getTime() : 0;
+  const hoursSince      = lastRunMs ? (Date.now() - lastRunMs) / 3_600_000 : null;
+  const pendingPosts    = (q?.items || []).filter(i => i.status === 'pending').length;
+  const allStories      = Array.isArray(sb) ? sb : (sb?.stories || []);
+  const activeStories   = allStories.filter(s => !s.rejected).length;
+  const rejectedStories = allStories.filter(s => s.rejected).length;
+  const published       = allStories.filter(s => !s.rejected && s.published).length;
 
-  let msg = '<b>Tower Report</b>\n\n';
-  msg += `Pipeline: ${lastRun}\n`;
-  msg += `Stories: ${activeStories} active\n`;
-  msg += `X queue: ${pendingPosts} pending\n\n`;
-  msg += 'What do you want to do?\n';
-  msg += '/stories /queue /status /bots\n';
-  msg += '/run /kill /idea /check [topic]';
+  const date = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'America/Chicago' });
+  let msg = `<b>Tower Report · ${date}</b>\n\n`;
+
+  // State
+  msg += `Pipeline: ${h?.lastRun ? timeAgo(h.lastRun) : 'never'}\n`;
+  msg += `Stories: ${activeStories} active`;
+  if (published) msg += ` (${published} published)`;
+  if (rejectedStories) msg += `, ${rejectedStories} rejected`;
+  msg += '\n';
+  msg += `X queue: ${pendingPosts} pending\n`;
+
+  // Nudges — what actually needs attention
+  const nudges = [];
+  if (hoursSince !== null && hoursSince > 8) nudges.push(`⚠️ Pipeline stale (${Math.round(hoursSince)}h) — /run to refresh`);
+  if (pendingPosts > 0) nudges.push(`→ ${pendingPosts} post${pendingPosts > 1 ? 's' : ''} ready to send — /queue`);
+  if (activeStories === 0) nudges.push('→ No stories in pipeline — /run to pull new ones');
+  if (activeStories > 0 && pendingPosts === 0) nudges.push('→ /stories to review what\'s in the pipeline');
+
+  if (nudges.length) {
+    msg += '\n' + nudges.join('\n');
+  }
 
   await reply(chatId, msg);
 }
