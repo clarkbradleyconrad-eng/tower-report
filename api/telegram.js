@@ -315,6 +315,41 @@ async function executeWrite(chatId, messageId, data) {
   }).catch(() => {});
 }
 
+async function executeCorrect(chatId, messageId, data) {
+  try {
+    const blob   = await blobGetJson('tower-ai-stories');
+    const isArr  = Array.isArray(blob);
+    const all    = isArr ? blob : (blob?.stories || []);
+    const updated = all.map(s => s.headline === data.oldHeadline ? { ...s, headline: data.newHeadline } : s);
+    await blobPutJson('tower-ai-stories.json', 'tower-ai-stories', isArr ? updated : { ...blob, stories: updated });
+    await editMessage(chatId, messageId, `✓ <b>Updated.</b>\n\n${data.newHeadline}`);
+  } catch (err) { await editMessage(chatId, messageId, `Error: ${err.message}`); }
+}
+
+async function executePause(chatId, messageId) {
+  try {
+    await fetch(`${BASE}/api/x-queue?resource=settings`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'x-ops-key': process.env.OPS_KEY || '' },
+      body: JSON.stringify({ paused: true }),
+      signal: AbortSignal.timeout(8000),
+    });
+    await editMessage(chatId, messageId, '⏸ <b>X posting paused.</b>\n\nNo tweets will go out. Text /resume when ready.');
+  } catch (err) { await editMessage(chatId, messageId, `Error: ${err.message}`); }
+}
+
+async function executeResume(chatId, messageId) {
+  try {
+    await fetch(`${BASE}/api/x-queue?resource=settings`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'x-ops-key': process.env.OPS_KEY || '' },
+      body: JSON.stringify({ paused: false }),
+      signal: AbortSignal.timeout(8000),
+    });
+    await editMessage(chatId, messageId, '▶️ <b>X posting resumed.</b>');
+  } catch (err) { await editMessage(chatId, messageId, `Error: ${err.message}`); }
+}
+
 async function executeRun(chatId, messageId, data) {
   // Fire-and-forget — orchestrator takes up to 5 min, telegram fn limit is 30s
   await editMessage(chatId, messageId, '⏳ Pipeline running. Text /status in ~5 minutes to see results.');
@@ -641,27 +676,95 @@ const HANDLERS = {
 
   subs:    async (chatId) => { await reply(chatId, 'Check resend.com/audiences for subscriber counts — not exposed via API yet.'); return 'ok'; },
   traffic: async (chatId) => { await reply(chatId, 'Enable Vercel Analytics in the dashboard first: tower-report.vercel.app → Analytics → Enable.'); return 'ok'; },
-  correct: async (chatId) => { await reply(chatId, '⏳ /correct — coming in a future update.'); return 'stub'; },
-  fix:     async (chatId) => { await reply(chatId, '⏳ /fix — coming in a future update.'); return 'stub'; },
-  verify:  async (chatId) => { await reply(chatId, '⏳ /verify — coming in a future update.'); return 'stub'; },
-  pause:   async (chatId) => { await reply(chatId, '⏳ /pause — coming in a future update.'); return 'stub'; },
-  resume:  async (chatId) => { await reply(chatId, '⏳ /resume — coming in a future update.'); return 'stub'; },
-  deploy:  async (chatId) => { await reply(chatId, '⏳ /deploy — coming in a future update.'); return 'stub'; },
+  correct: async (chatId, args) => {
+    const match = args?.match(/^(\d+)\s+(.+)$/s);
+    if (!match) {
+      const blob   = await blobGetJson('tower-ai-stories');
+      const all    = Array.isArray(blob) ? blob : (blob?.stories || []);
+      const active = all.filter(s => !s.rejected).sort((a, b) => (b.score || 0) - (a.score || 0));
+      if (!active.length) { await reply(chatId, 'No stories to correct.'); return 'ok'; }
+      let msg = '<b>Correct a story headline:</b>\n\n/correct [number] [new headline]\n\n';
+      active.slice(0, 5).forEach((s, i) => { msg += `${i + 1}. ${(s.headline || '?').slice(0, 70)}\n`; });
+      await reply(chatId, msg);
+      return 'ok';
+    }
+    const idx       = parseInt(match[1]) - 1;
+    const newText   = match[2].trim();
+    const blob      = await blobGetJson('tower-ai-stories');
+    const isArr     = Array.isArray(blob);
+    const all       = isArr ? blob : (blob?.stories || []);
+    const active    = all.filter(s => !s.rejected).sort((a, b) => (b.score || 0) - (a.score || 0));
+    const story     = active[idx];
+    if (!story) { await reply(chatId, `No story #${idx + 1}.`); return 'ok'; }
+    const key = `correct-${Date.now()}`;
+    await savePending({ actionKey: key, action: 'correct', data: { oldHeadline: story.headline, newHeadline: newText }, description: 'Correct story headline' });
+    await replyConfirm(chatId, `Change this headline?\n\n<s>${story.headline}</s>\n→ <b>${newText}</b>`, key);
+    return 'ok';
+  },
+
+  fix: async (chatId) => {
+    const key = `fix-${Date.now()}`;
+    await savePending({ actionKey: key, action: 'run', data: { bot: 'x-generate' }, description: 'Regenerate X posts' });
+    await replyConfirm(chatId, 'Regenerate X posts?\n\nRuns the X Writer bot and adds fresh posts to the queue.', key);
+    return 'ok';
+  },
+
+  verify: async (chatId) => {
+    const key = `verify-${Date.now()}`;
+    await savePending({ actionKey: key, action: 'run', data: { bot: 'verify-recruiting' }, description: 'Run recruiting verifier' });
+    await replyConfirm(chatId, 'Run the recruiting verifier?\n\nUpdates rankings and portal activity. Takes ~60 seconds.', key);
+    return 'ok';
+  },
+
+  pause: async (chatId) => {
+    const key = `pause-${Date.now()}`;
+    await savePending({ actionKey: key, action: 'pause', data: {}, description: 'Pause X posting' });
+    await replyConfirm(chatId, '⏸ Pause all X posting?\n\nNo tweets will go out until you /resume.', key);
+    return 'ok';
+  },
+
+  resume: async (chatId) => {
+    const key = `resume-${Date.now()}`;
+    await savePending({ actionKey: key, action: 'resume', data: {}, description: 'Resume X posting' });
+    await replyConfirm(chatId, '▶️ Resume X posting?', key);
+    return 'ok';
+  },
+
+  deploy: async (chatId) => {
+    await reply(chatId,
+      '<b>Deploy</b>\n\n' +
+      'Deploys happen automatically on every push to main.\n\n' +
+      'To deploy manually, open Terminal and run:\n' +
+      '<code>npx vercel --prod --yes</code>\n\n' +
+      'Production: https://tower-report.vercel.app'
+    );
+    return 'ok';
+  },
 
   help: async (chatId) => {
     await reply(chatId,
-      '<b>Commands</b>\n\n' +
-      '/status — system health\n' +
-      '/stories — pipeline stories (with Kill buttons)\n' +
-      '/queue — X posts pending (with Post buttons)\n' +
+      '<b>Tower Report — All Commands</b>\n\n' +
+      '<b>Read:</b>\n' +
+      '/status — system health + last run\n' +
+      '/stories — pipeline stories\n' +
+      '/queue — X posts pending\n' +
       '/bots — last bot run times\n' +
       '/audit — recent commands\n' +
-      '/run — trigger the pipeline\n' +
-      '/post [n] — post a specific tweet\n' +
-      '/kill [n] — kill a story\n' +
-      '/idea [text] — save a story idea\n' +
       '/check [topic] — fact-check anything\n\n' +
-      'Or just text normally — "what stories do we have?", "post tweet 2", etc.'
+      '<b>Act:</b>\n' +
+      '/run — trigger the full pipeline\n' +
+      '/post [n] — post a tweet\n' +
+      '/kill [n] — remove a story\n' +
+      '/correct [n] [text] — fix a headline\n' +
+      '/fix — regenerate X posts\n' +
+      '/verify — run recruiting verifier\n' +
+      '/pause — stop X posting\n' +
+      '/resume — restart X posting\n' +
+      '/idea [text] — save a story idea\n\n' +
+      '<b>Auto-notifications:</b>\n' +
+      '• 7:00 AM CT — daily ops brief\n' +
+      '• Every pipeline run — completion summary\n\n' +
+      'Or just text naturally.'
     );
     return 'ok';
   },
@@ -739,10 +842,13 @@ async function handleCallback(cbq, chatId) {
     await clearPending();
     await audit(chatId, 'confirm', key, `confirmed:${pending.action}`);
 
-    if (pending.action === 'post')  return executePost(chatId, cbq.message.message_id, pending.data);
-    if (pending.action === 'kill')  return executeKill(chatId, cbq.message.message_id, pending.data);
-    if (pending.action === 'run')   return executeRun(chatId, cbq.message.message_id, pending.data);
-    if (pending.action === 'write') return executeWrite(chatId, cbq.message.message_id, pending.data);
+    if (pending.action === 'post')    return executePost(chatId, cbq.message.message_id, pending.data);
+    if (pending.action === 'kill')    return executeKill(chatId, cbq.message.message_id, pending.data);
+    if (pending.action === 'run')     return executeRun(chatId, cbq.message.message_id, pending.data);
+    if (pending.action === 'write')   return executeWrite(chatId, cbq.message.message_id, pending.data);
+    if (pending.action === 'correct') return executeCorrect(chatId, cbq.message.message_id, pending.data);
+    if (pending.action === 'pause')   return executePause(chatId, cbq.message.message_id);
+    if (pending.action === 'resume')  return executeResume(chatId, cbq.message.message_id);
 
     await editMessage(chatId, cbq.message.message_id, `✓ ${pending.description || key}`);
     return;
