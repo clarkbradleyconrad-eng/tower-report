@@ -156,7 +156,8 @@ async function grokAsk(prompt, { webSearch = false, maxTokens = 400 } = {}) {
 // ── NLP router ────────────────────────────────────────────────────────────────
 
 const NLP_KEYWORDS = [
-  { cmd: 'status',    words: ['status','health','system','pipeline running','how are we','how is it','everything ok','all good','what happened','last run'] },
+  { cmd: 'status',    words: ['status','health','system status','pipeline running','how is it running','is everything ok'] },
+  { cmd: 'dashboard', words: ['how are we','all good','what happened','last run','what\'s going on','going on','overview','home','main'] },
   { cmd: 'stories',   words: ['stories','story','articles','article','what do we have','what\'s written','what have we got','new stories','latest stories','show stories','see stories','any stories'] },
   { cmd: 'queue',     words: ['queue','tweets','tweet','x post','x posts','pending posts','what\'s pending','posting','what\'s in the queue','ready to post','what to post'] },
   { cmd: 'bots',      words: ['bots','when did','bot run','last ran','pipeline steps'] },
@@ -334,25 +335,52 @@ const HANDLERS = {
   },
 
   status: async (chatId) => {
-    const health = await internalGet('/api/health');
-    let msg = '<b>System Status</b>\n\n';
+    const [health, queueData] = await Promise.all([
+      internalGet('/api/health'),
+      internalGet('/api/x-queue').catch(() => null),
+    ]);
+
+    const stepNames = {
+      'stories-refresh':  'Story Scout',
+      'briefing':         'Briefing Writer',
+      'x-generate':       'X Writer',
+      'verify-recruiting':'Recruiter',
+      'social-post':      'Social Poster',
+      'social-poster':    'Social Poster',
+      'social-drafter':   'Social Drafter',
+      'generate-story':   'Story Generator',
+      'story-generator':  'Story Generator',
+      'recruiting-board': 'Recruiting Board',
+      'odds':             'Odds Tracker',
+      'alerts':           'Alerts',
+    };
+
+    let msg = '<b>Status</b>\n\n';
     msg += `Pipeline: ${timeAgo(health.lastRun)}\n`;
+
     const q = health.quality;
     if (q) {
-      msg += `Added: ${q.storiesAdded ?? 0}  Dropped: ${q.duplicatesDropped ?? 0}`;
-      if (q.storiesRejected) msg += `  Rejected: ${q.storiesRejected}`;
+      msg += `Last run: +${q.storiesAdded ?? 0} stories`;
+      if (q.duplicatesDropped) msg += `, ${q.duplicatesDropped} dupes dropped`;
+      if (q.storiesRejected)   msg += `, ${q.storiesRejected} rejected`;
       msg += '\n';
-      if (q.rejectedDetail?.length) {
-        msg += '\nRejected:\n';
-        q.rejectedDetail.slice(0, 3).forEach(r => {
-          msg += `  • ${(r.headline || '?').slice(0, 60)} (${r.reason || '?'})\n`;
-        });
-      }
     }
-    const stepNames = { 'stories-refresh': 'Story Scout', 'briefing': 'Briefing Writer', 'x-generate': 'X Writer', 'verify-recruiting': 'Recruiter', 'social-post': 'Social Poster' };
-    const steps = Object.entries(health.lastSuccess || {}).map(([k, v]) => `  ${stepNames[k] || k}: ${timeAgo(v)}`).join('\n');
-    if (steps) msg += `\n<b>Steps:</b>\n${steps}`;
-    if (!health.ok && health.error) msg += `\n\nError: ${health.error}`;
+
+    const pending = (queueData?.items || []).filter(i => i.status === 'pending').length;
+    if (pending > 0) msg += `X queue: ${pending} post${pending > 1 ? 's' : ''} ready\n`;
+
+    const entries = Object.entries(health.lastSuccess || {});
+    if (entries.length) {
+      msg += '\n<b>Last run per step:</b>\n';
+      entries.forEach(([k, v]) => {
+        msg += `  ${stepNames[k] || k}: ${timeAgo(v)}\n`;
+      });
+    }
+
+    if (!health.ok && health.error) msg += `\n⚠️ Error: ${health.error}`;
+
+    // Actionable footer
+    if (pending > 0) msg += `\n→ /queue to review ${pending} post${pending > 1 ? 's' : ''}`;
     await reply(chatId, msg);
     return 'ok';
   },
@@ -421,19 +449,30 @@ const HANDLERS = {
 
   bots: async (chatId) => {
     const health = await internalGet('/api/health');
-    const names  = { 'stories-refresh': 'Story Scout', 'briefing': 'Briefing Writer', 'x-generate': 'X Writer', 'verify-recruiting': 'Recruiter', 'social-post': 'Social Poster' };
+    const names  = {
+      'stories-refresh':  'Story Scout',
+      'briefing':         'Briefing Writer',
+      'x-generate':       'X Writer',
+      'verify-recruiting':'Recruiter',
+      'social-post':      'Social Poster',
+      'social-poster':    'Social Poster',
+      'social-drafter':   'Social Drafter',
+      'generate-story':   'Story Generator',
+      'story-generator':  'Story Generator',
+      'recruiting-board': 'Recruiting Board',
+      'odds':             'Odds Tracker',
+      'alerts':           'Alerts',
+    };
     let msg = '<b>Bot Run Times</b>\n\n';
     const entries = Object.entries(health.lastSuccess || {});
     if (!entries.length) {
-      msg += 'No run data yet.';
+      msg += 'No run data yet. Text /run to trigger the pipeline.';
     } else {
       entries.forEach(([k, v]) => {
         msg += `${names[k] || k}: ${timeAgo(v)}\n`;
-        if (v) msg += `  ${ctTime(v)}\n`;
       });
     }
-    msg += `\nPipeline: ${timeAgo(health.lastRun)}`;
-    if (health.latestRun?.slot) msg += ` (${health.latestRun.slot})`;
+    msg += `\nLast pipeline run: ${timeAgo(health.lastRun)}`;
     await reply(chatId, msg);
     return 'ok';
   },
