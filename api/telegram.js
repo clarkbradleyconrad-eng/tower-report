@@ -264,6 +264,57 @@ async function executeKill(chatId, messageId, data) {
   }
 }
 
+async function executeWrite(chatId, messageId, data) {
+  await editMessage(chatId, messageId, `✍️ Writing story on "<b>${(data.headline || '').slice(0, 60)}</b>"…\n\nThis takes ~3 minutes. You'll get a message when it's live on the website.`);
+  const opsKey = process.env.OPS_KEY || '';
+  const sep    = opsKey ? '?' : '';
+  // Fire story-generator bot via orchestrator (handles saving to stories-db)
+  fetch(`${BASE}/api/orchestrator?bot=story-generator${opsKey ? `&key=${encodeURIComponent(opsKey)}` : ''}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ topic: data.headline }),
+    signal: AbortSignal.timeout(5000), // just send it, don't wait
+  }).catch(() => {});
+  // Also attempt a direct generate-story call in background with the specific topic
+  const secret = process.env.CRON_SECRET;
+  fetch(`${BASE}/api/generate-story`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(secret ? { Authorization: `Bearer ${secret}` } : {}),
+      ...(opsKey ? { 'x-ops-key': opsKey } : {}),
+    },
+    body: JSON.stringify({ eventType: 'Program News', topic: data.headline }),
+  }).then(async r => {
+    if (!r.ok) return;
+    const result = await r.json().catch(() => null);
+    if (!result?.story) return;
+    // Save to stories-db
+    const saveRes = await fetch(`${BASE}/api/stories-db`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(secret ? { Authorization: `Bearer ${secret}` } : {}),
+      },
+      body: JSON.stringify({ story: { ...result.story, _auto: true } }),
+    }).catch(() => null);
+    if (saveRes?.ok) {
+      const token = process.env.TELEGRAM_BOT_TOKEN;
+      const tgChatId = process.env.TELEGRAM_CHAT_ID;
+      await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: Number(tgChatId),
+          text: `✓ <b>Story published.</b>\n\n<b>${result.story.headline || data.headline}</b>\n\nhttps://tower-report.vercel.app/story`,
+          parse_mode: 'HTML',
+          link_preview_options: { is_disabled: false },
+        }),
+      }).catch(() => {});
+    }
+  }).catch(() => {});
+}
+
 async function executeRun(chatId, messageId, data) {
   // Fire-and-forget — orchestrator takes up to 5 min, telegram fn limit is 30s
   await editMessage(chatId, messageId, '⏳ Pipeline running. Text /status in ~5 minutes to see results.');
@@ -391,28 +442,34 @@ const HANDLERS = {
     const active = all.filter(s => !s.rejected).sort((a, b) => (b.score || 0) - (a.score || 0));
 
     if (!active.length) {
-      await reply(chatId, 'No stories in the pipeline. Text "run the pipeline" to refresh.');
+      await reply(chatId, 'No stories in the pipeline. Text "run the pipeline" to refresh.', {
+        reply_markup: { inline_keyboard: [[{ text: '▶️ Run Pipeline', callback_data: 'quick:run' }]] },
+      });
       return 'ok';
     }
 
-    let msg = `<b>Stories (${active.length})</b>\n\n`;
+    let msg = `<b>Stories (${active.length} in pipeline)</b>\n\n`;
     const buttons = [];
 
     active.slice(0, 5).forEach((s, i) => {
-      msg += `${i + 1}. <b>${s.headline || '?'}</b>${s.published ? ' ✓' : ''}\n`;
+      const label = s.published ? ' ✓ published' : '';
+      msg += `${i + 1}. <b>${s.headline || '?'}</b>${label}\n`;
       msg += `   Score ${s.score ?? '?'} · ${s.category || 'general'}\n`;
-      if (s.hook) msg += `   ${s.hook.slice(0, 80)}\n`;
+      if (s.hook) msg += `   ${s.hook.slice(0, 90)}\n`;
       msg += '\n';
-      if (!s.published) buttons.push([{ text: `🗑 Kill ${i + 1}`, callback_data: `ks:${i}` }]);
+      const row = [];
+      if (!s.published) row.push({ text: `✍️ Write ${i + 1}`, callback_data: `ws:${i}` });
+      row.push({ text: `🗑 Kill ${i + 1}`, callback_data: `ks:${i}` });
+      buttons.push(row);
     });
 
     if (all.filter(s => s.rejected).length) {
-      const rejected = all.filter(s => s.rejected).slice(0, 3);
+      const rejected = all.filter(s => s.rejected).slice(0, 2);
       msg += '<b>Rejected:</b>\n';
       rejected.forEach(s => { msg += `  • ${(s.headline || '?').slice(0, 60)}\n`; });
     }
 
-    await reply(chatId, msg.trim(), buttons.length ? { reply_markup: { inline_keyboard: buttons } } : {});
+    await reply(chatId, msg.trim(), { reply_markup: { inline_keyboard: buttons } });
     return 'ok';
   },
 
@@ -685,6 +742,7 @@ async function handleCallback(cbq, chatId) {
     if (pending.action === 'post')  return executePost(chatId, cbq.message.message_id, pending.data);
     if (pending.action === 'kill')  return executeKill(chatId, cbq.message.message_id, pending.data);
     if (pending.action === 'run')   return executeRun(chatId, cbq.message.message_id, pending.data);
+    if (pending.action === 'write') return executeWrite(chatId, cbq.message.message_id, pending.data);
 
     await editMessage(chatId, cbq.message.message_id, `✓ ${pending.description || key}`);
     return;
@@ -714,6 +772,57 @@ async function handleCallback(cbq, chatId) {
       ]] },
     });
     await audit(chatId, 'qi', itemId.slice(0, 40), 'pending_confirm');
+    return;
+  }
+
+  // Quick run — no confirm needed for single-button shortcuts
+  if (data === 'quick:run') {
+    const key = `run-${Date.now()}`;
+    await savePending({ actionKey: key, action: 'run', data: { bot: 'all' }, description: 'Full pipeline run' });
+    await tgPost('editMessageText', {
+      chat_id: chatId, message_id: cbq.message.message_id,
+      text: 'Run the full pipeline?\n\nRefreshes stories, briefing, and X posts. Takes ~5 minutes.',
+      parse_mode: 'HTML',
+      reply_markup: { inline_keyboard: [[
+        { text: '✓ Confirm', callback_data: `confirm:${key}` },
+        { text: '✗ Cancel',  callback_data: 'cancel' },
+      ]] },
+    });
+    await audit(chatId, 'quick:run', null, 'pending_confirm');
+    return;
+  }
+
+  // Write story — user tapped "Write N" button
+  if (data.startsWith('ws:')) {
+    const idx  = parseInt(data.slice(3));
+    const blob = await blobGetJson('tower-ai-stories').catch(() => null);
+    const all  = blob ? (Array.isArray(blob) ? blob : (blob.stories || [])) : [];
+    const active = all.filter(s => !s.rejected).sort((a, b) => (b.score || 0) - (a.score || 0));
+    const story = active[idx];
+
+    if (!story) {
+      await editMessage(chatId, cbq.message.message_id, 'Story not found — run /stories again.');
+      return;
+    }
+
+    const key = `write-${Date.now()}`;
+    await savePending({
+      actionKey: key,
+      action: 'write',
+      data: { headline: story.headline, hook: story.hook || '' },
+      description: `Write story: "${(story.headline || '').slice(0, 50)}"`,
+    });
+    await tgPost('editMessageText', {
+      chat_id: chatId, message_id: cbq.message.message_id,
+      text: `Write a full story on this?\n\n<b>${story.headline}</b>\n\n${story.hook ? story.hook.slice(0, 200) + '\n\n' : ''}Takes ~3 minutes. Will appear on the website when done.`,
+      parse_mode: 'HTML',
+      link_preview_options: { is_disabled: true },
+      reply_markup: { inline_keyboard: [[
+        { text: '✓ Write It', callback_data: `confirm:${key}` },
+        { text: '✗ Cancel',   callback_data: 'cancel' },
+      ]] },
+    });
+    await audit(chatId, 'ws', (story.headline || '').slice(0, 50), 'pending_confirm');
     return;
   }
 
