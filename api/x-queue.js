@@ -1,13 +1,18 @@
 /**
  * Tower Report — /api/x-queue
  *
- * CRUD for the X post queue.
+ * CRUD for the X post queue AND X settings (merged from /api/x-settings).
  *
- * GET    /api/x-queue             — list all queue items (newest first)
- * GET    /api/x-queue?status=...  — filter by status (pending|approved|rejected|scheduled|posted)
- * POST   /api/x-queue             — add item(s) to queue (body: { posts: [...] })
- * PATCH  /api/x-queue?id=...      — update one item (body: { status, text, scheduledFor, ... })
- * DELETE /api/x-queue?id=...      — remove one item from queue
+ * Queue routes:
+ *   GET    /api/x-queue             — list all queue items (newest first)
+ *   GET    /api/x-queue?status=...  — filter by status (pending|approved|rejected|scheduled|posted)
+ *   POST   /api/x-queue             — add item(s) to queue (body: { posts: [...] })
+ *   PATCH  /api/x-queue?id=...      — update one item (body: { status, text, scheduledFor, ... })
+ *   DELETE /api/x-queue?id=...      — remove one item from queue
+ *
+ * Settings routes (previously /api/x-settings):
+ *   GET    /api/x-queue?resource=settings — return current settings
+ *   PUT    /api/x-queue?resource=settings — replace/merge settings
  *
  * Queue schema per item:
  *   id, format, text, confidence, sources[], hasLink, linkUrl, linkPage,
@@ -21,6 +26,28 @@
 
 import { blobGetJson, blobPutJson } from '../bots/lib/blob.js';
 import { randomUUID } from 'node:crypto';
+
+// ── Settings (merged from api/x-settings.js) ──────────────────────────────────
+
+const SETTINGS_PATH   = 'tower-x-settings.json';
+const SETTINGS_PREFIX = 'tower-x-settings';
+
+const SETTINGS_DEFAULTS = {
+  mode:               'trusted',
+  paused:             false,
+  maxPostsPerDay:     5,
+  minIntervalMinutes: 90,
+  linkRatioPct:       30,
+  categories:         ['breaking', 'analysis', 'recruiting', 'quote', 'stat', 'gameday', 'promo', 'question'],
+  trustedSources:     ['CJ Vogel', 'Inside Texas', '247Sports', 'On3', 'Rivals', 'ESPN', 'The Athletic'],
+  blacklistTopics:    [],
+  blacklistSources:   [],
+};
+
+async function readSettings() {
+  const stored = await blobGetJson(SETTINGS_PREFIX);
+  return { ...SETTINGS_DEFAULTS, ...(stored || {}) };
+}
 
 const QUEUE_PATH   = 'tower-x-queue.json';
 const QUEUE_PREFIX = 'tower-x-queue';
@@ -45,7 +72,32 @@ async function writeQueue(items) {
 export default async function handler(req, res) {
   if (!authOk(req)) return res.status(401).json({ error: 'Unauthorized' });
 
-  const url    = new URL(req.url, 'http://localhost');
+  const url      = new URL(req.url, 'http://localhost');
+  const resource = url.searchParams.get('resource');
+
+  // ── Settings sub-resource ────────────────────────────────────────────────────
+  if (resource === 'settings') {
+    if (req.method === 'GET') {
+      const settings = await readSettings();
+      return res.status(200).json({ ok: true, settings });
+    }
+    if (req.method === 'PUT' || req.method === 'PATCH') {
+      let body;
+      try { body = typeof req.body === 'object' ? req.body : JSON.parse(req.body); }
+      catch { return res.status(400).json({ error: 'Invalid JSON body' }); }
+      const current = await readSettings();
+      const next    = { ...current };
+      for (const k of Object.keys(SETTINGS_DEFAULTS)) {
+        if (k in body) next[k] = body[k];
+      }
+      next.updatedAt = new Date().toISOString();
+      await blobPutJson(SETTINGS_PATH, SETTINGS_PREFIX, next);
+      return res.status(200).json({ ok: true, settings: next });
+    }
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  // ── Queue ────────────────────────────────────────────────────────────────────
   const itemId = url.searchParams.get('id');
 
   if (req.method === 'GET') {

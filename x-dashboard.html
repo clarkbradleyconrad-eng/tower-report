@@ -933,7 +933,7 @@ function setPaused(paused) {
 
 function saveSetting(partial) {
   var body = Object.assign({}, SETTINGS, partial);
-  fetch(api('/api/x-settings'), {
+  fetch(api('/api/x-queue?resource=settings'), {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body)
@@ -1198,7 +1198,7 @@ function renderAnalytics() {
 function loadSettings() {
   if (SETTINGS) { renderSettings(); return; }
 
-  fetch(api('/api/x-settings'))
+  fetch(api('/api/x-queue?resource=settings'))
   .then(function(r) {
     if (r.status === 401) throw new Error('unauthorized');
     return r.json();
@@ -1355,7 +1355,7 @@ function saveSettings() {
   var btn = document.getElementById('btn-save');
   if (btn) btn.disabled = true;
 
-  fetch(api('/api/x-settings'), {
+  fetch(api('/api/x-queue?resource=settings'), {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body)
@@ -1388,7 +1388,7 @@ function refreshAll(showToast) {
   }
   if (ACTIVE_TAB === 'settings') {
     SETTINGS = null;
-    tasks.push(fetch(api('/api/x-settings')).then(function(r) { return r.json(); }).then(function(d) { SETTINGS = d; renderSettings(); }));
+    tasks.push(fetch(api('/api/x-queue?resource=settings')).then(function(r) { return r.json(); }).then(function(d) { SETTINGS = d; renderSettings(); }));
   }
 
   Promise.all(tasks)
@@ -1408,7 +1408,7 @@ function boot() {
   loadQueue();
 
   // Also pre-load settings to power the strip controls
-  fetch(api('/api/x-settings'))
+  fetch(api('/api/x-queue?resource=settings'))
   .then(function(r) {
     if (r.status === 401) throw new Error('unauthorized');
     return r.json();
@@ -1452,7 +1452,7 @@ document.addEventListener('DOMContentLoaded', function() {
 /* ── INIT ── */
 if (KEY) sessionStorage.setItem('towerOpsKey', KEY);
 
-// Try booting immediately; /api/x-settings will 401 if key is bad → showLock()
+// Try booting immediately; /api/x-queue?resource=settings will 401 if key is bad → showLock()
 if (KEY) {
   boot();
 } else {

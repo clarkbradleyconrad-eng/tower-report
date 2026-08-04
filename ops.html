@@ -617,7 +617,7 @@ var XQ_SETTINGS = null;
 function loadXQueue() {
   var el = document.getElementById('xqueue');
   Promise.all([
-    fetch(api('/api/x-settings')).then(function(r){ return r.json(); }).catch(function(){ return {}; }),
+    fetch(api('/api/x-queue?resource=settings')).then(function(r){ return r.json(); }).catch(function(){ return {}; }),
     fetch(api('/api/x-queue?status=pending')).then(function(r){ return r.json(); }).catch(function(){ return {items:[]}; }),
     fetch(api('/api/x-queue?status=approved')).then(function(r){ return r.json(); }).catch(function(){ return {items:[]}; }),
   ]).then(function(results) {
@@ -750,7 +750,7 @@ function xGenerate() {
 }
 
 function xSetPaused(paused) {
-  fetch(api('/api/x-settings'), {
+  fetch(api('/api/x-queue?resource=settings'), {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json', 'x-ops-key': KEY },
     body: JSON.stringify({ paused: paused }),

@@ -43,7 +43,7 @@ function today() {
 
 async function fetchSettings() {
   try {
-    const r = await fetch(`${BASE_URL}/api/x-settings`);
+    const r = await fetch(`${BASE_URL}/api/x-queue?resource=settings`);
     const j = await r.json();
     return j.settings || {};
   } catch { return {}; }
