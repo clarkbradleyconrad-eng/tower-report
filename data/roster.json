@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "lastUpdated": "2026-08-07T07:11:42.306143+00:00",
+  "lastUpdated": "2026-08-08T06:48:27.849629+00:00",
   "team": {
     "name": "Texas Longhorns",
     "conference": "SEC",
@@ -13,7 +13,7 @@
       {
         "number": 0,
         "name": "Raleek Brown",
-        "class": "Sr.",
+        "class": "5th",
         "height": null,
         "weight": null,
         "hometown": "Stockton, Calif."
@@ -21,7 +21,7 @@
       {
         "number": 2,
         "name": "Hollywood Smothers",
-        "class": "Jr.",
+        "class": "Sr.",
         "height": null,
         "weight": null,
         "hometown": "Charlotte, N.C."
@@ -37,7 +37,7 @@
       {
         "number": 11,
         "name": "Michael Terry III",
-        "class": "R-Fr.",
+        "class": "So.",
         "height": null,
         "weight": null,
         "hometown": "San Antonio, Texas"
@@ -53,7 +53,7 @@
       {
         "number": 31,
         "name": "James Simon",
-        "class": "R-Fr.",
+        "class": "So.",
         "height": null,
         "weight": null,
         "hometown": "Shreveport, La."
@@ -67,271 +67,19 @@
         "hometown": "Houston, Texas"
       }
     ],
-    "DL": [
-      {
-        "number": 1,
-        "name": "Colin Simmons",
-        "class": "Jr.",
-        "height": null,
-        "weight": null,
-        "hometown": "Dallas, Texas"
-      },
-      {
-        "number": 15,
-        "name": "Justus Terry",
-        "class": "So.",
-        "height": null,
-        "weight": null,
-        "hometown": "Manchester, Ga."
-      },
-      {
-        "number": 19,
-        "name": "Zina Umeozulu",
-        "class": "So.",
-        "height": null,
-        "weight": null,
-        "hometown": "Allen, Texas"
-      },
-      {
-        "number": 33,
-        "name": "Myron Charles",
-        "class": "R-Fr.",
-        "height": null,
-        "weight": null,
-        "hometown": "Port Charlotte, Fla."
-      },
-      {
-        "number": 40,
-        "name": "Lance Jackson",
-        "class": "So.",
-        "height": null,
-        "weight": null,
-        "hometown": "Texarkana, Texas"
-      },
-      {
-        "number": 46,
-        "name": "Smith Orogbo",
-        "class": "R-Fr.",
-        "height": null,
-        "weight": null,
-        "hometown": "Houston, Texas"
-      },
-      {
-        "number": 52,
-        "name": "James Johnson",
-        "class": "Fr.",
-        "height": null,
-        "weight": null,
-        "hometown": "Fort Myers, Fla."
-      },
-      {
-        "number": 53,
-        "name": "Isaiah Coleman",
-        "class": "R-Fr.",
-        "height": null,
-        "weight": null,
-        "hometown": "Cedar Hill, Texas"
-      },
-      {
-        "number": 55,
-        "name": "Elijah Ali",
-        "class": "Fr.",
-        "height": null,
-        "weight": null,
-        "hometown": "Downey, Calif."
-      },
-      {
-        "number": 80,
-        "name": "Brinley Tita",
-        "class": "Fr.",
-        "height": null,
-        "weight": null,
-        "hometown": "Humble, Texas"
-      },
-      {
-        "number": 88,
-        "name": "Maraad Watson",
-        "class": "Jr.",
-        "height": null,
-        "weight": null,
-        "hometown": "Irvington, N.J."
-      },
-      {
-        "number": 90,
-        "name": "Josiah Sharma",
-        "class": "R-Fr.",
-        "height": null,
-        "weight": null,
-        "hometown": "Folsom, Calif."
-      },
-      {
-        "number": 92,
-        "name": "Colton Vasek",
-        "class": "Jr.",
-        "height": null,
-        "weight": null,
-        "hometown": "Austin, Texas"
-      },
-      {
-        "number": 93,
-        "name": "Hero Kanu",
-        "class": "Sr.",
-        "height": null,
-        "weight": null,
-        "hometown": "Geltendorf, Germany"
-      },
-      {
-        "number": 94,
-        "name": "Jamarion Carlton",
-        "class": "Fr.",
-        "height": null,
-        "weight": null,
-        "hometown": "Temple, Texas"
-      },
-      {
-        "number": 95,
-        "name": "Ian Geffrard",
-        "class": "Sr.",
-        "height": null,
-        "weight": null,
-        "hometown": "Mableton, Ga."
-      },
-      {
-        "number": 96,
-        "name": "Zion Williams",
-        "class": "R-Fr.",
-        "height": null,
-        "weight": null,
-        "hometown": "Lufkin, Texas"
-      },
-      {
-        "number": 97,
-        "name": "Alex January",
-        "class": "Jr.",
-        "height": null,
-        "weight": null,
-        "hometown": "Duncanville, Texas"
-      },
-      {
-        "number": 99,
-        "name": "Richard Wesley",
-        "class": "Fr.",
-        "height": null,
-        "weight": null,
-        "hometown": "Sylmar, Calif."
-      }
-    ],
-    "WR": [
-      {
-        "number": 1,
-        "name": "Ryan Wingo",
-        "class": "Jr.",
-        "height": null,
-        "weight": null,
-        "hometown": "St. Louis, Mo."
-      },
-      {
-        "number": 3,
-        "name": "Emmett Mosley V",
-        "class": "Jr.",
-        "height": null,
-        "weight": null,
-        "hometown": "Chicago, Ill."
-      },
-      {
-        "number": 4,
-        "name": "Jermaine Bishop Jr.",
-        "class": "Fr.",
-        "height": null,
-        "weight": null,
-        "hometown": "Willis, Texas"
-      },
-      {
-        "number": 7,
-        "name": "Kaliq Lockett",
-        "class": "R-Fr.",
-        "height": null,
-        "weight": null,
-        "hometown": "Dallas, Texas"
-      },
-      {
-        "number": 8,
-        "name": "Cam Coleman",
-        "class": "Jr.",
-        "height": null,
-        "weight": null,
-        "hometown": "Phenix City, Ala."
-      },
-      {
-        "number": 13,
-        "name": "Kohen Brown",
-        "class": "Fr.",
-        "height": null,
-        "weight": null,
-        "hometown": "Dallas, Texas"
-      },
-      {
-        "number": 14,
-        "name": "Chris Stewart",
-        "class": "Fr.",
-        "height": null,
-        "weight": null,
-        "hometown": "Missouri City, Texas"
-      },
-      {
-        "number": 17,
-        "name": "Daylan McCutcheon",
-        "class": "So.",
-        "height": null,
-        "weight": null,
-        "hometown": "Lucas, Texas"
-      },
-      {
-        "number": 18,
-        "name": "Sterling Berkhalter",
-        "class": "Sr.",
-        "height": null,
-        "weight": null,
-        "hometown": "Cincinnati, Ohio"
-      },
-      {
-        "number": 35,
-        "name": "Rett Andersen",
-        "class": "Sr.",
-        "height": null,
-        "weight": null,
-        "hometown": "San Antonio, Texas"
-      },
-      {
-        "number": 39,
-        "name": "Evan Enderlin",
-        "class": "Fr.",
-        "height": null,
-        "weight": null,
-        "hometown": "Carrollton, Texas"
-      },
-      {
-        "number": 86,
-        "name": "Hudson Powell",
-        "class": "Jr.",
-        "height": null,
-        "weight": null,
-        "hometown": "Austin, Texas"
-      },
-      {
-        "number": 89,
-        "name": "Ty Boatright",
-        "class": "Sr.",
-        "height": null,
-        "weight": null,
-        "hometown": "Kingwood, Texas"
-      }
-    ],
     "DB": [
+      {
+        "number": 0,
+        "name": "John Meredith III",
+        "class": "Fr.",
+        "height": null,
+        "weight": null,
+        "hometown": "Fort Worth, Texas"
+      },
       {
         "number": 2,
         "name": "Derek Williams Jr.",
-        "class": "Jr.",
+        "class": "Sr.",
         "height": null,
         "weight": null,
         "hometown": "New Iberia, La."
@@ -387,7 +135,7 @@
       {
         "number": 13,
         "name": "Zelus Hicks",
-        "class": "R-Fr.",
+        "class": "So.",
         "height": null,
         "weight": null,
         "hometown": "Atlanta, Ga."
@@ -419,7 +167,7 @@
       {
         "number": 24,
         "name": "Warren Roberson",
-        "class": "Jr.",
+        "class": "Sr.",
         "height": null,
         "weight": null,
         "hometown": "Red Oak, Texas"
@@ -435,7 +183,7 @@
       {
         "number": 27,
         "name": "Wardell Mack",
-        "class": "So.",
+        "class": "Jr.",
         "height": null,
         "weight": null,
         "hometown": "New Orleans, La."
@@ -467,7 +215,7 @@
       {
         "number": 36,
         "name": "Nick Hudson",
-        "class": "Sr.",
+        "class": "5th",
         "height": null,
         "weight": null,
         "hometown": "Houston, Texas"
@@ -475,7 +223,7 @@
       {
         "number": 41,
         "name": "Ziky Umeozulu",
-        "class": "So.",
+        "class": "Jr.",
         "height": null,
         "weight": null,
         "hometown": "Allen, Texas"
@@ -487,6 +235,266 @@
         "height": null,
         "weight": null,
         "hometown": "Spring Branch, Texas"
+      }
+    ],
+    "DL": [
+      {
+        "number": 1,
+        "name": "Colin Simmons",
+        "class": "Jr.",
+        "height": null,
+        "weight": null,
+        "hometown": "Dallas, Texas"
+      },
+      {
+        "number": 15,
+        "name": "Justus Terry",
+        "class": "So.",
+        "height": null,
+        "weight": null,
+        "hometown": "Manchester, Ga."
+      },
+      {
+        "number": 19,
+        "name": "Zina Umeozulu",
+        "class": "Jr.",
+        "height": null,
+        "weight": null,
+        "hometown": "Allen, Texas"
+      },
+      {
+        "number": 33,
+        "name": "Myron Charles",
+        "class": "So.",
+        "height": null,
+        "weight": null,
+        "hometown": "Port Charlotte, Fla."
+      },
+      {
+        "number": 40,
+        "name": "Lance Jackson",
+        "class": "So.",
+        "height": null,
+        "weight": null,
+        "hometown": "Texarkana, Texas"
+      },
+      {
+        "number": 46,
+        "name": "Smith Orogbo",
+        "class": "So.",
+        "height": null,
+        "weight": null,
+        "hometown": "Houston, Texas"
+      },
+      {
+        "number": 52,
+        "name": "James Johnson",
+        "class": "Fr.",
+        "height": null,
+        "weight": null,
+        "hometown": "Fort Myers, Fla."
+      },
+      {
+        "number": 53,
+        "name": "Isaiah Coleman",
+        "class": "So.",
+        "height": null,
+        "weight": null,
+        "hometown": "Cedar Hill, Texas"
+      },
+      {
+        "number": 55,
+        "name": "Elijah Ali",
+        "class": "Fr.",
+        "height": null,
+        "weight": null,
+        "hometown": "Downey, Calif."
+      },
+      {
+        "number": 80,
+        "name": "Brinley Tita",
+        "class": "Fr.",
+        "height": null,
+        "weight": null,
+        "hometown": "Humble, Texas"
+      },
+      {
+        "number": 88,
+        "name": "Maraad Watson",
+        "class": "Jr.",
+        "height": null,
+        "weight": null,
+        "hometown": "Irvington, N.J."
+      },
+      {
+        "number": 90,
+        "name": "Josiah Sharma",
+        "class": "So.",
+        "height": null,
+        "weight": null,
+        "hometown": "Folsom, Calif."
+      },
+      {
+        "number": 92,
+        "name": "Colton Vasek",
+        "class": "Sr.",
+        "height": null,
+        "weight": null,
+        "hometown": "Austin, Texas"
+      },
+      {
+        "number": 93,
+        "name": "Hero Kanu",
+        "class": "Sr.",
+        "height": null,
+        "weight": null,
+        "hometown": "Geltendorf, Germany"
+      },
+      {
+        "number": 94,
+        "name": "Jamarion Carlton",
+        "class": "Fr.",
+        "height": null,
+        "weight": null,
+        "hometown": "Temple, Texas"
+      },
+      {
+        "number": 95,
+        "name": "Ian Geffrard",
+        "class": "Sr.",
+        "height": null,
+        "weight": null,
+        "hometown": "Mableton, Ga."
+      },
+      {
+        "number": 96,
+        "name": "Zion Williams",
+        "class": "So.",
+        "height": null,
+        "weight": null,
+        "hometown": "Lufkin, Texas"
+      },
+      {
+        "number": 97,
+        "name": "Alex January",
+        "class": "Jr.",
+        "height": null,
+        "weight": null,
+        "hometown": "Duncanville, Texas"
+      },
+      {
+        "number": 99,
+        "name": "Richard Wesley",
+        "class": "Fr.",
+        "height": null,
+        "weight": null,
+        "hometown": "Sylmar, Calif."
+      }
+    ],
+    "WR": [
+      {
+        "number": 1,
+        "name": "Ryan Wingo",
+        "class": "Jr.",
+        "height": null,
+        "weight": null,
+        "hometown": "St. Louis, Mo."
+      },
+      {
+        "number": 3,
+        "name": "Emmett Mosley V",
+        "class": "Jr.",
+        "height": null,
+        "weight": null,
+        "hometown": "Chicago, Ill."
+      },
+      {
+        "number": 4,
+        "name": "Jermaine Bishop Jr.",
+        "class": "Fr.",
+        "height": null,
+        "weight": null,
+        "hometown": "Willis, Texas"
+      },
+      {
+        "number": 7,
+        "name": "Kaliq Lockett",
+        "class": "So.",
+        "height": null,
+        "weight": null,
+        "hometown": "Dallas, Texas"
+      },
+      {
+        "number": 8,
+        "name": "Cam Coleman",
+        "class": "Jr.",
+        "height": null,
+        "weight": null,
+        "hometown": "Phenix City, Ala."
+      },
+      {
+        "number": 13,
+        "name": "Kohen Brown",
+        "class": "Fr.",
+        "height": null,
+        "weight": null,
+        "hometown": "Dallas, Texas"
+      },
+      {
+        "number": 14,
+        "name": "Chris Stewart",
+        "class": "Fr.",
+        "height": null,
+        "weight": null,
+        "hometown": "Missouri City, Texas"
+      },
+      {
+        "number": 17,
+        "name": "Daylan McCutcheon",
+        "class": "So.",
+        "height": null,
+        "weight": null,
+        "hometown": "Lucas, Texas"
+      },
+      {
+        "number": 18,
+        "name": "Sterling Berkhalter",
+        "class": "5th",
+        "height": null,
+        "weight": null,
+        "hometown": "Cincinnati, Ohio"
+      },
+      {
+        "number": 35,
+        "name": "Rett Andersen",
+        "class": "Sr.",
+        "height": null,
+        "weight": null,
+        "hometown": "San Antonio, Texas"
+      },
+      {
+        "number": 39,
+        "name": "Evan Enderlin",
+        "class": "Fr.",
+        "height": null,
+        "weight": null,
+        "hometown": "Carrollton, Texas"
+      },
+      {
+        "number": 86,
+        "name": "Hudson Powell",
+        "class": "Jr.",
+        "height": null,
+        "weight": null,
+        "hometown": "Austin, Texas"
+      },
+      {
+        "number": 89,
+        "name": "Ty Boatright",
+        "class": "Sr.",
+        "height": null,
+        "weight": null,
+        "hometown": "Kingwood, Texas"
       }
     ],
     "LB": [
@@ -549,7 +557,7 @@
       {
         "number": 37,
         "name": "Jonathan Cunningham",
-        "class": "R-Fr.",
+        "class": "So.",
         "height": null,
         "weight": null,
         "hometown": "Fort Worth, Texas"
@@ -573,7 +581,7 @@
       {
         "number": 45,
         "name": "Darius Snow",
-        "class": "Sr.",
+        "class": "5th",
         "height": null,
         "weight": null,
         "hometown": "Frisco, Texas"
@@ -591,7 +599,7 @@
       {
         "number": 9,
         "name": "Karle \"KJ\" Lacey Jr.",
-        "class": "R-Fr.",
+        "class": "So.",
         "height": null,
         "weight": null,
         "hometown": "Saraland, Ala."
@@ -599,7 +607,7 @@
       {
         "number": 16,
         "name": "Arch Manning",
-        "class": "Jr.",
+        "class": "Sr.",
         "height": null,
         "weight": null,
         "hometown": "New Orleans, La."
@@ -607,7 +615,7 @@
       {
         "number": 19,
         "name": "MJ Morris",
-        "class": "Sr.",
+        "class": "5th",
         "height": null,
         "weight": null,
         "hometown": "Carrollton, Ga."
@@ -635,7 +643,7 @@
       {
         "number": 15,
         "name": "Michael Masunas",
-        "class": "Sr.",
+        "class": "5th",
         "height": null,
         "weight": null,
         "hometown": "Tucson, Ariz."
@@ -667,7 +675,7 @@
       {
         "number": 83,
         "name": "Spencer Shannon",
-        "class": "Jr.",
+        "class": "Sr.",
         "height": null,
         "weight": null,
         "hometown": "San Clemente, Calif."
@@ -683,7 +691,7 @@
       {
         "number": 87,
         "name": "Will Randle",
-        "class": "Jr.",
+        "class": "Sr.",
         "height": null,
         "weight": null,
         "hometown": "New Orleans, La."
@@ -701,7 +709,7 @@
       {
         "number": 21,
         "name": "Ryan Niblett",
-        "class": "Jr.",
+        "class": "Sr.",
         "height": null,
         "weight": null,
         "hometown": "Houston, Texas"
@@ -719,7 +727,7 @@
       {
         "number": 47,
         "name": "Trey Dubuc",
-        "class": "Jr.",
+        "class": "Sr.",
         "height": null,
         "weight": null,
         "hometown": "Fort Lauderdale, Fla."
@@ -729,7 +737,7 @@
       {
         "number": 43,
         "name": "Mac Chiumento",
-        "class": "Sr.",
+        "class": "5th",
         "height": null,
         "weight": null,
         "hometown": "Daytona Beach, Fla."
@@ -755,7 +763,7 @@
       {
         "number": 46,
         "name": "Spencer Barnett",
-        "class": "So.",
+        "class": "Jr.",
         "height": null,
         "weight": null,
         "hometown": "Austin, Texas"
@@ -773,7 +781,7 @@
       {
         "number": 50,
         "name": "Laurence Seymore III",
-        "class": "Sr.",
+        "class": "5th",
         "height": null,
         "weight": null,
         "hometown": "Miami Gardens, Fla."
@@ -787,9 +795,17 @@
         "hometown": "Fort Worth, Texas"
       },
       {
+        "number": 54,
+        "name": "Cole Hutson",
+        "class": "5th",
+        "height": null,
+        "weight": null,
+        "hometown": "Frisco, Texas"
+      },
+      {
         "number": 56,
         "name": "Dylan Sikorski",
-        "class": "So.",
+        "class": "Jr.",
         "height": null,
         "weight": null,
         "hometown": "Sumner, Wash."
@@ -797,7 +813,7 @@
       {
         "number": 58,
         "name": "Devin Coleman",
-        "class": "R-Fr.",
+        "class": "So.",
         "height": null,
         "weight": null,
         "hometown": "Cedar Hill, Texas"
@@ -805,7 +821,7 @@
       {
         "number": 62,
         "name": "Connor Robertson",
-        "class": "Sr.",
+        "class": "5th",
         "height": null,
         "weight": null,
         "hometown": "Austin, Texas"
@@ -821,7 +837,7 @@
       {
         "number": 68,
         "name": "Paris Patterson",
-        "class": "Jr.",
+        "class": "Sr.",
         "height": null,
         "weight": null,
         "hometown": "East St. Louis, Ill."
@@ -869,7 +885,7 @@
       {
         "number": 74,
         "name": "Trevor Goosby",
-        "class": "Jr.",
+        "class": "Sr.",
         "height": null,
         "weight": null,
         "hometown": "Melissa, Texas"
@@ -877,7 +893,7 @@
       {
         "number": 75,
         "name": "Jaydon Chatman",
-        "class": "Jr.",
+        "class": "Sr.",
         "height": null,
         "weight": null,
         "hometown": "Harker Heights, Texas"
@@ -885,7 +901,7 @@
       {
         "number": 76,
         "name": "Jackson Christian",
-        "class": "R-Fr.",
+        "class": "So.",
         "height": null,
         "weight": null,
         "hometown": "Port Neches, Texas"
@@ -893,7 +909,7 @@
       {
         "number": 77,
         "name": "Andre Cojoe",
-        "class": "So.",
+        "class": "Sr.",
         "height": null,
         "weight": null,
         "hometown": "Grand Prairie, Texas"
@@ -901,7 +917,7 @@
       {
         "number": 78,
         "name": "Jordan Coleman",
-        "class": "R-Fr.",
+        "class": "So.",
         "height": null,
         "weight": null,
         "hometown": "Cedar Hill, Texas"
@@ -909,7 +925,7 @@
       {
         "number": 79,
         "name": "Jonte Newman",
-        "class": "R-Fr.",
+        "class": "So.",
         "height": null,
         "weight": null,
         "hometown": "Cypress, Texas"
