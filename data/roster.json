@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "lastUpdated": "2026-08-21T06:41:19.901386+00:00",
+  "lastUpdated": "2026-08-22T06:35:40.948696+00:00",
   "team": {
     "name": "Texas Longhorns",
     "conference": "SEC",
@@ -521,14 +521,6 @@
         "height": null,
         "weight": null,
         "hometown": "Houston, Texas"
-      },
-      {
-        "number": 26,
-        "name": "Ty'Anthony Smith",
-        "class": "Jr.",
-        "height": null,
-        "weight": null,
-        "hometown": "Jasper, Texas"
       },
       {
         "number": 28,
